@@ -50,8 +50,22 @@ Java version: 1.8.0_202, vendor: Oracle Corporation, runtime: C:\Program Files\J
 Default locale: it_IT, platform encoding: Cp1252
 OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
 ----------------------------------------------------------------------------------------------------
-Se vedete una versione di java diversa dalla 1.8, allora dovete obbligare maven ad utilizzare la versione corretta di java. Per fare questo bisogna impostare nelle variabili d'ambiente JAVA_HOME = "path\to\java1.8". 
+Se vedete una versione di java diversa dalla 1.8, allora dovete obbligare maven ad utilizzare la versione corretta di java. Per fare questo bisogna impostare nelle variabili d'ambiente JAVA_HOME = "path\to\jdk-1.8". 
 
 Se ancora non funziona è possibile che abbiate nella variabile di ambiente globale Path la directory "C:\Program Files\Common Files\Oracle\Java\javapath" che va a recuperare sempre la versione più recente di java. Per ovviare al problema, aggiungete una nuova variabile d'ambiente a Path che sarà il path alla cartella bin del jdk 1.8 (ad esempio a me è: "C:\Program Files\Java\jdk1.8.0_202\bin"). Una volta inserita questa variabile d'ambiente, spostarla in alto, al di sopra di javapath, in modo che sia prioritaria rispetto a quella. Maven a questo punto non dovrebbe avere difficoltà a trovare la versione giusta di java.
 
 Nel caso estremo in cui neanche questo dovesse funzionare, controllate che la versione dell'sdk 1.8 che avete contenga i file eseguibili e le librerie di javafx. Se non ce li ha, installateli a parte ed aggiungeteli manualmente alla directory, oppure scaricate un'altra versione dell'sdk 1.8.
+
+2: Il file jar non si apre con il doppio click (Windows)
+Probabilmente, è un problema di associazione con il file jar. I file jar di questo progetto saranno compilati usando sdk 1.8, che, come sapete, include (sempre in base alla versione) javafx. Le versioni successive invece non includono javafx. Per questo motivo, nel caso in cui non riuscite ad aprire il file con il doppio tocco su windows è probabile che sia perché Windows sta cercando di aprirlo usando un eseguibile di un jdk successivo alla 8. 
+
+Per provare questo, andate da terminale, posizionatevi nella cartella del file fat jar e digitate il comando:
+- javaw -jar file.jar
+Supponendo che abbiate impostato come variabile d'ambiente JAVA_HOME il path per jdk 1.8, nel caso in cui il comando dovesse essere eseguito e vi porta ad aprire l'applicazione significa che, come detto prima, è un problema di associazione.
+
+Per provarlo, aprite il terminale e scrivete i seguenti comandi:
+- assoc .jar
+- ftype jarfile
+Al secondo comando, se jarfile è uguale ad un path che porta ad un jdk superiore all'1.8 allora significa che l'ipotesi è confermata e Windows sta cercando di aprire il file con una versione di javaw superiore a 1.8.
+
+La soluzione a questo problema sarebbe impostare un nuovo valore per jarfile, tuttavia vi consiglio o di eseguire l'applicazione attraverso "mvn exec:java" direttamente oppure usare il comando "java -jar file.jar" per evitare problemi poi di inconsistenza.

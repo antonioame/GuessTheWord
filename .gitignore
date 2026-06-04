@@ -1,0 +1,7 @@
+# Java compiled files
+*.class
+
+# Build folder
+GTWClient/target/
+GTWServer/target/
+GTWShared/target/

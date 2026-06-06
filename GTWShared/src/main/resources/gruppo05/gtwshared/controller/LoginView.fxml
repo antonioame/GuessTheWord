@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane fx:id="outerContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwshared.controller.LoginViewController">
+   <children>
+      <VBox alignment="CENTER" layoutX="90.0" layoutY="121.0" prefHeight="230.0" prefWidth="270.0" spacing="15.0">
+         <children>
+            <VBox alignment="CENTER" spacing="15.0">
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Login" />
+                  <VBox prefHeight="200.0" prefWidth="100.0" spacing="15.0">
+                     <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nome Utente:" />
+                              <TextField fx:id="txfUsername" promptText="Inserisci il nome utente" />
+                           </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
+                              <TextField fx:id="txfPswd" promptText="Inserisci la password" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+            <Hyperlink fx:id="linkToLogin" onAction="#switchToSignup" text="Non hai un account? Registrati!">
+               <font>
+                  <Font size="13.0" />
+               </font></Hyperlink>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="262.0" style="-fx-spacing: 20;">
+               <children>
+                  <Button fx:id="btnExit" mnemonicParsing="false" onAction="#exitApp" prefWidth="90.0" text="Esci" />
+                  <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#confirmAction" prefWidth="90.0" text="Conferma" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Text layoutX="80.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 40;" text="Guess The Word" />
+   </children>
+</Pane>

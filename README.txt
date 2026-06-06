@@ -72,3 +72,6 @@ Per provarlo, aprite il terminale e scrivete i seguenti comandi:
 Al secondo comando, se jarfile è uguale ad un path che porta ad un jdk superiore all'1.8 allora significa che l'ipotesi è confermata e Windows sta cercando di aprire il file con una versione di javaw superiore a 1.8.
 
 La soluzione a questo problema sarebbe impostare un nuovo valore per jarfile, tuttavia vi consiglio o di eseguire l'applicazione attraverso "mvn exec:java" direttamente oppure usare il comando "java -jar file.jar" per evitare problemi poi di inconsistenza.
+
+3: Le nuove funzionalità che ho implementato in un fxml controller non funzionano quando faccio "mvn exec:java".
+Questo è facilmente risolvibile. Un classico problema di maven multimodale è che si esegue una versione diversa delle risorse, spesso vecchia, quando queste sono importate in un altro progetto come dipendenze. Per ovviare il problema andare nella root del progetto ed eseguire il comando "mvn clean install". Questo comando fa "compile", "test", "package" ed install tutto in una sola botta. Il problema così dovrebbe risolversi.

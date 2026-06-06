@@ -14,9 +14,22 @@ import java.util.Optional;
 /**
  *
  * @author francesco-vecchione
+ * 
+ * @brief Implementazione dell'interfaccia DAO per la gestione della persistenza degli oggetti Word.
+ * @invariant
+ * La classe gestisce oggetti di tipo Word identificati da una chiave di tipo WordId.
  */
 public class WordDAO implements DAO<Word, WordId>{
     
+    /**
+     * @brief Converte una riga del ResultSet del DB in un oggetto Word.
+     * @param[inout] rs Il set dei risultati SQL posizionato sulla riga corrente da mappare.
+     * @return L'oggetto Word istanziato e popolato con i dati estratti dal ResultSet.
+     * @pre
+     * Il ResultSet non deve essere null e deve essere posizionato su una riga valida.
+     * @post
+     * L'oggetto Word restituito non è null.
+     */
     private Word mapWord(ResultSet rs) throws SQLException {
         return new Word(
                 rs.getString("token"),

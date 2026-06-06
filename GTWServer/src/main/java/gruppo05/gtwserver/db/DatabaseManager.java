@@ -9,19 +9,51 @@ import java.sql.Statement;
 /**
  *
  * @author francesco-vecchione
+ * 
+ * @brief Gestore centralizzato del database SQLite per il server.
+ * @invariant
+ * Le costanti URL, USERNAME e PASSWORD definiscono i parametri immutabili
+ * di connessione al database locale.
  */
 public class DatabaseManager {
+    
+    /**
+     * @brief Stringa di connessione JDBC per il database locale SQLite denominato 'ServerDB'.
+     */
     private static final String URL = "jdbc:sqlite:ServerDB";
+    
+    /**
+     * @brief Username predefinito per l'autenticazione al database.
+     */
     private static final String USERNAME = "root";
+    
+    /**
+     * @brief Password predefinita per l'autenticazione al database.
+     */
     private static final String PASSWORD = "root";
     
-    // Abilitare le foreign keys, che in SQLite sono disabilitati di default.
+    /**
+     * @brief Comando SQL per abilitare forzatamente i vincoli d'integrità referenziale (Foreign Keys).
+     */
     public static final String ENABLE_FOREIGN_KEYS = "PRAGMA foreign_keys = ON;";    
     
+    /**
+     * @brief Crea e restituisce una connessione attiva verso il database SQLite.
+     * @return L'oggetto Connection istanziato.
+     * @post
+     * La connessione restituita non è null ed è pronta per l'esecuzione di comandi SQL.
+     */
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
     
+    /**
+     * @brief Inizializza la struttura del database creando tabelle e trigger se non esistono.
+     * @post
+     * Tutte le tabelle di sistema (admin, player, source, word, challenge, game)
+     * e il relativo trigger di aggiornamento delle statistiche dei giocatori
+     * sono correttamente configurati sul database all'interno di una transazione atomica.
+     */
     public static void initDB() {    
         
         String crtTblAdmin = 

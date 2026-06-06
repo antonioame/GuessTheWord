@@ -15,9 +15,22 @@ import java.util.Optional;
 /**
  *
  * @author francesco-vecchione
+ * 
+ * @brief Implementazione dell'interfaccia DAO per la gestione della persistenza degli oggetti Challenge.
+ * @invariant
+ * La classe gestisce oggetti di tipo Challenge identificati da una chiave di tipo ChallengeId.
  */
 public class ChallengeDAO implements DAO<Challenge, ChallengeId>{
 
+    /**
+     * @brief Converte una riga del ResultSet del DB in un oggetto Challenge.
+     * @param[inout] rs Il set dei risultati SQL posizionato sulla riga corrente da mappare.
+     * @return L'oggetto Challenge istanziato e popolato con i dati estratti dal ResultSet.
+     * @pre
+     * Il ResultSet non deve essere null e deve essere posizionato su una riga valida.
+     * @post
+     * L'oggetto Challenge restituito non è null.
+     */
     private Challenge mapChallenge(ResultSet rs) throws SQLException {
         return new Challenge(
                 rs.getInt("code"), 

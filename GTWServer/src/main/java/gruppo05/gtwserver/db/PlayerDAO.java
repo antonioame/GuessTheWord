@@ -3,7 +3,6 @@ package gruppo05.gtwserver.db;
 import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwserver.model.PlayerId;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +14,22 @@ import java.util.Optional;
 /**
  *
  * @author francesco-vecchione
+ * 
+ * @brief Implementazione dell'interfaccia DAO per la gestione della persistenza degli oggetti Player.
+ * @invariant
+ * La classe gestisce oggetti di tipo Player identificati da una chiave di tipo PlayerId.
  */
 public class PlayerDAO implements DAO<Player, PlayerId>{
-    
+
+    /**
+     * @brief Converte una riga del ResultSet del DB in un oggetto Player.
+     * @param[inout] rs Il set dei risultati SQL posizionato sulla riga corrente da mappare.
+     * @return L'oggetto Player istanziato e popolato con i dati estratti dal ResultSet.
+     * @pre
+     * Il ResultSet non deve essere null e deve essere posizionato su una riga valida.
+     * @post
+     * L'oggetto Player restituito non è null.
+     */
     private Player mapPlayer(ResultSet rs) throws SQLException {
         return new Player(
                 rs.getString("username"),

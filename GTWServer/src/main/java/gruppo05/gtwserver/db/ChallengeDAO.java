@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Challenge;
+import gruppo05.gtwserver.model.ChallengeId;
 import gruppo05.gtwshared.utility.Difficulty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.Optional;
  *
  * @author francesco-vecchione
  */
-public class ChallengeDAO implements DAO<Challenge>{
+public class ChallengeDAO implements DAO<Challenge, ChallengeId>{
 
     private Challenge mapChallenge(ResultSet rs) throws SQLException {
         return new Challenge(
@@ -27,7 +28,9 @@ public class ChallengeDAO implements DAO<Challenge>{
     }
     
     @Override
-    public Optional<Challenge> selectById(Challenge modelWithId) {
+    public Optional<Challenge> selectById(ChallengeId modelId) {
+        if(modelId == null) return Optional.empty();
+        
         Optional<Challenge> result = Optional.empty();
         
         final String query = 
@@ -37,7 +40,7 @@ public class ChallengeDAO implements DAO<Challenge>{
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setInt(1, modelWithId.getCode());
+            cmd.setInt(1, modelId.getCode());
             
             try (ResultSet rs = cmd.executeQuery()) {
                 if(rs.next()) {
@@ -77,11 +80,11 @@ public class ChallengeDAO implements DAO<Challenge>{
     
     @Override
     public void insert(Challenge model) {
+        if(model == null) return;
         
         final String query = 
                 "INSERT INTO challenge (code, date, difficulty, word, source) " +
                 "VALUES (?,?,?,?,?);";
-        
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
@@ -98,7 +101,48 @@ public class ChallengeDAO implements DAO<Challenge>{
     }
 
     @Override
+    public void insertAll(List<Challenge> modelList) {
+        if(modelList == null || modelList.isEmpty()) return;
+    
+        final String query = 
+                "INSERT INTO challenge (code, date, difficulty, word, source) " +
+                "VALUES (?,?,?,?,?);";        
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            try {
+                // Tutto deve essere eseguito in una transazione
+                conn.setAutoCommit(false);
+                
+                for(Challenge model : modelList) {
+                    cmd.setInt(1, model.getCode());
+                    cmd.setDate(2, model.getDate());
+                    cmd.setString(3, model.getDifficulty().toString());
+                    cmd.setString(4, model.getWord());
+                    cmd.setInt(5, model.getSource());
+                    // Aggiungi la query al pacchetto di comandi da eseguire
+                    cmd.addBatch();
+                } 
+                
+                cmd.executeBatch();
+                conn.commit();
+            } catch (SQLException sqle) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                }
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
+            }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();
+        }
+    }
+    
+    @Override
     public void update(Challenge model) {
+        if(model == null) return;
         
         final String query = 
                 "UPDATE challenge " +
@@ -120,7 +164,8 @@ public class ChallengeDAO implements DAO<Challenge>{
     }
 
     @Override
-    public void delete(Challenge modelWithId) {
+    public void delete(ChallengeId modelId) {
+        if(modelId == null) return;
         
         final String query = 
                 "DELETE FROM challenge " +
@@ -132,7 +177,7 @@ public class ChallengeDAO implements DAO<Challenge>{
             // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
             cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             
-            cmd.setInt(1, modelWithId.getCode());
+            cmd.setInt(1, modelId.getCode());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

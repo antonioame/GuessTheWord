@@ -5,18 +5,16 @@ package gruppo05.gtwserver.model;
  * @author francesco-vecchione
  */
 public class Word {
-    final String token;
-    final int frequency;
-    final int source;
+    private final WordId id;
+    private final int frequency;
 
     public Word(String token, int frequency, int source) {
-        this.token = token;
+        id = new WordId(token, source);
         this.frequency = frequency;
-        this.source = source;
     }
 
     public String getToken() {
-        return token;
+        return id.getToken();
     }
 
     public int getFrequency() {
@@ -24,7 +22,7 @@ public class Word {
     }
 
     public int getSource() {
-        return source;
+        return id.getSource();
     }
     
     

@@ -5,16 +5,16 @@ package gruppo05.gtwserver.model;
  * @author francesco-vecchione
  */
 public class Admin {
-    final String username;
-    final String password;
+    private final AdminId id;
+    private final String password;
 
     public Admin(String username, String password) {
-        this.username = username;
+        this.id = new AdminId(username);
         this.password = password;
     }
 
     public String getUsername() {
-        return username;
+        return id.getUsername();
     }
 
     public String getPassword() {

@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Source;
+import gruppo05.gtwserver.model.SourceId;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.Optional;
  *
  * @author francesco-vecchione
  */
-public class SourceDAO implements DAO<Source>{
+public class SourceDAO implements DAO<Source, SourceId>{
  
     private Source mapSource(ResultSet rs) throws SQLException {        
         // NOTA: Se il path presente nel record è null o non valido potrebbe lanciare un'eccezione che non è di tipo SQLException
@@ -27,7 +28,9 @@ public class SourceDAO implements DAO<Source>{
     }
     
     @Override
-    public Optional<Source> selectById(Source modelWithId) {
+    public Optional<Source> selectById(SourceId modelId) {
+        if(modelId == null) return Optional.empty();
+        
         Optional<Source> result = Optional.empty();
         
         final String query = 
@@ -37,7 +40,7 @@ public class SourceDAO implements DAO<Source>{
         
         try(Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setInt(1, modelWithId.getId());
+            cmd.setInt(1, modelId.getId());
             
             try (ResultSet rs = cmd.executeQuery()) {
                 if(rs.next()) {
@@ -77,6 +80,7 @@ public class SourceDAO implements DAO<Source>{
 
     @Override
     public void insert(Source model) {
+        if(model == null) return;
         
         final String query = 
                 "INSERT INTO source (id, path) " +
@@ -94,7 +98,45 @@ public class SourceDAO implements DAO<Source>{
     }
 
     @Override
+    public void insertAll(List<Source> modelList) {
+        if(modelList == null || modelList.isEmpty()) return;
+        
+        final String query = 
+                "INSERT INTO source (id, path) " +
+                "VALUES (?,?);";     
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            try {
+                // Tutto deve essere eseguito in una transazione
+                conn.setAutoCommit(false);
+                
+                for(Source model : modelList) {
+                    cmd.setInt(1, model.getId());
+                    cmd.setString(2, model.getPath().toString());
+                    // Aggiungi la query al pacchetto di comandi da eseguire
+                    cmd.addBatch();
+                } 
+                
+                cmd.executeBatch();
+                conn.commit();
+            } catch (SQLException sqle) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                }
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
+            }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();
+        }   
+    }
+
+    @Override
     public void update(Source model) {
+        if(model == null) return;
         
         final String query = 
                 "UPDATE source " +
@@ -113,7 +155,8 @@ public class SourceDAO implements DAO<Source>{
     }
 
     @Override
-    public void delete(Source modelWithId) {
+    public void delete(SourceId modelId) {
+        if(modelId == null) return;
         
         String query = 
                 "DELETE FROM source " +
@@ -125,7 +168,7 @@ public class SourceDAO implements DAO<Source>{
             // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
             cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             
-            cmd.setInt(1, modelWithId.getId());
+            cmd.setInt(1, modelId.getId());
             cmd.executeUpdate();
         } catch (SQLException sqle) {
             // Hai violato qualche vincolo RESTRICT di almeno la tabella Challenge,
@@ -138,7 +181,7 @@ public class SourceDAO implements DAO<Source>{
             
             try(Connection conn = DatabaseManager.getConnection();
                     PreparedStatement cmd = conn.prepareStatement(query)) {
-                cmd.setInt(1, modelWithId.getId());
+                cmd.setInt(1, modelId.getId());
                 cmd.executeUpdate();
             } catch (SQLException ex) {
                 // Debug: da cambiare

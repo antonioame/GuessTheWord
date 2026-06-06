@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Player;
+import gruppo05.gtwserver.model.PlayerId;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -15,7 +16,7 @@ import java.util.Optional;
  *
  * @author francesco-vecchione
  */
-public class PlayerDAO implements DAO<Player>{
+public class PlayerDAO implements DAO<Player, PlayerId>{
     
     private Player mapPlayer(ResultSet rs) throws SQLException {
         return new Player(
@@ -27,7 +28,9 @@ public class PlayerDAO implements DAO<Player>{
     }
     
     @Override
-    public Optional<Player> selectById(Player modelWithId) {
+    public Optional<Player> selectById(PlayerId modelId) {
+        if(modelId == null) return Optional.empty();
+        
         Optional<Player> result = Optional.empty();
         
         final String query = 
@@ -37,7 +40,7 @@ public class PlayerDAO implements DAO<Player>{
         
         try(Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, modelWithId.getUsername());
+            cmd.setString(1, modelId.getUsername());
             
             try (ResultSet rs = cmd.executeQuery()) {
                 if(rs.next()) {
@@ -76,6 +79,7 @@ public class PlayerDAO implements DAO<Player>{
 
     @Override
     public void insert(Player model) {
+        if(model == null) return;
         
         // Le ridondanze sono impostate a 0 di default
         final String query = 
@@ -93,9 +97,46 @@ public class PlayerDAO implements DAO<Player>{
         }    
     }
 
+    @Override
+    public void insertAll(List<Player> modelList) {
+        if(modelList == null || modelList.isEmpty()) return;
+        
+        final String query = 
+                "INSERT INTO player (username, password) " +
+                "VALUES (?,?);";     
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            try {
+                // Tutto deve essere eseguito in una transazione
+                conn.setAutoCommit(false);
+                
+                for(Player model : modelList) {
+                    cmd.setString(1, model.getUsername());
+                    cmd.setString(2, model.getPassword());
+                    // Aggiungi la query al pacchetto di comandi da eseguire
+                    cmd.addBatch();
+                } 
+                
+                cmd.executeBatch();
+                conn.commit();
+            } catch (SQLException sqle) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                }
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
+            }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();
+        }        
+    }
     
     @Override
     public void update(Player model) {
+        if(model == null) return;
         
         // Le ridondanze vengono aggiornate grazie al trigger
         final String query = 
@@ -115,7 +156,8 @@ public class PlayerDAO implements DAO<Player>{
     }
 
     @Override
-    public void delete(Player modelWithId) {
+    public void delete(PlayerId modelId) {
+        if(modelId == null) return;
         
         final String query = 
                 "DELETE FROM player " +
@@ -127,7 +169,7 @@ public class PlayerDAO implements DAO<Player>{
             // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
             cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             
-            cmd.setString(1, modelWithId.getUsername());
+            cmd.setString(1, modelId.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

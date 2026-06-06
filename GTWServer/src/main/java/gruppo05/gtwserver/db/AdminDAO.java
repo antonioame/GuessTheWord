@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Admin;
+import gruppo05.gtwserver.model.AdminId;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +15,7 @@ import java.util.Optional;
  *
  * @author francesco-vecchione
  */
-public class AdminDAO implements DAO<Admin>{
+public class AdminDAO implements DAO<Admin, AdminId>{
 
     private Admin mapAdmin(ResultSet rs) throws SQLException {
         return new Admin(
@@ -23,7 +24,9 @@ public class AdminDAO implements DAO<Admin>{
     }
     
     @Override
-    public Optional<Admin> selectById(Admin modelWithId) {
+    public Optional<Admin> selectById(AdminId modelId) {
+        if(modelId == null) return Optional.empty();
+        
         Optional<Admin> result = Optional.empty();
         
         final String query = 
@@ -33,7 +36,7 @@ public class AdminDAO implements DAO<Admin>{
         
         try(Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, modelWithId.getUsername());
+            cmd.setString(1, modelId.getUsername());
             
             try (ResultSet rs = cmd.executeQuery()) {
                 if(rs.next()) {
@@ -69,9 +72,10 @@ public class AdminDAO implements DAO<Admin>{
         }
         return result;
     }
-
+    
     @Override
     public void insert(Admin model) {
+        if(model == null) return;
         
         final String query = 
                 "INSERT INTO admin (username, password) " +
@@ -87,9 +91,47 @@ public class AdminDAO implements DAO<Admin>{
             ex.printStackTrace();
         }
     }
+    
+    @Override
+    public void insertAll(List<Admin> modelList) {
+        if(modelList == null || modelList.isEmpty()) return;
+        
+        final String query = 
+                "INSERT INTO admin (username, password) " +
+                "VALUES (?,?);";      
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            try {
+                // Tutto deve essere eseguito in una transazione
+                conn.setAutoCommit(false);
+                
+                for(Admin model : modelList) {
+                    cmd.setString(1, model.getUsername());
+                    cmd.setString(2, model.getPassword());
+                    // Aggiungi la query al pacchetto di comandi da eseguire
+                    cmd.addBatch();
+                } 
+                
+                cmd.executeBatch();
+                conn.commit();
+            } catch (SQLException sqle) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                }
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
+            }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();
+        }
+    }
 
     @Override
     public void update(Admin model) {
+        if(model == null) return;
         
         final String query = 
                 "UPDATE admin " +
@@ -108,7 +150,8 @@ public class AdminDAO implements DAO<Admin>{
     }
 
     @Override
-    public void delete(Admin modelWithId) {
+    public void delete(AdminId modelId) {
+        if(modelId == null) return;
         
         final String query = 
                 "DELETE FROM admin " +
@@ -120,7 +163,7 @@ public class AdminDAO implements DAO<Admin>{
             // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
             cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             
-            cmd.setString(1, modelWithId.getUsername());
+            cmd.setString(1, modelId.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

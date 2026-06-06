@@ -7,24 +7,22 @@ import gruppo05.gtwshared.utility.Result;
  * @author francesco-vecchione
  */
 public class Game {
-    final String player;
-    final int challenge;
-    final Result result;
-    final int responseTime;
+    private final GameId id;
+    private final Result result;
+    private final int responseTime;
 
     public Game(String player, int challenge, Result result, int timeToAnswer) {
-        this.player = player;
-        this.challenge = challenge;
+        this.id = new GameId(player, challenge);
         this.result = result;
         this.responseTime = timeToAnswer;
     }
 
     public String getPlayer() {
-        return player;
+        return id.getPlayer();
     }
 
     public int getChallenge() {
-        return challenge;
+        return id.getChallenge();
     }
 
     public Result getResult() {

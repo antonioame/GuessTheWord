@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Game;
+import gruppo05.gtwserver.model.GameId;
 import gruppo05.gtwshared.utility.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,19 +16,21 @@ import java.util.Optional;
  *
  * @author francesco-vecchione
  */
-public class GameDAO implements DAO<Game>{
+public class GameDAO implements DAO<Game, GameId>{
 
     private Game mapGame(ResultSet rs) throws SQLException {
         return new Game(
                 rs.getString("player"), 
                 rs.getInt("challenge"), 
                 Result.valueOf(rs.getString("result").toUpperCase()), 
-                rs.getInt("timeToAnswer"));
+                rs.getInt("responseTime"));
     } 
     
     
     @Override
-    public Optional<Game> selectById(Game modelWithId) {
+    public Optional<Game> selectById(GameId modelId) {
+        if(modelId == null) return Optional.empty();
+        
         Optional<Game> result = Optional.empty();
         
         final String query = 
@@ -37,8 +40,8 @@ public class GameDAO implements DAO<Game>{
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, modelWithId.getPlayer());
-            cmd.setInt(2, modelWithId.getChallenge());
+            cmd.setString(1, modelId.getPlayer());
+            cmd.setInt(2, modelId.getChallenge());
             
             try (ResultSet rs = cmd.executeQuery()) {
                 if(rs.next()) {
@@ -78,9 +81,10 @@ public class GameDAO implements DAO<Game>{
 
     @Override
     public void insert(Game model) {
+        if(model == null) return;
         
         final String query = 
-                "INSERT INTO game (player, challenge, result, timeToAnswer) " +
+                "INSERT INTO game (player, challenge, result, responseTime) " +
                 "VALUES (?,?,?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
@@ -97,11 +101,51 @@ public class GameDAO implements DAO<Game>{
     }
 
     @Override
+    public void insertAll(List<Game> modelList) {
+        if(modelList == null || modelList.isEmpty()) return;
+
+        final String query = 
+                "INSERT INTO game (player, challenge, result, responseTime) " +
+                "VALUES (?,?,?,?);";        
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            try {
+                // Tutto deve essere eseguito in una transazione
+                conn.setAutoCommit(false);
+                
+                for(Game model : modelList) {
+                    cmd.setString(1, model.getPlayer());
+                    cmd.setInt(2, model.getChallenge());
+                    cmd.setString(3, model.getResult().toString());
+                    cmd.setInt(4, model.getResponseTime());
+                    // Aggiungi la query al pacchetto di comandi da eseguire
+                    cmd.addBatch();
+                } 
+                
+                cmd.executeBatch();
+                conn.commit();
+            } catch (SQLException sqle) {
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                }
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
+            }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();
+        }    
+    }
+
+    @Override
     public void update(Game model) {
+        if(model == null) return;
         
         final String query = 
                 "UPDATE game " +
-                "SET result = ?, timeToAnswer = ? " +
+                "SET result = ?, responseTime = ? " +
                 "WHERE player = ? AND challenge = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
@@ -118,7 +162,8 @@ public class GameDAO implements DAO<Game>{
     }
 
     @Override
-    public void delete(Game modelWithId) {
+    public void delete(GameId modelId) {
+        if(modelId == null) return;
         
         final String query = 
                 "DELETE FROM game " +
@@ -130,8 +175,8 @@ public class GameDAO implements DAO<Game>{
             // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
             cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             
-            cmd.setString(1, modelWithId.getPlayer());
-            cmd.setInt(2, modelWithId.getChallenge());
+            cmd.setString(1, modelId.getPlayer());
+            cmd.setInt(2, modelId.getChallenge());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

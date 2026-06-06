@@ -22,7 +22,7 @@ public class DatabaseManager {
         return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
     
-    public static void initDB() throws SQLException {    
+    public static void initDB() {    
         
         String crtTblAdmin = 
                 "CREATE TABLE IF NOT EXISTS admin (" +
@@ -118,6 +118,9 @@ public class DatabaseManager {
                 throw new SQLException("Commit fallito - Rollback effettuato", sqle);
 
             }
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();            
         }
     }
 }

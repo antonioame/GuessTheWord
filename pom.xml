@@ -21,6 +21,16 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+	<!-- PER USARE UNITA' DI TEST -->
+    	<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <!-- COMPILATORE MAVEN COMPATIBILE CON JAVA 8 -->
@@ -32,6 +42,13 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+            </plugin>
+
+            <!-- E' SUREFIRE CHE SI OCCUPA DI TESTARE LE CLASSI DI TEST -->
+	    <plugin>
+    		<groupId>org.apache.maven.plugins</groupId>
+    		<artifactId>maven-surefire-plugin</artifactId>
+    		<version>3.2.5</version>
             </plugin>
         </plugins>
     </build>

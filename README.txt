@@ -37,6 +37,9 @@ In realtà, eseguire "mvn clean package" dalla root directory ogni volta sarebbe
 - genera i jar (i fat jar nel nostro cas)
 Per questo motivo va bene lo stesso eseguire "mvn clean package" ma solitamente è basta "mvn clean compile".
 
+4. Come faccio a testare le mie classi di test nel progetto?
+Basta fare da cmd "mvn test" dalla root directory per eseguire tutti i test di tutti i moduli, oppure ci si può spostare nei singoli moduli ed usare lo stesso comando per eseguire i test. Equivalentemente, per i singoli moduli, il comando può essere eseguito su netbeans.
+
 
 | ----------------------- |
 | PROBLEMI NOTI E RISOLTI |

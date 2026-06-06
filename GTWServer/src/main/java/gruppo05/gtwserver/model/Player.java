@@ -8,15 +8,15 @@ public class Player {
     final String username;
     final String password;
     final int totalPlayedTime;
-    final int totalMatchesWon;
-    final int totalMatchesPlayed;
+    final int totalGamesWon;
+    final int totalGamesPlayed;
 
-    public Player(String username, String password, int totalPlayedTime, int totalMatchesWon, int totalMatchesPlayed) {
+    public Player(String username, String password, int totalPlayedTime, int totalGamesWon, int totalGamesPlayed) {
         this.username = username;
         this.password = password;
         this.totalPlayedTime = totalPlayedTime;
-        this.totalMatchesWon = totalMatchesWon;
-        this.totalMatchesPlayed = totalMatchesPlayed;
+        this.totalGamesWon = totalGamesWon;
+        this.totalGamesPlayed = totalGamesPlayed;
     }
 
     public String getUsername() {
@@ -31,12 +31,12 @@ public class Player {
         return totalPlayedTime;
     }
 
-    public int getTotalMatchesWon() {
-        return totalMatchesWon;
+    public int getTotalGamesWon() {
+        return totalGamesWon;
     }
 
-    public int getTotalMatchesPlayed() {
-        return totalMatchesPlayed;
+    public int getTotalGamesPlayed() {
+        return totalGamesPlayed;
     }
     
     

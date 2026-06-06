@@ -2,7 +2,6 @@ package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Admin;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,9 +25,14 @@ public class AdminDAO implements DAO<Admin>{
     @Override
     public Optional<Admin> selectById(Admin modelWithId) {
         Optional<Admin> result = Optional.empty();
-        try(Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "SELECT * FROM admin WHERE username = ?")) {
+        
+        final String query = 
+                "SELECT * " +
+                "FROM admin " +
+                "WHERE username = ?;";
+        
+        try(Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, modelWithId.getUsername());
             
             try (ResultSet rs = cmd.executeQuery()) {
@@ -47,10 +51,14 @@ public class AdminDAO implements DAO<Admin>{
     @Override
     public List<Admin> selectAll() {
         List<Admin> result = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(URL);
+        
+        final String query = 
+                "SELECT * " +
+                "FROM admin;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
                 Statement cmd = conn.createStatement();
-                ResultSet rs = cmd.executeQuery(
-                        "SELECT * FROM admin")) {
+                ResultSet rs = cmd.executeQuery(query)) {
             
             while(rs.next()) {
                 result.add(mapAdmin(rs));
@@ -64,9 +72,13 @@ public class AdminDAO implements DAO<Admin>{
 
     @Override
     public void insert(Admin model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "INSERT INTO admin (username, password) VALUES (?,?)")) {
+        
+        final String query = 
+                "INSERT INTO admin (username, password) " +
+                "VALUES (?,?);";      
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getUsername());
             cmd.setString(2, model.getPassword());
             cmd.executeUpdate();
@@ -78,9 +90,14 @@ public class AdminDAO implements DAO<Admin>{
 
     @Override
     public void update(Admin model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "UPDATE admin SET password = ? WHERE username = ?")) {
+        
+        final String query = 
+                "UPDATE admin " +
+                "SET password = ? " +
+                "WHERE username = ?;";        
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPassword());
             cmd.setString(2, model.getUsername());
             cmd.executeUpdate();
@@ -92,9 +109,17 @@ public class AdminDAO implements DAO<Admin>{
 
     @Override
     public void delete(Admin modelWithId) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "DELETE FROM admin WHERE username = ?")) {
+        
+        final String query = 
+                "DELETE FROM admin " +
+                "WHERE username = ?;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+            
             cmd.setString(1, modelWithId.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {

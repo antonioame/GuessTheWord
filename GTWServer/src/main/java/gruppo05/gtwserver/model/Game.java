@@ -6,17 +6,17 @@ import gruppo05.gtwshared.utility.Result;
  *
  * @author francesco-vecchione
  */
-public class Match {
+public class Game {
     final String player;
     final int challenge;
     final Result result;
-    final int timeToAnswer;
+    final int responseTime;
 
-    public Match(String player, int challenge, Result result, int timeToAnswer) {
+    public Game(String player, int challenge, Result result, int timeToAnswer) {
         this.player = player;
         this.challenge = challenge;
         this.result = result;
-        this.timeToAnswer = timeToAnswer;
+        this.responseTime = timeToAnswer;
     }
 
     public String getPlayer() {
@@ -31,7 +31,7 @@ public class Match {
         return result;
     }
 
-    public int getTimeToAnswer() {
-        return timeToAnswer;
+    public int getResponseTime() {
+        return responseTime;
     }
 }

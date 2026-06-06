@@ -22,16 +22,21 @@ public class PlayerDAO implements DAO<Player>{
                 rs.getString("username"),
                 rs.getString("password"),
                 rs.getInt("totalPlayedTime"),
-                rs.getInt("totalMatchesWon"),
-                rs.getInt("totalMatchesPlayed"));
+                rs.getInt("totalGamesWon"),
+                rs.getInt("totalGamesPlayed"));
     }
     
     @Override
     public Optional<Player> selectById(Player modelWithId) {
         Optional<Player> result = Optional.empty();
-        try(Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "SELECT * FROM player WHERE username = ?")) {
+        
+        final String query = 
+                "SELECT * " +
+                "FROM player " +
+                "WHERE username = ?;";
+        
+        try(Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, modelWithId.getUsername());
             
             try (ResultSet rs = cmd.executeQuery()) {
@@ -50,10 +55,14 @@ public class PlayerDAO implements DAO<Player>{
     @Override
     public List<Player> selectAll() {
         List<Player> result = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(URL);
+        
+        final String query = 
+                "SELECT * " +
+                "FROM player;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
                 Statement cmd = conn.createStatement();
-                ResultSet rs = cmd.executeQuery(
-                        "SELECT * FROM player")) {
+                ResultSet rs = cmd.executeQuery(query)) {
             
             while(rs.next()) {
                 result.add(mapPlayer(rs));
@@ -67,14 +76,16 @@ public class PlayerDAO implements DAO<Player>{
 
     @Override
     public void insert(Player model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "INSERT INTO player (username, password, totalPlayedTime, totalMatchesWon, totalMatchesPlayed) VALUES (?,?,?,?,?)")) {
+        
+        // Le ridondanze sono impostate a 0 di default
+        final String query = 
+                "INSERT INTO player (username, password) " +
+                "VALUES (?,?);";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getUsername());
             cmd.setString(2, model.getPassword());
-            cmd.setInt(3, model.getTotalPlayedTime());
-            cmd.setInt(4, model.getTotalMatchesWon());
-            cmd.setInt(5, model.getTotalMatchesPlayed());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -83,17 +94,19 @@ public class PlayerDAO implements DAO<Player>{
     }
 
     
-    // NOTA: Capire come gestire l'addizione delle ridondanze
     @Override
     public void update(Player model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "UPDATE player SET password = ?, totalPlayedTime = ?, totalMatchesWon = ?, totalMatchesPlayed = ? WHERE username = ?")) {
+        
+        // Le ridondanze vengono aggiornate grazie al trigger
+        final String query = 
+                "UPDATE player " +
+                "SET password = ? " +
+                "WHERE username = ?;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPassword());
-            cmd.setInt(2, model.getTotalPlayedTime());
-            cmd.setInt(3, model.getTotalMatchesWon());
-            cmd.setInt(4, model.getTotalMatchesPlayed());
-            cmd.setString(5, model.getUsername());
+            cmd.setString(2, model.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -103,9 +116,17 @@ public class PlayerDAO implements DAO<Player>{
 
     @Override
     public void delete(Player modelWithId) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "DELETE FROM player WHERE username = ?")) {
+        
+        final String query = 
+                "DELETE FROM player " +
+                "WHERE username = ?;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+            
             cmd.setString(1, modelWithId.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {

@@ -27,9 +27,14 @@ public class WordDAO implements DAO<Word>{
     @Override
     public Optional<Word> selectById(Word modelWithId) {
         Optional<Word> result = Optional.empty();
-        try(Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "SELECT * FROM word WHERE token = ? AND source = ?")) {
+        
+        final String query = 
+                "SELECT * " +
+                "FROM word " +
+                "WHERE token = ? AND source = ?;";
+        
+        try(Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, modelWithId.getToken());
             cmd.setInt(2, modelWithId.getSource());
             
@@ -49,10 +54,14 @@ public class WordDAO implements DAO<Word>{
     @Override
     public List<Word> selectAll() {
         List<Word> result = new ArrayList<>();
-        try (Connection conn = DriverManager.getConnection(URL);
+        
+        final String query = 
+                "SELECT * " +
+                "FROM word;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
                 Statement cmd = conn.createStatement();
-                ResultSet rs = cmd.executeQuery(
-                        "SELECT * FROM word")) {
+                ResultSet rs = cmd.executeQuery(query)) {
             
             while(rs.next()) {
                 result.add(mapWord(rs));
@@ -66,9 +75,13 @@ public class WordDAO implements DAO<Word>{
 
     @Override
     public void insert(Word model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "INSERT INTO word (token, frequency, source) VALUES (?,?,?)")) {
+        
+        final String query = 
+                "INSERT INTO word (token, frequency, source) " +
+                "VALUES (?,?,?);";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getToken());
             cmd.setInt(2, model.getFrequency());
             cmd.setInt(3, model.getSource());
@@ -81,9 +94,14 @@ public class WordDAO implements DAO<Word>{
 
     @Override
     public void update(Word model) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "UPDATE word SET frequency = ? WHERE token = ? AND source = ?")) {
+        
+        final String query = 
+                "UPDATE word " +
+                "SET frequency = ? " +
+                "WHERE token = ? AND source = ?;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setInt(1, model.getFrequency());
             cmd.setString(2, model.getToken());
             cmd.setInt(3, model.getSource());
@@ -96,9 +114,17 @@ public class WordDAO implements DAO<Word>{
 
     @Override
     public void delete(Word modelWithId) {
-        try (Connection conn = DriverManager.getConnection(URL);
-                PreparedStatement cmd = conn.prepareStatement(
-                        "DELETE FROM word WHERE token = ? AND source = ?")) {
+        
+        final String query = 
+                "DELETE FROM word " +
+                "WHERE token = ? AND source = ?;";
+        
+        try (Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query)) {
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+            
             cmd.setString(1, modelWithId.getToken());
             cmd.setInt(2, modelWithId.getSource());
             cmd.executeUpdate();

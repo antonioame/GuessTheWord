@@ -1,5 +1,7 @@
 package gruppo05.gtwserver;
 
+import gruppo05.gtwserver.networking.ServerConnection;
+import gruppo05.gtwserver.networking.ServerConnectionCreator;
 import gruppo05.gtwshared.controller.LoginViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,14 +16,20 @@ import java.io.IOException;
  */
 public class App extends Application {
 
+    private ServerConnection connection;
+    
     @Override
     public void start(Stage stage) throws IOException {     
+        
+        connection = new ServerConnectionCreator().createConnection();
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "/gruppo05/gtwshared/controller/LoginView.fxml"));
         
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
         ctrl.setOnConfirmRoute("route per la main view");
+        ctrl.setConnection(connection);
         
         stage.setScene(new Scene(root));
         stage.show();
@@ -30,5 +38,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

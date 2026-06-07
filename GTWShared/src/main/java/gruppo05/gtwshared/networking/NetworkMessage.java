@@ -8,20 +8,26 @@ import gruppo05.gtwshared.utility.Result;
 
 /**
  * @brief Classe base di tutti i messaggi scambiati in rete tra server e client.
+ * 
  * <p>Ogni NetworkMessage trasporta un MessageType che consente al ricevente di 
  * capire subito come interpretare il payload senza l'uso di catene di instanceof.</p>
+ * 
  * <p><b>FLUSSO DI COMUNICAZIONE CLIENT-SERVER</b></p>
  * <ol>
  * <li><b>Autenticazione:</b> Il client invia una {@link NetworkMessage.LoginRequest}. 
  * Il server controlla i dati e risponde con {@link NetworkMessage.LoginResponse}, 
  * specificando anche se l'utente ha privilegi di Amministratore.</li>
+ * 
  * <li><b>Registrazione:</b> Se l'utente non è registrato, il client invia una 
  * {@link NetworkMessage.RegisterRequest}. Il server registra l'utente e risponde 
  * con {@link NetworkMessage.RegisterResponse}.</li>
+ * 
  * <li><b>Attesa Avversario (Utenti Standard):</b> Dopo un login di successo, il giocatore 
  * riceve un {@link NetworkMessage.WaitingForOpponent} e rimane in attesa.</li>
+ * 
  * <li><b>Inizio Partita:</b> Quando due giocatori sono disponibili, il server invia 
  * {@link NetworkMessage.GameStart} contenente il testo cifrato, il timer e l'identificativo dell'avversario.</li>
+ * 
  * <li><b>Fase di Gioco:</b> 
  * <ul>
  * <li>Il client invia la propria risposta al server tramite {@link NetworkMessage.AnswerSubmission}.</li>
@@ -30,9 +36,11 @@ import gruppo05.gtwshared.utility.Result;
  * </li>
  * <li><b>Fine Partita:</b> Il server calcola i risultati e invia {@link NetworkMessage.GameResult} 
  * (vincitore, parola corretta, statistiche) a entrambi i giocatori.</li>
+ * 
  * <li><b>Storico (Opzionale):</b> In qualsiasi momento fuori dalla partita, il client può richiedere 
  * i propri dati passati inviando {@link NetworkMessage.HistorianRequest}, a cui il server 
  * risponde con {@link NetworkMessage.HistorianResponse}.</li>
+ * 
  * <li><b>Disconnessione:</b> 
  * <ul>
  * <li>Se un giocatore si disconnette volontariamente, invia {@link NetworkMessage.ClientDisconnect}.</li>

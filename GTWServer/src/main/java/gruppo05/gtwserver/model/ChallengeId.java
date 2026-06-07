@@ -30,4 +30,33 @@ public class ChallengeId {
     public int getCode() {
         return code;
     }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 11 * hash + this.code;
+        return hash;
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ChallengeId other = (ChallengeId) obj;
+        if (this.code != other.code) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

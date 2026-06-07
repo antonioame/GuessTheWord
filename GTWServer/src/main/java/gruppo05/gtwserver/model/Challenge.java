@@ -2,6 +2,7 @@ package gruppo05.gtwserver.model;
 
 import gruppo05.gtwshared.utility.Difficulty;
 import java.sql.Date;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -74,12 +75,9 @@ public class Challenge {
                 source);
     }
 
-    /**
-     * @brief Restituisce il codice identificativo numerico della sfida.
-     * @return Un valore intero che rappresenta il codice della sfida.
-     */
-    public int getCode() {
-        return id.getCode();
+    // Da commentare
+    public ChallengeId getId() {
+        return id;
     }
 
     /**
@@ -113,4 +111,29 @@ public class Challenge {
     public int getSource() {
         return source;
     }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Challenge other = (Challenge) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

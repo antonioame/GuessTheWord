@@ -1,5 +1,7 @@
 package gruppo05.gtwserver.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author francesco-vecchione
@@ -34,14 +36,9 @@ public class Admin {
         this.password = password;
     }
 
-    /**
-     * @brief Restituisce lo username dell'amministratore.
-     * @return Una stringa contenente lo username dell'amministratore.
-     * @post
-     * Il valore restituito non è null ed equivale al valore memorizzato in id.
-     */
-    public String getUsername() {
-        return id.getUsername();
+    // Da commentare
+    public AdminId getId() {
+        return id;
     }
 
     /**
@@ -51,4 +48,29 @@ public class Admin {
     public String getPassword() {
         return password;
     }
+
+    // Da commentare    
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    // Da commentare    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Admin other = (Admin) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
+    } 
 }

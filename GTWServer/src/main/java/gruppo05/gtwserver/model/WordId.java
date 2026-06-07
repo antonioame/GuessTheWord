@@ -1,5 +1,7 @@
 package gruppo05.gtwserver.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author francesco-vecchione
@@ -47,4 +49,33 @@ public class WordId {
     public int getSource() {
         return source;
     }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + Objects.hashCode(this.token);
+        return hash;
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final WordId other = (WordId) obj;
+        if (!Objects.equals(this.token, other.token)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

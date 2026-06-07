@@ -1,5 +1,7 @@
 package gruppo05.gtwserver.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author francesco-vecchione
@@ -59,12 +61,9 @@ public class Player {
         this.totalGamesPlayed = totalGamesPlayed;
     }
 
-    /**
-     * @brief Restituisce lo username del giocatore.
-     * @return Una stringa contenente lo username.
-     */
-    public String getUsername() {
-        return id.getUsername();
+    // Da commentare
+    public PlayerId getId() {
+        return id;
     }
 
     /**
@@ -97,6 +96,31 @@ public class Player {
      */
     public int getTotalGamesPlayed() {
         return totalGamesPlayed;
+    }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Player other = (Player) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
     }
     
     

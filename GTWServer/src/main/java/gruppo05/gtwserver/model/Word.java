@@ -1,5 +1,7 @@
 package gruppo05.gtwserver.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author francesco-vecchione
@@ -37,12 +39,9 @@ public class Word {
         this.frequency = frequency;
     }
 
-    /**
-     * @brief Restituisce il valore testuale della parola.
-     * @return Una stringa contenente il token della parola.
-     */
-    public String getToken() {
-        return id.getToken();
+    // Da commentare
+    public WordId getId() {
+        return id;
     }
 
     /**
@@ -53,12 +52,29 @@ public class Word {
         return frequency;
     }
 
-    /**
-     * @brief Restituisce l'identificativo della sorgente associata alla parola.
-     * @return Un intero che rappresenta il codice della sorgente.
-     */
-    public int getSource() {
-        return id.getSource();
+    // Da commentare
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Word other = (Word) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
     }
     
     

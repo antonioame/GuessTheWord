@@ -102,8 +102,8 @@ public class GameDAO implements DAO<Game, GameId>{
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getPlayer());
-            cmd.setInt(2, model.getChallenge());
+            cmd.setString(1, model.getId().getPlayer());
+            cmd.setInt(2, model.getId().getChallenge());
             cmd.setString(3, model.getResult().toString());
             cmd.setInt(4, model.getResponseTime());
             cmd.executeUpdate();
@@ -128,8 +128,8 @@ public class GameDAO implements DAO<Game, GameId>{
                 conn.setAutoCommit(false);
                 
                 for(Game model : modelList) {
-                    cmd.setString(1, model.getPlayer());
-                    cmd.setInt(2, model.getChallenge());
+                    cmd.setString(1, model.getId().getPlayer());
+                    cmd.setInt(2, model.getId().getChallenge());
                     cmd.setString(3, model.getResult().toString());
                     cmd.setInt(4, model.getResponseTime());
                     // Aggiungi la query al pacchetto di comandi da eseguire
@@ -165,8 +165,8 @@ public class GameDAO implements DAO<Game, GameId>{
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getResult().toString());
             cmd.setInt(2, model.getResponseTime());            
-            cmd.setString(3, model.getPlayer());
-            cmd.setInt(4, model.getChallenge());
+            cmd.setString(3, model.getId().getPlayer());
+            cmd.setInt(4, model.getId().getChallenge());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

@@ -101,7 +101,7 @@ public class ChallengeDAO implements DAO<Challenge, ChallengeId>{
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setInt(1, model.getCode());
+            cmd.setInt(1, model.getId().getCode());
             cmd.setDate(2, model.getDate());
             cmd.setString(3, model.getDifficulty().toString());
             cmd.setString(4, model.getWord());
@@ -128,7 +128,7 @@ public class ChallengeDAO implements DAO<Challenge, ChallengeId>{
                 conn.setAutoCommit(false);
                 
                 for(Challenge model : modelList) {
-                    cmd.setInt(1, model.getCode());
+                    cmd.setInt(1, model.getId().getCode());
                     cmd.setDate(2, model.getDate());
                     cmd.setString(3, model.getDifficulty().toString());
                     cmd.setString(4, model.getWord());
@@ -168,7 +168,7 @@ public class ChallengeDAO implements DAO<Challenge, ChallengeId>{
             cmd.setString(2, model.getDifficulty().toString());
             cmd.setString(3, model.getWord());
             cmd.setInt(4, model.getSource());
-            cmd.setInt(5, model.getCode());
+            cmd.setInt(5, model.getId().getCode());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

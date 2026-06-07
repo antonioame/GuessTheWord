@@ -1,5 +1,7 @@
 package gruppo05.gtwserver.model;
 
+import java.util.Objects;
+
 /**
  *
  * @author francesco-vecchione
@@ -45,4 +47,37 @@ public class GameId {
     public int getChallenge() {
         return challenge;
     }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 41 * hash + Objects.hashCode(this.player);
+        hash = 41 * hash + this.challenge;
+        return hash;
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final GameId other = (GameId) obj;
+        if (this.challenge != other.challenge) {
+            return false;
+        }
+        if (!Objects.equals(this.player, other.player)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

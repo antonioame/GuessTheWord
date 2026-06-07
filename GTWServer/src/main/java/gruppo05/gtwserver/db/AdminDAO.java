@@ -96,7 +96,7 @@ public class AdminDAO implements DAO<Admin, AdminId>{
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getUsername());
+            cmd.setString(1, model.getId().getUsername());
             cmd.setString(2, model.getPassword());
             cmd.executeUpdate();
         } catch (SQLException ex) {
@@ -120,7 +120,7 @@ public class AdminDAO implements DAO<Admin, AdminId>{
                 conn.setAutoCommit(false);
                 
                 for(Admin model : modelList) {
-                    cmd.setString(1, model.getUsername());
+                    cmd.setString(1, model.getId().getUsername());
                     cmd.setString(2, model.getPassword());
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
@@ -154,7 +154,7 @@ public class AdminDAO implements DAO<Admin, AdminId>{
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPassword());
-            cmd.setString(2, model.getUsername());
+            cmd.setString(2, model.getId().getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

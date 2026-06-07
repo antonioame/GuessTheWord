@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.model;
 
 import gruppo05.gtwshared.utility.Result;
+import java.util.Objects;
 
 /**
  *
@@ -44,20 +45,9 @@ public class Game {
         this.responseTime = timeToAnswer;
     }
 
-    /**
-     * @brief Restituisce lo username del giocatore associato alla partita.
-     * @return Una stringa contenente lo username del giocatore.
-     */
-    public String getPlayer() {
-        return id.getPlayer();
-    }
-
-    /**
-     * @brief Restituisce l'identificativo della sfida associata alla partita.
-     * @return Un intero che rappresenta il codice della sfida.
-     */
-    public int getChallenge() {
-        return id.getChallenge();
+    // Da commentare
+    public GameId getId() {
+        return id;
     }
 
     /**
@@ -75,4 +65,31 @@ public class Game {
     public int getResponseTime() {
         return responseTime;
     }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Game other = (Game) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

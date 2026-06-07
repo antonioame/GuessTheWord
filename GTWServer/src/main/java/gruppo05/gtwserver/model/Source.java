@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.model;
 
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -50,12 +51,9 @@ public class Source {
                 path);
     }
 
-    /**
-     * @brief Restituisce il codice identificativo numerico della sorgente.
-     * @return Un valore intero che rappresenta l'id della sorgente.
-     */
-    public int getId() {
-        return id.getId();
+    // Da commentare
+    public SourceId getId() {
+        return id;
     }
 
     /**
@@ -65,4 +63,31 @@ public class Source {
     public Path getPath() {
         return path;
     }
+
+    // Da commentare
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+
+    // Da commentare
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Source other = (Source) obj;
+        if (!this.id.equals(other.getId())) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

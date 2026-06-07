@@ -15,7 +15,7 @@ import gruppo05.gtwshared.networking.NetworkConnection;
  * Nasconde la complessità della gestione multi-canale del padre, fissando 
  * implicitamente tutte le comunicazioni sull'indice di canale 0.
  * 
- * * @author chiara
+ * @author chiara
  * @version 2.0
  */
 public class ClientConnection extends NetworkConnection {

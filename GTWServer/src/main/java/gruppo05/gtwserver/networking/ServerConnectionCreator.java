@@ -13,6 +13,7 @@ import java.util.function.Consumer;
  */
 public class ServerConnectionCreator extends NetworkConnectionCreator {
 
+    /* ON RECEIVE, ON CLIENT CONNECTED e ON CLIENT DISCONNECTED sono da implementare stesso in questa classe
     private final BiConsumer<Integer, Serializable> onReceive;
     private final Consumer<Integer> onClientConnected;
     private final Consumer<Integer> onClientDisconnected;
@@ -26,12 +27,14 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
         this.onClientConnected = onClientConnected;
         this.onClientDisconnected = onClientDisconnected;
     }
-    
+    */
+
     @Override
     public ServerConnection createConnection() {
         // Legge il file server.properties
         NetworkConfiguration config = this.readConfiguration("server.properties");
         
+        /*
         try {
             // Estrae la chiave server.port (es. 5000) e istanzia la connessione
             return new ServerConnection(
@@ -43,5 +46,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
         } catch (IOException e) {
             throw new RuntimeException("Errore durante la creazione del ServerSocket sulla porta " + config.getPort(), e);
         }
+        */
+        
+        return null; // Debug
     }
 }

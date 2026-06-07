@@ -17,6 +17,7 @@ import java.util.function.Consumer;
  */
 public class ClientConnectionCreator extends NetworkConnectionCreator {
 
+    /* ON RECEIVE e ON DISCONNECT sono da implementare stesso in questa classe
     private final BiConsumer<Integer, Serializable> onReceive;
     private final Consumer<Integer> onDisconnect;
 
@@ -27,6 +28,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
         this.onReceive = onReceive;
         this.onDisconnect = onDisconnect;
     }
+    */
 
     
     @Override
@@ -35,11 +37,14 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
         NetworkConfiguration config = this.readConfiguration("client.properties");
         
         // Estrae le chiavi server.ip e server.port (es. 127.0.0.1 e 5000)
+        /*
         return new ClientConnection(
                 config.getIp(),
                 config.getPort(),
                 onReceive,
                 onDisconnect
         );
+        */
+        return null;        // Debug
     }
 }

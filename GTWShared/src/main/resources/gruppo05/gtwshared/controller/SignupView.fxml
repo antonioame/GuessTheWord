@@ -44,7 +44,7 @@
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="262.0" style="-fx-spacing: 20;">
                <children>
                   <Button fx:id="btnExit" mnemonicParsing="false" onAction="#exitApp" prefWidth="90.0" text="Esci" />
-                  <Button fx:id="confirmBtn" mnemonicParsing="false" onAction="#onConfirm" prefWidth="90.0" text="Conferma" />
+                  <Button fx:id="btnConfirm" mnemonicParsing="false" onAction="#onConfirm" prefWidth="90.0" text="Conferma" />
                </children>
             </HBox>
          </children>

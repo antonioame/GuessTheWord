@@ -1,9 +1,10 @@
 package gruppo05.gtwclient;
 
+import gruppo05.gtwclient.controller.ClientLoginManager;
+import gruppo05.gtwclient.controller.ClientSignupManager;
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwclient.networking.ClientConnectionCreator;
 import gruppo05.gtwshared.controller.LoginViewController;
-import gruppo05.gtwshared.networking.NetworkConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +30,8 @@ public class App extends Application {
         
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
-        ctrl.setOnConfirmRoute("route per la main view");
+        ctrl.setLoginManager(new ClientLoginManager(connection));
+        ctrl.setSignupManager(new ClientSignupManager(connection));
         
         stage.setScene(new Scene(root));
         stage.show();

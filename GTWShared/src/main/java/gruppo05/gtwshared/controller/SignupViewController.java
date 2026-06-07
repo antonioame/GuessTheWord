@@ -1,10 +1,10 @@
 package gruppo05.gtwshared.controller;
 
-import gruppo05.gtwshared.networking.NetworkConnection;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -37,19 +38,20 @@ public class SignupViewController implements Initializable {
     @FXML
     private Button btnExit;
     @FXML
-    private Button confirmBtn;
-
-    private String onConfirmRoute;  // deve essere un path del tipo "/gruppo05/gtwserver/controller/file.fxml"
-                                    // qui non ci arriveremo mai perchè nel caso l'operazione di registrazione
-                                    // va a buon fine si viene riportati nella pagina di login
+    private Button btnConfirm;
     
+    private SignupManager signupManager;
+    private LoginManager loginManager;
     
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        btnConfirm.disableProperty().bind(
+                txfUsername.textProperty().isEmpty().or(
+                txfPswd.textProperty().isEmpty().or(
+                txfPswdConfirm.textProperty().isEmpty())));
     }    
 
     @FXML
@@ -59,8 +61,9 @@ public class SignupViewController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
         Parent root = loader.load();
         
-        LoginViewController ctrl = (LoginViewController) loader.getController();
-        ctrl.setOnConfirmRoute(onConfirmRoute);
+        LoginViewController ctrl = (LoginViewController) loader.load();
+        ctrl.setLoginManager(loginManager);
+        ctrl.setSignupManager(signupManager);
         
         stage.setScene(new Scene(root));
         stage.show();
@@ -72,30 +75,15 @@ public class SignupViewController implements Initializable {
     }
 
     @FXML
-    private void onConfirm(ActionEvent event) throws IOException {
-        
-        // Validare i campi (Password e Password Confermata devono essere uguali)
-        
-        // Se i campi non sono validi mostra errore
-        
-        // Se i campi sono validi inviare il messaggio con i campi
-        
-        // Attendere la risposta
-        
-        // Ricevere la risposta
-        
-        // Se la risposta è negativa i campi sono invalidi allora non fare nulla
-        
-        // Se la risposta è positiva allora portati alla confirm route
-        
-        Stage stage = (Stage) outerContainer.getScene().getWindow();
-        Parent root = FXMLLoader.load(getClass().getResource(onConfirmRoute));
-        
-        stage.setScene(new Scene(root));
-        stage.show();     
+    private void onConfirm(ActionEvent event) throws IOException {        
+        signupManager.validateInfo(txfUsername.getText(), txfPswd.getText());
     }
     
-    public void setOnConfirmRoute(String onConfirmRoute) {
-        this.onConfirmRoute = onConfirmRoute;
+    public void setSignupManager(SignupManager signupManager) {
+        this.signupManager = signupManager;
+    }
+    
+    public void setLoginManager(LoginManager loginManager) {
+        this.loginManager = loginManager;
     }
 }

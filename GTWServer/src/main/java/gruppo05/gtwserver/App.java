@@ -1,5 +1,7 @@
 package gruppo05.gtwserver;
 
+import gruppo05.gtwserver.controller.ServerLoginManager;
+import gruppo05.gtwserver.controller.ServerSignupManager;
 import gruppo05.gtwserver.networking.ServerConnection;
 import gruppo05.gtwserver.networking.ServerConnectionCreator;
 import gruppo05.gtwshared.controller.LoginViewController;
@@ -28,7 +30,8 @@ public class App extends Application {
         
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
-        ctrl.setOnConfirmRoute("route per la main view");
+        ctrl.setLoginManager(new ServerLoginManager());
+        ctrl.setSignupManager(new ServerSignupManager());
         
         stage.setScene(new Scene(root));
         stage.show();

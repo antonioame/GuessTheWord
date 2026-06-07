@@ -23,11 +23,15 @@ public enum MessageType {
      */
     REGISTER_RESPONSE,
 
-    // 2. ATTESA
+    // 2. RICERCA PARTITA E ATTESA
     /**
-     * @brief Server -> Client: login OK ma l'avversario non è ancora connesso.
+     * @brief Client -> Server: l'utente loggato richiede di avviare una partita.
      */
-    WAITING_FOR_OPPONENT,
+    PLAY_REQUEST,
+    /**
+     * @brief Server -> Client: esito della richiesta di gioco (avversario trovato o in attesa).
+     */
+    PLAY_RESPONSE,
 
     // 3. PARTITA
     /**

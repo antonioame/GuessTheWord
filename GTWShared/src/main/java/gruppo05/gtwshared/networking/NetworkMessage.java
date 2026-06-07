@@ -22,12 +22,13 @@ import gruppo05.gtwshared.utility.Result;
  * {@link NetworkMessage.RegisterRequest}. Il server registra l'utente e risponde 
  * con {@link NetworkMessage.RegisterResponse}.</li>
  * 
- * <li><b>Attesa Avversario (Utenti Standard):</b> Dopo un login di successo, il giocatore 
- * riceve un {@link NetworkMessage.WaitingForOpponent} e rimane in attesa.</li>
+ * <li><b>Richiesta e Attesa Partita:</b> Dopo il login, il client invia 
+ * {@link NetworkMessage.PlayRequest} per cercare un avversario. Il server risponde con 
+ * {@link NetworkMessage.PlayResponse}, che indica l'avvio imminente (MATCH_FOUND) 
+ * o la necessità di attendere (WAITING).</li>
  * 
  * <li><b>Inizio Partita:</b> Quando due giocatori sono disponibili, il server invia 
  * {@link NetworkMessage.GameStart} contenente il testo cifrato, il timer e l'identificativo dell'avversario.</li>
- * 
  * <li><b>Fase di Gioco:</b> 
  * <ul>
  * <li>Il client invia la propria risposta al server tramite {@link NetworkMessage.AnswerSubmission}.</li>
@@ -36,7 +37,6 @@ import gruppo05.gtwshared.utility.Result;
  * </li>
  * <li><b>Fine Partita:</b> Il server calcola i risultati e invia {@link NetworkMessage.GameResult} 
  * (vincitore, parola corretta, statistiche) a entrambi i giocatori.</li>
- * 
  * <li><b>Storico (Opzionale):</b> In qualsiasi momento fuori dalla partita, il client può richiedere 
  * i propri dati passati inviando {@link NetworkMessage.HistorianRequest}, a cui il server 
  * risponde con {@link NetworkMessage.HistorianResponse}.</li>
@@ -49,6 +49,9 @@ import gruppo05.gtwshared.utility.Result;
  * </ul>
  * </li>
  * </ol>
+ * 
+ * * @author chiara
+ * * @version 2.0
  */
 public abstract class NetworkMessage implements Serializable {
 
@@ -339,38 +342,68 @@ public abstract class NetworkMessage implements Serializable {
         }
     }
 
-    // 2. ATTESA
+    // 2. RICERCA PARTITA E ATTESA
 
     /**
-     * @brief Server -> Client: in attesa dell'avversario.
+     * @brief Client -> Server: l'utente loggato richiede di avviare una partita.
      */
-    public static class WaitingForOpponent extends NetworkMessage {
+    public static class PlayRequest extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 6L;
 
         /**
-         * @brief Nome utente dell'utente autenticato.
+         * @brief Costruttore senza parametri.
          */
-        private final String loggedUsername;
+        public PlayRequest() {
+            super(MessageType.PLAY_REQUEST);
+        }
+    }
+
+    /**
+     * @brief Server -> Client: esito della richiesta di gioco.
+     */
+    public static class PlayResponse extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
+        private static final long serialVersionUID = 7L;
+
+        /**
+         * @brief Stati possibili della risposta.
+         */
+        public enum Status { 
+            /**
+             * @brief Partita trovata, l'avversario è pronto.
+             */
+            MATCH_FOUND, 
+            /**
+             * @brief In attesa che un altro giocatore faccia richiesta.
+             */
+            WAITING 
+        }
+
+        /**
+         * @brief Stato della richiesta elaborata dal server.
+         */
+        private final Status status;
 
         /**
          * @brief Costruttore.
-         * @param[in] loggedUsername Nome dell'utente autenticato.
+         * @param[in] status Lo stato della richiesta (MATCH_FOUND o WAITING).
          */
-        public WaitingForOpponent(String loggedUsername) {
-            super(MessageType.WAITING_FOR_OPPONENT);
-            this.loggedUsername = loggedUsername;
+        public PlayResponse(Status status) {
+            super(MessageType.PLAY_RESPONSE);
+            this.status = status;
         }
 
-        // Metodo Getter
         /**
-         * @brief Restituisce lo username.
-         * @return Lo username.
+         * @brief Restituisce lo stato della richiesta.
+         * @return Lo stato elaborato dal server.
          */
-        public String getLoggedUsername() { 
-            return loggedUsername; 
+        public Status getStatus() {
+            return status;
         }
     }
 
@@ -383,7 +416,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 7L;
+        private static final long serialVersionUID = 8L;
 
         /**
          * @brief Testo estratto dal documento.
@@ -477,7 +510,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 8L;
+        private static final long serialVersionUID = 9L;
 
         /**
          * @brief Parola proposta dall'utente come soluzione.
@@ -525,8 +558,8 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 9L;
-        
+        private static final long serialVersionUID = 10L;
+
         /**
          * @brief Risultato del gioco.
          */
@@ -604,7 +637,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 10L;
+        private static final long serialVersionUID = 11L;
 
         /**
          * @brief Costruttore senza parametri.
@@ -623,7 +656,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 11L;
+        private static final long serialVersionUID = 12L;
 
         /**
          * @brief Costruttore senza parametri.
@@ -641,7 +674,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 12L;
+        private static final long serialVersionUID = 13L;
 
         /**
          * @brief Costruttore senza parametri.
@@ -660,7 +693,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 13L;
+        private static final long serialVersionUID = 14L;
 
         /**
          * @brief Costruttore senza parametri.
@@ -677,10 +710,17 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 14L;
+        private static final long serialVersionUID = 15L;
 
         /**
          * @brief Lista di record partita.
+         * <p>Ogni mappa contiene coppie chiave-valore come:</p>
+         * <ul>
+         * <li>{@code "opponent"}     – username avversario</li>
+         * <li>{@code "result"}       – WIN / LOSE / DRAW / TIMEOUT</li>
+         * <li>{@code "date"}         – data e ora della partita</li>
+         * <li>{@code "responseTime"} – tempo di risposta in ms</li>
+         * </ul>
          */
         private final List<Map<String, String>> matchHistory;
 
@@ -774,7 +814,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 15L;
+        private static final long serialVersionUID = 16L;
         /**
          * @brief Testo del messaggio.
          */

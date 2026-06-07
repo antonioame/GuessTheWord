@@ -39,9 +39,7 @@ public class LoginViewController implements Initializable {
     private Button confirmBtn;
 
     private String onConfirmRoute;  // deve essere un path del tipo "/gruppo05/gtwserver/controller/file.fxml"
-        
-    private NetworkConnection connection;
-    
+          
     /**
      * Initializes the controller class.
      */
@@ -59,7 +57,6 @@ public class LoginViewController implements Initializable {
         
         SignupViewController ctrl = (SignupViewController) loader.getController();
         ctrl.setOnConfirmRoute(onConfirmRoute);
-        ctrl.setConnection(connection);
         
         stage.setScene(new Scene(root));
         stage.show();
@@ -92,9 +89,5 @@ public class LoginViewController implements Initializable {
     
     public void setOnConfirmRoute(String onConfirmRoute) {
         this.onConfirmRoute = onConfirmRoute;
-    }
-    
-    public void setConnection(NetworkConnection connection) {
-        this.connection = connection;
     }
 }

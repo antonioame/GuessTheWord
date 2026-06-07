@@ -30,7 +30,6 @@ public class App extends Application {
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
         ctrl.setOnConfirmRoute("route per la main view");
-        ctrl.setConnection(connection);
         
         stage.setScene(new Scene(root));
         stage.show();

@@ -43,7 +43,6 @@ public class SignupViewController implements Initializable {
                                     // qui non ci arriveremo mai perchè nel caso l'operazione di registrazione
                                     // va a buon fine si viene riportati nella pagina di login
     
-    private NetworkConnection connection;
     
     /**
      * Initializes the controller class.
@@ -62,7 +61,6 @@ public class SignupViewController implements Initializable {
         
         LoginViewController ctrl = (LoginViewController) loader.getController();
         ctrl.setOnConfirmRoute(onConfirmRoute);
-        ctrl.setConnection(connection);
         
         stage.setScene(new Scene(root));
         stage.show();
@@ -99,9 +97,5 @@ public class SignupViewController implements Initializable {
     
     public void setOnConfirmRoute(String onConfirmRoute) {
         this.onConfirmRoute = onConfirmRoute;
-    }
-    
-    public void setConnection(NetworkConnection connection) {
-        this.connection = connection;
     }
 }

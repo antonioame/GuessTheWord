@@ -1,7 +1,11 @@
 package gruppo05.gtwshared.networking;
 
 /**
+ * @enum MessageType
  * @brief Enumerazione di tutti i tipi di messaggio del protocollo GuessTheWord.
+ * 
+ * @author chiara
+ * @version 2.0
  */
 public enum MessageType {
 
@@ -65,11 +69,11 @@ public enum MessageType {
     /**
      * @brief Client -> Server: richiesta dello storico partite del proprio utente.
      */
-    HISTORIAN_REQUEST,
+    HISTORY_REQUEST,
     /**
      * @brief Server -> Client: risposta con dati dello storico.
      */
-    HISTORIAN_RESPONSE,
+    HISTORY_RESPONSE,
     
     // 6. UTILITY
     /**

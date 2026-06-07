@@ -12,32 +12,48 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
- * @brief Classe astratta che modella una connessione di rete generica.
+ * @class NetworkConnection
+ * @brief Classe astratta che modella una connessione di rete generica (Client o Server).
+ * * @details Gestisce un insieme di canali di comunicazione indipendenti tramite la classe 
+ * interna {@link ConnectionThread}. Fornisce un'architettura thread-safe per inviare 
+ * e ricevere oggetti serializzabili attraverso socket TCP. La logica di creazione delle 
+ * socket e la determinazione del numero di canali è delegata alle classi figlie tramite 
+ * i metodi astratti {@link #createSocket()} e {@link #expectedChannels()}.
+ * 
+ * @author chiara
+ * @version 2.0
  */
 public abstract class NetworkConnection {
+    
     // ATTRIBUTI
     
     /**
      * @brief Lista thread-safe dei canali di comunicazione attivi.
+     * @details Essendo utilizzata da thread paralleli, la lista è wrappata in 
+     * Collections.synchronizedList. Gli accessi in iterazione devono essere sincronizzati esplicitamente.
      */
     private final List<ConnectionThread> threads = Collections.synchronizedList(new ArrayList<>());
 
     /**
-     * @brief Callback invocata ad ogni messaggio ricevuto su qualsiasi canale.
+     * @brief Callback invocata automaticamente alla ricezione di un messaggio su qualsiasi canale.
+     * @details Riceve in input due parametri: l'indice del canale (Integer) da cui proviene il 
+     * messaggio e il payload deserializzato (Serializable).
      */
     private final BiConsumer<Integer, Serializable> onReceive;
 
     /**
-     * @brief Callback invocata quando un canale si chiude.
+     * @brief Callback opzionale invocata quando un canale di rete viene chiuso.
+     * @details Viene chiamata passando l'indice del canale disconnesso, sia in caso di 
+     * chiusura volontaria che di caduta della connessione.
      */
     private final Consumer<Integer> onDisconnect;
 
     // COSTRUTTORI
     
     /**
-     * @brief Costruttore completo.
-     * @param[in] onReceive    Callback invocata ad ogni messaggio.
-     * @param[in] onDisconnect Callback invocata alla chiusura di un canale.
+     * @brief Costruttore completo per istanziare una connessione di rete.
+     * @param[in] onReceive    La callback invocata ad ogni messaggio in ingresso.
+     * @param[in] onDisconnect La callback invocata alla chiusura di un canale.
      */
     protected NetworkConnection(BiConsumer<Integer, Serializable> onReceive, Consumer<Integer> onDisconnect) {
         this.onReceive    = onReceive;
@@ -45,30 +61,37 @@ public abstract class NetworkConnection {
     }
 
     /**
-     * @brief Costruttore senza callback di disconnessione.
-     * @param[in] onReceive Callback invocata ad ogni messaggio.
+     * @brief Costruttore semplificato senza la gestione degli eventi di disconnessione.
+     * @param[in] onReceive La callback invocata ad ogni messaggio in ingresso.
      */
     protected NetworkConnection(BiConsumer<Integer, Serializable> onReceive) {
         this(onReceive, null);
     }
 
     // METODI ASTRATTI (devono essere implementati nelle sottoclassi)
+    
     /**
-     * @brief Metodo che crea e restituisce una socket pronta per la comunicazione.
-     * @return Una socket connessa e pronta all'uso.
+     * @brief Metodo astratto che delega alla sottoclasse la fornitura di una socket pronta.
+     * @details Nel caso di un Server, utilizzerà serverSocket.accept(), mentre nel caso 
+     * di un Client creerà una new Socket(ip, porta).
+     * @return Una Socket connessa e pronta per l'apertura degli stream.
+     * @throws IOException Se si verifica un errore di rete durante la creazione o l'accettazione.
      */
     protected abstract Socket createSocket() throws IOException;
 
     /**
-     * @brief Restituisce il numero di canali di comunicazione da aprire.
-     * @return Numero di canali da aprire.
+     * @brief Metodo astratto che definisce quanti canali la connessione deve gestire.
+     * @return Il numero atteso di canali.
      */
     protected abstract int expectedChannels();
 
     // GESTIONE DELLA CONNESSIONE
     
     /**
-     * @brief Avvia l'apertura di tutti i canali di comunicazione necessari.
+     * @brief Avvia asincronamente la fase di setup di tutti i canali richiesti.
+     * @details Crea un numero di thread di setup pari a {@link #expectedChannels()}. 
+     * Ogni thread tenterà di ottenere una socket tramite {@link #createSocket()}, invocherà 
+     * il metodo {@link #onChannelReady} e infine avvierà il thread di lettura continuo.
      */
     public void connect() {
 
@@ -83,13 +106,13 @@ public abstract class NetworkConnection {
             // Creazione di un thread separato per gestire l'apertura del canale
             Thread setupThread = new Thread(() -> {
                 try {
-                    // Creazione della socket (logica definita dalla sottoclasse)
+                    // Creazione della socket delegata alla sottoclasse
                     Socket socket = createSocket();
 
-                    // Eventuale operazione aggiuntiva subito dopo la connessione
+                    // Operazione aggiuntiva opzionale post-connessione
                     onChannelReady(socket, channelIndex);
 
-                    // Avvio del canale di comunicazione vero e proprio
+                    // Avvio effettivo del thread di ascolto
                     startChannel(socket, channelIndex);
 
                 } catch (IOException ex) {
@@ -101,10 +124,9 @@ public abstract class NetworkConnection {
                     if (onDisconnect != null)
                         onDisconnect.accept(channelIndex);
                 }
-            }, "SetupChannel-" + channelIndex); // nome del thread per debugging
+            }, "SetupChannel-" + channelIndex);
 
-            // Il thread viene impostato come daemon:
-            // termina automaticamente quando termina l'applicazione
+            // Thread demone: non impedisce la chiusura della JVM
             setupThread.setDaemon(true);
 
             // Avvio del thread di setup
@@ -112,24 +134,25 @@ public abstract class NetworkConnection {
         }
     }
 
-
-    // METODO DI UTILITA'
+    // METODI DI UTILITA' E GESTIONE INTERNA
 
     /**
-     * @brief Metodo eseguito subito dopo l'apertura di una socket.
-     * @param[in] socket       Socket appena aperta.
-     * @param[in] channelIndex Indice del canale associato alla socket.
+     * @brief Metodo eseguito subito dopo la creazione fisica della socket.
+     * @details Le sottoclassi possono sovrascriverlo per eseguire logiche custom (es. log di rete, 
+     * avvisi UI) appena la connessione TCP viene stabilita ma prima che inizi l'ascolto.
+     * @param[in] socket       La socket appena instaurata.
+     * @param[in] channelIndex L'identificativo numerico del canale.
      */
     protected void onChannelReady(Socket socket, int channelIndex) {
-        // Nessuna operazione di default
+        // Implementazione di default vuota
     }
     
     // GESTIONE INTERNA DEI CANALI
 
     /**
-     * @brief Crea, registra nella lista e avvia un ConnectionThread.
-     * @param[in] socket       Socket connessa su cui leggere/scrivere.
-     * @param[in] channelIndex Indice del canale.
+     * @brief Istituisce, registra in memoria e avvia il thread di ascolto persistente per un canale.
+     * @param[in] socket       La socket connessa.
+     * @param[in] channelIndex L'identificativo numerico assegnato al canale.
      */
     protected final void startChannel(Socket socket, int channelIndex) {
         // 1. CREAZIONE DEL THREAD
@@ -141,11 +164,7 @@ public abstract class NetworkConnection {
         // Serve al server per mantenere il controllo della comunicazione.
         threads.add(ct);
         
-        // 3. IMPOSTAZIONE DEMONE (BACKGROUND)
-        // Segnala alla JVM che questo è un thread di "servizio".
-        // Se il programma server principale (main) viene terminato o si chiude, 
-        // questo thread verrà spento istantaneamente in automatico, evitando che 
-        // il processo rimanga bloccato (appeso) in memoria.
+        // Imposta il thread come demone per permetterne la chiusura in background al termine del main
         ct.setDaemon(true);
 
         // 4. ESECUZIONE IN PARALLELO
@@ -158,17 +177,21 @@ public abstract class NetworkConnection {
     // API PUBBLICA
 
     /**
-     * @brief Invia un oggetto serializzabile sul canale identificato.
-     * @param[in] channelIndex Indice del canale destinatario.
-     * @param[in] data         Oggetto da inviare.
+     * @brief Invia un oggetto serializzato verso uno specifico canale.
+     * @param[in] channelIndex L'indice del canale destinatario.
+     * @param[in] data         L'oggetto (che implementa Serializable) da trasmettere.
+     * @throws IOException Se lo stream è chiuso, non inizializzato, o cade la connessione.
+     * @throws IllegalArgumentException Se l'indice specificato non corrisponde a nessun canale attivo.
      */
     public void sendTo(int channelIndex, Serializable data) throws IOException {
         getThread(channelIndex).send(data);
     }
 
     /**
-     * @brief Invia un messaggio su tutti i canali attivi (broadcast).
-     * @param[in] data Oggetto da trasmettere a tutti i canali.
+     * @brief Invia lo stesso oggetto a tutti i canali correntemente attivi (Broadcast).
+     * @details È un'operazione thread-safe. Se l'invio fallisce su un canale, viene loggato
+     * l'errore ma il ciclo continua per tentare di recapitare il pacchetto agli altri.
+     * @param[in] data Il payload da inviare a tutti.
      */
     public void broadcast(Serializable data) {
         synchronized (threads) {
@@ -184,9 +207,9 @@ public abstract class NetworkConnection {
     }
 
     /**
-     * @brief Invia un messaggio a tutti i canali tranne quello specificato.
-     * @param[in] excludedIndex Indice del canale da escludere.
-     * @param[in] data          Oggetto da inviare.
+     * @brief Invia un messaggio a tutti i canali attivi ad eccezione di uno specifico (Multicast filtrato).
+     * @param[in] excludedIndex L'indice del canale a cui NON inviare il pacchetto.
+     * @param[in] data          Il payload da inviare.
      */
     public void broadcastExcept(int excludedIndex, Serializable data) {
         synchronized (threads) {
@@ -204,37 +227,42 @@ public abstract class NetworkConnection {
     }
 
     /**
-     * @brief Chiude il canale identificato da channelIndex.
-     * @param[in] channelIndex Indice del canale da chiudere.
+     * @brief Chiude forzatamente il socket e il flusso di rete associati a un canale.
+     * @param[in] channelIndex L'indice del canale da troncare.
+     * @throws IOException Se si verifica un errore durante la chiusura fisica del socket.
      */
     public void disconnectChannel(int channelIndex) throws IOException {
         getThread(channelIndex).closeSocket();
     }
 
     /**
-     * @brief Chiude tutti i canali attivi.
+     * @brief Itera su tutti i canali attivi chiudendone i rispettivi socket.
+     * @details Crea una copia della lista per evitare eccezioni di concorrenza 
+     * durante la modifica strutturale operata dai thread morenti.
      */
     public void disconnectAll() {
         synchronized (threads) {
             for (ConnectionThread ct : new ArrayList<>(threads)) {
                 try { 
                     ct.closeSocket(); 
-                } catch (IOException ignored) {}
+                } catch (IOException ignored) {
+                    // Eccezione soppressa intenzionalmente in fase di chiusura massiva
+                }
             }
         }
     }
 
     /**
-     * @brief Restituisce il numero di canali attualmente attivi.
-     * @return Numero di canali attivi.
+     * @brief Restituisce il conteggio in tempo reale dei thread di rete attivi e validi.
+     * @return Il numero intero di canali correntemente aperti.
      */
     public int getActiveChannelCount() {
         return threads.size();
     }
 
     /**
-     * @brief Verifica se tutti i canali attesi sono attivi.
-     * @return true se i canali attivi sono pari al numero atteso.
+     * @brief Controlla se la rete è pronta all'uso secondo i requisiti della sottoclasse.
+     * @return true se il numero di canali attivi coincide con i canali attesi, false altrimenti.
      */
     public boolean areAllChannelsReady() {
         return threads.size() == expectedChannels();
@@ -243,9 +271,10 @@ public abstract class NetworkConnection {
     // METODO HELPER
 
     /**
-     * @brief Recupera il ConnectionThread tramite indice di canale.
-     * @param[in] channelIndex Indice del canale.
-     * @return Il thread di connessione corrispondente.
+     * @brief Ricerca in modo sincronizzato un ConnectionThread specifico tramite il suo indice.
+     * @param[in] channelIndex L'indice da cercare.
+     * @return L'istanza del thread che gestisce quel canale.
+     * @throws IllegalArgumentException Se nessun thread nella lista ha l'indice richiesto.
      */
     private ConnectionThread getThread(int channelIndex) {
         synchronized (threads) {
@@ -260,66 +289,73 @@ public abstract class NetworkConnection {
     // CLASSE INNESTATA (INTERNA)
 
     /**
-     * @brief Thread dedicato alla comunicazione su un singolo canale (socket).
+     * @class ConnectionThread
+     * @brief Lavoratore in background dedicato alla ricezione persistente su una singola socket.
+     * @details Il thread apre gli stream (con l'ordine rigoroso OOS -> OIS per evitare stalli), 
+     * e rimane in un ciclo bloccante in ascolto. Alla ricezione, gira il pacchetto alla callback.
      */
     class ConnectionThread extends Thread {
 
         // ATTRIBUTI 
         
         /**
-         * @brief Indice del canale gestito da questo thread.
+         * @brief Indice immutabile assegnato a questo canale.
          */
         final int channelIndex;
 
         /**
-         * @brief Socket del canale.
+         * @brief La connessione TCP sottostante.
          */
         private final Socket socket;
 
         /**
-         * @brief Stream di output verso il canale remoto.
+         * @brief Lo stream adibito all'invio dei dati in formato oggetto.
          */
         private ObjectOutputStream oos;
 
         // COSTRUTTORE
         
         /**
-         * @brief Costruttore.
-         * @param[in] socket       Socket già connessa.
-         * @param[in] channelIndex Indice del canale.
+         * @brief Istanzia il gestore di canale.
+         * @param[in] socket       La socket connessa su cui operare.
+         * @param[in] channelIndex L'identificativo che il server usa per distinguere i client.
          */
         ConnectionThread(Socket socket, int channelIndex) {
-            super("ConnectionChannel-" + channelIndex); // Serve per dare nomi identificativi diversi.
+            super("ConnectionChannel-" + channelIndex);
             this.socket       = socket;
             this.channelIndex = channelIndex;
         }
 
         /**
-         * @brief Invia un oggetto serializzabile su questo canale.
-         * @param[in] data Oggetto da inviare.
-         * @pre
-         * Lo stream è stato inizializzato
+         * @brief Serializza un oggetto e lo inoltra verso il partner remoto.
+         * @details Utilizza oos.flush() per assicurare che non ci siano blocchi nei buffer TCP.
+         * @param[in] data L'oggetto Serializable.
+         * @throws IOException Se lo stream non è pronto o in caso di fallimento di rete.
          */
         void send(Serializable data) throws IOException {
-            if (oos == null) throw new IOException("Stream non ancora inizializzato.");
+            if (oos == null) throw new IOException("Stream di output non ancora inizializzato.");
             oos.writeObject(data);
             oos.flush();  // flush esplicito: evita che messaggi brevi restino nel buffer
         }
 
         /**
-         * @brief Chiude la socket di questo canale, interrompendo il loop di lettura.
+         * @brief Interrompe volontariamente le comunicazioni chiudendo il tubo di rete.
+         * @throws IOException Se ci sono problemi hardware/software in chiusura.
          */
         void closeSocket() throws IOException {
             socket.close();
         }
 
         /**
-         * @brief Corpo del thread di lettura.
+         * @brief Ciclo vitale del thread: apertura stream e loop di ascolto.
+         * @details L'ObjectOutputStream (OOS) DEVE essere aperto prima dell'ObjectInputStream (OIS).
+         * La creazione dell'OIS è un'operazione bloccante in attesa dell'header del partner; se entrambi 
+         * i nodi aprissero prima l'OIS si otterrebbe un deadlock infinito.
          */
         @Override
         public void run() {
             try (
-                // ORDINE OBBLIGATORIO: OOS prima di OIS
+                // Ordine garantito grazie al blocco try-with-resources
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream  ois = new ObjectInputStream(socket.getInputStream())
             ) {
@@ -329,10 +365,10 @@ public abstract class NetworkConnection {
                         + " attivo -> " + socket.getInetAddress().getHostAddress()
                         + ":" + socket.getPort());
 
-                // Loop bloccante: readObject() attende il prossimo messaggio
+                // Loop bloccante di lettura
                 while (!socket.isClosed()) {
                     Serializable msg = (Serializable) ois.readObject();
-                    onReceive.accept(channelIndex, msg);
+                    onReceive.accept(channelIndex, msg); // Dispatch alla logica applicativa
                 }
 
             } catch (IOException ex) {
@@ -342,8 +378,11 @@ public abstract class NetworkConnection {
             } catch (ClassNotFoundException ex) {
                 ex.printStackTrace();
             } finally {
+                // Operazioni di pulizia inevitabili all'uscita dal thread
                 threads.remove(this);
-                if (onDisconnect != null) onDisconnect.accept(channelIndex);
+                if (onDisconnect != null) {
+                    onDisconnect.accept(channelIndex);
+                }
             }
         }
     }

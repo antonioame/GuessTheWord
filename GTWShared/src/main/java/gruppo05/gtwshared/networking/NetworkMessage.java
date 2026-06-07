@@ -3,55 +3,54 @@ package gruppo05.gtwshared.networking;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
+
+import gruppo05.gtwshared.dto.CallbackDTO;
 import gruppo05.gtwshared.utility.Result;
 
 /**
- * @brief Classe base di tutti i messaggi scambiati in rete tra server e client.
+ * @class NetworkMessage
+ * @brief Classe base astratta di tutti i messaggi scambiati in rete tra server e client.
+ * * @details Ogni NetworkMessage trasporta un {@link MessageType} che consente al ricevente di 
+ * capire immediatamente come interpretare il payload. Grazie al metodo astratto {@link #toDTO()},
+ * ogni pacchetto di rete ricevuto sa come "auto-convertirsi" in un oggetto DTO sicuro 
+ * per essere elaborato dall'interfaccia grafica.
  * 
- * <p>Ogni NetworkMessage trasporta un MessageType che consente al ricevente di 
- * capire subito come interpretare il payload senza l'uso di catene di instanceof.</p>
- * 
- * <p><b>FLUSSO DI COMUNICAZIONE CLIENT-SERVER</b></p>
+ * * <p><b>FLUSSO DI COMUNICAZIONE CLIENT-SERVER:</b></p>
  * <ol>
- * <li><b>Autenticazione:</b> Il client invia una {@link NetworkMessage.LoginRequest}. 
- * Il server controlla i dati e risponde con {@link NetworkMessage.LoginResponse}, 
- * specificando anche se l'utente ha privilegi di Amministratore.</li>
+ * <li><b>Autenticazione:</b> Il client invia una {@link LoginRequest}. Il server controlla 
+ * i dati nel DB e risponde con {@link LoginResponse}, specificando anche se l'utente 
+ * ha privilegi di amministratore.</li>
+ * <li><b>Registrazione:</b> Se l'utente non ha un account, invia una {@link RegisterRequest}. 
+ * Il server inserisce i dati e risponde con {@link RegisterResponse}.</li>
  * 
- * <li><b>Registrazione:</b> Se l'utente non è registrato, il client invia una 
- * {@link NetworkMessage.RegisterRequest}. Il server registra l'utente e risponde 
- * con {@link NetworkMessage.RegisterResponse}.</li>
- * 
- * <li><b>Richiesta e Attesa Partita:</b> Dopo il login, il client invia 
- * {@link NetworkMessage.PlayRequest} per cercare un avversario. Il server risponde con 
- * {@link NetworkMessage.PlayResponse}, che indica l'avvio imminente (MATCH_FOUND) 
- * o la necessità di attendere (WAITING).</li>
- * 
- * <li><b>Inizio Partita:</b> Quando due giocatori sono disponibili, il server invia 
- * {@link NetworkMessage.GameStart} contenente il testo cifrato, il timer e l'identificativo dell'avversario.</li>
+ * <li><b>Richiesta Partita:</b> L'utente loggato invia una {@link PlayRequest} per cercare 
+ * un avversario. Il server risponde con {@link PlayResponse}, indicando se la partita 
+ * inizia subito (MATCH_FOUND) o se deve aspettare (WAITING).</li>
+ * <li><b>Inizio Partita:</b> Appena ci sono due giocatori, il server invia a entrambi 
+ * un messaggio {@link GameStart} contenente la sfida cifrata, il timer e i dati dell'avversario.</li>
  * <li><b>Fase di Gioco:</b> 
  * <ul>
- * <li>Il client invia la propria risposta al server tramite {@link NetworkMessage.AnswerSubmission}.</li>
- * <li>Se l'avversario risponde per primo, il server notifica l'altro client con {@link NetworkMessage.OpponentAnswered}.</li>
+ * <li>Il giocatore elabora la risposta e la invia con {@link AnswerSubmission}.</li>
+ * <li>Se un giocatore risponde, il server avvisa l'altro in tempo reale tramite {@link OpponentAnswered}.</li>
  * </ul>
  * </li>
- * <li><b>Fine Partita:</b> Il server calcola i risultati e invia {@link NetworkMessage.GameResult} 
- * (vincitore, parola corretta, statistiche) a entrambi i giocatori.</li>
- * <li><b>Storico (Opzionale):</b> In qualsiasi momento fuori dalla partita, il client può richiedere 
- * i propri dati passati inviando {@link NetworkMessage.HistorianRequest}, a cui il server 
- * risponde con {@link NetworkMessage.HistorianResponse}.</li>
+ * <li><b>Fine Partita:</b> Il server elabora i tempi e decreta un vincitore, comunicandolo 
+ * ai due client tramite il messaggio {@link GameResult}.</li>
+ * 
+ * <li><b>Storico:</b> Dalla lobby, il client può richiedere lo storico delle proprie partite 
+ * con {@link HistoryRequest}. Il server interroga il DB e risponde con {@link HistoryResponse}.</li>
  * 
  * <li><b>Disconnessione:</b> 
  * <ul>
- * <li>Se un giocatore si disconnette volontariamente, invia {@link NetworkMessage.ClientDisconnect}.</li>
- * <li>Se un giocatore si disconnette bruscamente o volontariamente durante/prima di una partita, 
- * il server avvisa l'altro giocatore con {@link NetworkMessage.OpponentDisconnected}.</li>
+ * <li>Se un client esce dal gioco regolarmente, invia {@link ClientDisconnect}.</li>
+ * <li>Se un client cade o si disconnette durante un'attesa o una partita, il server avvisa 
+ * l'avversario superstite inviando {@link OpponentDisconnected}.</li>
  * </ul>
  * </li>
  * </ol>
  * 
- * * @author chiara
- * * @version 2.0
+ * @author chiara
+ * @version 2.2
  */
 public abstract class NetworkMessage implements Serializable {
 
@@ -71,62 +70,73 @@ public abstract class NetworkMessage implements Serializable {
     private final LocalDateTime timestamp;
 
     /**
-     * @brief Costruttore base.
-     * @param[in] type Tipo del messaggio.
+     * @brief Costruttore base invocato dalle sottoclassi.
+     * @param type Il tipo specifico del messaggio di rete.
      */
     protected NetworkMessage(MessageType type) {
-        this.type      = type;
+        this.type = type;
         this.timestamp = LocalDateTime.now();
     }
 
     /**
-     * @brief Metodo Getter per recuperare il tipo di messaggio.
-     * @return Il tipo del messaggio.
+     * @brief Restituisce il tipo di messaggio.
+     * @return L'enumeratore MessageType.
      */
     public MessageType getType() { 
         return type; 
     }
 
     /**
-     * @brief Metodo Getter per recuperare il timestamp di creazione.
-     * @return Il timestamp di creazione.
+     * @brief Restituisce il momento esatto in cui il messaggio è stato creato.
+     * @return Un oggetto LocalDateTime.
      */
     public LocalDateTime getTimestamp() { 
         return timestamp; 
     }
 
     /**
-     * @brief Genera una rappresentazione testuale del messaggio.
-     * @return Una stringa che descrive il messaggio.
+     * @brief Converte il pacchetto di rete nel DTO corrispondente per la UI.
+     * @details Metodo astratto che deve essere implementato da tutti i payload specifici.
+     * @return Una nuova istanza di CallbackDTO popolata con i dati del messaggio.
+     */
+    public abstract CallbackDTO toDTO();
+
+    /**
+     * @brief Genera una rappresentazione testuale del messaggio per finalità di log o debug.
+     * @return Una stringa contenente nome classe, tipo e timestamp.
      */
     @Override
     public String toString() {
         return getClass().getSimpleName() + "[" + type + " @ " + timestamp + "]";
     }
 
-    // 1. AUTENTICAZIONE
+    // 1. AUTENTICAZIONE E REGISTRAZIONE
 
     /**
-     * @brief Client -> Server: richiesta di login.
+     * @class LoginRequest
+     * @brief Messaggio Client -> Server: richiesta di accesso.
      */
     public static class LoginRequest extends NetworkMessage {
+        
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 2L;
+        
         /**
          * @brief Username.
          */
         private final String username;
+        
         /**
          * @brief Password in chiaro.
          */
         private final String password;
 
         /**
-         * @brief Costruttore.
-         * @param[in] username Username inserito dall'utente.
-         * @param[in] password Password in chiaro.
+         * @brief Costruisce una richiesta di login.
+         * @param username L'username digitato dall'utente.
+         * @param password La password digitata dall'utente.
          */
         public LoginRequest(String username, String password) {
             super(MessageType.LOGIN_REQUEST);
@@ -134,26 +144,27 @@ public abstract class NetworkMessage implements Serializable {
             this.password = password;
         }
 
-        // Metodi Getter
-        /**
-         * @brief Getter dello username.
-         * @return Username dell'utente.
-         */
+        /** @return L'username inserito. */
         public String getUsername() { 
             return username; 
         }
-        
-        /**
-         * @brief Getter della password.
-         * @return Password dell'utente.
-         */
+
+        /** @return La password inserita. */
         public String getPassword() { 
             return password; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .credentials(username, password)
+                    .build();
         }
     }
 
     /**
-     * @brief Server -> Client: risposta al tentativo di login.
+     * @class LoginResponse
+     * @brief Messaggio Server -> Client: esito del tentativo di accesso.
      */
     public static class LoginResponse extends NetworkMessage {
         /**
@@ -176,83 +187,85 @@ public abstract class NetworkMessage implements Serializable {
         private final boolean isAdmin;
 
         /**
-         * @brief Costruttore.
-         * @param[in] success      true se le credenziali sono valide.
-         * @param[in] errorMessage Messaggio d'errore (usato solo se success == false).
-         * @param[in] isAdmin      true se l'utente ha ruolo amministratore.
+         * @brief Costruisce la risposta del server al login.
+         * @param success true se le credenziali sono valide, false altrimenti.
+         * @param errorMessage Eventuale messaggio di errore da mostrare (null se success).
+         * @param isAdmin true se l'utente autenticato è un amministratore.
          */
         public LoginResponse(boolean success, String errorMessage, boolean isAdmin) {
             super(MessageType.LOGIN_RESPONSE);
-            this.success      = success;
+            this.success = success;
             this.errorMessage = errorMessage;
-            this.isAdmin      = isAdmin;
+            this.isAdmin = isAdmin;
         }
 
         /**
-         * @brief Metodo statico per risposta di successo.
-         * @param[in] isAdmin Indica se è amministratore.
-         * @return Un nuovo oggetto LoginResponse di successo.
+         * @brief Costruttore statico agevolato per generare una risposta di successo.
+         * @param isAdmin Specifica se l'utente ha i permessi admin.
+         * @return L'istanza configurata di LoginResponse.
          */
         public static LoginResponse loginSuccess(boolean isAdmin) {
             return new LoginResponse(true, null, isAdmin);
         }
 
         /**
-         * @brief Metodo statico per risposta di fallimento.
-         * @param[in] reason Causa del fallimento.
-         * @return Un nuovo oggetto LoginResponse di fallimento.
+         * @brief Costruttore statico agevolato per generare una risposta di fallimento.
+         * @param reason La stringa descrittiva del motivo del rifiuto.
+         * @return L'istanza configurata di LoginResponse.
          */
         public static LoginResponse loginFailed(String reason) {
             return new LoginResponse(false, reason, false);
         }
 
-        // Metodi Getter
-        /**
-         * @brief Restituisce l'esito.
-         * @return true se successo, false altrimenti.
-         */
-        public boolean isSuccess(){ 
+        /** @return L'esito del login. */
+        public boolean isSuccess() { 
             return success; 
         }
-        
-        /**
-         * @brief Restituisce il messaggio d'errore.
-         * @return Il messaggio d'errore.
-         */
-        public String getErrorMessage(){ 
+
+        /** @return La stringa di errore (se presente). */
+        public String getErrorMessage() { 
             return errorMessage; 
         }
-        
-        /**
-         * @brief Restituisce lo stato admin.
-         * @return true se amministratore.
-         */
-        public boolean isAdmin(){ 
+
+        /** @return Lo stato dei privilegi amministrativi. */
+        public boolean isAdmin() { 
             return isAdmin; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .success(success)
+                    .message(errorMessage)
+                    .isAdmin(isAdmin)
+                    .build();
         }
     }
 
     /**
-     * @brief Client -> Server: richiesta di registrazione di un nuovo user.
+     * @class RegisterRequest
+     * @brief Messaggio Client -> Server: richiesta di registrazione nuovo account.
      */
     public static class RegisterRequest extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 4L;
+        
         /**
          * @brief Username per la registrazione.
          */
         private final String username;
+        
         /**
          * @brief Password per la registrazione.
          */
         private final String password;
         
         /**
-         * @brief Costruttore.
-         * @param[in] username Username inserito dall'utente.
-         * @param[in] password Password in chiaro.
+         * @brief Costruisce la richiesta di registrazione.
+         * @param username L'username scelto.
+         * @param password La password scelta.
          */
         public RegisterRequest(String username, String password) {
             super(MessageType.REGISTER_REQUEST);
@@ -260,92 +273,97 @@ public abstract class NetworkMessage implements Serializable {
             this.password = password;
         }
 
-        // Metodi Getter
-        /**
-         * @brief Restituisce lo username.
-         * @return Lo username.
-         */
+        /** @return L'username scelto. */
         public String getUsername() { 
             return username; 
         }
-        
-        /**
-         * @brief Restituisce la password.
-         * @return La password.
-         */
+
+        /** @return La password scelta. */
         public String getPassword() { 
             return password; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .credentials(username, password)
+                    .build();
         }
     }
 
     
     /**
-     * @brief Server -> Client: risposta alla registrazione.
+     * @class RegisterResponse
+     * @brief Messaggio Server -> Client: esito del tentativo di registrazione.
      */
     public static class RegisterResponse extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 5L;
+        
         /**
          * @brief Esito della registrazione.
          */
         private final boolean success;
+        
         /**
          * @brief Messaggio d'errore eventuale.
          */
         private final String  errorMessage;
 
         /**
-         * @brief Costruttore.
-         * @param[in] success      true se le credenziali sono valide.
-         * @param[in] errorMessage Messaggio d'errore (usato solo se success == false).
+         * @brief Costruisce la risposta del server alla registrazione.
+         * @param success true se l'account è stato creato, false altrimenti.
+         * @param errorMessage Causa del fallimento (es. "Username già in uso").
          */
         public RegisterResponse(boolean success, String errorMessage) {
             super(MessageType.REGISTER_RESPONSE);
-            this.success      = success;
+            this.success = success;
             this.errorMessage = errorMessage;
         }
 
         /**
-         * @brief Metodo statico per risposta di successo.
-         * @return Un oggetto RegisterResponse di successo.
+         * @brief Costruttore statico per registrazione riuscita.
+         * @return Un'istanza configurata di RegisterResponse.
          */
         public static RegisterResponse registerSuccess() {
             return new RegisterResponse(true, null);
         }
 
         /**
-         * @brief Metodo statico per risposta di fallimento.
-         * @param[in] reason Motivo del fallimento.
-         * @return Un oggetto RegisterResponse di fallimento.
+         * @brief Costruttore statico per registrazione fallita.
+         * @param reason Descrizione dell'errore.
+         * @return Un'istanza configurata di RegisterResponse.
          */
         public static RegisterResponse registerFailed(String reason) {
             return new RegisterResponse(false, reason);
         }
 
-        // Metodi Getter
-        /**
-         * @brief Restituisce l'esito.
-         * @return true se successo.
-         */
-        public boolean isSuccess() {
+        /** @return L'esito dell'operazione. */
+        public boolean isSuccess() { 
             return success; 
         }
-        
-        /**
-         * @brief Restituisce il messaggio d'errore.
-         * @return Il messaggio.
-         */
+
+        /** @return Il messaggio di errore, se presente. */
         public String getErrorMessage() { 
             return errorMessage; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .success(success)
+                    .message(errorMessage)
+                    .build();
         }
     }
 
     // 2. RICERCA PARTITA E ATTESA
 
     /**
-     * @brief Client -> Server: l'utente loggato richiede di avviare una partita.
+     * @class PlayRequest
+     * @brief Messaggio Client -> Server: l'utente segnala la volontà di avviare una partita.
      */
     public static class PlayRequest extends NetworkMessage {
         /**
@@ -353,64 +371,59 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 6L;
 
-        /**
-         * @brief Costruttore senza parametri.
-         */
+        /** @brief Costruisce il messaggio senza payload (basta il tipo). */
         public PlayRequest() {
             super(MessageType.PLAY_REQUEST);
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType()).build();
         }
     }
 
     /**
-     * @brief Server -> Client: esito della richiesta di gioco.
+     * @class PlayResponse
+     * @brief Messaggio Server -> Client: esito della ricerca avversario.
      */
     public static class PlayResponse extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 7L;
-
+        
         /**
          * @brief Stati possibili della risposta.
          */
-        public enum Status { 
-            /**
-             * @brief Partita trovata, l'avversario è pronto.
-             */
-            MATCH_FOUND, 
-            /**
-             * @brief In attesa che un altro giocatore faccia richiesta.
-             */
-            WAITING 
-        }
+        private final CallbackDTO.Status status;
 
         /**
-         * @brief Stato della richiesta elaborata dal server.
+         * @brief Costruisce il messaggio di risposta dello stato di gioco.
+         * @param status Il valore enumerato Status del DTO (MATCH_FOUND o WAITING).
          */
-        private final Status status;
-
-        /**
-         * @brief Costruttore.
-         * @param[in] status Lo stato della richiesta (MATCH_FOUND o WAITING).
-         */
-        public PlayResponse(Status status) {
+        public PlayResponse(CallbackDTO.Status status) {
             super(MessageType.PLAY_RESPONSE);
             this.status = status;
         }
 
-        /**
-         * @brief Restituisce lo stato della richiesta.
-         * @return Lo stato elaborato dal server.
-         */
-        public Status getStatus() {
+        /** @return Lo stato elaborato dal server. */
+        public CallbackDTO.Status getStatus() {
             return status;
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .playStatus(status)
+                    .build();
         }
     }
 
-    // 3. PARTITA
+    // 3. FASE DI PARTITA
 
     /**
-     * @brief Server -> Client: la sfida ha inizio.
+     * @class GameStart
+     * @brief Messaggio Server -> Client: notifica dell'inizio effettivo della sfida.
      */
     public static class GameStart extends NetworkMessage {
         /**
@@ -444,67 +457,58 @@ public abstract class NetworkMessage implements Serializable {
         private final int challengeCode;
 
         /**
-         * @brief Costruttore.
-         * @param[in] cipheredText     Testo con parola/e cifrate col cifrario di Cesare.
-         * @param[in] timer            Secondi a disposizione.
-         * @param[in] playerIndex      Indice del giocatore destinatario (0 o 1).
-         * @param[in] opponentUsername Username dell'altro giocatore.
-         * @param[in] challengeCode    Codice della partita.
+         * @brief Costruisce il pacchetto di avvio partita contenente tutti i dati necessari.
+         * @param cipheredText     Il testo da decifrare fornito al client.
+         * @param timer            Secondi concessi per trovare la soluzione.
+         * @param playerIndex      Indice identificativo del giocatore corrente (es. 0 o 1).
+         * @param opponentUsername L'username dello sfidante.
+         * @param challengeCode    L'ID della sfida.
          */
         public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername, int challengeCode) {
             super(MessageType.GAME_START);
-            this.cipheredText     = cipheredText;
-            this.timer            = timer;
-            this.playerIndex      = playerIndex;
+            this.cipheredText = cipheredText;
+            this.timer = timer;
+            this.playerIndex = playerIndex;
             this.opponentUsername = opponentUsername;
-            this.challengeCode    = challengeCode;
+            this.challengeCode = challengeCode;
         }
 
-        // Metodi Getter
-        /**
-         * @brief Restituisce il testo cifrato.
-         * @return Il testo cifrato.
-         */
+        /** @return Il testo cifrato. */
         public String getCipheredText() { 
             return cipheredText; 
         }
-        
-        /**
-         * @brief Restituisce il timer.
-         * @return I secondi del timer.
-         */
+
+        /** @return I secondi previsti dal timer. */
         public int getTimer() { 
             return timer; 
         }
-        
-        /**
-         * @brief Restituisce l'indice.
-         * @return L'indice del giocatore.
-         */
+
+        /** @return L'indice identificativo del giocatore corrente. */
         public int getPlayerIndex() { 
             return playerIndex; 
         }
-        
-        /**
-         * @brief Restituisce lo username avversario.
-         * @return Lo username.
-         */
+
+        /** @return L'username dell'avversario. */
         public String getOpponentUsername() { 
             return opponentUsername; 
         }
-        
-        /**
-         * @brief Restituisce il codice partita.
-         * @return Il codice.
-         */
-        public int getChallengeCode(){
-            return challengeCode;
+
+        /** @return Il codice della partita in corso. */
+        public int getChallengeCode() { 
+            return challengeCode; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .gameStartData(cipheredText, timer, playerIndex, opponentUsername, challengeCode)
+                    .build();
         }
     }
 
-    
     /**
-     * @brief Client -> Server: l'utente invia la propria risposta.
+     * @class AnswerSubmission
+     * @brief Messaggio Client -> Server: inoltro della soluzione elaborata dall'utente.
      */
     public static class AnswerSubmission extends NetworkMessage {
         /**
@@ -516,43 +520,44 @@ public abstract class NetworkMessage implements Serializable {
          * @brief Parola proposta dall'utente come soluzione.
          */
         private final String proposedWord;
+        
+        /**
+         * @brief Il tempo di risposta in ms.
+         */
+        private final int responseTime;
 
         /**
-         * @brief Tempo impiegato a rispondere in millisecondi.
+         * @brief Costruisce la risposta inviata dal client.
+         * @param proposedWord La stringa immessa dall'utente.
+         * @param responseTime Il tempo misurato dal client.
          */
-        private final long responseTime;
-
-        /**
-         * @brief Costruttore.
-         * @param[in] proposedWord Parola proposta.
-         * @param[in] responseTime Tempo impiegato per rispondere in millisecondi.
-         */
-        public AnswerSubmission(String proposedWord, long responseTime) {
+        public AnswerSubmission(String proposedWord, int responseTime) {
             super(MessageType.ANSWER_SUBMISSION);
-            this.proposedWord   = proposedWord;
+            this.proposedWord = proposedWord;
             this.responseTime = responseTime;
         }
 
-        // Metodi Getter
-        /**
-         * @brief Restituisce la parola proposta.
-         * @return La parola.
-         */
-        public String getProposedWord() {
+        /** @return La parola inviata. */
+        public String getProposedWord() { 
             return proposedWord; 
         }
-        
-        /**
-         * @brief Restituisce il tempo impiegato.
-         * @return Il tempo in ms.
-         */
-        public long getResponseTime() { 
+
+        /** @return Il tempo registrato. */
+        public int getResponseTime() { 
             return responseTime; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .answerData(proposedWord, responseTime)
+                    .build();
         }
     }
 
     /**
-     * @brief Server -> Client: esito della partita.
+     * @class GameResult
+     * @brief Messaggio Server -> Client: resoconto dei risultati al termine della partita.
      */
     public static class GameResult extends NetworkMessage {
         /**
@@ -574,83 +579,78 @@ public abstract class NetworkMessage implements Serializable {
          * @brief Username del vincitore.
          */
         private final String winnerUsername;
-
+        
         /**
          * @brief Tempo di risposta del vincitore in ms.
          */
-        private final long winnerResponseTime;
+        private final int winnerResponseTime;
 
         /**
-         * @brief Costruttore.
-         * @param[in] result             Esito.
-         * @param[in] correctWord        Parola corretta.
-         * @param[in] winnerUsername     Username del vincitore.
-         * @param[in] winnerResponseTime Tempo di risposta del vincitore in ms.
+         * @brief Costruisce il bollettino di fine partita.
+         * @param result             Il risultato (WIN, LOSE, DRAW) dal punto di vista del destinatario.
+         * @param correctWord        La vera parola in chiaro come riferimento.
+         * @param winnerUsername     Lo username di chi ha vinto.
+         * @param winnerResponseTime Il tempo del vincitore in ms.
          */
-        public GameResult(Result result, String correctWord,String winnerUsername, long winnerResponseTime){
+        public GameResult(Result result, String correctWord, String winnerUsername, int winnerResponseTime) {
             super(MessageType.GAME_RESULT);
-            this.result               = result;
-            this.correctWord          = correctWord;
-            this.winnerUsername       = winnerUsername;
-            this.winnerResponseTime   = winnerResponseTime;
+            this.result = result;
+            this.correctWord = correctWord;
+            this.winnerUsername = winnerUsername;
+            this.winnerResponseTime = winnerResponseTime;
         }
 
-        // Metodi Getter.
-        /**
-         * @brief Restituisce l'esito.
-         * @return Il risultato.
-         */
+        /** @return L'esito della partita. */
         public Result getResult() { 
             return result; 
         }
-        
-        /**
-         * @brief Restituisce la parola corretta.
-         * @return La parola.
-         */
+
+        /** @return La parola corretta originaria. */
         public String getCorrectWord() { 
             return correctWord; 
         }
-        
-        /**
-         * @brief Restituisce lo username del vincitore.
-         * @return Lo username.
-         */
+
+        /** @return Lo username del vincitore (null in caso di parità). */
         public String getWinnerUsername() { 
             return winnerUsername; 
         }
-        
-        /**
-         * @brief Restituisce il tempo del vincitore.
-         * @return Il tempo in ms.
-         */
-        public long getWinnerResponseTime() { 
+
+        /** @return Il tempo di chiusura del vincitore in ms. */
+        public int getWinnerResponseTime() { 
             return winnerResponseTime; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .gameResultData(result, correctWord, winnerUsername, winnerResponseTime)
+                    .build();
         }
     }
 
-    
     /**
-     * @brief Server -> Client: notifica che l'avversario ha inviato una risposta.
+     * @class OpponentAnswered
+     * @brief Messaggio Server -> Client: avvisa che l'avversario ha sottomesso una risposta.
      */
     public static class OpponentAnswered extends NetworkMessage {
-        /**
-         * @brief Versione di serializzazione.
-         */
         private static final long serialVersionUID = 11L;
 
-        /**
-         * @brief Costruttore senza parametri.
-         */
+        /** @brief Costruttore vuoto. */
         public OpponentAnswered() {
             super(MessageType.OPPONENT_ANSWERED);
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType()).build();
         }
     }
 
     // 4. GESTIONE DELLA CONNESSIONE
     
     /**
-     * @brief Server -> Client: l'avversario si è disconnesso.
+     * @class OpponentDisconnected
+     * @brief Messaggio Server -> Client: avviso di chiusura inaspettata dell'avversario.
      */
     public static class OpponentDisconnected extends NetworkMessage {
         /**
@@ -658,17 +658,20 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 12L;
 
-        /**
-         * @brief Costruttore senza parametri.
-         */
+        /** @brief Costruttore vuoto. */
         public OpponentDisconnected() {
             super(MessageType.OPPONENT_DISCONNECTED);
         }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType()).build();
+        }
     }
 
-    
     /**
-     * @brief Client -> Server: il client si sta disconnettendo volontariamente.
+     * @class ClientDisconnect
+     * @brief Messaggio Client -> Server: avviso di disconnessione pulita e volontaria.
      */
     public static class ClientDisconnect extends NetworkMessage {
         /**
@@ -676,54 +679,55 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 13L;
 
-        /**
-         * @brief Costruttore senza parametri.
-         */
+        /** @brief Costruttore vuoto. */
         public ClientDisconnect() {
             super(MessageType.CLIENT_DISCONNECT);
         }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType()).build();
+        }
     }
 
-    // 5. STORICO
+    // 5. STORICO (HISTORY)
     
     /**
-     * @brief Client -> Server: richiesta dello storico partite.
+     * @class HistoryRequest
+     * @brief Messaggio Client -> Server: richiede al server di reperire lo storico dal database.
      */
-    public static class HistorianRequest extends NetworkMessage {
+    public static class HistoryRequest extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 14L;
 
-        /**
-         * @brief Costruttore senza parametri.
-         */
-        public HistorianRequest() {
-            super(MessageType.HISTORIAN_REQUEST);
+        /** @brief Costruttore vuoto. */
+        public HistoryRequest() {
+            super(MessageType.HISTORY_REQUEST);
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType()).build();
         }
     }
 
     /**
-     * @brief Server -> Client: risposta con lo storico partite.
+     * @class HistoryResponse
+     * @brief Messaggio Server -> Client: recapita le statistiche utente e i vecchi match.
      */
-    public static class HistorianResponse extends NetworkMessage {
+    public static class HistoryResponse extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 15L;
-
+        
         /**
-         * @brief Lista di record partita.
-         * <p>Ogni mappa contiene coppie chiave-valore come:</p>
-         * <ul>
-         * <li>{@code "opponent"}     – username avversario</li>
-         * <li>{@code "result"}       – WIN / LOSE / DRAW / TIMEOUT</li>
-         * <li>{@code "date"}         – data e ora della partita</li>
-         * <li>{@code "responseTime"} – tempo di risposta in ms</li>
-         * </ul>
+         * @brief Lista recod delle partite.
          */
-        private final List<Map<String, String>> matchHistory;
-
+        private final List<CallbackDTO.MatchRecord> matchHistory;
+        
         /**
          * @brief Numero totale di vittorie dell'utente.
          */
@@ -745,70 +749,62 @@ public abstract class NetworkMessage implements Serializable {
         private final int totalPlayedTime;
 
         /**
-         * @brief Costruttore.
-         * @param[in] matchHistory       Lista di record partita.
-         * @param[in] totalMatchesWon    Totale partite vinte.
-         * @param[in] totalMatchesPlayed Totale partite.
-         * @param[in] avgResponseTime    Tempo medio di risposta.
-         * @param[in] totalPlayedTime    Tempo totale giocato.
+         * @brief Costruisce il pacchetto di dati storici aggregati.
+         * @param matchHistory       La lista di DTO MatchRecord contenenti i dettagli delle singole partite.
+         * @param totalMatchesWon    Contatore totale delle vittorie.
+         * @param totalMatchesPlayed Contatore totale delle partecipazioni.
+         * @param avgResponseTime    Media generale del tempo di risposta per quell'utente.
+         * @param totalPlayedTime    Secondi complessivi di gameplay accumulati.
          */
-        public HistorianResponse(List<Map<String, String>> matchHistory, 
-                                 int totalMatchesWon, int totalMatchesPlayed, 
-                                 double avgResponseTime, int totalPlayedTime) {
-            super(MessageType.HISTORIAN_RESPONSE);
-            this.matchHistory       = matchHistory;
-            this.totalMatchesWon    = totalMatchesWon;
+        public HistoryResponse(List<CallbackDTO.MatchRecord> matchHistory, 
+                               int totalMatchesWon, int totalMatchesPlayed, 
+                               double avgResponseTime, int totalPlayedTime) {
+            super(MessageType.HISTORY_RESPONSE);
+            this.matchHistory = matchHistory;
+            this.totalMatchesWon = totalMatchesWon;
             this.totalMatchesPlayed = totalMatchesPlayed;
-            this.avgResponseTime    = avgResponseTime;
-            this.totalPlayedTime    = totalPlayedTime;
+            this.avgResponseTime = avgResponseTime;
+            this.totalPlayedTime = totalPlayedTime;
         }
 
-        // Metodi getter.
-        /**
-         * @brief Restituisce lo storico partite.
-         * @return La lista dei record partita.
-         */
-        public List<Map<String, String>> getMatchHistory() { 
+        /** @return La lista tipizzata delle partite. */
+        public List<CallbackDTO.MatchRecord> getMatchHistory() { 
             return matchHistory; 
         }
-        
-        /**
-         * @brief Restituisce le partite vinte.
-         * @return Il numero di partite vinte.
-         */
+
+        /** @return Totale vittorie in carriera. */
         public int getTotalMatchesWon() { 
             return totalMatchesWon; 
         }
-        
-        /**
-         * @brief Restituisce le partite giocate.
-         * @return Il numero di partite giocate.
-         */
+
+        /** @return Totale partite disputate in carriera. */
         public int getTotalMatchesPlayed() { 
             return totalMatchesPlayed; 
         }
-        
-        /**
-         * @brief Restituisce il tempo medio.
-         * @return Il tempo medio di risposta in ms.
-         */
+
+        /** @return Media tempo di risposta. */
         public double getAvgResponseTime() { 
             return avgResponseTime; 
         }
-        
-        /**
-         * @brief Restituisce il tempo giocato.
-         * @return Il tempo giocato totale in secondi.
-         */
-        public int getTotalPlayedTime() {
-            return totalPlayedTime;
+
+        /** @return Tempo cumulativo in app (secondi). */
+        public int getTotalPlayedTime() { 
+            return totalPlayedTime; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .historyData(matchHistory, totalMatchesWon, totalMatchesPlayed, avgResponseTime, totalPlayedTime)
+                    .build();
         }
     }
 
     // 6. UTILITY
 
     /**
-     * @brief Messaggio di testo generico.
+     * @class TextMessage
+     * @brief Messaggio Server/Client: invio di stringhe di testo generiche (Notifiche/Debug).
      */
     public static class TextMessage extends NetworkMessage {
         /**
@@ -821,20 +817,24 @@ public abstract class NetworkMessage implements Serializable {
         private final String text;
 
         /**
-         * @brief Costruttore.
-         * @param[in] text Il testo del messaggio da trasportare.
+         * @brief Costruisce un pacchetto di testo.
+         * @param text Il corpo del messaggio.
          */
         public TextMessage(String text) {
             super(MessageType.TEXT_MESSAGE);
             this.text = text;
         }
 
-        /**
-         * @brief Restituisce il testo.
-         * @return Il testo in formato stringa.
-         */
+        /** @return La stringa testuale contenuta nel pacchetto. */
         public String getText() { 
             return text; 
+        }
+
+        @Override
+        public CallbackDTO toDTO() {
+            return new CallbackDTO.Builder(getType())
+                    .message(text)
+                    .build();
         }
     }
 }

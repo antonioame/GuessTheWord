@@ -9,40 +9,51 @@ import java.util.function.Consumer;
 import gruppo05.gtwshared.networking.NetworkConnection;
 
 /**
+ * @class ServerConnection
  * @brief Implementazione lato server della connessione di rete.
- * Estende NetworkConnection specificando che il server accetta
- * esattamente MAX_CLIENTS connessioni in ingresso tramite un
- * ServerSocket condiviso.
+ * @details Estende {@link NetworkConnection} specificando che il server accetta
+ * esattamente {@link #MAX_CLIENTS} connessioni in ingresso tramite un
+ * {@link ServerSocket} condiviso. Gestisce il ciclo di vita delle connessioni
+ * in attesa dei due giocatori necessari per avviare una partita.
+ * 
+ * @author chiara
+ * @version 2.0
  */
 public class ServerConnection extends NetworkConnection {
 
     // COSTANTI
 
     /**
-     * @brief Numero di client attesi prima di avviare la partita.
+     * @brief Numero di client attesi prima di poter avviare la partita.
+     * @details Il server accetterà ed elaborerà connessioni fino al raggiungimento di questo tetto.
      */
     public static final int MAX_CLIENTS = 2;
 
     // ATTRIBUTI
 
     /**
-     * @brief Socket principale del server in ascolto sulla porta configurata.
+     * @brief Socket principale del server, in ascolto sulla porta configurata.
+     * @details Ha il compito di accettare le richieste TCP in ingresso e generare i socket individuali.
      */
     private final ServerSocket serverSocket;
 
     /**
-     * @brief Callback invocata nel momento in cui un client si connette.
+     * @brief Callback invocata nel momento esatto in cui un client stabilisce la connessione.
+     * @details Utile per notificare la UI o i controller di gioco.
      */
     private final Consumer<Integer> onClientConnected;
 
     // COSTRUTTORE
 
     /**
-     * @brief Costruttore del server in ascolto sulla porta specificata.
-     * @param[in] port                 Porta di ascolto.
-     * @param[in] onReceive            Callback invocata ad ogni messaggio ricevuto.
-     * @param[in] onClientConnected    Callback invocata quando un client completa la connessione.
-     * @param[in] onClientDisconnected Callback invocata quando un client si disconnette.
+     * @brief Costruttore del server: apre la porta e prepara le funzioni di callback.
+     * @details Inizializza il {@link ServerSocket} mettendolo in ascolto, ma non avvia 
+     * immediatamente i thread di accettazione (questo avverrà chiamando il metodo connect() ereditato).
+     * @param[in] port                 La porta TCP di ascolto.
+     * @param[in] onReceive            Callback invocata ad ogni messaggio ricevuto (inoltrata al padre).
+     * @param[in] onClientConnected    Callback invocata non appena un client completa l'handshake di connessione.
+     * @param[in] onClientDisconnected Callback invocata quando un client si disconnette o cade (inoltrata al padre).
+     * @throws IOException Se la porta specificata è già occupata o si verifica un errore di binding.
      */
     public ServerConnection(int port,
                             BiConsumer<Integer, Serializable> onReceive,
@@ -57,8 +68,11 @@ public class ServerConnection extends NetworkConnection {
     // IMPLEMENTAZIONE DEI METODI ASTRATTI DELLA SUPERCLASSE
 
     /**
-     * @brief Accetta una connessione in ingresso dal ServerSocket.
-     * @return La Socket del client appena connesso.
+     * @brief Accetta fisicamente una connessione in ingresso dal ServerSocket.
+     * @details Operazione bloccante: il thread di background resterà in attesa su questo 
+     * metodo finché un nuovo client non cercherà di connettersi.
+     * @return La {@link Socket} dedicata per comunicare con il client appena connesso.
+     * @throws IOException Se avviene un problema durante l'operazione di accept() (es. socket chiuso).
      */
     @Override
     protected Socket createSocket() throws IOException {
@@ -66,8 +80,8 @@ public class ServerConnection extends NetworkConnection {
     }
 
     /**
-     * @brief Restituisce il numero di canali attesi dal server.
-     * @return Il valore di MAX_CLIENTS (2).
+     * @brief Restituisce il numero di canali di comunicazione attesi dal server.
+     * @return Il valore definito nella costante {@link #MAX_CLIENTS} (2).
      */
     @Override
     protected int expectedChannels() {
@@ -75,9 +89,10 @@ public class ServerConnection extends NetworkConnection {
     }
 
     /**
-     * @brief Metodo invocato subito dopo che un client si è connesso.
+     * @brief Metodo eseguito subito dopo l'instaurazione fisica della connessione con un client.
+     * @details Registra a terminale l'IP del nuovo client connesso ed esegue la callback specifica.
      * @param[in] socket       La socket del client appena connesso.
-     * @param[in] channelIndex L'indice del canale (0 o 1).
+     * @param[in] channelIndex L'indice identificativo univoco assegnato al canale (0 o 1).
      */
     @Override
     protected void onChannelReady(Socket socket, int channelIndex) {
@@ -91,7 +106,10 @@ public class ServerConnection extends NetworkConnection {
     // METODI DI SUPPORTO
 
     /**
-     * @brief Ferma il server chiudendo tutti i canali attivi e il ServerSocket.
+     * @brief Ferma brutalmente e in modo sicuro l'intero server.
+     * @details Sconnette preventivamente tutti i client tramite la chiusura forzata dei 
+     * loro canali e successivamente abbatte il {@link ServerSocket} smettendo di accettare 
+     * nuove richieste. Le eventuali eccezioni I/O di chiusura vengono ignorate silenziosamente.
      */
     public void stopServer() {
         disconnectAll();
@@ -102,8 +120,10 @@ public class ServerConnection extends NetworkConnection {
     }
 
     /**
-     * @brief Indica se entrambi i client sono connessi e la partita può iniziare.
-     * @return true se i due canali sono attivi, false altrimenti.
+     * @brief Verifica rapida e semanticamente chiara dello stato della lobby.
+     * @details Funge da wrapper di dominio per il metodo astratto {@code areAllChannelsReady()} ereditato,
+     * rendendo il codice più leggibile.
+     * @return true se esattamente i due canali previsti sono attivi, false altrimenti.
      */
     public boolean areBothClientsConnected() {
         return areAllChannelsReady();

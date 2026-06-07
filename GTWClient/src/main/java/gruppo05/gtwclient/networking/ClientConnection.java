@@ -8,44 +8,31 @@ import java.util.function.Consumer;
 import gruppo05.gtwshared.networking.NetworkConnection;
 
 /**
- * Implementazione lato client della connessione di rete.
- *
- * <brief>
- * <p>Specializza {@link NetworkConnection} per un singolo canale verso il server.
- * Implementa i due metodi astratti:</p>
- * <ul>
- *   <li>{@link #createSocket()} — crea una {@link Socket} verso {@code serverIp:serverPort}.</li>
- *   <li>{@link #expectedChannels()} — restituisce {@code 1} (un solo canale).</li>
- * </ul>
- *
- * <p>La callback {@code onReceive} riceverà sempre {@code channelIndex = 0},
- * che può essere ignorato lato client dato che il canale è uno solo.</p>
- * <\brief>
- *
- * @author chiara
- * @version 2.0
- * @see NetworkConnection
- * @see ServerConnection
+ * @brief Implementazione lato client della connessione di rete.
+ * Specializza NetworkConnection per un singolo canale verso il server.
  */
 public class ClientConnection extends NetworkConnection {
 
     // ATTRIBUTI
 
-    /** Indirizzo IP del server a cui connettersi. */
+    /**
+     * @brief Indirizzo IP del server a cui connettersi.
+     */
     private final String serverIp;
 
-    /** Porta del server. */
+    /**
+     * @brief Porta del server.
+     */
     private final int serverPort;
 
     // COSTRUTTORI
     
     /**
-     * Costruttore completo.
-     *
-     * @param serverIp     Indirizzo IP del server.
-     * @param serverPort   Porta del server.
-     * @param onReceive    Callback {@code (channelIndex=0, message)} per ogni messaggio.
-     * @param onDisconnect Callback {@code (channelIndex=0)} alla chiusura della connessione.
+     * @brief Costruttore completo.
+     * @param[in] serverIp     Indirizzo IP del server.
+     * @param[in] serverPort   Porta del server.
+     * @param[in] onReceive    Callback per ogni messaggio ricevuto.
+     * @param[in] onDisconnect Callback alla chiusura della connessione.
      */
     public ClientConnection(String serverIp, int serverPort, 
                             BiConsumer<Integer, Serializable> onReceive,
@@ -56,11 +43,10 @@ public class ClientConnection extends NetworkConnection {
     }
 
     /**
-     * Costruttore senza callback di disconnessione.
-     *
-     * @param serverIp   Indirizzo IP del server.
-     * @param serverPort Porta del server.
-     * @param onReceive  Callback per la gestione dei messaggi in ingresso.
+     * @brief Costruttore senza callback di disconnessione.
+     * @param[in] serverIp   Indirizzo IP del server.
+     * @param[in] serverPort Porta del server.
+     * @param[in] onReceive  Callback per la gestione dei messaggi in ingresso.
      */
     public ClientConnection(String serverIp, int serverPort, BiConsumer<Integer, Serializable> onReceive) {
         this(serverIp, serverPort, onReceive, null);
@@ -69,15 +55,8 @@ public class ClientConnection extends NetworkConnection {
     // IMPLEMENTAZIONE METODI
 
     /**
-     * Crea una {@link Socket} verso il server configurato.
-     *
-     * <p>Implementazione del metodo astratto della superclasse: 
-     * il client apre attivamente una connessione
-     * TCP verso {@code serverIp:serverPort}.</p>
-     *
+     * @brief Crea una Socket verso il server configurato.
      * @return Una socket connessa al server.
-     * @throws IOException Se la connessione al server fallisce (server assente,
-     *                     porta errata, rete non raggiungibile).
      */
     @Override
     protected Socket createSocket() throws IOException {
@@ -86,9 +65,8 @@ public class ClientConnection extends NetworkConnection {
     }
 
     /**
-     * Il client gestisce un solo canale verso il server.
-     *
-     * @return {@code 1} sempre.
+     * @brief Il client gestisce un solo canale verso il server.
+     * @return Il valore fisso 1.
      */
     @Override
     protected int expectedChannels() {
@@ -98,24 +76,15 @@ public class ClientConnection extends NetworkConnection {
     // METODI DI SUPPORTO
 
     /**
-     * Invia un messaggio al server (canale 0).
-     *
-     * <p>Alias di {@code sendTo(0, data)}: nasconde l'indice di canale (sempre 0)
-     * al codice client, rendendo le chiamate più leggibili.</p>
-     *
-     * @param data         Oggetto serializzabile da inviare al server.
-     * @throws IOException Se la scrittura fallisce o la connessione è chiusa.
+     * @brief Invia un messaggio al server.
+     * @param[in] data Oggetto serializzabile da inviare al server.
      */
     public void send(Serializable data) throws IOException {
         sendTo(0, data);
     }
 
     /**
-     * Chiude la connessione con il server.
-     *
-     * <p>Alias di {@code disconnectChannel(0)}.</p>
-     *
-     * @throws IOException Se la chiusura fallisce.
+     * @brief Chiude la connessione con il server.
      */
     public void disconnect() throws IOException {
         disconnectChannel(0);

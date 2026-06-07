@@ -4,53 +4,90 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import gruppo05.gtwshared.utility.Result;
 
 /**
- * Classe base di tutti i messaggi scambiati in rete tra server e client.
- *
- * <p>Ogni messaggio porta un {@link MessageType} che identifica immediatamente
- * l'intenzione del mittente, evitando catene di {@code instanceof}.</p>
- *
- * <p>Il pattern scelto è una gerarchia di classi inner statiche,
- * ognuna con i campi specifici del proprio tipo di messaggio.
- * Tutti implementano {@link Serializable} per poter essere trasmessi via
- * {@link java.io.ObjectOutputStream}.</p>
- *
- * @author chiara
- * @version 2.0
+ * @brief Classe base di tutti i messaggi scambiati in rete tra server e client.
+ * <p>Ogni NetworkMessage trasporta un MessageType che consente al ricevente di 
+ * capire subito come interpretare il payload senza l'uso di catene di instanceof.</p>
+ * <p><b>FLUSSO DI COMUNICAZIONE CLIENT-SERVER</b></p>
+ * <ol>
+ * <li><b>Autenticazione:</b> Il client invia una {@link NetworkMessage.LoginRequest}. 
+ * Il server controlla i dati e risponde con {@link NetworkMessage.LoginResponse}, 
+ * specificando anche se l'utente ha privilegi di Amministratore.</li>
+ * <li><b>Registrazione:</b> Se l'utente non è registrato, il client invia una 
+ * {@link NetworkMessage.RegisterRequest}. Il server registra l'utente e risponde 
+ * con {@link NetworkMessage.RegisterResponse}.</li>
+ * <li><b>Attesa Avversario (Utenti Standard):</b> Dopo un login di successo, il giocatore 
+ * riceve un {@link NetworkMessage.WaitingForOpponent} e rimane in attesa.</li>
+ * <li><b>Inizio Partita:</b> Quando due giocatori sono disponibili, il server invia 
+ * {@link NetworkMessage.GameStart} contenente il testo cifrato, il timer e l'identificativo dell'avversario.</li>
+ * <li><b>Fase di Gioco:</b> 
+ * <ul>
+ * <li>Il client invia la propria risposta al server tramite {@link NetworkMessage.AnswerSubmission}.</li>
+ * <li>Se l'avversario risponde per primo, il server notifica l'altro client con {@link NetworkMessage.OpponentAnswered}.</li>
+ * </ul>
+ * </li>
+ * <li><b>Fine Partita:</b> Il server calcola i risultati e invia {@link NetworkMessage.GameResult} 
+ * (vincitore, parola corretta, statistiche) a entrambi i giocatori.</li>
+ * <li><b>Storico (Opzionale):</b> In qualsiasi momento fuori dalla partita, il client può richiedere 
+ * i propri dati passati inviando {@link NetworkMessage.HistorianRequest}, a cui il server 
+ * risponde con {@link NetworkMessage.HistorianResponse}.</li>
+ * <li><b>Disconnessione:</b> 
+ * <ul>
+ * <li>Se un giocatore si disconnette volontariamente, invia {@link NetworkMessage.ClientDisconnect}.</li>
+ * <li>Se un giocatore si disconnette bruscamente o volontariamente durante/prima di una partita, 
+ * il server avvisa l'altro giocatore con {@link NetworkMessage.OpponentDisconnected}.</li>
+ * </ul>
+ * </li>
+ * </ol>
  */
 public abstract class NetworkMessage implements Serializable {
 
+    /**
+     * @brief Versione di serializzazione.
+     */
     private static final long serialVersionUID = 1L;
 
-    /** Tipo del messaggio, usato per il dispatch. */
+    /**
+     * @brief Tipo del messaggio, usato per il dispatch.
+     */
     private final MessageType type;
 
-    /** Timestamp di creazione del messaggio (lato mittente). */
+    /**
+     * @brief Timestamp di creazione del messaggio.
+     */
     private final LocalDateTime timestamp;
 
     /**
-     * Costruttore base.
-     *
-     * @param type Tipo del messaggio.
+     * @brief Costruttore base.
+     * @param[in] type Tipo del messaggio.
      */
     protected NetworkMessage(MessageType type) {
         this.type      = type;
         this.timestamp = LocalDateTime.now();
     }
 
-    /** Metodo Getter per recuperare il {@link MessageType} del messaggio.
-     * @return Il tipo del messaggio. */
+    /**
+     * @brief Metodo Getter per recuperare il tipo di messaggio.
+     * @return Il tipo del messaggio.
+     */
     public MessageType getType() { 
         return type; 
     }
 
-    /** Metodo Getter per recuperare il timestamp di creazione del messaggio.
-     * @return Il timestamp di creazione. */
+    /**
+     * @brief Metodo Getter per recuperare il timestamp di creazione.
+     * @return Il timestamp di creazione.
+     */
     public LocalDateTime getTimestamp() { 
         return timestamp; 
     }
 
+    /**
+     * @brief Genera una rappresentazione testuale del messaggio.
+     * @return Una stringa che descrive il messaggio.
+     */
     @Override
     public String toString() {
         return getClass().getSimpleName() + "[" + type + " @ " + timestamp + "]";
@@ -59,16 +96,26 @@ public abstract class NetworkMessage implements Serializable {
     // 1. AUTENTICAZIONE
 
     /**
-     * Client -> Server: richiesta di login.
+     * @brief Client -> Server: richiesta di login.
      */
     public static class LoginRequest extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 2L;
+        /**
+         * @brief Username.
+         */
         private final String username;
+        /**
+         * @brief Password in chiaro.
+         */
         private final String password;
 
-        /** Costruttore.
-         * @param username Username inserito dall'utente.
-         * @param password Password in chiaro (la cifratura avviene lato server).
+        /**
+         * @brief Costruttore.
+         * @param[in] username Username inserito dall'utente.
+         * @param[in] password Password in chiaro.
          */
         public LoginRequest(String username, String password) {
             super(MessageType.LOGIN_REQUEST);
@@ -77,58 +124,51 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi Getter
+        /**
+         * @brief Getter dello username.
+         * @return Username dell'utente.
+         */
         public String getUsername() { 
             return username; 
         }
         
+        /**
+         * @brief Getter della password.
+         * @return Password dell'utente.
+         */
         public String getPassword() { 
             return password; 
         }
     }
 
     /**
-     * Server -> Client: risposta al tentativo di login.
+     * @brief Server -> Client: risposta al tentativo di login.
      */
     public static class LoginResponse extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 3L;
         /**
-         * Esito dell'autenticazione.
-         *
-         * <p>{@code true} se username e password corrispondono a un utente
-         * presente nel database; {@code false} altrimenti.</p>
+         * @brief Esito dell'autenticazione.
          */
         private final boolean success;
 
         /**
-         * Messaggio di errore da mostrare all'utente in caso di login fallito.
-         *
-         * <p>Vale {@code null} quando {@code success == true}: se il login
-         * è andato a buon fine non c'è nessun errore da comunicare.</p>
+         * @brief Messaggio di errore mostrato all'utente.
          */
         private final String errorMessage;
 
-       /**
-        * Indica se l'utente autenticato ha il ruolo di amministratore.
-        *
-        * <p>Vale {@code false} quando {@code success == false}: se il login
-        * non è riuscito non ha senso parlare di ruoli.</p>
-        *
-        * <p>Il client usa questo campo per decidere quale schermata mostrare
-        * dopo il login:</p>
-        * <ul>
-        *   <li>{@code true}  -> interfaccia di amministrazione del server
-        *       (caricamento documenti, visualizzazione classifiche globali)</li>
-        *   <li>{@code false} -> interfaccia di gioco normale
-        *       (attesa avversario, partita, storico personale)</li>
-        * </ul>
-        */
+        /**
+         * @brief Indica se l'utente autenticato ha il ruolo di amministratore.
+         */
         private final boolean isAdmin;
 
-
-        /** Costruttore.
-         * @param success      {@code true} se le credenziali sono valide.
-         * @param errorMessage Messaggio d'errore (usato solo se {@code success == false}).
-         * @param isAdmin      {@code true} se l'utente ha ruolo amministratore.
+        /**
+         * @brief Costruttore.
+         * @param[in] success      true se le credenziali sono valide.
+         * @param[in] errorMessage Messaggio d'errore (usato solo se success == false).
+         * @param[in] isAdmin      true se l'utente ha ruolo amministratore.
          */
         public LoginResponse(boolean success, String errorMessage, boolean isAdmin) {
             super(MessageType.LOGIN_RESPONSE);
@@ -137,41 +177,71 @@ public abstract class NetworkMessage implements Serializable {
             this.isAdmin      = isAdmin;
         }
 
-        /** Metodo statico per risposta di successo. */
+        /**
+         * @brief Metodo statico per risposta di successo.
+         * @param[in] isAdmin Indica se è amministratore.
+         * @return Un nuovo oggetto LoginResponse di successo.
+         */
         public static LoginResponse loginSuccess(boolean isAdmin) {
             return new LoginResponse(true, null, isAdmin);
         }
 
-        /** Metodo statico per risposta di fallimento. */
+        /**
+         * @brief Metodo statico per risposta di fallimento.
+         * @param[in] reason Causa del fallimento.
+         * @return Un nuovo oggetto LoginResponse di fallimento.
+         */
         public static LoginResponse loginFailed(String reason) {
             return new LoginResponse(false, reason, false);
         }
 
         // Metodi Getter
+        /**
+         * @brief Restituisce l'esito.
+         * @return true se successo, false altrimenti.
+         */
         public boolean isSuccess(){ 
             return success; 
         }
         
-        public String  getErrorMessage(){ 
+        /**
+         * @brief Restituisce il messaggio d'errore.
+         * @return Il messaggio d'errore.
+         */
+        public String getErrorMessage(){ 
             return errorMessage; 
         }
         
+        /**
+         * @brief Restituisce lo stato admin.
+         * @return true se amministratore.
+         */
         public boolean isAdmin(){ 
             return isAdmin; 
         }
     }
 
     /**
-     * Client -> Server: richiesta di registrazione di un nuovo user.
+     * @brief Client -> Server: richiesta di registrazione di un nuovo user.
      */
     public static class RegisterRequest extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 4L;
+        /**
+         * @brief Username per la registrazione.
+         */
         private final String username;
+        /**
+         * @brief Password per la registrazione.
+         */
         private final String password;
         
-        /** Costruttore.
-         * @param username Username inserito dall'utente.
-         * @param password Password in chiaro (la cifratura avviene lato server).
+        /**
+         * @brief Costruttore.
+         * @param[in] username Username inserito dall'utente.
+         * @param[in] password Password in chiaro.
          */
         public RegisterRequest(String username, String password) {
             super(MessageType.REGISTER_REQUEST);
@@ -180,10 +250,18 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi Getter
+        /**
+         * @brief Restituisce lo username.
+         * @return Lo username.
+         */
         public String getUsername() { 
             return username; 
         }
         
+        /**
+         * @brief Restituisce la password.
+         * @return La password.
+         */
         public String getPassword() { 
             return password; 
         }
@@ -191,16 +269,26 @@ public abstract class NetworkMessage implements Serializable {
 
     
     /**
-     * Server -> Client: risposta alla registrazione.
+     * @brief Server -> Client: risposta alla registrazione.
      */
     public static class RegisterResponse extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 5L;
+        /**
+         * @brief Esito della registrazione.
+         */
         private final boolean success;
+        /**
+         * @brief Messaggio d'errore eventuale.
+         */
         private final String  errorMessage;
 
-        /** Costruttore.
-         * @param success      {@code true} se le credenziali sono valide.
-         * @param errorMessage Messaggio d'errore (usato solo se {@code success == false}).
+        /**
+         * @brief Costruttore.
+         * @param[in] success      true se le credenziali sono valide.
+         * @param[in] errorMessage Messaggio d'errore (usato solo se success == false).
          */
         public RegisterResponse(boolean success, String errorMessage) {
             super(MessageType.REGISTER_RESPONSE);
@@ -208,21 +296,36 @@ public abstract class NetworkMessage implements Serializable {
             this.errorMessage = errorMessage;
         }
 
-        /** Metodo statico per risposta di successo. */
+        /**
+         * @brief Metodo statico per risposta di successo.
+         * @return Un oggetto RegisterResponse di successo.
+         */
         public static RegisterResponse registerSuccess() {
             return new RegisterResponse(true, null);
         }
 
-        /** Metodo statico per risposta di fallimento. */
+        /**
+         * @brief Metodo statico per risposta di fallimento.
+         * @param[in] reason Motivo del fallimento.
+         * @return Un oggetto RegisterResponse di fallimento.
+         */
         public static RegisterResponse registerFailed(String reason) {
             return new RegisterResponse(false, reason);
         }
 
         // Metodi Getter
+        /**
+         * @brief Restituisce l'esito.
+         * @return true se successo.
+         */
         public boolean isSuccess() {
             return success; 
         }
         
+        /**
+         * @brief Restituisce il messaggio d'errore.
+         * @return Il messaggio.
+         */
         public String getErrorMessage() { 
             return errorMessage; 
         }
@@ -231,16 +334,22 @@ public abstract class NetworkMessage implements Serializable {
     // 2. ATTESA
 
     /**
-     * Server -> Client: login andato a buon fine, in attesa dell'avversario.
+     * @brief Server -> Client: in attesa dell'avversario.
      */
     public static class WaitingForOpponent extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 6L;
 
-        /** Nome utente dell'utente autenticato (per eventuale visualizzazione). */
+        /**
+         * @brief Nome utente dell'utente autenticato.
+         */
         private final String loggedUsername;
 
-        /** Costruttore.
-         * @param loggedUsername nome dell'utente autenticato.
+        /**
+         * @brief Costruttore.
+         * @param[in] loggedUsername Nome dell'utente autenticato.
          */
         public WaitingForOpponent(String loggedUsername) {
             super(MessageType.WAITING_FOR_OPPONENT);
@@ -248,6 +357,10 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodo Getter
+        /**
+         * @brief Restituisce lo username.
+         * @return Lo username.
+         */
         public String getLoggedUsername() { 
             return loggedUsername; 
         }
@@ -256,33 +369,46 @@ public abstract class NetworkMessage implements Serializable {
     // 3. PARTITA
 
     /**
-     * Server -> Client: la sfida ha inizio.
-     * <p>Contiene il testo con le parole cifrate evidenziate e la durata del timer.</p>
+     * @brief Server -> Client: la sfida ha inizio.
      */
     public static class GameStart extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 7L;
 
-        /** Testo estratto dal documento, con parola/e cifrate. */
+        /**
+         * @brief Testo estratto dal documento.
+         */
         private final String cipheredText;
 
-        /** Durata del timer in secondi. */
+        /**
+         * @brief Durata del timer in secondi.
+         */
         private final int timer;
 
-        /** Indice del client ricevente (0 o 1). */
+        /**
+         * @brief Indice del client ricevente (0 o 1).
+         */
         private final int playerIndex;
 
-        /** Username dell'avversario (per mostrarlo in UI). */
+        /**
+         * @brief Username dell'avversario.
+         */
         private final String opponentUsername;
         
-        /** Codice identificativo della sfida (vedi {@link Challege.code}). */
+        /**
+         * @brief Codice identificativo della sfida.
+         */
         private final int challengeCode;
 
-        /** Costruttore.
-         * @param cipheredText      Testo con parola/e cifrate col cifrario di Cesare.
-         * @param timer             Secondi a disposizione.
-         * @param playerIndex       Indice del giocatore destinatario (0 o 1).
-         * @param opponentUsername  Username dell'altro giocatore.
-         * @param challengeCode     Codice della partita.
+        /**
+         * @brief Costruttore.
+         * @param[in] cipheredText     Testo con parola/e cifrate col cifrario di Cesare.
+         * @param[in] timer            Secondi a disposizione.
+         * @param[in] playerIndex      Indice del giocatore destinatario (0 o 1).
+         * @param[in] opponentUsername Username dell'altro giocatore.
+         * @param[in] challengeCode    Codice della partita.
          */
         public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername, int challengeCode) {
             super(MessageType.GAME_START);
@@ -294,22 +420,42 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi Getter
+        /**
+         * @brief Restituisce il testo cifrato.
+         * @return Il testo cifrato.
+         */
         public String getCipheredText() { 
             return cipheredText; 
         }
         
+        /**
+         * @brief Restituisce il timer.
+         * @return I secondi del timer.
+         */
         public int getTimer() { 
             return timer; 
         }
         
+        /**
+         * @brief Restituisce l'indice.
+         * @return L'indice del giocatore.
+         */
         public int getPlayerIndex() { 
             return playerIndex; 
         }
         
+        /**
+         * @brief Restituisce lo username avversario.
+         * @return Lo username.
+         */
         public String getOpponentUsername() { 
             return opponentUsername; 
         }
         
+        /**
+         * @brief Restituisce il codice partita.
+         * @return Il codice.
+         */
         public int getChallengeCode(){
             return challengeCode;
         }
@@ -317,22 +463,28 @@ public abstract class NetworkMessage implements Serializable {
 
     
     /**
-     * Client -> Server: l'utente invia la propria risposta (parola decifrata).
+     * @brief Client -> Server: l'utente invia la propria risposta.
      */
     public static class AnswerSubmission extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 8L;
 
-        /** Parola proposta dall'utente come soluzione. */
+        /**
+         * @brief Parola proposta dall'utente come soluzione.
+         */
         private final String proposedWord;
 
         /**
-         * Tempo impiegato a rispondere in millisecondi (misurato lato client dall'inizio del timer).
+         * @brief Tempo impiegato a rispondere in millisecondi.
          */
         private final long responseTime;
 
-        /** Costruttore.
-         * @param proposedWord      Parola proposta.
-         * @param responseTime      Tempo impiegato per rispondere
+        /**
+         * @brief Costruttore.
+         * @param[in] proposedWord Parola proposta.
+         * @param[in] responseTime Tempo impiegato per rispondere in millisecondi.
          */
         public AnswerSubmission(String proposedWord, long responseTime) {
             super(MessageType.ANSWER_SUBMISSION);
@@ -341,40 +493,58 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi Getter
+        /**
+         * @brief Restituisce la parola proposta.
+         * @return La parola.
+         */
         public String getProposedWord() {
             return proposedWord; 
         }
         
+        /**
+         * @brief Restituisce il tempo impiegato.
+         * @return Il tempo in ms.
+         */
         public long getResponseTime() { 
             return responseTime; 
         }
     }
 
     /**
-     * Server -> Client: esito della partita.
+     * @brief Server -> Client: esito della partita.
      */
     public static class GameResult extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 9L;
-
-        /** Esito dal punto di vista del ricevente. */
-        public enum Result { WIN, LOSE, DRAW, TIMEOUT }
-
+        
+        /**
+         * @brief Risultato del gioco.
+         */
         private final Result result;
 
-        /** La parola originale (quella che bisognava trovare). */
+        /**
+         * @brief La parola originale.
+         */
         private final String correctWord;
 
-        /** Username del vincitore (o {@code null} in caso di pareggio/timeout). */
+        /**
+         * @brief Username del vincitore.
+         */
         private final String winnerUsername;
 
-        /** Tempo di risposta del vincitore in ms. */
+        /**
+         * @brief Tempo di risposta del vincitore in ms.
+         */
         private final long winnerResponseTime;
 
-        /** Costruttore.
-         * @param result               Esito.
-         * @param correctWord          Parola corretta.
-         * @param winnerUsername       Username del vincitore.
-         * @param winnerResponseTime   Tempo di risposta del vincitore.
+        /**
+         * @brief Costruttore.
+         * @param[in] result             Esito.
+         * @param[in] correctWord        Parola corretta.
+         * @param[in] winnerUsername     Username del vincitore.
+         * @param[in] winnerResponseTime Tempo di risposta del vincitore in ms.
          */
         public GameResult(Result result, String correctWord,String winnerUsername, long winnerResponseTime){
             super(MessageType.GAME_RESULT);
@@ -385,18 +555,34 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi Getter.
+        /**
+         * @brief Restituisce l'esito.
+         * @return Il risultato.
+         */
         public Result getResult() { 
             return result; 
         }
         
+        /**
+         * @brief Restituisce la parola corretta.
+         * @return La parola.
+         */
         public String getCorrectWord() { 
             return correctWord; 
         }
         
+        /**
+         * @brief Restituisce lo username del vincitore.
+         * @return Lo username.
+         */
         public String getWinnerUsername() { 
             return winnerUsername; 
         }
         
+        /**
+         * @brief Restituisce il tempo del vincitore.
+         * @return Il tempo in ms.
+         */
         public long getWinnerResponseTime() { 
             return winnerResponseTime; 
         }
@@ -404,12 +590,17 @@ public abstract class NetworkMessage implements Serializable {
 
     
     /**
-     * Server -> Client: notifica che l'avversario ha già inviato una risposta
-     *                   senza specificare se è corretta o meno.
+     * @brief Server -> Client: notifica che l'avversario ha inviato una risposta.
      */
     public static class OpponentAnswered extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 10L;
 
+        /**
+         * @brief Costruttore senza parametri.
+         */
         public OpponentAnswered() {
             super(MessageType.OPPONENT_ANSWERED);
         }
@@ -418,11 +609,17 @@ public abstract class NetworkMessage implements Serializable {
     // 4. GESTIONE DELLA CONNESSIONE
     
     /**
-     * Server -> Client: l'avversario si è disconnesso.
+     * @brief Server -> Client: l'avversario si è disconnesso.
      */
     public static class OpponentDisconnected extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 11L;
 
+        /**
+         * @brief Costruttore senza parametri.
+         */
         public OpponentDisconnected() {
             super(MessageType.OPPONENT_DISCONNECTED);
         }
@@ -430,11 +627,17 @@ public abstract class NetworkMessage implements Serializable {
 
     
     /**
-     * Client -> Server: il client si sta disconnettendo volontariamente.
+     * @brief Client -> Server: il client si sta disconnettendo volontariamente.
      */
     public static class ClientDisconnect extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 12L;
 
+        /**
+         * @brief Costruttore senza parametri.
+         */
         public ClientDisconnect() {
             super(MessageType.CLIENT_DISCONNECT);
         }
@@ -443,51 +646,63 @@ public abstract class NetworkMessage implements Serializable {
     // 5. STORICO
     
     /**
-     * Client -> Server: richiesta dello storico partite dell'utente loggato.
+     * @brief Client -> Server: richiesta dello storico partite.
      */
     public static class HistorianRequest extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 13L;
 
+        /**
+         * @brief Costruttore senza parametri.
+         */
         public HistorianRequest() {
             super(MessageType.HISTORIAN_REQUEST);
         }
     }
 
     /**
-     * Server -> Client: risposta con lo storico partite e le statistiche.
+     * @brief Server -> Client: risposta con lo storico partite.
      */
     public static class HistorianResponse extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 14L;
 
         /**
-         * Lista di record partita. Ogni mappa contiene coppie chiave-valore come:
-         * <ul>
-         *   <li>{@code "opponent"} – username avversario</li>
-         *   <li>{@code "result"}   – WIN / LOSE / DRAW / TIMEOUT</li>
-         *   <li>{@code "date"}     – data e ora della partita</li>
-         *   <li>{@code "responseTime"} – tempo di risposta in ms</li>
-         * </ul>
+         * @brief Lista di record partita.
          */
         private final List<Map<String, String>> matchHistory;
 
-        /** Numero totale di vittorie dell'utente. */
+        /**
+         * @brief Numero totale di vittorie dell'utente.
+         */
         private final int totalMatchesWon;
 
-        /** Numero totale di partite disputate. */
+        /**
+         * @brief Numero totale di partite disputate.
+         */
         private final int totalMatchesPlayed;
 
-        /** Tempo medio di risposta in ms. */
+        /**
+         * @brief Tempo medio di risposta in ms.
+         */
         private final double avgResponseTime;
         
-        /** Tempo totale giocato in secondi. */
+        /**
+         * @brief Tempo totale giocato in secondi.
+         */
         private final int totalPlayedTime;
 
-        /** Costruttore.
-         * @param matchHistory         Lista di record partita.
-         * @param totalMatchesWon      Totale partite vinte.
-         * @param totalMatchesPlayed   Totale partite.
-         * @param advResponseTime      Tempo medio di risposta.
-         * @param totalPlayedTime      Tempo totale giocato.
+        /**
+         * @brief Costruttore.
+         * @param[in] matchHistory       Lista di record partita.
+         * @param[in] totalMatchesWon    Totale partite vinte.
+         * @param[in] totalMatchesPlayed Totale partite.
+         * @param[in] avgResponseTime    Tempo medio di risposta.
+         * @param[in] totalPlayedTime    Tempo totale giocato.
          */
         public HistorianResponse(List<Map<String, String>> matchHistory, 
                                  int totalMatchesWon, int totalMatchesPlayed, 
@@ -501,22 +716,42 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         // Metodi getter.
+        /**
+         * @brief Restituisce lo storico partite.
+         * @return La lista dei record partita.
+         */
         public List<Map<String, String>> getMatchHistory() { 
             return matchHistory; 
         }
         
+        /**
+         * @brief Restituisce le partite vinte.
+         * @return Il numero di partite vinte.
+         */
         public int getTotalMatchesWon() { 
             return totalMatchesWon; 
         }
         
+        /**
+         * @brief Restituisce le partite giocate.
+         * @return Il numero di partite giocate.
+         */
         public int getTotalMatchesPlayed() { 
             return totalMatchesPlayed; 
         }
         
+        /**
+         * @brief Restituisce il tempo medio.
+         * @return Il tempo medio di risposta in ms.
+         */
         public double getAvgResponseTime() { 
             return avgResponseTime; 
         }
         
+        /**
+         * @brief Restituisce il tempo giocato.
+         * @return Il tempo giocato totale in secondi.
+         */
         public int getTotalPlayedTime() {
             return totalPlayedTime;
         }
@@ -525,17 +760,31 @@ public abstract class NetworkMessage implements Serializable {
     // 6. UTILITY
 
     /**
-     * Messaggio di testo generico (debug, notifiche semplici).
+     * @brief Messaggio di testo generico.
      */
     public static class TextMessage extends NetworkMessage {
+        /**
+         * @brief Versione di serializzazione.
+         */
         private static final long serialVersionUID = 15L;
+        /**
+         * @brief Testo del messaggio.
+         */
         private final String text;
 
+        /**
+         * @brief Costruttore.
+         * @param[in] text Il testo del messaggio da trasportare.
+         */
         public TextMessage(String text) {
             super(MessageType.TEXT_MESSAGE);
             this.text = text;
         }
 
+        /**
+         * @brief Restituisce il testo.
+         * @return Il testo in formato stringa.
+         */
         public String getText() { 
             return text; 
         }

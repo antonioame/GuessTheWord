@@ -142,7 +142,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                 case OPPONENT_DISCONNECTED:
                     // DISCONNESSIONE ANOMALA: L'avversario ha chiuso il gioco durante il match.
                     // ALERT 
-                    Alert alert = new Alert(Alert.AlertType.ERROR, "L'avversario si è disconnesso!");
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "L'avversario si è disconnesso!");
                     alert.setHeaderText("Partita Interrotta");
                     alert.showAndWait(); // Attende che l'utente clicchi OK
                     // !!! SWITCH HOME
@@ -151,6 +151,10 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     
                 case TEXT_MESSAGE:
                     // NOTIFICA GENERICA: Messaggi di sistema dal server.
+                    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Server: " + dto.getMessage());
+                    infoAlert.setHeaderText("Notifica");
+                    infoAlert.showAndWait(); 
+
                     System.out.println("Notifica dal Server: " + dto.getMessage());
                     break;
                     

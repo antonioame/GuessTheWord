@@ -16,6 +16,7 @@ import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.Result;
 import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
+import javafx.scene.control.Alert;
 
 /**
  * @class ServerConnectionCreator
@@ -273,7 +274,10 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case TEXT_MESSAGE:
-                    System.out.println("Messaggio di sistema da " + channelIndex + ": " + dto.getMessage());
+                    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Client: " + dto.getMessage());
+                    infoAlert.setHeaderText("Notifica");
+                    infoAlert.showAndWait(); 
+                    System.out.println("Messaggio di sistema dal client " + channelIndex + ": " + dto.getMessage());
                     break;
 
                 default:

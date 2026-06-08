@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Pane fx:id="outerContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="450.0" style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f5f7fa);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwclient.controller.ResultViewController">
+   <children>
+      <VBox alignment="CENTER" layoutX="40.0" layoutY="40.0" prefHeight="370.0" prefWidth="370.0" spacing="20.0">
+         <children>
+            <Label fx:id="lblResult" style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #2c3e50;" text="RISULTATO" />
+            
+            <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: rgba(255, 255, 255, 0.7); -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 4);" prefWidth="350.0">
+               <children>
+                  <Label fx:id="lblCorrectWord" style="-fx-font-size: 15; -fx-text-fill: #2c3e50; -fx-font-weight: bold;" text="La parola corretta era: -" wrapText="true" alignment="CENTER" />
+                  <Label fx:id="lblWinner" style="-fx-font-size: 14; -fx-text-fill: #34495e;" text="Vincitore: -" />
+                  <Label fx:id="lblResponseTime" style="-fx-font-size: 14; -fx-text-fill: #7f8c8d;" text="Tempo di risposta: - ms" />
+               </children>
+            </VBox>
+            
+            <Button fx:id="btnBackToLobby" mnemonicParsing="false" onAction="#onBackToLobby" prefHeight="45.0" prefWidth="200.0" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 15; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="Torna alla Lobby" />
+         </children>
+      </VBox>
+   </children>
+</Pane>

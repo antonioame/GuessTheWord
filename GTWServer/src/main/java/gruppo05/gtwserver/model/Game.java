@@ -13,10 +13,9 @@ import java.util.Objects;
  */
 public class Game {
     
-    /**
-     * @brief L'identificativo composto (giocatore, sfida) della partita.
-     */
-    private final GameId id;
+    private final String player;
+    
+    private final int challenge;
     
     /**
      * @brief Il risultato finale ottenuto nella partita (es. WIN, LOSS).
@@ -40,14 +39,20 @@ public class Game {
      * Viene creata una nuova istanza di GameId memorizzata nel rispettivo campo id.
      */
     public Game(String player, int challenge, Result result, int timeToAnswer) {
-        this.id = new GameId(player, challenge);
+        this.player = player;
+        this.challenge = challenge;
         this.result = result;
         this.responseTime = timeToAnswer;
     }
 
     // Da commentare
-    public GameId getId() {
-        return id;
+    public String getPlayer() {
+        return player;
+    }
+    
+    // Da commentare
+    public int getChallenge() {
+        return challenge;
     }
 
     /**
@@ -69,7 +74,10 @@ public class Game {
     // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 5;
+        hash = 47 * hash + Objects.hashCode(this.player);
+        hash = 47 * hash + this.challenge;
+        return hash;
     }
 
     // Da commentare
@@ -85,7 +93,10 @@ public class Game {
             return false;
         }
         final Game other = (Game) obj;
-        if (!this.id.equals(other.getId())) {
+        if (this.challenge != other.challenge) {
+            return false;
+        }
+        if (!Objects.equals(this.player, other.player)) {
             return false;
         }
         return true;

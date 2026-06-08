@@ -12,16 +12,17 @@ import java.util.Objects;
  */
 public class Word {
     
-    /**
-     * @brief L'identificativo composto (stringa testuale, codice sorgente) della parola.
-     */
-    private final WordId id;
+    // Da commentare
+    private final String token;
     
     /**
      * @brief La frequenza di occorrenza della parola all'interno della propria sorgente.
      */
     private final int frequency;
 
+    // Da commentare
+    private final int source;
+    
     /**
      * @brief Costruttore per creare un nuovo oggetto Word.
      * @param[in] token La stringa testuale della parola.
@@ -35,13 +36,14 @@ public class Word {
      * Viene creata una nuova istanza di WordId memorizzata nel rispettivo campo id.
      */
     public Word(String token, int frequency, int source) {
-        id = new WordId(token, source);
+        this.token = token;
         this.frequency = frequency;
+        this.source = source;
     }
 
     // Da commentare
-    public WordId getId() {
-        return id;
+    public String getToken() {
+        return token;
     }
 
     /**
@@ -51,11 +53,19 @@ public class Word {
     public int getFrequency() {
         return frequency;
     }
+    
+    // Da commentare
+    public int getSource() {
+        return source;
+    }
 
     // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 3;
+        hash = 43 * hash + Objects.hashCode(this.token);
+        hash = 43 * hash + this.source;
+        return hash;
     }
 
     // Da commentare
@@ -71,7 +81,10 @@ public class Word {
             return false;
         }
         final Word other = (Word) obj;
-        if (!this.id.equals(other.getId())) {
+        if (this.source != other.source) {
+            return false;
+        }
+        if (!Objects.equals(this.token, other.token)) {
             return false;
         }
         return true;

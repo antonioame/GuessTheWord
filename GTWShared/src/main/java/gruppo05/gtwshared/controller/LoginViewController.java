@@ -57,7 +57,7 @@ public class LoginViewController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SignupView.fxml"));
         Parent root = loader.load();
         
-        SignupViewController ctrl = (SignupViewController) loader.load();
+        SignupViewController ctrl = (SignupViewController) loader.getController();
         ctrl.setSignupManager(signupManager);
         ctrl.setLoginManager(loginManager);
         

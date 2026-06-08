@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.PasswordField;
@@ -61,7 +62,7 @@ public class SignupViewController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
         Parent root = loader.load();
         
-        LoginViewController ctrl = (LoginViewController) loader.load();
+        LoginViewController ctrl = (LoginViewController) loader.getController();
         ctrl.setLoginManager(loginManager);
         ctrl.setSignupManager(signupManager);
         
@@ -76,6 +77,12 @@ public class SignupViewController implements Initializable {
 
     @FXML
     private void onConfirm(ActionEvent event) throws IOException {        
+        if (!txfPswd.getText().equals(txfPswdConfirm.getText())) {
+            Alert alert = new Alert(
+                Alert.AlertType.ERROR, "Le password inserite non coincidono!");
+            alert.showAndWait();
+            return;
+        }
         signupManager.validateInfo(txfUsername.getText(), txfPswd.getText());
     }
     

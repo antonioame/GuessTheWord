@@ -1,7 +1,6 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Admin;
-import gruppo05.gtwserver.model.AdminId;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -96,7 +95,7 @@ public class ConcreteAdminDAO implements AdminDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getId().getUsername());
+            cmd.setString(1, model.getUsername());
             cmd.setString(2, model.getPassword());
             cmd.executeUpdate();
         } catch (SQLException ex) {
@@ -120,7 +119,7 @@ public class ConcreteAdminDAO implements AdminDAO {
                 conn.setAutoCommit(false);
                 
                 for(Admin model : modelList) {
-                    cmd.setString(1, model.getId().getUsername());
+                    cmd.setString(1, model.getUsername());
                     cmd.setString(2, model.getPassword());
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
@@ -154,7 +153,7 @@ public class ConcreteAdminDAO implements AdminDAO {
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPassword());
-            cmd.setString(2, model.getId().getUsername());
+            cmd.setString(2, model.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

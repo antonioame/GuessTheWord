@@ -1,7 +1,6 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Game;
-import gruppo05.gtwserver.model.GameId;
 import gruppo05.gtwshared.utility.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -104,8 +103,8 @@ public class ConcreteGameDAO implements GameDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getId().getPlayer());
-            cmd.setInt(2, model.getId().getChallenge());
+            cmd.setString(1, model.getPlayer());
+            cmd.setInt(2, model.getChallenge());
             cmd.setString(3, model.getResult().toString());
             cmd.setInt(4, model.getResponseTime());
             cmd.executeUpdate();
@@ -130,8 +129,8 @@ public class ConcreteGameDAO implements GameDAO {
                 conn.setAutoCommit(false);
                 
                 for(Game model : modelList) {
-                    cmd.setString(1, model.getId().getPlayer());
-                    cmd.setInt(2, model.getId().getChallenge());
+                    cmd.setString(1, model.getPlayer());
+                    cmd.setInt(2, model.getChallenge());
                     cmd.setString(3, model.getResult().toString());
                     cmd.setInt(4, model.getResponseTime());
                     // Aggiungi la query al pacchetto di comandi da eseguire
@@ -167,8 +166,8 @@ public class ConcreteGameDAO implements GameDAO {
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getResult().toString());
             cmd.setInt(2, model.getResponseTime());            
-            cmd.setString(3, model.getId().getPlayer());
-            cmd.setInt(4, model.getId().getChallenge());
+            cmd.setString(3, model.getPlayer());
+            cmd.setInt(4, model.getChallenge());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

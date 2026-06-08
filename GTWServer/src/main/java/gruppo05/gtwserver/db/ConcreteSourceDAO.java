@@ -1,7 +1,6 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Source;
-import gruppo05.gtwserver.model.SourceId;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,7 +100,7 @@ public class ConcreteSourceDAO implements SourceDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setInt(1, model.getId().getId());
+            cmd.setInt(1, model.getId());
             cmd.setString(2, model.getPath().toString());
             cmd.executeUpdate();
         } catch (SQLException ex) {
@@ -125,7 +124,7 @@ public class ConcreteSourceDAO implements SourceDAO {
                 conn.setAutoCommit(false);
                 
                 for(Source model : modelList) {
-                    cmd.setInt(1, model.getId().getId());
+                    cmd.setInt(1, model.getId());
                     cmd.setString(2, model.getPath().toString());
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
@@ -159,7 +158,7 @@ public class ConcreteSourceDAO implements SourceDAO {
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPath().toString());
-            cmd.setInt(2, model.getId().getId());
+            cmd.setInt(2, model.getId());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

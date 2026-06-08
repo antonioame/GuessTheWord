@@ -122,8 +122,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
         try {
             switch (dto.getEventType()) {
                 case LOGIN_REQUEST:
-                    AdminDAO adminDao = new AdminDAO();
-                    Optional<Admin> admin = adminDao.selectById(new AdminId(dto.getUsername()));
+                    AdminDAO adminDao = new ConcreteAdminDAO();
+                    Optional<Admin> admin = adminDao.selectById(Optional.of(dto.getUsername()));
                     
                     // Verifica dell'esistenza dell'utente e match esatto della password
                     if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
@@ -136,10 +136,10 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case REGISTER_REQUEST:
-                    AdminDAO signupDao = new AdminDAO();
+                    AdminDAO signupDao = new ConcreteAdminDAO();
                     
                     // Controllo preventivo per evitare violazioni di chiave primaria sul Database
-                    if (signupDao.selectById(new AdminId(dto.getUsername())).isPresent()) {
+                    if (signupDao.selectById(Optional.of(dto.getUsername())).isPresent()) {
                         connection.sendTo(channelIndex, NetworkMessage.RegisterResponse.registerFailed("Username già in uso"));
                     } else {
                         signupDao.insert(new Admin(dto.getUsername(), dto.getPassword()));
@@ -170,8 +170,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             connection.sendTo(p2Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
                             
                             // Fase 2: Prelevo i dati della sfida dal database
-                            ChallengeDAO chDao = new ChallengeDAO();
-                            Optional<Challenge> optCh = chDao.selectById(new ChallengeId(1)); /* vedi */
+                            ChallengeDAO chDao = new ConcreteChallengeDAO();
+                            Optional<Challenge> optCh = chDao.selectById(Optional.of(1)); /* vedi */
                             
                             // Valori di default in caso di assenza della sfida nel DB
                             String cipheredText = ""; 
@@ -180,7 +180,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             
                             if (optCh.isPresent()) {
                                 Challenge ch = optCh.get();
-                                challengeCode = ch.getId().getCode();
+                                challengeCode = ch.getCode();
                                 // Meccanismo di cifratura 
                                 cipheredText = ch.getWord(); /* vedi */
                             }
@@ -201,8 +201,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     // Drop del pacchetto se arriva da un client non autenticato
                     if (currentUsername == null) return; 
                     
-                    ChallengeDAO challengeDao = new ChallengeDAO();
-                    Optional<Challenge> challenge = challengeDao.selectById(new ChallengeId(dto.getChallengeCode()));
+                    ChallengeDAO challengeDao = new ConcreteChallengeDAO();
+                    Optional<Challenge> challenge = challengeDao.selectById(Optional.of(dto.getChallengeCode()));
                     
                     if (challenge.isPresent()) {
                         Challenge ch = challenge.get();
@@ -221,7 +221,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                         ));
                         
                         // Persistenza: Registro la giocata per le statistiche globali (usate da HISTORY_REQUEST)
-                        GameDAO gameDao = new GameDAO();
+                        GameDAO gameDao = new ConcreteGameDAO();
                         gameDao.insert(new Game(currentUsername, dto.getChallengeCode(), result, dto.getResponseTime()));
                     }
                     break;
@@ -229,22 +229,22 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                 case HISTORY_REQUEST:
                     if (currentUsername == null) return; 
                     
-                    PlayerDAO playerDao = new PlayerDAO();
-                    Optional<Player> p = playerDao.selectById(new PlayerId(currentUsername));
+                    PlayerDAO playerDao = new ConcretePlayerDAO();
+                    Optional<Player> p = playerDao.selectById(Optional.of(currentUsername));
                     
                     if (p.isPresent()) {
                         Player player = p.get();
-                        GameDAO gameDao = new GameDAO();
+                        GameDAO gameDao = new ConcreteGameDAO();
                         
                         // Carico tutto ed estraggo le partite di questo utente
                         List<Game> allGames = gameDao.selectAll();
                         List<CallbackDTO.MatchRecord> records = new ArrayList<>();
                         
                         for (Game g : allGames) {
-                            if (g.getId().getPlayer().equals(currentUsername)) {
+                            if (g.getPlayer().equals(currentUsername)) {
                                 // Mappo i dati del database nel Record DTO per alleggerire il transito in rete
                                 records.add(new CallbackDTO.MatchRecord(
-                                        String.valueOf(g.getId().getChallenge()), 
+                                        String.valueOf(g.getChallenge()), 
                                         g.getResult(),
                                         LocalDateTime.now(), // Il timestamp locale al momento della richiesta
                                         g.getResponseTime()

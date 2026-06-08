@@ -1,7 +1,6 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Player;
-import gruppo05.gtwserver.model.PlayerId;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -100,7 +99,7 @@ public class ConcretePlayerDAO implements PlayerDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getId().getUsername());
+            cmd.setString(1, model.getUsername());
             cmd.setString(2, model.getPassword());
             cmd.executeUpdate();
         } catch (SQLException ex) {
@@ -124,7 +123,7 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 conn.setAutoCommit(false);
                 
                 for(Player model : modelList) {
-                    cmd.setString(1, model.getId().getUsername());
+                    cmd.setString(1, model.getUsername());
                     cmd.setString(2, model.getPassword());
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
@@ -159,7 +158,7 @@ public class ConcretePlayerDAO implements PlayerDAO {
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setString(1, model.getPassword());
-            cmd.setString(2, model.getId().getUsername());
+            cmd.setString(2, model.getUsername());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

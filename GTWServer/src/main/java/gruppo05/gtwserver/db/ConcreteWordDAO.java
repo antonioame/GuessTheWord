@@ -133,9 +133,9 @@ public class ConcreteWordDAO implements WordDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setString(1, model.getId().getToken());
+            cmd.setString(1, model.getToken());
             cmd.setInt(2, model.getFrequency());
-            cmd.setInt(3, model.getId().getSource());
+            cmd.setInt(3, model.getSource());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -158,9 +158,9 @@ public class ConcreteWordDAO implements WordDAO {
                 conn.setAutoCommit(false);
                 
                 for(Word model : modelList) {
-                    cmd.setString(1, model.getId().getToken());
+                    cmd.setString(1, model.getToken());
                     cmd.setInt(2, model.getFrequency());
-                    cmd.setInt(3, model.getId().getSource());
+                    cmd.setInt(3, model.getSource());
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
                 } 
@@ -193,8 +193,8 @@ public class ConcreteWordDAO implements WordDAO {
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
             cmd.setInt(1, model.getFrequency());
-            cmd.setString(2, model.getId().getToken());
-            cmd.setInt(3, model.getId().getSource());
+            cmd.setString(2, model.getToken());
+            cmd.setInt(3, model.getSource());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

@@ -4,7 +4,6 @@ import gruppo05.gtwserver.db.AdminDAO;
 import gruppo05.gtwserver.db.ConcreteAdminDAO;
 import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.model.Admin;
-import gruppo05.gtwserver.model.AdminId;
 import gruppo05.gtwshared.controller.SignupManager;
 
 /**

@@ -1,7 +1,6 @@
 package gruppo05.gtwserver.db;
 
 import gruppo05.gtwserver.model.Challenge;
-import gruppo05.gtwserver.model.ChallengeId;
 import gruppo05.gtwshared.utility.Difficulty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,7 +100,7 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         
         try (Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setInt(1, model.getId().getCode());
+            cmd.setInt(1, model.getCode());
             cmd.setDate(2, model.getDate());
             cmd.setString(3, model.getDifficulty().toString());
             cmd.setString(4, model.getWord());
@@ -128,7 +127,7 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 conn.setAutoCommit(false);
                 
                 for(Challenge model : modelList) {
-                    cmd.setInt(1, model.getId().getCode());
+                    cmd.setInt(1, model.getCode());
                     cmd.setDate(2, model.getDate());
                     cmd.setString(3, model.getDifficulty().toString());
                     cmd.setString(4, model.getWord());
@@ -168,7 +167,7 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
             cmd.setString(2, model.getDifficulty().toString());
             cmd.setString(3, model.getWord());
             cmd.setInt(4, model.getSource());
-            cmd.setInt(5, model.getId().getCode());
+            cmd.setInt(5, model.getCode());
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

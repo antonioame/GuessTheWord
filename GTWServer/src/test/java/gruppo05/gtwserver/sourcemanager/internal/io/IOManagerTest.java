@@ -10,10 +10,10 @@ package gruppo05.gtwserver.sourcemanager.internal.io;
  * @author Hermann
  */
 import gruppo05.gtwserver.db.DAO;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.model.Source;
-import gruppo05.gtwserver.model.SourceId;
 import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.model.WordId;
 import gruppo05.gtwserver.sourcemanager.exception.FrequencyMapNotFoundException;
 import gruppo05.gtwserver.sourcemanager.exception.SourceNotFoundException;
 import gruppo05.gtwserver.sourcemanager.exception.StorageException;
@@ -152,8 +152,8 @@ public class IOManagerTest {
 
         // Verifichiamo il salvataggio massivo controllando i valori nella mappa
         assertEquals(2, fakeWordDao.database.size());
-        assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getId().getToken().equals("test") && w.getFrequency() == 3));
-        assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getId().getToken().equals("junit") && w.getFrequency() == 1));
+        assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getToken().equals("test") && w.getFrequency() == 3));
+        assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getToken().equals("junit") && w.getFrequency() == 1));
     }
 
     @Test
@@ -225,14 +225,14 @@ public class IOManagerTest {
      * Implementazione In-Memory del database per i Source.
      * La chiave primaria (K) è il tipo custom SourceId.
      */
-    private static class FakeSourceDAO implements DAO<Source, SourceId> {
+    private static class FakeSourceDAO implements SourceDAO {
         // Usiamo una Map per rendere coerente e sicura la ricerca per ID
-        public final Map<SourceId, Source> database = new HashMap<>();
+        public final Map<Integer, Source> database = new HashMap<>();
         public boolean shouldFailOnInsert = false;
 
         @Override
-        public Optional<Source> selectById(SourceId modelId) {
-            return Optional.ofNullable(database.get(modelId));
+        public Optional<Source> selectById(Optional<Integer> id) {
+            return Optional.ofNullable(database.get(id));
         }
 
         @Override
@@ -259,8 +259,8 @@ public class IOManagerTest {
         }
 
         @Override
-        public void delete(SourceId modelId) {
-            database.remove(modelId);
+        public void delete(Optional<Integer> id) {
+            database.remove(id);
         }
     }
 
@@ -268,12 +268,57 @@ public class IOManagerTest {
      * Implementazione In-Memory del database per le Word.
      * La chiave primaria (K) è il tipo custom WordId.
      */
-    private static class FakeWordDAO implements DAO<Word, WordId> {
+    private static class FakeWordDAO implements WordDAO {
+        
+        private static class WordId {
+            private String token;
+            private int source;
+
+            public WordId(String token, int source) {
+                this.token = token;
+                this.source = source;
+            }
+
+            @Override
+            public int hashCode() {
+                int hash = 7;
+                hash = 71 * hash + Objects.hashCode(this.token);
+                hash = 71 * hash + this.source;
+                return hash;
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                if (this == obj) {
+                    return true;
+                }
+                if (obj == null) {
+                    return false;
+                }
+                if (getClass() != obj.getClass()) {
+                    return false;
+                }
+                final WordId other = (WordId) obj;
+                if (this.source != other.source) {
+                    return false;
+                }
+                if (!Objects.equals(this.token, other.token)) {
+                    return false;
+                }
+                return true;
+            }
+            
+            
+        }
+        
+        
         public final Map<WordId, Word> database = new HashMap<>();
 
         @Override
-        public Optional<Word> selectById(WordId modelId) {
-            return Optional.ofNullable(database.get(modelId));
+        public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) {
+            if(token.isPresent() && source.isPresent())
+                return Optional.ofNullable(database.get(new WordId(token.get(), source.get())));
+            return Optional.empty();
         }
 
         @Override
@@ -282,8 +327,13 @@ public class IOManagerTest {
         }
 
         @Override
+        public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        @Override
         public void insert(Word item) {
-            database.put(item.getId(), item);
+            database.put(new WordId(item.getToken(), item.getSource()), item);
         }
 
         @Override
@@ -295,12 +345,13 @@ public class IOManagerTest {
 
         @Override
         public void update(Word model) {
-            database.put(model.getId(), model);
+            database.put(new WordId(model.getToken(), model.getSource()), model);
         }
 
         @Override
-        public void delete(WordId modelId) {
-            database.remove(modelId);
+        public void delete(Optional<String> token, Optional<Integer> source) {
+            if(token.isPresent() && source.isPresent())
+                database.remove(new WordId(token.get(), source.get()));
         }
     }
 }

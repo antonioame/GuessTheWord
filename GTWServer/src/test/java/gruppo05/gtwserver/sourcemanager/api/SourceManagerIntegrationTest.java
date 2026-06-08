@@ -12,9 +12,7 @@ package gruppo05.gtwserver.sourcemanager.api;
 import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.model.Source;
-import gruppo05.gtwserver.model.SourceId;
 import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.model.WordId;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 
@@ -57,7 +55,7 @@ public class SourceManagerIntegrationTest {
      * @param <T> Il tipo dell'entità gestita.
      * @param <K> Il tipo della chiave primaria dell'entità.
      */
-    private static class FakeDAO<T, K> implements DAO<T, K> {
+    private static class FakeDAO<T> implements DAO<T> {
         private final Map<K, T> storage = new HashMap<>();
         private final Function<T, K> idExtractor;
 

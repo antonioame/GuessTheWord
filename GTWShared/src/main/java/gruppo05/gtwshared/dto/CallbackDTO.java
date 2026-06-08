@@ -20,7 +20,7 @@ import gruppo05.gtwshared.utility.Result;
  * @version 2.0
  */
 public class CallbackDTO {
-
+    
     /**
      * @class MatchRecord
      * @brief Rappresenta un singolo record cronologico di una partita conclusa nello storico dell'utente.
@@ -208,7 +208,7 @@ public class CallbackDTO {
         return playerIndex; 
     }
     
-    /** @return Lo username dell'avversario per la partita in corso. */
+    /** @return L'username dell'avversario per la partita in corso. */
     public String getOpponentUsername() { 
         return opponentUsername; 
     }

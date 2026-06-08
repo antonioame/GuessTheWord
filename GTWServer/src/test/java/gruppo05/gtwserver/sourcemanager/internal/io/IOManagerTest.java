@@ -170,6 +170,55 @@ public class IOManagerTest {
         assertTrue(fakeSourceDao.database.isEmpty());
     }
 
+    @Test
+    void testGetEstimatedWordCount_Success(@TempDir Path tempDir) throws Exception {
+        // Prepariamo un file con esattamente 21 byte (3 parole stimate: 21 / 7 = 3)
+        Path testFile = tempDir.resolve("stima.txt");
+        String content = "1234567 8901234 56789"; // 21 caratteri ASCII = 21 byte
+        Files.write(testFile, content.getBytes());
+
+        Source source = new Source(10, testFile);
+
+        long estimated = ioManager.getEstimatedWordCount(source);
+
+        // Verifichiamo che il calcolo rispetti l'euristica (byte / 7)
+        assertEquals(3, estimated);
+    }
+
+    @Test
+    void testGetEstimatedWordCount_EmptyFile(@TempDir Path tempDir) throws Exception {
+        // Prepariamo un file completamente vuoto (0 byte)
+        Path emptyFile = tempDir.resolve("vuoto.txt");
+        Files.createFile(emptyFile);
+
+        Source source = new Source(11, emptyFile);
+
+        long estimated = ioManager.getEstimatedWordCount(source);
+
+        // Verifichiamo che il limite inferiore di sicurezza (Math.max(1, ...)) funzioni
+        assertEquals(1, estimated);
+    }
+
+    @Test
+    void testGetEstimatedWordCount_SourceNotFoundExceptions() {
+        // Test 1: Source null
+        assertThrows(SourceNotFoundException.class, () -> {
+            ioManager.getEstimatedWordCount(null);
+        });
+
+        // Test 2: Source con Path null
+        Source sourceNullPath = new Source(12, null);
+        assertThrows(SourceNotFoundException.class, () -> {
+            ioManager.getEstimatedWordCount(sourceNullPath);
+        });
+
+        // Test 3: Source con Path inesistente
+        Source sourceNotExists = new Source(13, Paths.get("file_inesistente_ghost.txt"));
+        assertThrows(SourceNotFoundException.class, () -> {
+            ioManager.getEstimatedWordCount(sourceNotExists);
+        });
+    }
+
     // --- CLASSI FAKE INTERNE AL TEST ---
 
     /**

@@ -14,6 +14,7 @@ import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.exception.PresetNotFoundException;
+import gruppo05.gtwserver.sourcemanager.exception.QuestionGenerationException;
 import gruppo05.gtwserver.sourcemanager.internal.io.IOManager;
 import gruppo05.gtwserver.sourcemanager.internal.analysis.SourceAnalyzer;
 import gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGenerator;
@@ -125,17 +126,32 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
      */
     @Override
     public void generateQuestion(Source source, String presetName, Consumer<Question> onSuccess, Consumer<Exception> onFailure) {
-        this.executor.submit(() -> {
+        executor.submit(() -> {
             try {
                 PresetConfig config = presets.get(presetName);
-                if (config == null) {
-                    throw new PresetNotFoundException();
+                if (config == null) throw new PresetNotFoundException();
+
+                Map<String, Integer> frequencies = ioManager.readSourceMapFrequency(source);
+                long estimatedWordCount = ioManager.getEstimatedWordCount(source);
+
+                Question question;
+            
+                try {
+                    // TENTATIVO 1: Lettura ottimizzata con salto (skip)
+                    try (Stream<String> stream = ioManager.readSourceWordsAndPeriods(source)) {
+                        question = questionGenerator.generateQuestion(stream, frequencies, config, estimatedWordCount);
+                    }
+                } catch (QuestionGenerationException e) {
+                    // TENTATIVO 2: Se il salto ha esaurito il file, ripartiamo da 0.
+                    // Riapriamo un nuovo Stream fresco e passiamo '0' come stima.
+                    // Passando 0, il QuestionGenerator calcolerà uno skip di 0 e leggerà dall'inizio.
+                    try (Stream<String> fallbackStream = ioManager.readSourceWordsAndPeriods(source)) {
+                        question = questionGenerator.generateQuestion(fallbackStream, frequencies, config, 0);
+                    }
                 }
-                try (Stream<String> sourceWords = ioManager.readSourceWordsAndPeriods(source)) {
-                    Map<String, Integer> wordFrequencies = ioManager.readSourceMapFrequency(source);
-                    Question question = questionGenerator.generateQuestion(sourceWords, wordFrequencies, config);
-                    onSuccess.accept(question);
-                }
+
+                onSuccess.accept(question);
+
             } catch (Exception e) {
                 onFailure.accept(e);
             }

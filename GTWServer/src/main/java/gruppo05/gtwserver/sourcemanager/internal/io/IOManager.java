@@ -142,6 +142,28 @@ public class IOManager {
             throw new StorageException();
         }
     }
+    
+    /**
+     * @brief Stima il numero di parole contenute nel file sorgente in base alla sua dimensione.
+     * @param[in] source L'oggetto sorgente.
+     * @return Il numero stimato di token (parole).
+     */
+    public long getEstimatedWordCount(Source source) throws SourceNotFoundException {
+        if (source == null || source.getPath() == null || !Files.exists(source.getPath())) {
+            throw new SourceNotFoundException();
+        }
+        try {
+            // Ottiene la dimensione del file in byte direttamente dal File System
+            long bytes = Files.size(source.getPath());
+            
+            // Euristica: una parola media in italiano (inclusa spaziatura/punteggiatura) occupa circa 7 byte
+            // Restituisce almeno 1 per evitare errori matematici
+            return Math.max(1, bytes / 7);
+            
+        } catch (IOException e) {
+            throw new SourceNotFoundException();
+        }
+    }
 
     /**
      * @brief Memorizza massivamente le frequenze calcolate per le parole di un determinato sorgente.

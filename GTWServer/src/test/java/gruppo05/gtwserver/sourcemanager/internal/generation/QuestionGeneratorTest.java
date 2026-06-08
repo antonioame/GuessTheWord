@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.internal.generation;
 
-/**
- *
- * @author Hermann
- */
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.exception.QuestionGenerationException;
@@ -34,30 +30,29 @@ public class QuestionGeneratorTest {
     private Map<String, Integer> dummyFrequencies;
 
     /**
-     * @brief Estensione mock manuale di Random per forzare gli indici desiderati nel test.
+     * @brief Estensione mock manuale di Random per forzare i risultati desiderati nel test.
      */
     private static class ControlledRandom extends Random {
-        private int forcedIndex = 0;
+        // Usiamo un double perché la nuova logica di skip usa random.nextDouble()
+        private double forcedDouble = 0.0;
 
-        public void setForcedIndex(int index) {
-            this.forcedIndex = index;
+        public void setForcedDouble(double value) {
+            this.forcedDouble = value;
         }
 
         @Override
-        public int nextInt(int bound) {
-            // Ritorna l'indice forzato a meno che non superi il bound superiore dello stream
-            return forcedIndex < bound ? forcedIndex : bound - 1;
+        public double nextDouble() {
+            return forcedDouble;
         }
     }
 
     /**
-     * @brief Stub manuale di WordExtractor per simulare il comportamento di estrazione senza Mockito.
+     * @brief Stub manuale di WordExtractor per simulare il comportamento di estrazione.
      */
     private static class StubWordExtractor extends WordExtractor {
         private String fixedWord = "chiave";
 
         public StubWordExtractor() {
-            // Invocazione del costruttore padre con parametri dummy/predicati sempre veri
             super((s1, s2) -> true, (i1, i2) -> true, Collections.emptySet(), new Random());
         }
 
@@ -84,27 +79,29 @@ public class QuestionGeneratorTest {
      */
     @Test
     public void testGenerateQuestionSuccess() throws QuestionGenerationException {
-        // Configurazione: 1 periodo richiesto, offset di cifratura pari a 3
         PresetConfig config = new PresetConfig.Builder()
                 .withNumberOfPeriods(1)
                 .withShiftingOffset(3)
                 .build();
 
-        // Stream strutturato: Frase 1. Frase 2 contenente la parola target.
+        // Stream strutturato: Frase 1. Frase 2 contenente la parola target. (7 token in totale)
         Stream<String> sourceStream = Stream.of("Prima", "frase", ".", "La", "chiave", "funziona", ".");
+        long estimatedWordCount = 7L;
         
-        // Forziamo il random ad atterrare sull'indice 0; l'algoritmo cercherà il primo punto 
-        // all'indice 2, facendo partire il testo estratto dall'indice 3 ("La chiave funziona .")
-        controlledRandom.setForcedIndex(0);
+        // La nuova stima per il salto calcolerà maxSkip = 7 * 0.85 = 5.
+        // Vogliamo che salti la prima frase. Impostando il random a 0.4, 
+        // calcolerà randomSkip = 0.4 * 5 = 2.
+        // Salterà i primi 2 token ("Prima", "frase"), troverà il "." e inizierà a leggere da "La".
+        controlledRandom.setForcedDouble(0.4);
         stubWordExtractor.setFixedWord("chiave");
 
-        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config);
+        // AGGIUNTO: Passiamo estimatedWordCount alla firma del metodo
+        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config, estimatedWordCount);
 
         assertNotNull(result);
         assertEquals("chiave", result.getAnswer());
         
-        // Verifica cifratura della parola "chiave" con offset 3:
-        // c->f, h->k, i->l, a->d, v->y, e->h => "fkldyh"
+        // Verifica cifratura della parola "chiave" con offset 3: "fkldyh"
         assertTrue(result.getText().contains("fkldyh"), "Il testo dovrebbe contenere la parola cifrata 'fkldyh'");
         assertFalse(result.getText().contains("chiave"), "Il testo non dovrebbe più contenere la parola in chiaro");
         assertEquals("La fkldyh funziona.", result.getText());
@@ -123,7 +120,8 @@ public class QuestionGeneratorTest {
         Stream<String> emptyStream = Stream.empty();
 
         assertThrows(QuestionGenerationException.class, () -> {
-            questionGenerator.generateQuestion(emptyStream, dummyFrequencies, config);
+            // Passiamo 0 come stima
+            questionGenerator.generateQuestion(emptyStream, dummyFrequencies, config, 0L);
         }, "Dovrebbe lanciare QuestionGenerationException per uno stream vuoto");
     }
 
@@ -134,16 +132,17 @@ public class QuestionGeneratorTest {
     public void testGenerateQuestionCaseSensitiveEncryption() throws QuestionGenerationException {
         PresetConfig config = new PresetConfig.Builder()
                 .withNumberOfPeriods(1)
-                .withShiftingOffset(1) // Shift di 1: 'Test' -> 'Uftu', 'test' -> 'uftu'
+                .withShiftingOffset(1) // Shift di 1
                 .build();
 
         Stream<String> sourceStream = Stream.of("Un", "test", "chiamato", "Test", ".");
-        controlledRandom.setForcedIndex(0);
         
-        // Chiediamo allo stub di estrarre la versione minuscola "test"
+        // Impostiamo il random a 0.0 in modo che randomSkip sia 0 e inizi a leggere dalla primissima parola
+        controlledRandom.setForcedDouble(0.0);
         stubWordExtractor.setFixedWord("test");
 
-        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config);
+        // Passiamo una stima fittizia di 5 parole
+        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config, 5L);
 
         // Dovrebbe cifrare solo "test" in "uftu", lasciando invariato "Test"
         assertTrue(result.getText().contains("uftu"));

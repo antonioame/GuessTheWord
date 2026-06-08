@@ -22,6 +22,7 @@ public class ClientLoginManager implements LoginManager {
     @Override
     public void validateInfo(String username, String password) {
         NetworkMessage.LoginRequest lr = new NetworkMessage.LoginRequest(username, password);
+        conn.setUsername(username);
 
         try {
             conn.send(lr);

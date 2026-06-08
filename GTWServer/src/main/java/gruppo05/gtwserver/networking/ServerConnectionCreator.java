@@ -64,7 +64,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      * @details Legge il file "server.properties" per ottenere la porta di ascolto, istanzia 
      * il ServerSocket e inietta le lambda expression per intercettare i messaggi e le disconnessioni.
      * @return L'oggetto ServerConnection inizializzato e in ascolto.
-     * @throws RuntimeException in caso di porta già in uso o altri errori irreversibili di I/O.
+     * @throws RuntimeException In caso di porta già in uso o altri errori irreversibili di I/O.
      */
     @Override
     public ServerConnection createConnection() {
@@ -73,11 +73,12 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
             this.connection = new ServerConnection(
                     config.getPort(),  // porta
                     this::handleMessage,  // onReceive
-                    (index) -> System.out.println("Client " + index + " connesso a livello TCP."),  // onClientConnected
+                    (index) -> System.out.println("Client connesso su canale " + index), // onClientConnected
                     (index) -> handleDisconnect(index));  // onDisconnect
+            this.connection.connect();
             return this.connection;
         } catch (IOException e) {
-            throw new RuntimeException("Impossibile avviare il server. Porta occupata?", e);
+            throw new RuntimeException("Impossibile avviare il server sulla porta configurata", e);
         }
     }
 

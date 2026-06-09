@@ -5,11 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.internal.io;
 
-/**
- *
- * @author Hermann
- */
-import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.model.Source;
@@ -34,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * @brief Classe di test d'unità per verificare i comportamenti del componente IOManager,
  * utilizzando implementazioni Fake in-memory al posto di librerie di mocking e 
- * istanziando direttamente i modelli Core.
+ * istanziando direttamente i modelli Core aggiornati.
  */
 public class IOManagerTest {
 
@@ -223,16 +218,19 @@ public class IOManagerTest {
 
     /**
      * Implementazione In-Memory del database per i Source.
-     * La chiave primaria (K) è il tipo custom SourceId.
      */
     private static class FakeSourceDAO implements SourceDAO {
-        // Usiamo una Map per rendere coerente e sicura la ricerca per ID
+        // Usiamo una Map per simulare il DB
         public final Map<Integer, Source> database = new HashMap<>();
         public boolean shouldFailOnInsert = false;
 
         @Override
         public Optional<Source> selectById(Optional<Integer> id) {
-            return Optional.ofNullable(database.get(id));
+            // Estrazione sicura dell'id dall'Optional per cercare nella Map
+            if (id.isPresent()) {
+                return Optional.ofNullable(database.get(id.get()));
+            }
+            return Optional.empty();
         }
 
         @Override
@@ -260,19 +258,20 @@ public class IOManagerTest {
 
         @Override
         public void delete(Optional<Integer> id) {
-            database.remove(id);
+            // Estrazione sicura per la rimozione
+            id.ifPresent(database::remove);
         }
     }
 
     /**
      * Implementazione In-Memory del database per le Word.
-     * La chiave primaria (K) è il tipo custom WordId.
      */
     private static class FakeWordDAO implements WordDAO {
         
+        // Rinominato in WordId come hai richiesto
         private static class WordId {
-            private String token;
-            private int source;
+            private final String token;
+            private final int source;
 
             public WordId(String token, int source) {
                 this.token = token;
@@ -289,35 +288,21 @@ public class IOManagerTest {
 
             @Override
             public boolean equals(Object obj) {
-                if (this == obj) {
-                    return true;
-                }
-                if (obj == null) {
-                    return false;
-                }
-                if (getClass() != obj.getClass()) {
-                    return false;
-                }
+                if (this == obj) return true;
+                if (obj == null || getClass() != obj.getClass()) return false;
                 final WordId other = (WordId) obj;
-                if (this.source != other.source) {
-                    return false;
-                }
-                if (!Objects.equals(this.token, other.token)) {
-                    return false;
-                }
-                return true;
+                if (this.source != other.source) return false;
+                return Objects.equals(this.token, other.token);
             }
-            
-            
         }
-        
         
         public final Map<WordId, Word> database = new HashMap<>();
 
         @Override
         public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) {
-            if(token.isPresent() && source.isPresent())
+            if (token.isPresent() && source.isPresent()) {
                 return Optional.ofNullable(database.get(new WordId(token.get(), source.get())));
+            }
             return Optional.empty();
         }
 
@@ -326,9 +311,14 @@ public class IOManagerTest {
             return new ArrayList<>(database.values());
         }
 
+        // --- FIX: Implementazione reale del filtro per il Mock del Database ---
         @Override
         public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return database.values().stream()
+                    .filter(w -> token.map(t -> t.equals(w.getToken())).orElse(true))
+                    .filter(w -> frequenza.map(f -> f.equals(w.getFrequency())).orElse(true))
+                    .filter(w -> source.map(s -> s.equals(w.getSource())).orElse(true))
+                    .collect(Collectors.toList());
         }
 
         @Override
@@ -350,8 +340,9 @@ public class IOManagerTest {
 
         @Override
         public void delete(Optional<String> token, Optional<Integer> source) {
-            if(token.isPresent() && source.isPresent())
+            if (token.isPresent() && source.isPresent()) {
                 database.remove(new WordId(token.get(), source.get()));
+            }
         }
     }
 }

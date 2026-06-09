@@ -37,7 +37,6 @@ public class GameViewController implements Initializable {
 
     private ClientConnection connection;
     private String username;
-    private int challengeCode;
     private long startTime;
     private Timeline timeline;
     private boolean gameActive = false;
@@ -66,7 +65,6 @@ public class GameViewController implements Initializable {
         txaCipheredText.setText(dto.getCipheredText());
         lblOpponent.setText("Avversario: " + dto.getOpponentUsername());
         lblStatus.setText("In gioco");
-        this.challengeCode = dto.getChallengeCode();
         
         txfAnswer.clear();
         txfAnswer.setDisable(false);

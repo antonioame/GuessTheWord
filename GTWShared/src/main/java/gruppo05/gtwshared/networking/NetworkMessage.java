@@ -571,7 +571,7 @@ public abstract class NetworkMessage implements Serializable {
          * @param proposedWord  Ciò che l'utente ha scritto nel text-field.
          * @param responseTime  Timer rilevato dal frontend (suscettibile a ritardi di rete e calcolato in ms).
          */
-        public AnswerSubmission(String proposedWord, int responseTime, int challengeCode) {
+        public AnswerSubmission(String proposedWord, int responseTime) {
             super(MessageType.ANSWER_SUBMISSION);
             this.proposedWord = proposedWord;
             this.responseTime = responseTime;

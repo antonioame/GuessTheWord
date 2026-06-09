@@ -2,6 +2,7 @@ package gruppo05.gtwclient.controller;
 
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwshared.networking.NetworkMessage;
+import gruppo05.gtwshared.utility.Difficulty;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,7 +58,7 @@ public class LobbyViewController implements Initializable {
     void onPlay(ActionEvent event) {
         try {
             if (connection != null) {
-                connection.send(new NetworkMessage.PlayRequest());
+                connection.send(new NetworkMessage.PlayRequest(Difficulty.NORMAL));
             }
         } catch (IOException e) {
             e.printStackTrace();

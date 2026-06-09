@@ -74,7 +74,7 @@ public class DatabaseManager {
         String crtTblSource = 
                 "CREATE TABLE IF NOT EXISTS source (" +
                 "id                 INTEGER NOT NULL, " +
-                "path               TEXT " + 
+                "path               TEXT, " + 
                 "PRIMARY KEY(id) " +
                 ");";
         String crtTblWord = 

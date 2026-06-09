@@ -69,9 +69,11 @@ public class ConcreteWordDAO implements WordDAO {
     public List<Word> selectAll() {
         List<Word> result = new ArrayList<>();
         
+        // Cerca solo tra le parole disponibili, ovvero tra le parole che sono
+        // legate ad una sorgente con path DIVERSO da null
         final String query = 
                 "SELECT * " +
-                "FROM word;";
+                "FROM availableWords;";
         
         try (Connection conn = DatabaseManager.getConnection();
                 Statement cmd = conn.createStatement();
@@ -93,7 +95,9 @@ public class ConcreteWordDAO implements WordDAO {
         
         List<Word> result = new ArrayList<>();
         
-        StringBuffer query = new StringBuffer("Select * FROM word WHERE ");
+        // Cerca solo tra le parole disponibili, ovvero tra le parole che sono
+        // legate ad una sorgente con path DIVERSO da null
+        StringBuffer query = new StringBuffer("Select * FROM availableWords WHERE ");
         
         List<String> conditions = new ArrayList<>();
         

@@ -74,7 +74,7 @@ public class DatabaseManager {
         String crtTblSource = 
                 "CREATE TABLE IF NOT EXISTS source (" +
                 "id                 INTEGER NOT NULL, " +
-                "path               TEXT NOT NULL, " + 
+                "path               TEXT " + 
                 "PRIMARY KEY(id) " +
                 ");";
         String crtTblWord = 
@@ -125,6 +125,41 @@ public class DatabaseManager {
                 "   WHERE username = NEW.player; " +
                 "END;";
         
+        String crtVwWord = 
+                "CREATE VIEW IF NOT EXISTS availableWords " +
+                "       SELECT word.* " +
+                "       FROM word " +
+                "           JOIN source ON source.id = word.source " +
+                "       WHERE source.path IS NOT NULL;";
+        
+        String crtTgrSource =
+                "CREATE TRIGGER IF NOT EXISTS deleteOnlyUnreferencedWords " +
+                // In SQLite INSTEAD OF funziona solo per le view, quindi sono
+                // obbligato ad utilizzare BEFORE o AFTER. Poiché non voglio che
+                // vengano sollevate eccezioni, utilizzo BEFORE.
+                "BEFORE DELETE ON source " +
+                "FOR EACH ROW " +
+                // Si attiva solo quando ci sono sfide che referenziano 
+                // al documento che si vuole cancellare.
+                "WHEN EXISTS(   SELECT * " +
+                "               FROM challenge " +
+                "               WHERE source = OLD.id ) " +
+                "BEGIN " +
+                // Setto a null il path
+                "   UPDATE source " +
+                "   SET path = NULL " +
+                "   WHERE id = OLD.id; " +
+                // Cancello le parole della sorgente che voglio cancellare che 
+                // non sono legate a nessuna sfida
+                "   DELETE FROM word " +
+                "   WHERE source = OLD.id " +
+                "       AND (token, source) NOT IN ( SELECT word, source " +
+                "                                       FROM challenge ); " +
+                // Blocco la cancellazione effettiva da source
+                "   SELECT RAISE(IGNORE); " +
+                "END;";
+                
+        
         try (Connection conn = getConnection();
                 Statement cmd = conn.createStatement()) {
             try {
@@ -139,6 +174,8 @@ public class DatabaseManager {
                 cmd.execute(crtTblChallenge);
                 cmd.execute(crtTblGame);
                 cmd.execute(crtTgrPlayer);
+                cmd.execute(crtVwWord);
+                cmd.execute(crtTgrSource);
 
                 conn.commit();
             } catch (SQLException sqle) {

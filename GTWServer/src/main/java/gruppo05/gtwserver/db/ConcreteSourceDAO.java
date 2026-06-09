@@ -182,23 +182,9 @@ public class ConcreteSourceDAO implements SourceDAO {
             
             cmd.setInt(1, id.get());
             cmd.executeUpdate();
-        } catch (SQLException sqle) {
-            // Hai violato qualche vincolo RESTRICT di almeno la tabella Challenge,
-            // ovvero ci sono occorrenze con quel valore che non devono essere 
-            // cancellate
-            query = 
-                "UPDATE source " +
-                "SET path = NULL " +
-                "WHERE id = ?;";
-            
-            try(Connection conn = DatabaseManager.getConnection();
-                    PreparedStatement cmd = conn.prepareStatement(query)) {
-                cmd.setInt(1, id.get());
-                cmd.executeUpdate();
-            } catch (SQLException ex) {
+        } catch (SQLException ex) {
                 // Debug: da cambiare
                 ex.printStackTrace();
-            }
         }    
     }
     

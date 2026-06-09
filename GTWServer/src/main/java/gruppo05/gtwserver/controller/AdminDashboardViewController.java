@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.controller;
 
 import gruppo05.gtwserver.db.PlayerDAO;
+import gruppo05.gtwserver.db.ConcretePlayerDAO;
 import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.networking.ServerConnection;
@@ -167,8 +168,8 @@ public class AdminDashboardViewController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         colUsername.setCellValueFactory(cellData -> {
             Player p = cellData.getValue();
-            if (p != null && p.getId() != null) {
-                return new SimpleStringProperty(p.getId().getUsername());
+            if (p != null) {
+                return new SimpleStringProperty(p.getUsername());
             }
             return new SimpleStringProperty("");
         });
@@ -176,7 +177,7 @@ public class AdminDashboardViewController implements Initializable {
         colPlayed.setCellValueFactory(new PropertyValueFactory<>("totalGamesPlayed"));
 
         try {
-            List<Player> players = new PlayerDAO().selectAll();
+            List<Player> players = new ConcretePlayerDAO().selectAll();
             tblPlayers.setItems(FXCollections.observableArrayList(players));
         } catch (Exception e) {
             e.printStackTrace();

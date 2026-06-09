@@ -5,6 +5,8 @@ import gruppo05.gtwserver.controller.ServerSignupManager;
 import gruppo05.gtwserver.db.DatabaseManager;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;
+import gruppo05.gtwserver.db.ConcreteSourceDAO;
+import gruppo05.gtwserver.db.ConcreteWordDAO;
 import gruppo05.gtwserver.controller.AdminDashboardViewController;
 import gruppo05.gtwserver.controller.SceneNavigator;
 import gruppo05.gtwserver.networking.ServerConnection;
@@ -58,8 +60,8 @@ public class App extends Application {
                 adminCtrl.setConnection(connection);
                 
                 // Istanzia i DAO per la gestione dei sorgenti e delle parole estratte
-                SourceDAO sourceDao = new SourceDAO();
-                WordDAO wordDao = new WordDAO();
+                SourceDAO sourceDao = new ConcreteSourceDAO();
+                WordDAO wordDao = new ConcreteWordDAO();
                 
                 // Carica l'elenco delle stop-words (parole da escludere durante l'analisi del testo).
                 // Il builder di SourceManagerConfig richiede obbligatoriamente un set di stop-words (che di default è vuoto).

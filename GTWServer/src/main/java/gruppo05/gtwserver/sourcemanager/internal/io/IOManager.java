@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gruppo05.gtwserver.sourcemanager.internal.io;
 
 /**
@@ -12,8 +7,8 @@ package gruppo05.gtwserver.sourcemanager.internal.io;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
 import gruppo05.gtwserver.db.DAO;
-import gruppo05.gtwserver.model.SourceId;
-import gruppo05.gtwserver.model.WordId;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.sourcemanager.exception.SourceNotFoundException;
 import gruppo05.gtwserver.sourcemanager.exception.FrequencyMapNotFoundException;
 import gruppo05.gtwserver.sourcemanager.exception.StorageException;
@@ -30,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,12 +42,12 @@ public class IOManager {
     /**
      * @brief Oggetto DAO per l'accesso e la persistenza delle entità Source.
      */
-    private final DAO<Source, SourceId> sourceDao;
+    private final SourceDAO sourceDao;
 
     /**
      * @brief Oggetto DAO per l'accesso e la persistenza delle entità Word.
      */
-    private final DAO<Word, WordId> wordDao;
+    private final WordDAO wordDao;
 
     /**
      * @brief Costruttore del gestore di IO dell'applicazione.
@@ -62,7 +58,7 @@ public class IOManager {
      * @post
      * L'istanza di IOManager viene creata con i relativi DAO correttamente configurati.
      */
-    public IOManager(DAO<Source, SourceId> sourceDao, DAO<Word, WordId> wordDao) {
+    public IOManager(SourceDAO sourceDao, WordDAO wordDao) {
         this.sourceDao = sourceDao;
         this.wordDao = wordDao;
     }
@@ -111,14 +107,14 @@ public class IOManager {
 
         try {
             // Interroghiamo il DAO filtrando per l'identificativo univoco del sorgente
-            List<Word> words = wordDao.selectAllWhere(w -> w.getId().getSource() == source.getId().getId());
+            List<Word> words = wordDao.selectAllWhere(Optional.empty(), Optional.empty(), Optional.of(source.getId()));
             
             if (words == null || words.isEmpty()) {
                 throw new FrequencyMapNotFoundException();
             }
 
             // Trasformiamo la lista in mappa aggregando per Token e Frequenza tramite StreamAPI
-            return words.stream().collect(Collectors.toMap(word -> word.getId().getToken(), Word::getFrequency));
+            return words.stream().collect(Collectors.toMap(word -> word.getToken(), Word::getFrequency));
         } catch (Exception e) {
             throw new FrequencyMapNotFoundException();
         }
@@ -142,6 +138,28 @@ public class IOManager {
             throw new StorageException();
         }
     }
+    
+    /**
+     * @brief Stima il numero di parole contenute nel file sorgente in base alla sua dimensione.
+     * @param[in] source L'oggetto sorgente.
+     * @return Il numero stimato di token (parole).
+     */
+    public long getEstimatedWordCount(Source source) throws SourceNotFoundException {
+        if (source == null || source.getPath() == null || !Files.exists(source.getPath())) {
+            throw new SourceNotFoundException();
+        }
+        try {
+            // Ottiene la dimensione del file in byte direttamente dal File System
+            long bytes = Files.size(source.getPath());
+            
+            // Euristica: una parola media in italiano (inclusa spaziatura/punteggiatura) occupa circa 7 byte
+            // Restituisce almeno 1 per evitare errori matematici
+            return Math.max(1, bytes / 7);
+            
+        } catch (IOException e) {
+            throw new SourceNotFoundException();
+        }
+    }
 
     /**
      * @brief Memorizza massivamente le frequenze calcolate per le parole di un determinato sorgente.
@@ -159,7 +177,7 @@ public class IOManager {
         try {
             // Convertiamo la mappa di frequenze in una lista di entità strutturate Word
             List<Word> wordsToInsert = frequencies.entrySet().stream()
-                    .map(entry -> new Word(entry.getKey(), entry.getValue(), source.getId().getId()))
+                    .map(entry -> new Word(entry.getKey(), entry.getValue(), source.getId()))
                     .collect(Collectors.toList());
 
             wordDao.insertAll(wordsToInsert);
@@ -184,7 +202,7 @@ public class IOManager {
             // Per garantire l'integrità logica dei dati elimineremmo prima le parole collegate al sorgente
             // wordDao.deleteAllWhere(w -> w.getSource() == source.getId());
             // Ciò non è però necessario grazie a ON DELETE CASCADE del database tra Word e Source
-            sourceDao.delete(source.getId());
+            sourceDao.delete(Optional.of(source.getId()));
         } catch (Exception e) {
             throw new StorageException();
         }

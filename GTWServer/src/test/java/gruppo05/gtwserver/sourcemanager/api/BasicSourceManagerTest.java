@@ -13,8 +13,8 @@ import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.db.DAO;
-import gruppo05.gtwserver.model.SourceId;
-import gruppo05.gtwserver.model.WordId;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.exception.PresetNotFoundException;
@@ -45,9 +45,9 @@ public class BasicSourceManagerTest {
     private BasicSourceManager manager;
 
     // Implementazione Manuale Fake di DAO per Source
-    private static class FakeSourceDAO implements DAO<Source, SourceId> {
+    private static class FakeSourceDAO implements SourceDAO {
         @Override 
-        public Optional<Source> selectById(SourceId modelId) { 
+        public Optional<Source> selectById(Optional<Integer> id) { 
             return Optional.empty(); 
         }
 
@@ -66,13 +66,13 @@ public class BasicSourceManagerTest {
         public void update(Source model) {}
 
         @Override 
-        public void delete(SourceId modelId) {}
+        public void delete(Optional<Integer> id) {}
     }
 
     // Implementazione Manuale Fake di DAO per Word
-    private static class FakeWordDAO implements DAO<Word, WordId> {
+    private static class FakeWordDAO implements WordDAO {
         @Override 
-        public Optional<Word> selectById(WordId modelId) { 
+        public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) { 
             return Optional.empty(); 
         }
 
@@ -81,6 +81,11 @@ public class BasicSourceManagerTest {
             return new ArrayList<>(); 
         }
 
+        @Override
+        public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
+            return new ArrayList<>();
+        }
+        
         @Override 
         public void insert(Word model) {}
 
@@ -91,13 +96,13 @@ public class BasicSourceManagerTest {
         public void update(Word model) {}
 
         @Override 
-        public void delete(WordId modelId) {}
+        public void delete(Optional<String> token, Optional<Integer> source) {}
     }
 
     @BeforeEach
     public void setUp() {
-        DAO<Source, SourceId> sourceDao = new FakeSourceDAO();
-        DAO<Word, WordId> wordDao = new FakeWordDAO();
+        SourceDAO sourceDao = new FakeSourceDAO();
+        WordDAO wordDao = new FakeWordDAO();
         BiPredicate<String, String> similarityFunction = String::equals;
         BiPredicate<Integer, Integer> fallbackCriterion = (a, b) -> true;
 

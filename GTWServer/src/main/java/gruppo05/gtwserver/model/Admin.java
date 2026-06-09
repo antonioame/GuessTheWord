@@ -12,10 +12,8 @@ import java.util.Objects;
  */
 public class Admin {
     
-    /**
-     * @brief L'identificativo univoco dell'amministratore contenente lo username.
-     */
-    private final AdminId id;
+    // Da commentare
+    private final String username;
     
     /**
      * @brief La password associata all'account dell'amministratore.
@@ -32,13 +30,13 @@ public class Admin {
      * Viene creata una nuova istanza di AdminId memorizzata nel rispettivo campo id.
      */
     public Admin(String username, String password) {
-        this.id = new AdminId(username);
+        this.username = username;
         this.password = password;
     }
 
     // Da commentare
-    public AdminId getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -49,13 +47,15 @@ public class Admin {
         return password;
     }
 
-    // Da commentare    
+    // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.username);
+        return hash;
     }
 
-    // Da commentare    
+    // Da commentare
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -68,9 +68,11 @@ public class Admin {
             return false;
         }
         final Admin other = (Admin) obj;
-        if (!this.id.equals(other.getId())) {
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
         return true;
-    } 
+    }
+
+    
 }

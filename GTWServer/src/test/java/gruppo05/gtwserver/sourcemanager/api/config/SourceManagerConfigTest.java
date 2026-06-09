@@ -25,14 +25,14 @@ import java.util.function.Predicate;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
 import gruppo05.gtwserver.db.DAO;
-import gruppo05.gtwserver.model.SourceId;
-import gruppo05.gtwserver.model.WordId;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 import java.util.Optional;
 
 public class SourceManagerConfigTest {
 
-    private DAO<Source, SourceId> mockSourceDao;
-    private DAO<Word, WordId> mockWordDao;
+    private SourceDAO mockSourceDao;
+    private WordDAO mockWordDao;
     private BiPredicate<String, String> dummySimFunc;
     private BiPredicate<Integer, Integer> dummyFallbackCrit;
     private PresetConfig dummyPreset;
@@ -40,9 +40,9 @@ public class SourceManagerConfigTest {
     @BeforeEach
     public void setUp() {
         // Creazione di implementazioni stub minimali per i DAO compatibili con la nuova interfaccia
-        mockSourceDao = new DAO<Source, SourceId>() {
+        mockSourceDao = new SourceDAO() {
             @Override 
-            public Optional<Source> selectById(SourceId modelId) { 
+            public Optional<Source> selectById(Optional<Integer> id) { 
                 return Optional.empty(); 
             }
             
@@ -61,18 +61,23 @@ public class SourceManagerConfigTest {
             public void update(Source model) {}
             
             @Override 
-            public void delete(SourceId modelId) {}
+            public void delete(Optional<Integer> id) {}
         };
 
-        mockWordDao = new DAO<Word, WordId>() {
+        mockWordDao = new WordDAO() {
             @Override 
-            public Optional<Word> selectById(WordId modelId) { 
+            public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) { 
                 return Optional.empty(); 
             }
             
             @Override 
             public List<Word> selectAll() { 
                 return Collections.emptyList(); 
+            }
+
+            @Override
+            public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
+                return Collections.emptyList();
             }
             
             @Override 
@@ -85,7 +90,7 @@ public class SourceManagerConfigTest {
             public void update(Word model) {}
             
             @Override 
-            public void delete(WordId modelId) {}
+            public void delete(Optional<String> token, Optional<Integer> source) {}
         };
 
         dummySimFunc = (s1, s2) -> s1.equals(s2);

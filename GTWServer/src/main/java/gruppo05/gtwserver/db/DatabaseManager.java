@@ -74,7 +74,7 @@ public class DatabaseManager {
         String crtTblSource = 
                 "CREATE TABLE IF NOT EXISTS source (" +
                 "id                 INTEGER NOT NULL, " +
-                "path               TEXT NOT NULL, " + 
+                "path               TEXT " + 
                 "PRIMARY KEY(id) " +
                 ");";
         String crtTblWord = 
@@ -83,7 +83,7 @@ public class DatabaseManager {
                 "frequency          INTEGER DEFAULT 0, " +
                 "source             INTEGER NOT NULL, " + 
                 "PRIMARY KEY(token, source), " +
-                "FOREIGN KEY(source)        REFERENCES source(id)" +
+                "FOREIGN KEY(source)        REFERENCES source(id) " +
                 "                           ON DELETE CASCADE " +
                 ");";
         String crtTblChallenge = 
@@ -94,7 +94,7 @@ public class DatabaseManager {
                 "word               TEXT NOT NULL, " +
                 "source             INTEGER NOT NULL, " +
                 "PRIMARY KEY(code), " +
-                "FOREIGN KEY(word, source)  REFERENCES word(token, source)"  +
+                "FOREIGN KEY(word, source)  REFERENCES word(token, source) "  +
                 "                           ON DELETE RESTRICT " +
                 ");";
         String crtTblGame = 
@@ -104,9 +104,9 @@ public class DatabaseManager {
                 "result             TEXT NOT NULL, " +
                 "responseTime       INTEGER NOT NULL, " +
                 "PRIMARY KEY(player, challenge), " +
-                "FOREIGN KEY(player)        REFERENCES player(username)" +    
+                "FOREIGN KEY(player)        REFERENCES player(username) " +    
                 "                           ON DELETE RESTRICT, " +
-                "FOREIGN KEY(challenge)     REFERENCES challenge(code)" +
+                "FOREIGN KEY(challenge)     REFERENCES challenge(code) " +
                 "                           ON DELETE RESTRICT " +
                 ");";
         
@@ -125,6 +125,41 @@ public class DatabaseManager {
                 "   WHERE username = NEW.player; " +
                 "END;";
         
+        String crtVwWord = 
+                "CREATE VIEW IF NOT EXISTS availableWords AS " +
+                "       SELECT word.* " +
+                "       FROM word " +
+                "           JOIN source ON source.id = word.source " +
+                "       WHERE source.path IS NOT NULL;";
+        
+        // In SQLite INSTEAD OF funziona solo per le view, quindi sono
+        // obbligato ad utilizzare BEFORE o AFTER. Poiché non voglio che
+        // vengano sollevate eccezioni, utilizzo BEFORE.
+        // Questo trigger si attiva solo quando ci sono sfide che referenziano 
+        // al documento che si vuole cancellare. Ciò che faccio è:
+        //  -   Setto a null il path
+        //  -   Cancello le parole della sorgente che voglio cancellare che 
+        //      non sono legate a nessuna sfida 
+        //  -   Blocco la cancellazione effettiva da source
+        String crtTgrSource =
+                "CREATE TRIGGER IF NOT EXISTS deleteOnlyUnreferencedWords " +
+                "BEFORE DELETE ON source " +
+                "FOR EACH ROW " +
+                "WHEN EXISTS(   SELECT * " +
+                "               FROM challenge " +
+                "               WHERE source = OLD.id ) " +
+                "BEGIN " +
+                "   UPDATE source " +
+                "   SET path = NULL " +
+                "   WHERE id = OLD.id; " +
+                "   DELETE FROM word " +
+                "   WHERE source = OLD.id " +
+                "       AND (token, source) NOT IN ( SELECT word, source " +
+                "                                       FROM challenge ); " +
+                "   SELECT RAISE(IGNORE); " +
+                "END;";
+                
+        
         try (Connection conn = getConnection();
                 Statement cmd = conn.createStatement()) {
             try {
@@ -139,6 +174,8 @@ public class DatabaseManager {
                 cmd.execute(crtTblChallenge);
                 cmd.execute(crtTblGame);
                 cmd.execute(crtTgrPlayer);
+                cmd.execute(crtVwWord);
+                cmd.execute(crtTgrSource);
 
                 conn.commit();
             } catch (SQLException sqle) {

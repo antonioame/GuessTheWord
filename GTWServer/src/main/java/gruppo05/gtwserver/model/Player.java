@@ -14,10 +14,8 @@ import java.util.Objects;
  */
 public class Player {
     
-    /**
-     * @brief L'identificativo univoco del giocatore contenente lo username.
-     */
-    private final PlayerId id;
+    // Da commentare
+    private final String username;
     
     /**
      * @brief La password associata all'account del giocatore.
@@ -54,7 +52,7 @@ public class Player {
      * Viene creata una nuova istanza di PlayerId memorizzata nel rispettivo campo id.
      */
     public Player(String username, String password, int totalPlayedTime, int totalGamesWon, int totalGamesPlayed) {
-        this.id = new PlayerId(username);
+        this.username = username;
         this.password = password;
         this.totalPlayedTime = totalPlayedTime;
         this.totalGamesWon = totalGamesWon;
@@ -62,8 +60,8 @@ public class Player {
     }
 
     // Da commentare
-    public PlayerId getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
     /**
@@ -101,7 +99,9 @@ public class Player {
     // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.username);
+        return hash;
     }
 
     // Da commentare
@@ -117,11 +117,11 @@ public class Player {
             return false;
         }
         final Player other = (Player) obj;
-        if (!this.id.equals(other.getId())) {
+        if (!Objects.equals(this.username, other.username)) {
             return false;
         }
         return true;
     }
-    
+ 
     
 }

@@ -12,6 +12,7 @@ package gruppo05.gtwserver.sourcemanager.internal.generation;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.exception.QuestionGenerationException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -53,9 +54,10 @@ public class QuestionGenerator {
 
     /**
      * @brief Genera una domanda estraendo un testo casuale, individuando una parola e cifrandola.
-     * @param[in] source          Stream di stringhe contenente solo parole e punti.
-     * @param[in] wordFrequencies Mappa delle frequenze assolute delle parole.
-     * @param[in] config          Configurazione del preset per i vincoli di generazione.
+     * @param[in] source             Stream di stringhe contenente solo parole e punti.
+     * @param[in] wordFrequencies    Mappa delle frequenze assolute delle parole.
+     * @param[in] config             Configurazione del preset per i vincoli di generazione.
+     * @param[in] estimatedWordCount Numero di parole stimate presenti nella fonte.
      * @return La domanda generata contenente il testo con la parola cifrata e la risposta in chiaro.
      * @pre
      * Lo stream source non deve essere nullo e deve contenere elementi validi.
@@ -65,9 +67,9 @@ public class QuestionGenerator {
      * Viene restituita un'istanza valida di Question avente la risposta esatta in chiaro
      * ed il testo della domanda opportunamente modificato tramite cifratura della parola chiave.
      */
-    public Question generateQuestion(Stream<String> source, Map<String, Integer> wordFrequencies, PresetConfig config) throws QuestionGenerationException {
+    public Question generateQuestion(Stream<String> source, Map<String, Integer> wordFrequencies, PresetConfig config, long estimatedWordCount) throws QuestionGenerationException {
         // Estrazione dello stralcio di testo basato sul numero di periodi configurato
-        String questionText = extractQuestionText(source, config.getNumberOfPeriods());
+        String questionText = extractQuestionText(source, config.getNumberOfPeriods(), estimatedWordCount);
         
         // Individuazione della parola chiave all'interno del testo estratto
         String targetWord = wordExtractor.extractWord(questionText, wordFrequencies, config);
@@ -80,8 +82,9 @@ public class QuestionGenerator {
 
     /**
      * @brief Estrae uno stralcio di testo partendo da un indice casuale fino a completare i periodi richiesti.
-     * @param[in] source          Stream sorgente di token (parole e punti).
-     * @param[in] numberOfPeriods Numero di frasi (terminate da '.') da includere nello stralcio.
+     * @param[in] source             Stream sorgente di token (parole e punti).
+     * @param[in] numberOfPeriods    Numero di frasi (terminate da '.') da includere nello stralcio.
+     * @param[in] estimatedWordCount Numero di parole stimate presenti nella fonte.
      * @return Lo stralcio di testo estratto sotto forma di stringa unica.
      * @pre
      * Lo stream dei token deve essere popolato e numberOfPeriods deve essere maggiore di zero.
@@ -89,47 +92,33 @@ public class QuestionGenerator {
      * Viene restituita una stringa non vuota formata concatenando i token isolati,
      * garantendo la corretta spaziatura tra le parole.
      */
-    private String extractQuestionText(Stream<String> source, int numberOfPeriods) throws QuestionGenerationException {
-        List<String> tokens = source.collect(Collectors.toList());
-        if (tokens.isEmpty()) {
-            throw new QuestionGenerationException("Lo stream sorgente è vuoto, impossibile estrarre testo.");
-        }
+    private String extractQuestionText(Stream<String> source, int numberOfPeriods, long estimatedWordCount) throws QuestionGenerationException {
+        
+        // 1. Calcolo del salto casuale. 
+        // Riduciamo la stima del 15% per evitare di saltare troppo vicini alla fine del file
+        long maxSkip = Math.max(0, (long)(estimatedWordCount * 0.85));
+        long randomSkip = (maxSkip > 0) ? (long)(random.nextDouble() * maxSkip) : 0;
 
-        // 1. Individuazione del punto di partenza tramite indice numerico casuale
-        int randomIndex = random.nextInt(tokens.size());
-        int startPos = -1;
-
-        // 2. Scorrimento in avanti fino a trovare il primo punto '.' per iniziare da una frase pulita
-        for (int i = randomIndex; i < tokens.size(); i++) {
-            if (".".equals(tokens.get(i))) {
-                startPos = i + 1; // Il nuovo periodo inizia subito dopo il punto
-                break;
-            }
-        }
-
-        // Fallback: se non troviamo un punto fino alla fine, cerchiamo dall'inizio fino all'indice casuale
-        if (startPos == -1) {
-            for (int i = 0; i < randomIndex; i++) {
-                if (".".equals(tokens.get(i))) {
-                    startPos = i + 1;
+        // 2. Saltiamo 'randomSkip' token nello stream e otteniamo un Iterator
+        Iterator<String> iterator = source.skip(randomSkip).iterator();
+        
+        // 3. Poiché abbiamo saltato a caso, potremmo essere a metà frase. 
+        // Scartiamo tutto finché non troviamo il primo punto '.', così iniziamo da una frase pulita.
+        if (randomSkip > 0) {
+            while (iterator.hasNext()) {
+                if (".".equals(iterator.next())) {
                     break;
                 }
             }
         }
 
-        // Se l'intero stream non contiene alcun punto, o siamo all'estremo finale, partiamo dall'indice 0
-        if (startPos == -1 || startPos >= tokens.size()) {
-            startPos = 0;
-        }
-
-        // 3. Raccolta dei token concatenandoli fino al raggiungimento del numero di periodi richiesto
+        // 4. Inizia l'estrazione manuale ("takeWhile")
         StringBuilder sb = new StringBuilder();
         int periodCount = 0;
         
-        for (int i = startPos; i < tokens.size(); i++) {
-            String token = tokens.get(i);
+        while (iterator.hasNext()) {
+            String token = iterator.next();
             
-            // Aggiunge lo spazio di separazione solo se non si tratta dell'inizio o di un punto fermo
             if (sb.length() > 0 && !".".equals(token)) {
                 sb.append(" ");
             }
@@ -138,14 +127,14 @@ public class QuestionGenerator {
             if (".".equals(token)) {
                 periodCount++;
                 if (periodCount == numberOfPeriods) {
-                    break;
+                    break; // Esci e ferma il caricamento in memoria!
                 }
             }
         }
 
         String result = sb.toString().trim();
         if (result.isEmpty()) {
-            throw new QuestionGenerationException("Impossibile formare un periodo valido con i token estratti.");
+            throw new QuestionGenerationException("Impossibile formare un periodo valido. Riprovare.");
         }
         
         return result;

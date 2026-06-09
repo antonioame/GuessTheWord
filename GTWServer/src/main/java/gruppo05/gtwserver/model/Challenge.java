@@ -15,10 +15,8 @@ import java.util.Random;
  */
 public class Challenge {
     
-    /**
-     * @brief L'identificativo univoco della sfida contenente il codice numerico.
-     */
-    private final ChallengeId id;
+    // Da commentare
+    private final int code;
     
     /**
      * @brief La data in cui viene o è stata proposta la sfida.
@@ -51,7 +49,7 @@ public class Challenge {
      * Viene creata una nuova istanza di ChallengeId memorizzata nel campo id.
      */
     public Challenge(int code, Date date, Difficulty difficulty, String word, int source) {
-        this.id = new ChallengeId(code);
+        this.code = code;
         this.date = date;
         this.difficulty = difficulty;
         this.word = word;
@@ -76,8 +74,8 @@ public class Challenge {
     }
 
     // Da commentare
-    public ChallengeId getId() {
-        return id;
+    public int getCode() {
+        return code;
     }
 
     /**
@@ -112,11 +110,15 @@ public class Challenge {
         return source;
     }
 
+    // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 5;
+        hash = 61 * hash + this.code;
+        return hash;
     }
 
+    // Da commentare
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -129,11 +131,11 @@ public class Challenge {
             return false;
         }
         final Challenge other = (Challenge) obj;
-        if (!this.id.equals(other.getId())) {
+        if (this.code != other.code) {
             return false;
         }
         return true;
     }
-    
+
     
 }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gruppo05.gtwserver.sourcemanager.api.config;
 
 /**
@@ -18,8 +13,8 @@ import java.util.function.BiPredicate;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
 import gruppo05.gtwserver.db.DAO;
-import gruppo05.gtwserver.model.SourceId;
-import gruppo05.gtwserver.model.WordId;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 
 /**
  * @brief Classe di configurazione immutabile per la gestione delle sorgenti.
@@ -32,11 +27,11 @@ public class SourceManagerConfig {
     /**
      * @brief Il Data Access Object per la persistenza delle entità Source.
      */
-    private final DAO<Source, SourceId> sourceDao;
+    private final SourceDAO sourceDao;
     /**
      * @brief Il Data Access Object per la persistenza delle entità Word.
      */
-    private final DAO<Word, WordId> wordDao;
+    private final WordDAO wordDao;
     /**
      * @brief Funzione biocriterio per determinare la similarità tra due stringhe tokenizzate.
      */
@@ -73,14 +68,14 @@ public class SourceManagerConfig {
      * @brief Recupera il DAO relativo alle sorgenti di dati.
      * @return Il DAO delle entità Source.
      */
-    public DAO<Source, SourceId> getSourceDao() {
+    public SourceDAO getSourceDao() {
         return sourceDao;
     }
     /**
      * @brief Recupera il DAO relativo ai vocaboli estratti.
      * @return Il DAO delle entità Word.
      */
-    public DAO<Word, WordId> getWordDao() {
+    public WordDAO getWordDao() {
         return wordDao;
     }
     /**
@@ -120,11 +115,11 @@ public class SourceManagerConfig {
         /**
          * @brief Riferimento al DAO delle sorgenti.
          */
-        private final DAO<Source, SourceId> sourceDao;
+        private final SourceDAO sourceDao;
         /**
          * @brief Riferimento al DAO dei vocaboli.
          */
-        private final DAO<Word, WordId> wordDao;
+        private final WordDAO wordDao;
         /**
          * @brief Riferimento alla funzione di confronto per similarità.
          */
@@ -152,7 +147,7 @@ public class SourceManagerConfig {
          * @post
          * Viene creata un'istanza operativa del Builder configurata con i componenti core del motore.
          */
-        public Builder(DAO<Source, SourceId> sourceDao, DAO<Word, WordId> wordDao, BiPredicate<String, String> simFunc, BiPredicate<Integer, Integer> fallbackCrit) {
+        public Builder(SourceDAO sourceDao, WordDAO wordDao, BiPredicate<String, String> simFunc, BiPredicate<Integer, Integer> fallbackCrit) {
             if (sourceDao == null || wordDao == null || simFunc == null || fallbackCrit == null) {
                 throw new IllegalArgumentException("I parametri obbligatori del costruttore del Builder non possono essere null.");
             }

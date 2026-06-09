@@ -10,11 +10,11 @@ package gruppo05.gtwserver.sourcemanager.api;
  * @author Hermann
  */
 import gruppo05.gtwserver.db.DAO;
+import gruppo05.gtwserver.db.SourceDAO;
+import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.model.Source;
-import gruppo05.gtwserver.model.SourceId;
 import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.model.WordId;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 
@@ -37,7 +37,6 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -53,53 +52,91 @@ public class SourceManagerIntegrationTest {
     Path tempDir;
 
     /**
-     * @brief Finto DAO per conservare le entità in memoria durante i test.
-     * @param <T> Il tipo dell'entità gestita.
-     * @param <K> Il tipo della chiave primaria dell'entità.
+     * @brief Finto SourceDAO per conservare le entità in memoria durante i test.
      */
-    private static class FakeDAO<T, K> implements DAO<T, K> {
-        private final Map<K, T> storage = new HashMap<>();
-        private final Function<T, K> idExtractor;
+    private static class FakeSourceDAO implements SourceDAO {
+        private final Map<Integer, Source> storage = new HashMap<>();
 
-        public FakeDAO(Function<T, K> idExtractor) {
-            this.idExtractor = idExtractor;
+        @Override
+        public Optional<Source> selectById(Optional<Integer> id) {
+            if (id.isPresent()) {
+                return Optional.ofNullable(storage.get(id.get()));
+            }
+            return Optional.empty();
         }
 
         @Override
-        public Optional<T> selectById(K modelId) {
-            return Optional.ofNullable(storage.get(modelId));
-        }
-
-        @Override
-        public List<T> selectAll() {
+        public List<Source> selectAll() {
             return new ArrayList<>(storage.values());
         }
 
         @Override
-        public void insert(T item) {
-            storage.put(idExtractor.apply(item), item);
+        public void insert(Source item) {
+            storage.put(item.getId(), item);
         }
 
         @Override
-        public void insertAll(List<T> items) {
-            for (T item : items) {
+        public void insertAll(List<Source> items) {
+            for (Source item : items) {
                 insert(item);
             }
         }
 
         @Override
-        public void update(T item) {
-            storage.put(idExtractor.apply(item), item);
+        public void update(Source item) {
+            storage.put(item.getId(), item);
         }
 
         @Override
-        public void delete(K modelId) {
-            storage.remove(modelId);
+        public void delete(Optional<Integer> id) {
+            id.ifPresent(storage::remove);
         }
     }
 
-    private FakeDAO<Source, SourceId> sourceDao;
-    private FakeDAO<Word, WordId> wordDao;
+    /**
+     * @brief Finto WordDAO per conservare le entità in memoria durante i test.
+     */
+    private static class FakeWordDAO implements WordDAO {
+        private final List<Word> storage = new ArrayList<>();
+
+        @Override
+        public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) {
+            return Optional.empty(); // Stub per il test
+        }
+
+        @Override
+        public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
+            return new ArrayList<>(); // Stub per il test
+        }
+
+        @Override
+        public List<Word> selectAll() {
+            return new ArrayList<>(storage);
+        }
+
+        @Override
+        public void insert(Word item) {
+            storage.add(item);
+        }
+
+        @Override
+        public void insertAll(List<Word> items) {
+            storage.addAll(items);
+        }
+
+        @Override
+        public void update(Word item) {
+            // Non strettamente necessario per questo test
+        }
+
+        @Override
+        public void delete(Optional<String> token, Optional<Integer> source) {
+            // Stub per il test
+        }
+    }
+
+    private FakeSourceDAO sourceDao;
+    private FakeWordDAO wordDao;
     private BasicSourceManager sourceManager;
     private Source dummySource;
 
@@ -108,9 +145,8 @@ public class SourceManagerIntegrationTest {
      */
     @BeforeEach
     public void setUp() throws IOException {
-        // Passiamo i reference ai metodi getter degli ID
-        sourceDao = new FakeDAO<>(Source::getId);
-        wordDao = new FakeDAO<>(Word::getId);
+        sourceDao = new FakeSourceDAO();
+        wordDao = new FakeWordDAO();
 
         Set<String> customStopWords = new HashSet<>();
         customStopWords.add("il");
@@ -178,8 +214,8 @@ public class SourceManagerIntegrationTest {
         assertTrue(awaitResult, "Il task asincrono è andato in timeout.");
         assertNull(errorRef.get(), "Si è verificata un'eccezione inaspettata durante addSource.");
         
-        // Verifica tramite selectById anziché selectAllWhere
-        assertTrue(sourceDao.selectById(dummySource.getId()).isPresent(), "La sorgente non è stata inserita nel DAO.");
+        // Verifica tramite selectById con uso di Optional
+        assertTrue(sourceDao.selectById(Optional.of(dummySource.getId())).isPresent(), "La sorgente non è stata inserita nel DAO.");
     }
 
     /**
@@ -193,8 +229,8 @@ public class SourceManagerIntegrationTest {
 
         sourceManager.removeSource(dummySource, 
             () -> {
-                // Delete ora usa l'ID e non l'oggetto
-                sourceDao.delete(dummySource.getId());
+                // Delete ora usa Optional e l'ID
+                sourceDao.delete(Optional.of(dummySource.getId()));
                 latch.countDown();
             },
             e -> {
@@ -207,8 +243,8 @@ public class SourceManagerIntegrationTest {
 
         assertNull(errorRef.get(), "Si è verificata un'eccezione durante la rimozione della sorgente.");
         
-        // Verifica l'assenza tramite selectById
-        assertFalse(sourceDao.selectById(dummySource.getId()).isPresent(), "La sorgente non è stata rimossa correttamente dal DAO.");
+        // Verifica l'assenza tramite selectById con uso di Optional
+        assertFalse(sourceDao.selectById(Optional.of(dummySource.getId())).isPresent(), "La sorgente non è stata rimossa correttamente dal DAO.");
     }
 
     /**

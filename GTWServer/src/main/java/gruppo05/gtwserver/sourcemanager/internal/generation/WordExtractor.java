@@ -44,9 +44,6 @@ public class WordExtractor {
  */
     private final Random random;
 
-    // Campi transitori per passare il contesto ai metodi helper preservando le firme UML
-    private transient String temporaryTargetWord;
-    private transient Map<String, Integer> temporaryWordFrequencies;
 
 /**
  * @brief Costruttore completo per l'inizializzazione del WordExtractor.
@@ -82,8 +79,6 @@ public class WordExtractor {
             throw new QuestionGenerationException("I parametri di input non possono essere nulli.");
         }
 
-        this.temporaryWordFrequencies = wordFrequencies;
-
         // 1. Filtraggio Iniziale: Creazione dello stralcio pulito da stop-words e parole fuori frequenza
         String eligibleText = filterByStopWordsAndMaximumFrequency(text, wordFrequencies, config.getMaximumWordFrequency());
         String fallbackCandidate = null;
@@ -94,10 +89,9 @@ public class WordExtractor {
             
             // 2.1 Estrazione casuale
             String candidate = extractRandomWord(eligibleText);
-            this.temporaryTargetWord = candidate;
 
             // 2.2 Ricerca parole simili sul testo originale
-            List<String> similarWords = extractSimilarWords(text);
+            List<String> similarWords = extractSimilarWords(text, candidate);
 
             // 2.3 Valutazione
             if (similarWords.size() < config.getMaximumSimilarWordInQuestionText()) {
@@ -108,11 +102,11 @@ public class WordExtractor {
                 if (fallbackCandidate == null) {
                     fallbackCandidate = candidate;
                 } else {
-                    fallbackCandidate = updateFallbackWord(fallbackCandidate, candidate);
+                    fallbackCandidate = updateFallbackWord(fallbackCandidate, candidate, wordFrequencies);
                 }
 
                 // Riduzione dello stralcio: rimuoviamo il candidato e tutte le sue simili
-                eligibleText = filterSimilarWords(eligibleText, similarWords);
+                eligibleText = filterSimilarWords(eligibleText, similarWords, candidate);
             }
         }
 
@@ -159,17 +153,18 @@ public class WordExtractor {
 
 /**
  * @brief Estrae dal testo originale tutte le parole che risultano simili al candidato correntemente in analisi.
- * @param[in] text Il testo completo di partenza.
+ * @param[in] text       Il testo completo di partenza.
+ * @param[in] targetWord La parola target che ha fallito il test di similarità
  * @return La lista univoca delle parole simili individuate.
  */
-    private List<String> extractSimilarWords(String text) {
+    private List<String> extractSimilarWords(String text, String targetWord) {
         return Arrays.stream(text.split("\\s+"))
                 .map(w -> w.replace(".", "").trim())
                 .filter(w -> !w.isEmpty())
                 // Una parola non va considerata come "simile" a se stessa
-                .filter(w -> !w.equalsIgnoreCase(temporaryTargetWord))
+                .filter(w -> !w.equalsIgnoreCase(targetWord))
                 // Filtriamo usando il predicato di similarità iniettato dal config
-                .filter(w -> similarityFunction.test(temporaryTargetWord, w))
+                .filter(w -> similarityFunction.test(targetWord, w))
                 // Rimuove eventuali doppioni per avere il conteggio esatto delle parole simili uniche
                 .distinct()
                 .collect(Collectors.toList());
@@ -179,12 +174,13 @@ public class WordExtractor {
  * @brief Rimuove dallo stralcio di testo corrente la parola appena scartata e tutte le sue simili.
  * @param[in] text         Lo stralcio di testo attualmente esplorabile.
  * @param[in] similarWords La lista delle parole simili da escludere, unitamente alla parola target corrente.
+ * @param[in] targetWord   La parola target che ha fallito il test di similarità.
  * @return Il nuovo stralcio di testo ridotto, pronto per la successiva iterazione.
  */
-    private String filterSimilarWords(String text, List<String> similarWords) {
+    private String filterSimilarWords(String text, List<String> similarWords, String targetWord) {
         return Arrays.stream(text.split("\\s+"))
                 // Teniamo la parola solo se NON è il target che ha appena fallito
-                .filter(w -> !w.equalsIgnoreCase(temporaryTargetWord))
+                .filter(w -> !w.equalsIgnoreCase(targetWord))
                 // E la teniamo solo se NON fa parte della lista delle parole simili
                 .filter(w -> !similarWords.contains(w))
                 // Ricongiungiamo il testo sopravvissuto
@@ -193,13 +189,14 @@ public class WordExtractor {
 
 /**
  * @brief Confronta il vecchio e il nuovo candidato scartato per determinare chi conservare come fallback.
- * @param[in] oldWord Il candidato di fallback eletto nei cicli precedenti.
- * @param[in] newWord Il nuovo candidato appena scartato.
+ * @param[in] oldWord         Il candidato di fallback eletto nei cicli precedenti.
+ * @param[in] newWord         Il nuovo candidato appena scartato.
+ * @param[in] wordFrequencies La mappa con le frequenze delle parole nella fonte.
  * @return La parola considerata "meno peggio" in base al criterio di frequenza.
  */
-    private String updateFallbackWord(String oldWord, String newWord) {
-        int freqOld = temporaryWordFrequencies.getOrDefault(oldWord, 0);
-        int freqNew = temporaryWordFrequencies.getOrDefault(newWord, 0);
+    private String updateFallbackWord(String oldWord, String newWord, Map<String, Integer> wordFrequencies) {
+        int freqOld = wordFrequencies.getOrDefault(oldWord, 0);
+        int freqNew = wordFrequencies.getOrDefault(newWord, 0);
 
         return fallbackWordCriterion.test(freqOld, freqNew) ? newWord : oldWord;
     }

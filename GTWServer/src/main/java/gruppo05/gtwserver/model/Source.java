@@ -14,10 +14,7 @@ import java.util.Random;
  */
 public class Source {
     
-    /**
-     * @brief L'identificativo univoco della sorgente contenente il codice numerico.
-     */
-    private final SourceId id;
+    private final int id;
     
     /**
      * @brief Il percorso di file del sistema associato alla sorgente.
@@ -34,7 +31,7 @@ public class Source {
      * Viene creata una nuova istanza di SourceId memorizzata nel campo id.
      */
     public Source(int id, Path path) {
-        this.id = new SourceId(id);
+        this.id = id;
         this.path = path;
     }
     
@@ -52,7 +49,7 @@ public class Source {
     }
 
     // Da commentare
-    public SourceId getId() {
+    public int getId() {
         return id;
     }
 
@@ -67,7 +64,9 @@ public class Source {
     // Da commentare
     @Override
     public int hashCode() {
-        return id.hashCode();
+        int hash = 3;
+        hash = 79 * hash + this.id;
+        return hash;
     }
 
     // Da commentare
@@ -83,7 +82,7 @@ public class Source {
             return false;
         }
         final Source other = (Source) obj;
-        if (!this.id.equals(other.getId())) {
+        if (this.id != other.id) {
             return false;
         }
         return true;

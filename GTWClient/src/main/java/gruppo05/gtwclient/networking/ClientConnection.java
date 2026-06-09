@@ -114,4 +114,14 @@ public class ClientConnection extends NetworkConnection {
     public void disconnect() throws IOException {
         disconnectChannel(0);
     }
+
+    private String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

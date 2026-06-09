@@ -1,12 +1,7 @@
 package gruppo05.gtwserver.sourcemanager.internal.io;
 
-/**
- *
- * @author Hermann
- */
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.sourcemanager.exception.SourceNotFoundException;

@@ -2,10 +2,13 @@ package gruppo05.gtwclient;
 
 import gruppo05.gtwclient.controller.ClientLoginManager;
 import gruppo05.gtwclient.controller.ClientSignupManager;
+import gruppo05.gtwclient.controller.SceneNavigator;
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwclient.networking.ClientConnectionCreator;
 import gruppo05.gtwshared.controller.LoginViewController;
+import gruppo05.gtwshared.networking.NetworkMessage;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,6 +25,7 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {
+        SceneNavigator.init(stage);
         
         connection = new ClientConnectionCreator().createConnection();
         
@@ -34,6 +38,19 @@ public class App extends Application {
         ctrl.setSignupManager(new ClientSignupManager(connection));
         
         stage.setScene(new Scene(root));
+        stage.setOnCloseRequest(event -> {
+            try {
+                if (connection != null) {
+                    connection.send(new NetworkMessage.ClientDisconnect());
+                    connection.disconnect();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
         stage.show();
     }
     

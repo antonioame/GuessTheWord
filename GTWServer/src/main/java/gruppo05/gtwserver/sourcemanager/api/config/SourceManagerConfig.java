@@ -1,9 +1,5 @@
 package gruppo05.gtwserver.sourcemanager.api.config;
 
-/**
- *
- * @author Hermann
- */
 import java.util.Map;
 import java.util.Set;
 import java.util.HashMap;
@@ -12,7 +8,6 @@ import java.util.Collections;
 import java.util.function.BiPredicate;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;
 

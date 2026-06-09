@@ -6,14 +6,15 @@ import java.util.List;
 
 import gruppo05.gtwshared.dto.CallbackDTO;
 import gruppo05.gtwshared.utility.Result;
+import gruppo05.gtwshared.utility.Difficulty;
 
 /**
  * @class NetworkMessage
- * @brief Classe base astratta di tutti i messaggi scambiati in rete tra server e client.
- * * @details Ogni NetworkMessage trasporta un {@link MessageType} che consente al ricevente di 
- * capire immediatamente come interpretare il payload. Grazie al metodo astratto {@link #toDTO()},
- * ogni pacchetto di rete ricevuto sa come "auto-convertirsi" in un oggetto DTO sicuro 
- * per essere elaborato dall'interfaccia grafica.
+ * @brief Classe base astratta per tutti i payload scambiati in rete tra server e client.
+ * * @details Stabilisce il contratto fondamentale del protocollo di rete del progetto.
+ * Ogni pacchetto serializzabile viaggiante sui socket deve estendere questa classe. 
+ * Assicura l'autoconsapevolezza temporale (timestamp) e l'interoperabilità verso la GUI 
+ * tramite la conversione in {@link CallbackDTO}.
  * 
  * * <p><b>FLUSSO DI COMUNICAZIONE CLIENT-SERVER:</b></p>
  * <ol>
@@ -50,28 +51,22 @@ import gruppo05.gtwshared.utility.Result;
  * </ol>
  * 
  * @author chiara
- * @version 2.2
+ * @version 2.0
  */
 public abstract class NetworkMessage implements Serializable {
 
-    /**
-     * @brief Versione di serializzazione.
-     */
+    /** @brief Versione di serializzazione di base dell'architettura. */
     private static final long serialVersionUID = 1L;
-
-    /**
-     * @brief Tipo del messaggio, usato per il dispatch.
-     */
+    
+    /** @brief Valore enumerato identificativo usato in ricezione per smistare rapidamente la logica. */
     private final MessageType type;
-
-    /**
-     * @brief Timestamp di creazione del messaggio.
-     */
+    
+    /** @brief L'istante esatto di emissione fisica o logica del messaggio. */
     private final LocalDateTime timestamp;
 
     /**
-     * @brief Costruttore base invocato dalle sottoclassi.
-     * @param type Il tipo specifico del messaggio di rete.
+     * @brief Costruttore interno per la base del messaggio.
+     * @param type Il tipo di messaggio ereditato.
      */
     protected NetworkMessage(MessageType type) {
         this.type = type;
@@ -79,31 +74,30 @@ public abstract class NetworkMessage implements Serializable {
     }
 
     /**
-     * @brief Restituisce il tipo di messaggio.
-     * @return L'enumeratore MessageType.
+     * @brief Restituisce il tipo discriminante del messaggio.
+     * @return Enum MessageType associato.
      */
     public MessageType getType() { 
         return type; 
     }
 
     /**
-     * @brief Restituisce il momento esatto in cui il messaggio è stato creato.
-     * @return Un oggetto LocalDateTime.
+     * @brief Restituisce il momento di generazione.
+     * @return LocalDateTime nativo.
      */
     public LocalDateTime getTimestamp() { 
         return timestamp; 
     }
 
     /**
-     * @brief Converte il pacchetto di rete nel DTO corrispondente per la UI.
-     * @details Metodo astratto che deve essere implementato da tutti i payload specifici.
-     * @return Una nuova istanza di CallbackDTO popolata con i dati del messaggio.
+     * @brief Metodo polimorfico che impone alle sottoclassi di auto-tradursi in DTO.
+     * @return Il CallbackDTO compilato a dovere con i dati della sottoclasse invocatrice.
      */
     public abstract CallbackDTO toDTO();
 
     /**
-     * @brief Genera una rappresentazione testuale del messaggio per finalità di log o debug.
-     * @return Una stringa contenente nome classe, tipo e timestamp.
+     * @brief Ritorna una traccia descrittiva per debug e logging di rete.
+     * @return Formato stringa ClassName[TYPE @ Time].
      */
     @Override
     public String toString() {
@@ -114,7 +108,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class LoginRequest
-     * @brief Messaggio Client -> Server: richiesta di accesso.
+     * @brief Comando (Client -> Server): Chiede l'autorizzazione di accesso al sistema.
      */
     public static class LoginRequest extends NetworkMessage {
         
@@ -134,9 +128,9 @@ public abstract class NetworkMessage implements Serializable {
         private final String password;
 
         /**
-         * @brief Costruisce una richiesta di login.
-         * @param username L'username digitato dall'utente.
-         * @param password La password digitata dall'utente.
+         * @brief Inizializza il pacchetto per l'autenticazione.
+         * @param username Lo username utente.
+         * @param password La password immessa.
          */
         public LoginRequest(String username, String password) {
             super(MessageType.LOGIN_REQUEST);
@@ -144,12 +138,18 @@ public abstract class NetworkMessage implements Serializable {
             this.password = password;
         }
 
-        /** @return L'username inserito. */
+        /**
+         * @brief Ritorna lo username contenuto.
+         * @return Stringa username.
+         */
         public String getUsername() { 
             return username; 
         }
 
-        /** @return La password inserita. */
+        /**
+         * @brief Ritorna la password contenuta.
+         * @return Stringa password.
+         */
         public String getPassword() { 
             return password; 
         }
@@ -164,7 +164,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class LoginResponse
-     * @brief Messaggio Server -> Client: esito del tentativo di accesso.
+     * @brief Notifica (Server -> Client): Riposta con esito della validazione credenziali.
      */
     public static class LoginResponse extends NetworkMessage {
         /**
@@ -187,10 +187,10 @@ public abstract class NetworkMessage implements Serializable {
         private final boolean isAdmin;
 
         /**
-         * @brief Costruisce la risposta del server al login.
-         * @param success true se le credenziali sono valide, false altrimenti.
-         * @param errorMessage Eventuale messaggio di errore da mostrare (null se success).
-         * @param isAdmin true se l'utente autenticato è un amministratore.
+         * @brief Costruisce il responso completo del server.
+         * @param success      Esito (true=permesso accordato, false=rifiuto).
+         * @param errorMessage Testo di fallimento da inoltrare (null se successo).
+         * @param isAdmin      Flag di determinazione privilegi elevati sul db.
          */
         public LoginResponse(boolean success, String errorMessage, boolean isAdmin) {
             super(MessageType.LOGIN_RESPONSE);
@@ -200,34 +200,43 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         /**
-         * @brief Costruttore statico agevolato per generare una risposta di successo.
-         * @param isAdmin Specifica se l'utente ha i permessi admin.
-         * @return L'istanza configurata di LoginResponse.
+         * @brief Generatore factory di supporto per un login andato a buon fine.
+         * @param isAdmin Specifica i privilegi attribuiti in sessione.
+         * @return Pacchetto pre-configurato.
          */
         public static LoginResponse loginSuccess(boolean isAdmin) {
             return new LoginResponse(true, null, isAdmin);
         }
 
         /**
-         * @brief Costruttore statico agevolato per generare una risposta di fallimento.
-         * @param reason La stringa descrittiva del motivo del rifiuto.
-         * @return L'istanza configurata di LoginResponse.
+         * @brief Generatore factory di supporto per un login bloccato o fallito.
+         * @param reason La motivazione da rendere all'utente.
+         * @return Pacchetto pre-configurato per il fallimento.
          */
         public static LoginResponse loginFailed(String reason) {
             return new LoginResponse(false, reason, false);
         }
 
-        /** @return L'esito del login. */
+        /**
+         * @brief Indica il raggiungimento del target funzionale.
+         * @return True se login valido.
+         */
         public boolean isSuccess() { 
             return success; 
         }
 
-        /** @return La stringa di errore (se presente). */
+        /**
+         * @brief Fornisce i dettagli del mancato accesso.
+         * @return Testo descrittivo del problema.
+         */
         public String getErrorMessage() { 
             return errorMessage; 
         }
 
-        /** @return Lo stato dei privilegi amministrativi. */
+        /**
+         * @brief Riporta lo stato dei privilegi speciali.
+         * @return True se l'account appartiene a un amministratore.
+         */
         public boolean isAdmin() { 
             return isAdmin; 
         }
@@ -244,7 +253,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class RegisterRequest
-     * @brief Messaggio Client -> Server: richiesta di registrazione nuovo account.
+     * @brief Comando (Client -> Server): Inviazione dei dati per creare un nuovo profilo.
      */
     public static class RegisterRequest extends NetworkMessage {
         /**
@@ -263,9 +272,9 @@ public abstract class NetworkMessage implements Serializable {
         private final String password;
         
         /**
-         * @brief Costruisce la richiesta di registrazione.
-         * @param username L'username scelto.
-         * @param password La password scelta.
+         * @brief Struttura la richiesta di inserimento.
+         * @param username Il nome desiderato (possibile chiave primaria db).
+         * @param password Il segreto da conservare.
          */
         public RegisterRequest(String username, String password) {
             super(MessageType.REGISTER_REQUEST);
@@ -273,12 +282,18 @@ public abstract class NetworkMessage implements Serializable {
             this.password = password;
         }
 
-        /** @return L'username scelto. */
+        /**
+         * @brief Restituisce il nuovo username scelto.
+         * @return Stringa nome.
+         */
         public String getUsername() { 
             return username; 
         }
 
-        /** @return La password scelta. */
+        /**
+         * @brief Restituisce la nuova password associata.
+         * @return Stringa password.
+         */
         public String getPassword() { 
             return password; 
         }
@@ -291,10 +306,9 @@ public abstract class NetworkMessage implements Serializable {
         }
     }
 
-    
     /**
      * @class RegisterResponse
-     * @brief Messaggio Server -> Client: esito del tentativo di registrazione.
+     * @brief Notifica (Server -> Client): Feedback sull'operazione di iscrizione SQL.
      */
     public static class RegisterResponse extends NetworkMessage {
         /**
@@ -313,9 +327,9 @@ public abstract class NetworkMessage implements Serializable {
         private final String  errorMessage;
 
         /**
-         * @brief Costruisce la risposta del server alla registrazione.
-         * @param success true se l'account è stato creato, false altrimenti.
-         * @param errorMessage Causa del fallimento (es. "Username già in uso").
+         * @brief Inizializza un messaggio grezzo del risultato di insert.
+         * @param success      Esito inserimento record.
+         * @param errorMessage Possibile avviso (es. PK_Violation "Nome già in uso").
          */
         public RegisterResponse(boolean success, String errorMessage) {
             super(MessageType.REGISTER_RESPONSE);
@@ -324,28 +338,34 @@ public abstract class NetworkMessage implements Serializable {
         }
 
         /**
-         * @brief Costruttore statico per registrazione riuscita.
-         * @return Un'istanza configurata di RegisterResponse.
+         * @brief Fornisce un blocco base a fronte di una registrazione pulita.
+         * @return RegisterResponse con Success = true.
          */
         public static RegisterResponse registerSuccess() {
             return new RegisterResponse(true, null);
         }
 
         /**
-         * @brief Costruttore statico per registrazione fallita.
-         * @param reason Descrizione dell'errore.
-         * @return Un'istanza configurata di RegisterResponse.
+         * @brief Fornisce un blocco base a fronte di una registrazione fallimentare.
+         * @param reason La violazione incontrata (es. Username duplicato).
+         * @return RegisterResponse con Success = false.
          */
         public static RegisterResponse registerFailed(String reason) {
             return new RegisterResponse(false, reason);
         }
 
-        /** @return L'esito dell'operazione. */
+        /**
+         * @brief Informa della buona o mala riuscita.
+         * @return True se inserimento avvenuto con successo.
+         */
         public boolean isSuccess() { 
             return success; 
         }
 
-        /** @return Il messaggio di errore, se presente. */
+        /**
+         * @brief Messaggio visualizzabile del fallimento per la UI.
+         * @return Stringa di avviso.
+         */
         public String getErrorMessage() { 
             return errorMessage; 
         }
@@ -363,28 +383,45 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class PlayRequest
-     * @brief Messaggio Client -> Server: l'utente segnala la volontà di avviare una partita.
+     * @brief Comando (Client -> Server): L'utente si mette in coda definendo una difficoltà.
      */
     public static class PlayRequest extends NetworkMessage {
         /**
          * @brief Versione di serializzazione.
          */
         private static final long serialVersionUID = 6L;
+        
+        /** @brief Il livello di osticità selezionato nei menu dell'interfaccia. */
+        private final Difficulty difficulty;
 
-        /** @brief Costruisce il messaggio senza payload (basta il tipo). */
-        public PlayRequest() {
+        /**
+         * @brief Istanzia una richiesta esplicita di avvio ricerca.
+         * @param difficulty L'impostazione di difficoltà che guida la logica lato server.
+         */
+        public PlayRequest(Difficulty difficulty) {
             super(MessageType.PLAY_REQUEST);
+            this.difficulty = difficulty;
+        }
+        
+        /**
+         * @brief Restituisce il valore di difficoltà contenuto.
+         * @return Valore Enum della difficoltà.
+         */
+        public Difficulty getDifficulty() { 
+            return difficulty; 
         }
 
         @Override
         public CallbackDTO toDTO() {
-            return new CallbackDTO.Builder(getType()).build();
+            return new CallbackDTO.Builder(getType())
+                    .difficulty(difficulty)
+                    .build();
         }
     }
 
     /**
      * @class PlayResponse
-     * @brief Messaggio Server -> Client: esito della ricerca avversario.
+     * @brief Notifica (Server -> Client): Aggiornamento real-time dello stato in lobby.
      */
     public static class PlayResponse extends NetworkMessage {
         /**
@@ -398,17 +435,20 @@ public abstract class NetworkMessage implements Serializable {
         private final CallbackDTO.Status status;
 
         /**
-         * @brief Costruisce il messaggio di risposta dello stato di gioco.
-         * @param status Il valore enumerato Status del DTO (MATCH_FOUND o WAITING).
+         * @brief Impacchetta lo status fornito dalla procedura di matchmaking in thread.
+         * @param status Enum per l'attesa (WAITING) o il reperimento dell'avversario (MATCH_FOUND).
          */
         public PlayResponse(CallbackDTO.Status status) {
             super(MessageType.PLAY_RESPONSE);
             this.status = status;
         }
 
-        /** @return Lo stato elaborato dal server. */
-        public CallbackDTO.Status getStatus() {
-            return status;
+        /**
+         * @brief Mette a disposizione lo status logico di rete.
+         * @return L'enumeratore Status.
+         */
+        public CallbackDTO.Status getStatus() { 
+            return status; 
         }
 
         @Override
@@ -423,7 +463,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class GameStart
-     * @brief Messaggio Server -> Client: notifica dell'inizio effettivo della sfida.
+     * @brief Comando (Server -> Client): Trasferimento del payload generato alla grafica (Scambio Scene).
      */
     public static class GameStart extends NetworkMessage {
         /**
@@ -450,65 +490,65 @@ public abstract class NetworkMessage implements Serializable {
          * @brief Username dell'avversario.
          */
         private final String opponentUsername;
-        
-        /**
-         * @brief Codice identificativo della sfida.
-         */
-        private final int challengeCode;
 
         /**
-         * @brief Costruisce il pacchetto di avvio partita contenente tutti i dati necessari.
-         * @param cipheredText     Il testo da decifrare fornito al client.
-         * @param timer            Secondi concessi per trovare la soluzione.
-         * @param playerIndex      Indice identificativo del giocatore corrente (es. 0 o 1).
-         * @param opponentUsername L'username dello sfidante.
-         * @param challengeCode    L'ID della sfida.
+         * @brief Costruisce il pacchetto di lancio contenente l'arena di sfida generata al volo.
+         * @param cipheredText     Lo stralcio testuale criptato prodotto dal QuestionGenerator.
+         * @param timer            Tempo totale per la risoluzione assegnato in base alla difficoltà.
+         * @param playerIndex      Indice di posizione del client in locale (0 per sx, 1 per dx nel layout).
+         * @param opponentUsername Identità dell'avversario frontale.
          */
-        public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername, int challengeCode) {
+        public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername) {
             super(MessageType.GAME_START);
             this.cipheredText = cipheredText;
             this.timer = timer;
             this.playerIndex = playerIndex;
             this.opponentUsername = opponentUsername;
-            this.challengeCode = challengeCode;
         }
 
-        /** @return Il testo cifrato. */
+        /**
+         * @brief Fornisce il testo mascherato/cifrato.
+         * @return La stringa completa dell'indovinello.
+         */
         public String getCipheredText() { 
             return cipheredText; 
         }
 
-        /** @return I secondi previsti dal timer. */
+        /**
+         * @brief Fornisce il valore originario di partenza del Timer.
+         * @return Valore intero (secondi).
+         */
         public int getTimer() { 
             return timer; 
         }
 
-        /** @return L'indice identificativo del giocatore corrente. */
+        /**
+         * @brief Indica l'assegnazione dello slot visivo.
+         * @return Un intero, utile al frontend.
+         */
         public int getPlayerIndex() { 
             return playerIndex; 
         }
 
-        /** @return L'username dell'avversario. */
+        /**
+         * @brief Indica chi c'è dall'altra parte della sessione virtuale.
+         * @return L'username avversario.
+         */
         public String getOpponentUsername() { 
             return opponentUsername; 
-        }
-
-        /** @return Il codice della partita in corso. */
-        public int getChallengeCode() { 
-            return challengeCode; 
         }
 
         @Override
         public CallbackDTO toDTO() {
             return new CallbackDTO.Builder(getType())
-                    .gameStartData(cipheredText, timer, playerIndex, opponentUsername, challengeCode)
+                    .gameStartData(cipheredText, timer, playerIndex, opponentUsername)
                     .build();
         }
     }
 
     /**
      * @class AnswerSubmission
-     * @brief Messaggio Client -> Server: inoltro della soluzione elaborata dall'utente.
+     * @brief Comando (Client -> Server): L'utente fa un tentativo o invia lo scadere del timeout.
      */
     public static class AnswerSubmission extends NetworkMessage {
         /**
@@ -527,22 +567,28 @@ public abstract class NetworkMessage implements Serializable {
         private final int responseTime;
 
         /**
-         * @brief Costruisce la risposta inviata dal client.
-         * @param proposedWord La stringa immessa dall'utente.
-         * @param responseTime Il tempo misurato dal client.
+         * @brief Struttura la sottomissione dei calcoli in locale da testare sul back-end.
+         * @param proposedWord  Ciò che l'utente ha scritto nel text-field.
+         * @param responseTime  Timer rilevato dal frontend (suscettibile a ritardi di rete e calcolato in ms).
          */
-        public AnswerSubmission(String proposedWord, int responseTime) {
+        public AnswerSubmission(String proposedWord, int responseTime, int challengeCode) {
             super(MessageType.ANSWER_SUBMISSION);
             this.proposedWord = proposedWord;
             this.responseTime = responseTime;
         }
 
-        /** @return La parola inviata. */
+        /**
+         * @brief Restituisce il contenuto testato.
+         * @return Il testo ipotizzato dal client.
+         */
         public String getProposedWord() { 
             return proposedWord; 
         }
 
-        /** @return Il tempo registrato. */
+        /**
+         * @brief Fornisce la misurazione cronometrica.
+         * @return Valore in millisecondi.
+         */
         public int getResponseTime() { 
             return responseTime; 
         }
@@ -557,7 +603,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class GameResult
-     * @brief Messaggio Server -> Client: resoconto dei risultati al termine della partita.
+     * @brief Notifica (Server -> Client): Fine ufficiale dei giochi, decreto di vittoria/sconfitta.
      */
     public static class GameResult extends NetworkMessage {
         /**
@@ -586,11 +632,11 @@ public abstract class NetworkMessage implements Serializable {
         private final int winnerResponseTime;
 
         /**
-         * @brief Costruisce il bollettino di fine partita.
-         * @param result             Il risultato (WIN, LOSE, DRAW) dal punto di vista del destinatario.
-         * @param correctWord        La vera parola in chiaro come riferimento.
-         * @param winnerUsername     Lo username di chi ha vinto.
-         * @param winnerResponseTime Il tempo del vincitore in ms.
+         * @brief Composizione del tabellone finale da proiettare post-partita.
+         * @param result             Verdetto strettamente relativo per il fruitore specifico (Io = Vinto, Tu = Perso).
+         * @param correctWord        La parola svelata, in chiaro, letta dal db per risoluzione educativa al giocatore battuto.
+         * @param winnerUsername     Chi ha dato per primo la soluzione (usato graficamente per "Il vincitore è X").
+         * @param winnerResponseTime Il tempo che ha sancito il termine cronometrico.
          */
         public GameResult(Result result, String correctWord, String winnerUsername, int winnerResponseTime) {
             super(MessageType.GAME_RESULT);
@@ -600,22 +646,34 @@ public abstract class NetworkMessage implements Serializable {
             this.winnerResponseTime = winnerResponseTime;
         }
 
-        /** @return L'esito della partita. */
+        /**
+         * @brief Mostra al ricevente il suo bilancio.
+         * @return Il verdetto personale relativo al ricevitore di questo messaggio.
+         */
         public Result getResult() { 
             return result; 
         }
 
-        /** @return La parola corretta originaria. */
+        /**
+         * @brief Svela il mistero alla base della challenge generata in GameStart.
+         * @return L'originale parola estratta.
+         */
         public String getCorrectWord() { 
             return correctWord; 
         }
 
-        /** @return Lo username del vincitore (null in caso di parità). */
+        /**
+         * @brief Mostra il colpevole della fine della partita.
+         * @return Username vincente (o null).
+         */
         public String getWinnerUsername() { 
             return winnerUsername; 
         }
 
-        /** @return Il tempo di chiusura del vincitore in ms. */
+        /**
+         * @brief Valore comparativo finale.
+         * @return Millisecondi del timer.
+         */
         public int getWinnerResponseTime() { 
             return winnerResponseTime; 
         }
@@ -630,19 +688,21 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class OpponentAnswered
-     * @brief Messaggio Server -> Client: avvisa che l'avversario ha sottomesso una risposta.
+     * @brief Segnale "Ghost" (Server -> Client): Sottile avviso in real-time che incrementa la pressione del gameplay.
      */
     public static class OpponentAnswered extends NetworkMessage {
         private static final long serialVersionUID = 11L;
 
-        /** @brief Costruttore vuoto. */
-        public OpponentAnswered() {
-            super(MessageType.OPPONENT_ANSWERED);
+        /**
+         * @brief Inizializza un tracciante di rete vuoto senza payload.
+         */
+        public OpponentAnswered() { 
+            super(MessageType.OPPONENT_ANSWERED); 
         }
 
         @Override
-        public CallbackDTO toDTO() {
-            return new CallbackDTO.Builder(getType()).build();
+        public CallbackDTO toDTO() { 
+            return new CallbackDTO.Builder(getType()).build(); 
         }
     }
 
@@ -650,7 +710,7 @@ public abstract class NetworkMessage implements Serializable {
     
     /**
      * @class OpponentDisconnected
-     * @brief Messaggio Server -> Client: avviso di chiusura inaspettata dell'avversario.
+     * @brief Segnale d'errore (Server -> Client): Arresto della partita a causa di crollo della controparte.
      */
     public static class OpponentDisconnected extends NetworkMessage {
         /**
@@ -658,20 +718,22 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 12L;
 
-        /** @brief Costruttore vuoto. */
-        public OpponentDisconnected() {
-            super(MessageType.OPPONENT_DISCONNECTED);
+        /**
+         * @brief Inizializza l'avviso di fallimento TCP dell'avversario.
+         */
+        public OpponentDisconnected() { 
+            super(MessageType.OPPONENT_DISCONNECTED); 
         }
 
         @Override
-        public CallbackDTO toDTO() {
-            return new CallbackDTO.Builder(getType()).build();
+        public CallbackDTO toDTO() { 
+            return new CallbackDTO.Builder(getType()).build(); 
         }
     }
 
     /**
      * @class ClientDisconnect
-     * @brief Messaggio Client -> Server: avviso di disconnessione pulita e volontaria.
+     * @brief Comando (Client -> Server): Avviso pulito (graceful shutdown) di disconnessione o logout.
      */
     public static class ClientDisconnect extends NetworkMessage {
         /**
@@ -679,14 +741,16 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 13L;
 
-        /** @brief Costruttore vuoto. */
-        public ClientDisconnect() {
-            super(MessageType.CLIENT_DISCONNECT);
+        /**
+         * @brief Inizializza la richiesta volontaria di distruzione del socket lato server.
+         */
+        public ClientDisconnect() { 
+            super(MessageType.CLIENT_DISCONNECT); 
         }
 
         @Override
-        public CallbackDTO toDTO() {
-            return new CallbackDTO.Builder(getType()).build();
+        public CallbackDTO toDTO() { 
+            return new CallbackDTO.Builder(getType()).build(); 
         }
     }
 
@@ -694,7 +758,7 @@ public abstract class NetworkMessage implements Serializable {
     
     /**
      * @class HistoryRequest
-     * @brief Messaggio Client -> Server: richiede al server di reperire lo storico dal database.
+     * @brief Comando (Client -> Server): Ping di richiesta dei dati SQL completi dell'utente loggato.
      */
     public static class HistoryRequest extends NetworkMessage {
         /**
@@ -702,20 +766,22 @@ public abstract class NetworkMessage implements Serializable {
          */
         private static final long serialVersionUID = 14L;
 
-        /** @brief Costruttore vuoto. */
-        public HistoryRequest() {
-            super(MessageType.HISTORY_REQUEST);
+        /**
+         * @brief Inizializza una richiesta priva di argomenti (il server lo ricava dal socket in sessione).
+         */
+        public HistoryRequest() { 
+            super(MessageType.HISTORY_REQUEST); 
         }
 
         @Override
-        public CallbackDTO toDTO() {
-            return new CallbackDTO.Builder(getType()).build();
+        public CallbackDTO toDTO() { 
+            return new CallbackDTO.Builder(getType()).build(); 
         }
     }
 
     /**
      * @class HistoryResponse
-     * @brief Messaggio Server -> Client: recapita le statistiche utente e i vecchi match.
+     * @brief Risposta Data-Heavy (Server -> Client): Pacchetto contenente il database riassuntivo del player.
      */
     public static class HistoryResponse extends NetworkMessage {
         /**
@@ -749,12 +815,12 @@ public abstract class NetworkMessage implements Serializable {
         private final int totalPlayedTime;
 
         /**
-         * @brief Costruisce il pacchetto di dati storici aggregati.
-         * @param matchHistory       La lista di DTO MatchRecord contenenti i dettagli delle singole partite.
-         * @param totalMatchesWon    Contatore totale delle vittorie.
-         * @param totalMatchesPlayed Contatore totale delle partecipazioni.
-         * @param avgResponseTime    Media generale del tempo di risposta per quell'utente.
-         * @param totalPlayedTime    Secondi complessivi di gameplay accumulati.
+         * @brief Compatta ed invia le queries sommate da GameDAO e PlayerDAO.
+         * @param matchHistory       Mappatura delle singole entries nella tabella Game per quel Player.
+         * @param totalMatchesWon    Estrapolato da PlayerDAO (Vittorie).
+         * @param totalMatchesPlayed Estrapolato da PlayerDAO (Partite Giocate).
+         * @param avgResponseTime    Operazione di divisione (Tempo Totale / Partite Giocate).
+         * @param totalPlayedTime    Estrapolato da PlayerDAO (Costo computazionale in tempo di reazione accumulato).
          */
         public HistoryResponse(List<CallbackDTO.MatchRecord> matchHistory, 
                                int totalMatchesWon, int totalMatchesPlayed, 
@@ -767,27 +833,42 @@ public abstract class NetworkMessage implements Serializable {
             this.totalPlayedTime = totalPlayedTime;
         }
 
-        /** @return La lista tipizzata delle partite. */
+        /**
+         * @brief Consente alla UI di renderizzare la TableView coi i record delle sessioni.
+         * @return La lista dei records del giocatore corrente.
+         */
         public List<CallbackDTO.MatchRecord> getMatchHistory() { 
             return matchHistory; 
         }
 
-        /** @return Totale vittorie in carriera. */
+        /**
+         * @brief Consente di mappare un contatore di vittorie UI o un indicatore grafico (Dashboard Label).
+         * @return Int contatore.
+         */
         public int getTotalMatchesWon() { 
             return totalMatchesWon; 
         }
 
-        /** @return Totale partite disputate in carriera. */
+        /**
+         * @brief Consente di calcolare statistiche di base come il 'Win Rate' UI (Vittorie / Totali).
+         * @return Int totale.
+         */
         public int getTotalMatchesPlayed() { 
             return totalMatchesPlayed; 
         }
 
-        /** @return Media tempo di risposta. */
+        /**
+         * @brief Misurazione prestazionale su tutto l'account utente.
+         * @return Double media pesata.
+         */
         public double getAvgResponseTime() { 
             return avgResponseTime; 
         }
 
-        /** @return Tempo cumulativo in app (secondi). */
+        /**
+         * @brief Statistica aggiuntiva da renderizzare, esprimente l'attività globale.
+         * @return Int tempo.
+         */
         public int getTotalPlayedTime() { 
             return totalPlayedTime; 
         }
@@ -804,7 +885,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class TextMessage
-     * @brief Messaggio Server/Client: invio di stringhe di testo generiche (Notifiche/Debug).
+     * @brief Tool interno: Consente il transito di comandi diretti da terminale o popup generici e disaccoppiati.
      */
     public static class TextMessage extends NetworkMessage {
         /**
@@ -817,15 +898,18 @@ public abstract class NetworkMessage implements Serializable {
         private final String text;
 
         /**
-         * @brief Costruisce un pacchetto di testo.
-         * @param text Il corpo del messaggio.
+         * @brief Impacchetta una conversazione diretta per scopi di notifica/alert testuali.
+         * @param text La stringa da recapitare.
          */
         public TextMessage(String text) {
             super(MessageType.TEXT_MESSAGE);
             this.text = text;
         }
 
-        /** @return La stringa testuale contenuta nel pacchetto. */
+        /**
+         * @brief Estrae la notifica.
+         * @return Messaggio testuale.
+         */
         public String getText() { 
             return text; 
         }

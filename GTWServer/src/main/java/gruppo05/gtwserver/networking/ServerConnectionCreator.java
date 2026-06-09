@@ -14,9 +14,10 @@ import gruppo05.gtwshared.networking.NetworkConnectionCreator;
 import gruppo05.gtwshared.dto.CallbackDTO;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.Result;
+import gruppo05.gtwshared.utility.Difficulty;
 import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
-import javafx.scene.control.Alert;
+import gruppo05.gtwserver.controller.GameSetupController;
 
 /**
  * @class ServerConnectionCreator
@@ -44,13 +45,25 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      * allo username (valore).
      */
     private final Map<Integer, String> loggedUsers = new ConcurrentHashMap<>();
+    
+    /**
+     * @brief Mappa che associa l'indice del canale di connessione alla sfida (Challenge) attualmente in corso.
+     * @details Utilizza una {@link ConcurrentHashMap} per garantire la thread-safety durante la gestione 
+     * concorrente di multiple partite attive.
+     */
+    private final Map<Integer, Challenge> activeGames = new ConcurrentHashMap<>();
 
     /**
-     * @brief Puntatore al canale dell'utente attualmente in attesa di un avversario.
-     * @details Vale null se la coda è vuota. Viene popolato dal primo giocatore che invia una 
-     * PLAY_REQUEST e viene resettato non appena la partita si avvia.
+     * @brief Indice del canale del giocatore in attesa di un avversario.
+     * @details Viene impostato a null se non ci sono giocatori in attesa nel sistema.
      */
     private Integer waitingChannel = null;
+
+    /**
+     * @brief Livello di difficoltà selezionato dal giocatore in attesa di matchmaking.
+     * @details Definisce il vincolo di difficoltà che l'avversario dovrà soddisfare per l'accoppiamento.
+     */
+    private Difficulty waitingDifficulty = null;
     
     /**
      * @brief Mutex (Lock) utilizzato per sincronizzare la sezione critica del matchmaking.
@@ -68,8 +81,10 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      */
     @Override
     public ServerConnection createConnection() {
+        // Legge le impostazioni dal file .properties
         NetworkConfiguration config = this.readConfiguration("server.properties");
         try {
+            // Configura il server con i callback per messaggi e gestione eventi
             this.connection = new ServerConnection(
                     config.getPort(),  // porta
                     this::handleMessage,  // onReceive
@@ -77,43 +92,38 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     (index) -> handleDisconnect(index));  // onDisconnect
             return this.connection;
         } catch (IOException e) {
-            throw new RuntimeException("Impossibile avviare il server. Porta occupata?", e);
+            throw new RuntimeException("Errore avvio server.", e);
         }
     }
 
     /**
-     * @brief Routine di pulizia eseguita quando un client interrompe la comunicazione.
-     * @details Rimuove l'utente dai registri di sessione e, se era in attesa di una partita, 
-     * libera la coda di matchmaking per non bloccare i futuri giocatori.
-     * @param[in] channelIndex L'identificativo numerico del socket disconnesso.
+     * @brief Pulizia dello stato dell'utente e della partita in caso di disconnessione.
+     * @param channelIndex L'indice del canale che si è disconnesso.
      */
     private void handleDisconnect(Integer channelIndex) {
-        System.out.println("Client " + channelIndex + " disconnesso o caduto.");
-        
-        // Rimuove l'utente dalla mappa delle sessioni attive
+        // Rimuove l'utente dalle mappe di stato
         loggedUsers.remove(channelIndex);
+        activeGames.remove(channelIndex);
         
-        // Accesso sincronizzato per evitare conflitti con il thread di un nuovo giocatore in ingresso
+        // Se l'utente era in coda, lo rimuove dalla coda di attesa
         synchronized (matchLock) {
             if (waitingChannel != null && waitingChannel.equals(channelIndex)) {
                 waitingChannel = null; 
-                System.out.println("La coda di matchmaking è stata pulita a causa della disconnessione.");
+                waitingDifficulty = null;
             }
         }
     }
 
     /**
-     * @brief Cuore pulsante della logica server: smista ed elabora i messaggi ricevuti.
-     * @details Analizza l'evento trasportato dal NetworkMessage, interroga/aggiorna il database 
-     * tramite i vari DAO e formula la risposta di protocollo appropriata da rispedire al mittente.
-     * @param[in] channelIndex Il canale univoco da cui proviene il messaggio.
-     * @param[in] msg L'oggetto dati deserializzato, atteso di tipo NetworkMessage.
+     * @brief Logica principale di smistamento (dispatcher) dei messaggi ricevuti.
+     * @param channelIndex Canale di provenienza del messaggio.
+     * @param msg Oggetto serializzato ricevuto.
      */
     private void handleMessage(Integer channelIndex, Serializable msg) {
-        // Filtro di sicurezza: scarto qualsiasi pacchetto non conforme al protocollo
+        // Verifica che il messaggio sia del tipo corretto
         if (!(msg instanceof NetworkMessage)) return;
         
-        // Conversione in Data Transfer Object per estrarre facilmente i valori scambiati
+        // Converte il messaggio in DTO per facilitare l'estrazione dati
         CallbackDTO dto = ((NetworkMessage) msg).toDTO();
 
         // Recupero l'username della sessione corrente, utile per autorizzare le richieste post-login
@@ -121,9 +131,11 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
 
         try {
             switch (dto.getEventType()) {
+                
                 case LOGIN_REQUEST:
+                    // Recupero utente dal database e verifica credenziali
                     AdminDAO adminDao = new ConcreteAdminDAO();
-                    Optional<Admin> admin = adminDao.selectById(Optional.of(dto.getUsername()));
+                    Optional<Admin> admin = adminDao.selectById(Optional.of(dto.getUsername())); 
                     
                     // Verifica dell'esistenza dell'utente e match esatto della password
                     if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
@@ -136,6 +148,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case REGISTER_REQUEST:
+                    // Creazione nuovo utente se l'username non esiste già
                     AdminDAO signupDao = new ConcreteAdminDAO();
                     
                     // Controllo preventivo per evitare violazioni di chiave primaria sul Database
@@ -148,16 +161,19 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case PLAY_REQUEST:
-                    // Sezione Critica: L'accesso alla coda (waitingChannel) deve essere thread-safe
+                    // Gestione matchmaking: se non c'è nessuno in attesa, accoda il giocatore
+                    Difficulty requestedDifficulty = dto.getDifficulty() != null ? dto.getDifficulty() : Difficulty.NORMAL;
+
                     synchronized (matchLock) {
                         if (waitingChannel == null) {
                             // Coda vuota: il client diventa l'host temporaneo in attesa di uno sfidante
                             waitingChannel = channelIndex;
+                            waitingDifficulty = requestedDifficulty;
                             connection.sendTo(channelIndex, new NetworkMessage.PlayResponse(CallbackDTO.Status.WAITING));
                             System.out.println("Canale " + channelIndex + " in attesa di un avversario.");
                             
                         } else if (!waitingChannel.equals(channelIndex)) {
-                            // Coda piena: ci sono due giocatori distinti, la partita può iniziare
+                            // Se un altro utente è in coda, avvia la sfida
                             int p1Channel = waitingChannel;
                             int p2Channel = channelIndex;
 
@@ -165,68 +181,69 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             String p1User = loggedUsers.getOrDefault(p1Channel, "Player1");
                             String p2User = currentUsername != null ? currentUsername : "Player2";
 
-                            // Fase 1: Notifico a entrambi che la ricerca ha avuto successo (MATCH_FOUND)
+                            // Notifico a entrambi che la ricerca ha avuto successo (MATCH_FOUND)
                             connection.sendTo(p1Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
                             connection.sendTo(p2Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
                             
-                            // Fase 2: Prelevo i dati della sfida dal database
-                            ChallengeDAO chDao = new ConcreteChallengeDAO();
-                            Optional<Challenge> optCh = chDao.selectById(Optional.of(1)); /* vedi */
-                            
-                            // Valori di default in caso di assenza della sfida nel DB
-                            String cipheredText = ""; 
-                            int challengeCode = 1;
-                            int timer = 60; 
-                            
-                            if (optCh.isPresent()) {
-                                Challenge ch = optCh.get();
-                                challengeCode = ch.getCode();
-                                // Meccanismo di cifratura 
-                                cipheredText = ch.getWord(); /* vedi */
-                            }
+                            // Genera i dati della partita tramite controller dedicato
+                            GameSetupController setupController = new GameSetupController();
+                            setupController.generateMatchData(waitingDifficulty, requestedDifficulty);
 
-                            // Fase 3: Avvio effettivo. 
-                            // INCROCIO DEI NOMI: p1 deve vedere il nome di p2 come avversario, e viceversa.
-                            connection.sendTo(p1Channel, new NetworkMessage.GameStart(cipheredText, timer, 0, p2User, challengeCode));
-                            connection.sendTo(p2Channel, new NetworkMessage.GameStart(cipheredText, timer, 1, p1User, challengeCode));
+                            Challenge newChallenge = new Challenge(
+                                new java.sql.Date(System.currentTimeMillis()), 
+                                setupController.getMatchDifficulty(), 
+                                setupController.getTargetWord(), 
+                                setupController.getSourceId()
+                            );
+                            
+                            // Registra la sfida per entrambi i giocatori
+                            activeGames.put(p1Channel, newChallenge);
+                            activeGames.put(p2Channel, newChallenge);
 
-                            // Fase 4: Svuoto la coda per consentire a due nuovi giocatori di sfidarsi
+                            // Invia i dati di avvio partita ai due client
+                            connection.sendTo(p1Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 0, p2User));
+                            connection.sendTo(p2Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 1, p1User));
+
+                            // Resetta la coda
                             waitingChannel = null;
-                            System.out.println("Match avviato con successo: " + p1User + " VS " + p2User);
+                            waitingDifficulty = null;
                         }
                     }
                     break;
 
                 case ANSWER_SUBMISSION:
-                    // Drop del pacchetto se arriva da un client non autenticato
+                    // Verifica l'esito della risposta inviata dall'utente
                     if (currentUsername == null) return; 
+                    Challenge ch = activeGames.remove(channelIndex);
                     
-                    ChallengeDAO challengeDao = new ConcreteChallengeDAO();
-                    Optional<Challenge> challenge = challengeDao.selectById(Optional.of(dto.getChallengeCode()));
-                    
-                    if (challenge.isPresent()) {
-                        Challenge ch = challenge.get();
+                    if (ch != null) {
+                        int opponentChannel = (channelIndex == 0) ? 1 : 0;
+                        activeGames.remove(opponentChannel);
                         
-                        // Controllo validità: ignora maiuscole/minuscole nella risposta dell'utente
-                        // getWord() -> parola corretta
+                        // Controllo della validità
                         boolean isCorrect = ch.getWord().equalsIgnoreCase(dto.getProposedWord());
-                        Result result = isCorrect ? Result.WIN : Result.LOSE;
+                        String opponentUsername = loggedUsers.getOrDefault(opponentChannel, "Avversario");
+
+                        // Calcola risultati per vincitore e perdente
+                        Result resultForSender = isCorrect ? Result.WIN : Result.LOSE;
+                        Result resultForOpponent = isCorrect ? Result.LOSE : Result.WIN;
                         
-                        // BROADCAST: Comunico a tutti e due i client nella stanza il risultato finale della partita
-                        connection.broadcast(new NetworkMessage.GameResult(
-                                result, 
-                                ch.getWord(), 
-                                currentUsername, // Chi ha generato l'esito
-                                dto.getResponseTime()
-                        ));
+                        // Notifica esiti ai client
+                        connection.sendTo(channelIndex, new NetworkMessage.GameResult(resultForSender, ch.getWord(), isCorrect ? currentUsername : opponentUsername, dto.getResponseTime()));
+                        connection.sendTo(opponentChannel, new NetworkMessage.GameResult(resultForOpponent, ch.getWord(), isCorrect ? currentUsername : opponentUsername, dto.getResponseTime()));
                         
-                        // Persistenza: Registro la giocata per le statistiche globali (usate da HISTORY_REQUEST)
+                        // Persiste i risultati sul DB
+                        ChallengeDAO challengeDao = new ConcreteChallengeDAO();
+                        challengeDao.insert(ch);
+                        
                         GameDAO gameDao = new ConcreteGameDAO();
-                        gameDao.insert(new Game(currentUsername, dto.getChallengeCode(), result, dto.getResponseTime()));
+                        gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
+                        gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
                     }
                     break;
 
                 case HISTORY_REQUEST:
+                    // Recupera e invia lo storico partite dell'utente
                     if (currentUsername == null) return; 
                     
                     PlayerDAO playerDao = new ConcretePlayerDAO();
@@ -240,31 +257,22 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                         List<Game> allGames = gameDao.selectAll();
                         List<CallbackDTO.MatchRecord> records = new ArrayList<>();
                         
+                        // Filtra solo le partite dell'utente corrente
                         for (Game g : allGames) {
                             if (g.getPlayer().equals(currentUsername)) {
                                 // Mappo i dati del database nel Record DTO per alleggerire il transito in rete
                                 records.add(new CallbackDTO.MatchRecord(
                                         String.valueOf(g.getChallenge()), 
                                         g.getResult(),
-                                        LocalDateTime.now(), // Il timestamp locale al momento della richiesta
+                                        LocalDateTime.now(), 
                                         g.getResponseTime()
                                 ));
                             }
                         }
                         
-                        // Prevenzione errore matematico: Divisione per zero se l'utente è nuovo e non ha mai giocato
-                        double avgTime = (player.getTotalGamesPlayed() > 0) 
-                                ? (double) player.getTotalPlayedTime() / player.getTotalGamesPlayed() 
-                                : 0.0;
-                                
-                        // Impacchetto i dati aggregati del Player e la lista dei singoli Match, e li invio
-                        connection.sendTo(channelIndex, new NetworkMessage.HistoryResponse(
-                                records, 
-                                player.getTotalGamesWon(), 
-                                player.getTotalGamesPlayed(), 
-                                avgTime, 
-                                player.getTotalPlayedTime()
-                        ));
+                        // Calcola statistiche medie e invia risposta
+                        double avgTime = (player.getTotalGamesPlayed() > 0) ? (double) player.getTotalPlayedTime() / player.getTotalGamesPlayed() : 0.0;
+                        connection.sendTo(channelIndex, new NetworkMessage.HistoryResponse(records, player.getTotalGamesWon(), player.getTotalGamesPlayed(), avgTime, player.getTotalPlayedTime()));
                     }
                     break;
 
@@ -274,17 +282,12 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case TEXT_MESSAGE:
-                    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Client: " + dto.getMessage());
-                    infoAlert.setHeaderText("Notifica");
-                    infoAlert.showAndWait(); 
                     System.out.println("Messaggio di sistema dal client " + channelIndex + ": " + dto.getMessage());
                     break;
 
                 default:
-                    // Catch-all per eventuali nuovi tipi di messaggio futuri non ancora implementati
-                    System.out.println("Attenzione: Tipo di messaggio non gestito - " + dto.getEventType());
+                    System.out.println("Tipo messaggio non gestito: " + dto.getEventType());
             }
-            
         } catch (IOException e) {
             System.err.println("Errore di invio dati (I/O) verso il client sul canale " + channelIndex);
             e.printStackTrace();

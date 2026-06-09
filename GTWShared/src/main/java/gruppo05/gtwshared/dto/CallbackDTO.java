@@ -6,38 +6,43 @@ import java.util.List;
 import gruppo05.gtwshared.networking.MessageType;
 import gruppo05.gtwshared.networking.NetworkMessage; 
 import gruppo05.gtwshared.utility.Result;
+import gruppo05.gtwshared.utility.Difficulty;
 
 /**
  * @class CallbackDTO
- * @brief DTO flessibile per raggruppare e trasportare i dati da passare alle callback 
- * dell'interfaccia grafica.
- * 
- * * @details Questa classe utilizza il pattern architetturale Builder per garantire un'inizializzazione 
- * chiara, sicura e pulita. Permette di costruire oggetti immutabili valorizzando esclusivamente 
- * i campi strettamente necessari in base al {@link MessageType} ricevuto, ignorando gli altri.
- * 
- * @author chiara
- * @version 2.0
+ * @brief Oggetto per il trasferimento dati (DTO) flessibile per la comunicazione tra livello di Rete e UI.
+ * * @details Questa classe implementa il pattern architetturale Builder. Garantisce la creazione di 
+ * oggetti immutabili (read-only) le cui variabili vengono inizializzate solo se strettamente 
+ * necessarie in base al {@link MessageType} ricevuto, prevenendo stati inconsistenti nella UI.
+ * * @author chiara
+ * @version 3.0
  */
 public class CallbackDTO {
     
     /**
      * @class MatchRecord
-     * @brief Rappresenta un singolo record cronologico di una partita conclusa nello storico dell'utente.
+     * @brief Rappresenta in modo compatto un singolo record cronologico di una partita conclusa nello storico.
      */
     public static class MatchRecord {
+        
+        /** @brief Username dell'avversario sfidato in questa specifica partita. */
         private final String opponent;
+        
+        /** @brief L'esito finale riportato dal giocatore che richiede lo storico. */
         private final Result result;
+        
+        /** @brief Timestamp esatto del momento in cui la partita è stata disputata o registrata. */
         private final LocalDateTime date; 
+        
+        /** @brief Tempo di risposta personale del giocatore nella sfida, espresso in millisecondi. */
         private final int responseTime;
 
         /**
-         * @brief Costruisce un nuovo record per lo storico partite.
-         * 
-         * @param opponent     Username dell'avversario affrontato nella partita.
-         * @param result       Esito finale della partita (WIN, LOSE, DRAW, TIMEOUT).
+         * @brief Costruisce un nuovo record immodificabile per lo storico partite.
+         * @param opponent     Username dell'avversario.
+         * @param result       Esito finale (es. WIN, LOSE).
          * @param date         Data e ora esatta in cui si è svolta la partita.
-         * @param responseTime Tempo di risposta medio o totale impiegato (in millisecondi).
+         * @param responseTime Tempo impiegato dal giocatore.
          */
         public MatchRecord(String opponent, Result result, LocalDateTime date, int responseTime) {
             this.opponent = opponent;
@@ -53,70 +58,70 @@ public class CallbackDTO {
         public String getOpponent() { 
             return opponent; 
         }
-        
+
         /**
          * @brief Restituisce l'esito della partita.
-         * @return Il valore enumerato Result corrispondente all'esito.
+         * @return Il valore enumerato Result (WIN, LOSE, ecc.).
          */
         public Result getResult() { 
             return result; 
         }
-        
+
         /**
-         * @brief Restituisce la data e l'ora della partita.
-         * @return L'oggetto LocalDateTime della partita.
+         * @brief Restituisce la data della registrazione del match.
+         * @return Oggetto LocalDateTime relativo al match.
          */
         public LocalDateTime getDate() { 
             return date; 
         }
-        
+
         /**
          * @brief Restituisce il tempo di risposta.
-         * @return Il tempo registrato in millisecondi.
+         * @return I millisecondi impiegati nella partita.
          */
         public int getResponseTime() { 
             return responseTime; 
         }
     }
 
+    // CAMPI DEL DTO
+
     // Campi Generici 
     private final MessageType eventType;
     private final boolean success;
-    private final String message; ///< Utilizzato per i messaggi di errore (Login/Register) o per i testi generici (TextMessage).
+    private final String message; 
 
-    // Campi Autenticazione 
+    // Campi Autenticazione
     private final String username; 
     private final String password;
     private final boolean isAdmin;
 
-    // Campi Attesa Partita 
-    
+    // Campi Matchmaking (Attesa Partita)
     /**
      * @enum Status
-     * @brief Rappresenta gli stati possibili di una richiesta di ricerca partita.
+     * @brief Rappresenta gli stati transitori durante la ricerca di un avversario.
      */
     public enum Status { 
-        /** @brief Partita trovata con successo, l'avversario è pronto. */
+        /** @brief Avversario trovato con successo, la partita sta per iniziare. */
         MATCH_FOUND, 
-        /** @brief Nessun avversario disponibile, il giocatore viene messo in attesa. */
+        /** @brief Nessun giocatore disponibile al momento, attesa in coda. */
         WAITING 
     }
+    private final Status status; 
+    private final Difficulty difficulty; 
 
-    private final Status status; ///< Stato della richiesta elaborata dal server (MATCH_FOUND o WAITING).
-
-    // Campi Partita 
+    // Campi Dinamica di Partita (GameStart, Submission, Result) 
     private final String cipheredText;
     private final int timer;
-    private final int playerIndex; ///< Indice identificativo del client all'interno della partita (0 o 1).
+    private final int playerIndex; 
     private final String opponentUsername;
-    private final int challengeCode;
     private final String proposedWord;
     private final String correctWord;
     private final Result gameResult;
-    private final String winnerUsername; ///< Username del giocatore che ha vinto (può essere null in caso di pareggio).
-    private final int responseTime; ///< Utilizzato per inviare il proprio tempo (AnswerSubmission) o per ricevere quello del vincitore (GameResult).
+    private final String winnerUsername; 
+    private final int responseTime; 
 
-    // Campi Storico (History)
+    // Campi Storico (HistoryResponse) 
     private final List<MatchRecord> matchHistory;
     private final int totalMatchesWon;
     private final int totalMatchesPlayed;
@@ -124,8 +129,8 @@ public class CallbackDTO {
     private final int totalPlayedTime;
 
     /**
-     * @brief Costruttore privato del DTO, invocato esclusivamente dal Builder.
-     * @param builder L'istanza del Builder contenente tutti i dati pre-configurati.
+     * @brief Costruttore privato del DTO, invocato esclusivamente dal metodo build() del Builder.
+     * @param builder L'istanza popolata e validata del costruttore interno.
      */
     private CallbackDTO(Builder builder) {
         this.eventType = builder.eventType;
@@ -137,12 +142,12 @@ public class CallbackDTO {
         this.isAdmin = builder.isAdmin;
 
         this.status = builder.status;
+        this.difficulty = builder.difficulty;
         
         this.cipheredText = builder.cipheredText;
         this.timer = builder.timer;
         this.playerIndex = builder.playerIndex;
         this.opponentUsername = builder.opponentUsername;
-        this.challengeCode = builder.challengeCode;
         this.proposedWord = builder.proposedWord;
         this.correctWord = builder.correctWord;
         this.gameResult = builder.gameResult;
@@ -156,137 +161,207 @@ public class CallbackDTO {
         this.totalPlayedTime = builder.totalPlayedTime;
     }
 
-    // Metodi Getter 
-    
-    /** @return Il tipo di evento/messaggio associato a questo DTO. */
+    // METODI GETTER
+
+    /**
+     * @brief Restituisce la tipologia di evento rappresentata da questo DTO.
+     * @return Enum MessageType.
+     */
     public MessageType getEventType() { 
         return eventType; 
     }
-    
-    /** @return True se l'azione di rete è andata a buon fine, false altrimenti. */
+
+    /**
+     * @brief Restituisce lo stato di successo dell'operazione di rete.
+     * @return True se l'operazione ha avuto esito positivo.
+     */
     public boolean isSuccess() { 
         return success; 
     }
-    
-    /** @return Il messaggio di testo o di errore trasportato, se presente. */
+
+    /**
+     * @brief Restituisce il messaggio testuale allegato (notifiche o messaggi di errore).
+     * @return Stringa contenente il messaggio.
+     */
     public String getMessage() { 
         return message; 
     }
-    
-    /** @return Lo username dell'utente coinvolto nell'azione. */
+
+    /**
+     * @brief Restituisce lo username elaborato.
+     * @return Stringa username.
+     */
     public String getUsername() { 
         return username; 
     }
-    
-    /** @return La password associata alla richiesta di autenticazione. */
+
+    /**
+     * @brief Restituisce la password in chiaro o sottoposta ad hash.
+     * @return Stringa password.
+     */
     public String getPassword() { 
         return password; 
     }
-    
-    /** @return True se l'utente ha i privilegi di amministratore. */
+
+    /**
+     * @brief Verifica se l'utente possiede i privilegi di amministrazione.
+     * @return True se l'utente è un amministratore.
+     */
     public boolean isAdmin() { 
         return isAdmin; 
     }
 
-    /** @return Lo stato della richiesta di gioco (es. MATCH_FOUND o WAITING). */
+    /**
+     * @brief Restituisce lo stato attuale della lobby di matchmaking.
+     * @return Enum Status (WAITING o MATCH_FOUND).
+     */
     public Status getStatus() { 
         return status; 
     }
-    
-    /** @return Il testo cifrato fornito dal server per la partita attuale. */
+
+    /**
+     * @brief Restituisce la difficoltà della partita proposta o in corso.
+     * @return Enum Difficulty.
+     */
+    public Difficulty getDifficulty() { 
+        return difficulty; 
+    }
+
+    /**
+     * @brief Restituisce la stringa del testo manipolato/cifrato da sottoporre all'utente.
+     * @return Stringa del testo cifrato.
+     */
     public String getCipheredText() { 
         return cipheredText; 
     }
-    
-    /** @return I secondi previsti per il timer della partita. */
+
+    /**
+     * @brief Restituisce il tempo massimo concesso per la risoluzione della sfida.
+     * @return Intero esprimente i secondi.
+     */
     public int getTimer() { 
         return timer; 
     }
-    
-    /** @return L'indice numerico assegnato al giocatore corrente (0 o 1). */
+
+    /**
+     * @brief Restituisce l'indice identificativo del client nella partita (es. 0 o 1 per UI layout).
+     * @return L'indice del giocatore.
+     */
     public int getPlayerIndex() { 
         return playerIndex; 
     }
-    
-    /** @return L'username dell'avversario per la partita in corso. */
+
+    /**
+     * @brief Restituisce l'username dello sfidante abbinato dal server.
+     * @return Stringa con l'username dell'avversario.
+     */
     public String getOpponentUsername() { 
         return opponentUsername; 
     }
-    
-    /** @return Il codice identificativo univoco della sfida in corso. */
-    public int getChallengeCode() { 
-        return challengeCode; 
-    }
-    
-    /** @return La parola proposta come soluzione dal giocatore. */
+
+    /**
+     * @brief Restituisce la parola digitata e sottomessa dall'utente come tentativo di soluzione.
+     * @return La parola proposta.
+     */
     public String getProposedWord() { 
         return proposedWord; 
     }
-    
-    /** @return La parola in chiaro (soluzione corretta) rivelata a fine partita. */
+
+    /**
+     * @brief Restituisce la parola segreta in chiaro svelata dal server a fine partita.
+     * @return La parola originaria corretta.
+     */
     public String getCorrectWord() { 
         return correctWord; 
     }
-    
-    /** @return Il risultato finale della partita. */
+
+    /**
+     * @brief Restituisce il risultato definitivo della partita appena conclusa.
+     * @return Enum Result.
+     */
     public Result getGameResult() { 
         return gameResult; 
     }
-    
-    /** @return L'username del giocatore che ha vinto la sfida (null se pareggio). */
+
+    /**
+     * @brief Restituisce l'username del giocatore che si è aggiudicato la vittoria.
+     * @return L'username del vincitore (può essere null in caso di Draw/Pareggio).
+     */
     public String getWinnerUsername() { 
         return winnerUsername; 
     }
-    
-    /** @return Il tempo di risposta (proprio o del vincitore) espresso in ms. */
+
+    /**
+     * @brief Restituisce il tempo misurato impiegato per la risposta decisiva.
+     * @return Intero esprimente il tempo in ms.
+     */
     public int getResponseTime() { 
         return responseTime; 
     }
-    
-    /** @return La lista contenente lo storico strutturato delle partite. */
+
+    /**
+     * @brief Restituisce lo storico completo delle partite per l'interfaccia.
+     * @return Lista di oggetti MatchRecord.
+     */
     public List<MatchRecord> getMatchHistory() { 
         return matchHistory; 
     }
-    
-    /** @return Il numero totale di partite vinte dall'utente. */
+
+    /**
+     * @brief Restituisce il contatore aggregato delle vittorie totali.
+     * @return Il totale vittorie dell'utente.
+     */
     public int getTotalMatchesWon() { 
         return totalMatchesWon; 
     }
-    
-    /** @return Il numero complessivo di partite disputate. */
+
+    /**
+     * @brief Restituisce il totale complessivo di partite giocate.
+     * @return Il conteggio delle partite storiche.
+     */
     public int getTotalMatchesPlayed() { 
         return totalMatchesPlayed; 
     }
-    
-    /** @return Il tempo di risposta medio calcolato su tutte le partite. */
+
+    /**
+     * @brief Restituisce la media calcolata dei tempi di risposta.
+     * @return Il valore medio del tempo in ms.
+     */
     public double getAvgResponseTime() { 
         return avgResponseTime; 
     }
-    
-    /** @return Il tempo totale di gioco accumulato dall'utente, in secondi. */
+
+    /**
+     * @brief Restituisce il tempo totale accumulato dall'utente all'interno di partite giocate.
+     * @return Il totale in secondi del tempo speso a giocare.
+     */
     public int getTotalPlayedTime() { 
         return totalPlayedTime; 
     }
 
+    // INNER CLASS: BUILDER PATTERN
 
     /**
      * @class Builder
-     * @brief Classe interna di supporto per generare istanze di CallbackDTO in modo incrementale.
+     * @brief Strumento per l'inizializzazione controllata a cascata (chaining) di un CallbackDTO.
      */
     public static class Builder {
+        
+        // Campo fisso obbligatorio
         private final MessageType eventType;
 
+        // Campi opzionali
         private boolean success = true;
         private String message = null;
         private String username = null;
         private String password = null;
         private boolean isAdmin = false;
         private Status status = null;
+        private Difficulty difficulty = null;
         private String cipheredText = null;
         private int timer = 0;
         private int playerIndex = 0;
         private String opponentUsername = null;
-        private int challengeCode = 0;
         private String proposedWord = null;
         private String correctWord = null;
         private Result gameResult = null;
@@ -299,47 +374,37 @@ public class CallbackDTO {
         private int totalPlayedTime = 0;
 
         /**
-         * @brief Inizializza un nuovo Builder.
-         * @param eventType Il tipo di messaggio/evento (l'unico parametro sempre obbligatorio).
+         * @brief Inizializza un nuovo Builder richiedendo l'unico parametro strettamente necessario.
+         * @param eventType La classificazione del messaggio.
          */
-        public Builder(MessageType eventType) {
-            this.eventType = eventType;
+        public Builder(MessageType eventType) { 
+            this.eventType = eventType; 
         }
 
         /**
-         * @brief Imposta lo stato di successo per risposte a richieste specifiche (es. Login/Register).
-         * @param success true per indicare operazione riuscita, false per fallimento.
-         * @return L'istanza corrente del Builder.
+         * @brief Imposta lo stato di successo generale dell'operazione.
+         * @param success Valore booleano per l'esito.
+         * @return L'istanza corrente del Builder per la concatenazione.
          */
         public Builder success(boolean success) { 
             this.success = success; 
             return this; 
         }
-        
+
         /**
-         * @brief Imposta un messaggio testuale da veicolare nel DTO (notifica, errore o chat).
-         * @param message Il corpo del messaggio.
+         * @brief Imposta il messaggio di avviso testuale o d'errore.
+         * @param message Il testo da allegare.
          * @return L'istanza corrente del Builder.
          */
         public Builder message(String message) { 
             this.message = message; 
             return this; 
         }
-        
+
         /**
-         * @brief Imposta l'username dell'utente loggato.
-         * @param username L'username da impostare.
-         * @return L'istanza corrente del Builder.
-         */
-        public Builder username(String username) { 
-            this.username = username; 
-            return this; 
-        }
-        
-        /**
-         * @brief Imposta simultaneamente username e password (utile per le fasi di Login e Registrazione).
-         * @param username Il nome utente.
-         * @param password La password in chiaro.
+         * @brief Popola i parametri relativi all'autenticazione.
+         * @param username L'username utente.
+         * @param password La password inserita.
          * @return L'istanza corrente del Builder.
          */
         public Builder credentials(String username, String password) {
@@ -347,49 +412,57 @@ public class CallbackDTO {
             this.password = password;
             return this;
         }
-        
+
         /**
-         * @brief Imposta il flag per definire se l'utente possiede privilegi di amministratore.
-         * @param isAdmin true se amministratore, false per i giocatori normali.
+         * @brief Specifica se l'utente possiede i diritti da amministratore.
+         * @param isAdmin Valore booleano per i privilegi.
          * @return L'istanza corrente del Builder.
          */
         public Builder isAdmin(boolean isAdmin) { 
             this.isAdmin = isAdmin; 
             return this; 
         }
-
+        
         /**
-         * @brief Imposta lo stato della ricerca avversario.
-         * @param status Il valore enumerato (MATCH_FOUND o WAITING).
+         * @brief Imposta lo stato di avanzamento nella lobby.
+         * @param status Lo stato del matchmaking.
          * @return L'istanza corrente del Builder.
          */
         public Builder playStatus(Status status) { 
             this.status = status; 
             return this; 
         }
-        
+
         /**
-         * @brief Imposta i dati necessari al client per iniziare una partita.
-         * @param cipheredText     Testo cifrato.
-         * @param timer            Secondi disponibili per la risoluzione.
-         * @param playerIndex      Indice assegnato al client.
-         * @param opponentUsername Username dell'avversario affrontato.
-         * @param challengeCode    Codice identificativo della partita.
+         * @brief Imposta il livello di difficoltà della richiesta o della partita.
+         * @param difficulty Il livello desiderato/impostato.
          * @return L'istanza corrente del Builder.
          */
-        public Builder gameStartData(String cipheredText, int timer, int playerIndex, String opponentUsername, int challengeCode) {
+        public Builder difficulty(Difficulty difficulty) { 
+            this.difficulty = difficulty; 
+            return this; 
+        }
+        
+        /**
+         * @brief Compila in blocco i dati essenziali al bootstrap dell'interfaccia di gioco.
+         * @param cipheredText     Testo offuscato del testo sorgente.
+         * @param timer            Tempo totale del countdown.
+         * @param playerIndex      Indice assegnato al client nella sessione.
+         * @param opponentUsername Nome dell'avversario.
+         * @return L'istanza corrente del Builder.
+         */
+        public Builder gameStartData(String cipheredText, int timer, int playerIndex, String opponentUsername) {
             this.cipheredText = cipheredText;
             this.timer = timer;
             this.playerIndex = playerIndex;
             this.opponentUsername = opponentUsername;
-            this.challengeCode = challengeCode;
             return this;
         }
 
         /**
-         * @brief Imposta i dati relativi all'invio di una risposta dal giocatore.
-         * @param proposedWord La parola ipotizzata e inviata al server.
-         * @param responseTime Il tempo di risposta misurato in millisecondi.
+         * @brief Registra all'interno del DTO i dati inerenti alla risposta formulata dall'utente.
+         * @param proposedWord  Stringa della parola ipotizzata dall'utente.
+         * @param responseTime  Millisecondi intercorsi dallo Start.
          * @return L'istanza corrente del Builder.
          */
         public Builder answerData(String proposedWord, int responseTime) {
@@ -399,11 +472,11 @@ public class CallbackDTO {
         }
         
         /**
-         * @brief Imposta i dati di riepilogo al termine di una partita.
-         * @param gameResult     Il risultato definitivo calcolato dal server.
-         * @param correctWord    La vera parola da indovinare (per mostrarla se l'utente ha sbagliato).
-         * @param winnerUsername L'username di chi ha vinto.
-         * @param responseTime   Il tempo impiegato dal vincitore per trionfare.
+         * @brief Compatta le informazioni dell'esito generate dal Server al termine di una sfida.
+         * @param gameResult     Risultato netto per il ricevente.
+         * @param correctWord    Parola originale in chiaro (in caso di errore serve a mostrarla all'utente).
+         * @param winnerUsername L'username che ha completato correttamente e per primo.
+         * @param responseTime   Il tempo del vincitore che chiude la partita.
          * @return L'istanza corrente del Builder.
          */
         public Builder gameResultData(Result gameResult, String correctWord, String winnerUsername, int responseTime) {
@@ -415,12 +488,12 @@ public class CallbackDTO {
         }
         
         /**
-         * @brief Imposta i dati globali da restituire per la visualizzazione dello storico utente.
-         * @param matchHistory     Lista dei singoli record delle partite giocate.
-         * @param totalWon         Conteggio delle vittorie assolute.
-         * @param totalPlayed      Conteggio delle partite avviate.
-         * @param avgTime          Media del tempo impiegato in tutte le giocate.
-         * @param totalTime        Sommatoria del tempo di gioco in secondi.
+         * @brief Archivia l'intero set statistico richiesto dall'interfaccia Storico Utente.
+         * @param matchHistory     Lista formattata dei record di ogni singola partita.
+         * @param totalWon         Totale cumulativo delle vittorie.
+         * @param totalPlayed      Totale partecipazioni ai match.
+         * @param avgTime          Mediazione del tempo di reazione dell'utente.
+         * @param totalTime        Somma del tempo reale trascorso nei match in secondi.
          * @return L'istanza corrente del Builder.
          */
         public Builder historyData(List<MatchRecord> matchHistory, int totalWon, int totalPlayed, double avgTime, int totalTime) {
@@ -433,8 +506,8 @@ public class CallbackDTO {
         }
 
         /**
-         * @brief Completa l'assemblaggio dei dati e genera il DTO finale.
-         * @return Una nuova istanza immutabile di CallbackDTO perfettamente popolata.
+         * @brief Materializza finalmente l'oggetto in sola lettura (Read-Only) da passare ai controller UI.
+         * @return Il CallbackDTO generato.
          */
         public CallbackDTO build() {
             return new CallbackDTO(this);

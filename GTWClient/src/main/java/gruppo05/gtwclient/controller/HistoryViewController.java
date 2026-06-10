@@ -83,7 +83,7 @@ public class HistoryViewController implements Initializable {
     @FXML
     void onBack(ActionEvent event) {
         try {
-            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/LobbyView.fxml");
+            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
             ctrl.setConnection(connection);
             ctrl.setUsername(username);
         } catch (IOException e) {

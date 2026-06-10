@@ -99,7 +99,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         // !!! SWITCH ALLA HOME
                         System.out.println("Login accettato.");
                         try {
-                            LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/LobbyView.fxml");
+                            LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
                             lobbyCtrl.setConnection(connection);
                             lobbyCtrl.setUsername(connection.getUsername());
                         } catch (IOException e) {
@@ -143,7 +143,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         // !!! SWITCH ATTESA
                         System.out.println("In attesa di un avversario.");
                         try {
-                            WaitingViewController waitingCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/WaitingView.fxml");
+                            WaitingViewController waitingCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/WaitingView.fxml");
                             waitingCtrl.setConnection(connection);
                             waitingCtrl.setUsername(connection.getUsername());
                         } catch (IOException e) {
@@ -182,7 +182,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     // 3. dto.getWinnerUsername() (Per dichiarare chi ha vinto)
                     System.out.println("Partita terminata! Esito: " + dto.getGameResult() + ". Parola: " + dto.getCorrectWord());
                     try {
-                        ResultViewController resultCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/ResultView.fxml");
+                        ResultViewController resultCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/ResultView.fxml");
                         resultCtrl.setConnection(connection);
                         resultCtrl.setUsername(connection.getUsername());
                         resultCtrl.showResult(dto);
@@ -201,7 +201,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     // 4. dto.getTotalPlayedTime() (Per mostrare il tempo totale giocato)
                     System.out.println("Ricevuto storico partite.");
                     try {
-                        HistoryViewController historyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/HistoryView.fxml");
+                        HistoryViewController historyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/HistoryView.fxml");
                         historyCtrl.setConnection(connection);
                         historyCtrl.setUsername(connection.getUsername());
                         historyCtrl.showHistory(dto);
@@ -220,7 +220,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     // !!! SWITCH HOME
                     System.out.println("L'avversario si è disconnesso");
                     try {
-                        LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/LobbyView.fxml");
+                        LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
                         lobbyCtrl.setConnection(connection);
                         lobbyCtrl.setUsername(connection.getUsername());
                     } catch (IOException e) {

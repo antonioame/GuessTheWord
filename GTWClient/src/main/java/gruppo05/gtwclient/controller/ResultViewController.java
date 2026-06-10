@@ -71,7 +71,7 @@ public class ResultViewController implements Initializable {
     @FXML
     void onBackToLobby(ActionEvent event) {
         try {
-            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/LobbyView.fxml");
+            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
             ctrl.setConnection(connection);
             ctrl.setUsername(username);
         } catch (IOException e) {

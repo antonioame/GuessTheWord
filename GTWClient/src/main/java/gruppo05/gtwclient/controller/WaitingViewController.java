@@ -54,7 +54,7 @@ public class WaitingViewController implements Initializable {
             }
             
             // Tornare indietro alla Lobby
-            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/LobbyView.fxml");
+            LobbyViewController ctrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
             ctrl.setConnection(connection);
             ctrl.setUsername(username);
         } catch (IOException e) {

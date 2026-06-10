@@ -14,8 +14,9 @@ import gruppo05.gtwshared.utility.Difficulty;
  * * @details Questa classe implementa il pattern architetturale Builder. Garantisce la creazione di 
  * oggetti immutabili (read-only) le cui variabili vengono inizializzate solo se strettamente 
  * necessarie in base al {@link MessageType} ricevuto, prevenendo stati inconsistenti nella UI.
- * * @author chiara
- * @version 3.0
+ * 
+ * @author chiara
+ * @version 1.0
  */
 public class CallbackDTO {
     

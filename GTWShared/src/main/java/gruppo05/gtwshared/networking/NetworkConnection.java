@@ -21,7 +21,7 @@ import java.util.function.Consumer;
  * i metodi astratti {@link #createSocket()} e {@link #expectedChannels()}.
  * 
  * @author chiara
- * @version 2.0
+ * @version 1.0
  */
 public abstract class NetworkConnection {
     

@@ -5,7 +5,7 @@ package gruppo05.gtwshared.networking;
  * @brief Enumerazione di tutti i tipi di messaggio del protocollo GuessTheWord.
  * 
  * @author chiara
- * @version 2.0
+ * @version 1.0
  */
 public enum MessageType {
 

@@ -17,7 +17,7 @@ import gruppo05.gtwshared.networking.NetworkConnection;
  * in attesa dei due giocatori necessari per avviare una partita.
  * 
  * @author chiara
- * @version 2.0
+ * @version 1.0
  */
 public class ServerConnection extends NetworkConnection {
 

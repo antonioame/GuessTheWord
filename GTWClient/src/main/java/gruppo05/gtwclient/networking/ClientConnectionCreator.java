@@ -21,52 +21,68 @@ import gruppo05.gtwshared.controller.LoginViewController;
 /**
  * @class ClientConnectionCreator
  * @brief Factory e Controller di rete di altissimo livello per il lato Client.
- * @details Questa classe si occupa di instaurare la connessione TCP verso il server e funge 
- * da "traduttore" tra gli eventi di rete e l'interfaccia grafica. Riceve i pacchetti, li 
- * converte in DTO sicuri e demanda l'aggiornamento della UI al thread di JavaFX tramite 
- * {@link Platform#runLater}.
+ * * @details Questa classe estende {@link NetworkConnectionCreator} per gestire l'instaurazione 
+ * della connessione TCP con il server. Agisce come mediatore tra il layer di rete e l'interfaccia 
+ * grafica, ricevendo i messaggi, convertendoli in DTO e aggiornando la UI in modo thread-safe.
  * 
  * @author chiara
- * @version 2.0
+ * @version 1.0
  */
 public class ClientConnectionCreator extends NetworkConnectionCreator {
 
-    /**
-     * @brief Riferimento alla connessione client attiva.
-     */
+    /** Riferimento alla connessione attiva verso il server. */
     private ClientConnection connection;
 
+    /** Controller per la gestione della logica di gioco. */
     private GameViewController gameViewController;
+    
+    /** Controller per la visualizzazione dello storico partite. */
     private HistoryViewController historyViewController;
+    
+    /** Controller per la visualizzazione dei risultati finali. */
     private ResultViewController resultViewController;
 
+    /**
+     * Imposta il controller della vista di gioco.
+     * @param gameViewController Il controller della GameView.
+     */
     public void setGameViewController(GameViewController gameViewController) {
         this.gameViewController = gameViewController;
     }
 
+    /**
+     * Imposta il controller della vista dello storico.
+     * @param historyViewController Il controller della HistoryView.
+     */
     public void setHistoryViewController(HistoryViewController historyViewController) {
         this.historyViewController = historyViewController;
     }
 
+    /**
+     * Imposta il controller della vista dei risultati.
+     * @param resultViewController Il controller della ResultView.
+     */
     public void setResultViewController(ResultViewController resultViewController) {
         this.resultViewController = resultViewController;
     }
 
     /**
-     * @brief Inizializza la connessione verso il server leggendo i parametri locali.
-     * @details Legge il file "client.properties" per recuperare IP e porta del server, 
-     * istanzia il socket e registra le callback per i messaggi in arrivo e le disconnessioni.
-     * @return L'istanza configurata e pronta all'uso di ClientConnection.
+     * @brief Inizializza la connessione verso il server leggendo i parametri di configurazione.
+     * * @details Legge il file "client.properties", configura il socket e definisce le callback
+     * per gestire i messaggi in entrata e le interruzioni di linea.
+     * * @return L'istanza configurata di ClientConnection.
      */
     @Override
     public ClientConnection createConnection() {
+        // Carica IP e porta dal file di configurazione
         NetworkConfiguration config = this.readConfiguration("client.properties");
         
+        // Istanzia la connessione definendo le lambda per gestire ricezione e disconnessione
         this.connection = new ClientConnection(
-                config.getIp(),     // Idirizzo IP del server
-                config.getPort(),  // Porta del server
-                this::handleMessage,   // onReceive
-                (index) -> System.out.println("Disconnessione dal server o server offline.")  // onDisconnect
+                config.getIp(),
+                config.getPort(),
+                this::handleMessage,
+                (index) -> System.out.println("Disconnessione dal server o server offline.")
         );
         
         this.connection.connect();
@@ -74,29 +90,28 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     }
 
     /**
-     * @brief Dispatcher centrale per tutti i messaggi ricevuti dal server.
-     * @details Converte il NetworkMessage in CallbackDTO e, spostandosi sul thread di JavaFX, 
-     * esegue gli switch di interfaccia o aggiorna i componenti visivi in base all'evento.
-     * @param[in] channelIndex L'indice del canale (sempre 0 per il client).
-     * @param[in] msg L'oggetto serializzato ricevuto dalla rete.
+     * @brief Dispatcher principale per la gestione dei messaggi ricevuti dal server.
+     * * @details Esegue il parsing dei messaggi, li converte in {@link CallbackDTO} e 
+     * utilizza {@link Platform#runLater} per delegare l'aggiornamento grafico al thread di JavaFX.
+     * * @param[in] channelIndex Identificatore del canale di comunicazione.
+     * @param[in] msg Oggetto serializzato ricevuto dal server.
      */
     private void handleMessage(Integer channelIndex, Serializable msg) {
-        // Scarta pacchetti non validi o non conformi al protocollo
+        // Verifica che il messaggio sia del tipo atteso dal protocollo
         if (!(msg instanceof NetworkMessage)) return;
         
-        // Converte il pacchetto in un DTO immutabile per una lettura sicura
+        // Deserializzazione del pacchetto in un DTO (Data Transfer Object)
         CallbackDTO dto = ((NetworkMessage) msg).toDTO();
 
-        // Sposta l'esecuzione sul JavaFX Application Thread per evitare IllegalStateException
+        // Utilizzo del thread JavaFX per evitare eccezioni di modifica UI esterna
         Platform.runLater(() -> {
             
-            // switch(interfaccia) - Logica di routing verso i Controller UI
+            // Instradamento del DTO in base al tipo di evento ricevuto
             switch (dto.getEventType()) {
                 
                 case LOGIN_RESPONSE:
                     if (dto.isSuccess()) {
-                        // SUCCESSO: L'utente è loggato.
-                        // !!! SWITCH ALLA HOME
+                        // Navigazione alla Lobby dopo login riuscito
                         System.out.println("Login accettato.");
                         try {
                             LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
@@ -106,17 +121,15 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                             e.printStackTrace();
                         }
                     } else {
-                        // FALLIMENTO: Credenziali errate.
-                        // ALERT LOGIN FALLITO
+                        // Notifica errore login tramite Alert
                         Alert alert = new Alert(Alert.AlertType.ERROR, "L'utente non è registrato");
                         alert.showAndWait();
                     }
                     break;
-                    
+                
                 case REGISTER_RESPONSE:
                     if (dto.isSuccess()) {
-                        // SUCCESSO: Registrazione completata.
-                        // !!! SWITCH LOGIN
+                        // Registrazione riuscita, ritorno alla LoginView
                         System.out.println("Registrazione accettata.");
                         try {
                             LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
@@ -126,21 +139,17 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                             e.printStackTrace();
                         }
                     } else {
-                        // FALLIMENTO: Username occupato o errore DB.
-                        // ALERT REGISTRAZIONE FALLITA
+                        // Notifica errore registrazione
                         Alert alert = new Alert(Alert.AlertType.ERROR, "La registrazione non è andata a buon fine");
                         alert.showAndWait();
                     }
                     break;
-                    
+                
                 case PLAY_RESPONSE:
                     if (dto.getStatus() == CallbackDTO.Status.MATCH_FOUND) {
-                        // MATCH TROVATO: Il server ha accoppiato i giocatori.
-                        System.out.println("Avversario trovato! Preparazione pagina di gioco...");
-                        // !!! SWITCH PAGINA GAME
+                        System.out.println("Avversario trovato! Preparazione partita.");
                     } else {
-                        // IN ATTESA: Il server ci ha messi in coda.
-                        // !!! SWITCH ATTESA
+                        // Attesa in coda (UI di caricamento)
                         System.out.println("In attesa di un avversario.");
                         try {
                             WaitingViewController waitingCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/WaitingView.fxml");
@@ -151,36 +160,26 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         }
                     }
                     break;
-                    
+                
                 case GAME_START:
-                    // INIZIO PARTITA: Abbiamo tutti i dati per giocare.
-                    // !!! GAME CONTROLLER A CUI PASSARE
-                    // 1. dto.getCipheredText() (la stringa con gli asterischi)
-                    // 2. dto.getTimer() (per far partire il countdown grafico)
-                    // 3. dto.getOpponentUsername() 
-                    // 4. dto.getChallengeCode() 
+                    // Inizializzazione della partita con i dati del DTO
                     System.out.println("Inizio partita contro " + dto.getOpponentUsername());
                     if (gameViewController != null) {
                         gameViewController.initGame(dto);
                     }
                     break;
-                    
+                
                 case OPPONENT_ANSWERED:
-                    // !!! NOTIFICA IN-GAME: L'avversario ha premuto "Invia".
-                    // Dovrebbe mostrare qualcosa che faccia capire che l'avversario ha risposto
-                    System.out.println("L'avversario ha sottomesso la sua risposta!");
+                    // Feedback visivo per risposta avversario
+                    System.out.println("L'avversario ha dato la sua risposta!");
                     if (gameViewController != null) {
                         gameViewController.showOpponentAnswered();
                     }
                     break;
-                    
+                
                 case GAME_RESULT:
-                    // FINE PARTITA: Il server decreta il risultato.
-                    // !!! SWITCH RISULTATO, si deve passare:
-                    // 1. dto.getGameResult() (WIN, LOSE, DRAW)
-                    // 2. dto.getCorrectWord() (Per mostrare la soluzione reale se l'utente ha sbagliato)
-                    // 3. dto.getWinnerUsername() (Per dichiarare chi ha vinto)
-                    System.out.println("Partita terminata! Esito: " + dto.getGameResult() + ". Parola: " + dto.getCorrectWord());
+                    // Visualizzazione esito finale e navigazione alla vista risultati
+                    System.out.println("Partita terminata! Esito: " + dto.getGameResult());
                     try {
                         ResultViewController resultCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/ResultView.fxml");
                         resultCtrl.setConnection(connection);
@@ -193,14 +192,10 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case HISTORY_RESPONSE:
-                    // DATI RICEVUTI: Popolamento statistiche.
-                    // !!! SWITCH STORICO, si passano:
-                    // 1. dto.getMatchHistory() (Lista da iniettare in una TableView)
-                    // 2. dto.getTotalMatchesWon(), dto.getTotalMatchesPlayed() (Per aggiornare i contatori)
-                    // 3. dto.getAvgResponseTime() (Per mostrare il grafico o label della media)
-                    // 4. dto.getTotalPlayedTime() (Per mostrare il tempo totale giocato)
+                    // Caricamento storico partite nella UI
                     System.out.println("Ricevuto storico partite.");
                     try {
+                        // Visualizzazione dello storico
                         HistoryViewController historyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/HistoryView.fxml");
                         historyCtrl.setConnection(connection);
                         historyCtrl.setUsername(connection.getUsername());
@@ -210,16 +205,15 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         e.printStackTrace();
                     }
                     break;
-                    
+                
                 case OPPONENT_DISCONNECTED:
-                    // DISCONNESSIONE ANOMALA: L'avversario ha chiuso il gioco durante il match.
-                    // ALERT 
+                    // Gestione evento disconnessione avversario
                     Alert alert = new Alert(Alert.AlertType.INFORMATION, "L'avversario si è disconnesso!");
                     alert.setHeaderText("Partita Interrotta");
-                    alert.showAndWait(); // Attende che l'utente clicchi OK
-                    // !!! SWITCH HOME
-                    System.out.println("L'avversario si è disconnesso");
+                    alert.showAndWait();
+
                     try {
+                        // Ritorno alla pagina principale
                         LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
                         lobbyCtrl.setConnection(connection);
                         lobbyCtrl.setUsername(connection.getUsername());
@@ -227,18 +221,18 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         e.printStackTrace();
                     }
                     break;
-                    
+                
                 case TEXT_MESSAGE:
-                    // NOTIFICA GENERICA: Messaggi di sistema dal server.
+                    // Gestione notifiche testuali dal server
                     Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Server: " + dto.getMessage());
                     infoAlert.setHeaderText("Notifica");
                     infoAlert.showAndWait(); 
 
                     System.out.println("Notifica dal Server: " + dto.getMessage());
                     break;
-                    
+                
                 default:
-                    // CATCH-ALL per pacchetti sconosciuti o implementazioni future.
+                    // Caso di default per messaggi non gestiti
                     System.out.println("Evento ignorato o non gestito: " + dto.getEventType());
             }
         });

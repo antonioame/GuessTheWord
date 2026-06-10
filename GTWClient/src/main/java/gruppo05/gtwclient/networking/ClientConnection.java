@@ -16,7 +16,7 @@ import gruppo05.gtwshared.networking.NetworkConnection;
  * implicitamente tutte le comunicazioni sull'indice di canale 0.
  * 
  * @author chiara
- * @version 2.0
+ * @version 1.0
  */
 public class ClientConnection extends NetworkConnection {
 

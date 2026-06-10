@@ -57,6 +57,14 @@ public class App extends Application {
             try {
                 // In caso di successo dell'autenticazione, naviga alla Dashboard dell'Admin del server
                 AdminDashboardViewController adminCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwserver/controller/AdminDashboardView.fxml");
+                
+                // Imposta la grandezza minima per la finestra del pannello di controllo dell'Amministratore (Lato Server)
+                Stage dashboardStage = SceneNavigator.getStage();
+                if (dashboardStage != null) {
+                    dashboardStage.setMinWidth(650);
+                    dashboardStage.setMinHeight(500);
+                }
+                
                 adminCtrl.setConnection(connection);
                 
                 // Istanzia i DAO per la gestione dei sorgenti e delle parole estratte

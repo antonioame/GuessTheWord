@@ -183,7 +183,7 @@ public class AdminDashboardViewController implements Initializable {
             e.printStackTrace();
         }
 
-        lblStatus.setText("In ascolto sulla porta: 5000");
+        lblStatus.setText("In ascolto sulla porta: 5050");
         progressAnalysis.setVisible(false);
         lblAnalysisStatus.setText("Pronto");
     }

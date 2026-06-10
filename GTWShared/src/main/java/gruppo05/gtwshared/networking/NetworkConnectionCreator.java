@@ -46,7 +46,7 @@ public abstract class NetworkConnectionCreator {
     /**
      * @brief Legge la configurazione di rete da un file esterno.
      * @details Se il file non esiste, invoca {@link #createDefaultConfigFile(String)} 
-     * per generarne uno con valori di default (localhost:5000).
+     * per generarne uno con valori di default (localhost:5050).
      * @param fileName Percorso del file di configurazione.
      * @return Un oggetto {@link NetworkConfiguration} popolato con IP e porta.
      */
@@ -101,13 +101,13 @@ public abstract class NetworkConnectionCreator {
     
     /**
      * @brief Genera un file di configurazione di default in caso di assenza.
-     * @details Crea un file con parametri predefiniti (127.0.0.1:5000) per garantire
+     * @details Crea un file con parametri predefiniti (127.0.0.1:5050) per garantire
      * l'avvio dell'applicazione.
      * @param fileName Nome del file da creare.
      * @return L'oggetto configurazione creato.
      */
     private NetworkConfiguration createDefaultConfigFile(String fileName) {
-        NetworkConfiguration config = new NetworkConfiguration("127.0.0.1", 5000);
+        NetworkConfiguration config = new NetworkConfiguration("127.0.0.1", 5050);
         
         // Scrittura su file dei valori predefiniti
         try (FileWriter fw = new FileWriter(new File(fileName));

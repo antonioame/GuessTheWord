@@ -3,6 +3,7 @@ package gruppo05.gtwserver.db;
 import gruppo05.gtwserver.model.Challenge;
 import gruppo05.gtwshared.utility.Difficulty;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -33,7 +34,7 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
     private Challenge mapChallenge(ResultSet rs) throws SQLException {
         return new Challenge(
                 rs.getInt("code"), 
-                rs.getDate("date"),
+                Date.valueOf(rs.getString("date")),
                 Difficulty.valueOf(rs.getString("difficulty").toUpperCase()),
                 rs.getString("word"),
                 rs.getInt("source"));
@@ -99,12 +100,16 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 "VALUES (?,?,?,?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setInt(1, model.getCode());
-            cmd.setDate(2, model.getDate());
+            //cmd.setDate(2, model.getDate());          // non funziona per sqlite
+            cmd.setString(2, model.getDate().toString());
             cmd.setString(3, model.getDifficulty().toString());
             cmd.setString(4, model.getWord());
             cmd.setInt(5, model.getSource());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -121,14 +126,20 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 "VALUES (?,?,?,?,?);";        
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
                 
                 for(Challenge model : modelList) {
                     cmd.setInt(1, model.getCode());
-                    cmd.setDate(2, model.getDate());
+                    //cmd.setDate(2, model.getDate());      // non funziona per sqlite
+                    cmd.setString(2, model.getDate().toString());
                     cmd.setString(3, model.getDifficulty().toString());
                     cmd.setString(4, model.getWord());
                     cmd.setInt(5, model.getSource());
@@ -162,12 +173,16 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 "WHERE code = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            cmd.setDate(1, model.getDate());
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
+            //cmd.setDate(1, model.getDate());          // non funziona per sqlite
+            cmd.setString(1, model.getDate().toString());
             cmd.setString(2, model.getDifficulty().toString());
             cmd.setString(3, model.getWord());
             cmd.setInt(4, model.getSource());
             cmd.setInt(5, model.getCode());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -184,12 +199,13 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 "WHERE code = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            
-            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
-            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             
             cmd.setInt(1, code.get());
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

@@ -136,10 +136,13 @@ public class ConcreteWordDAO implements WordDAO {
                 "VALUES (?,?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getToken());
             cmd.setInt(2, model.getFrequency());
             cmd.setInt(3, model.getSource());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -156,8 +159,13 @@ public class ConcreteWordDAO implements WordDAO {
                 "VALUES (?,?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
                 
@@ -168,7 +176,7 @@ public class ConcreteWordDAO implements WordDAO {
                     // Aggiungi la query al pacchetto di comandi da eseguire
                     cmd.addBatch();
                 } 
-                
+
                 cmd.executeBatch();
                 conn.commit();
             } catch (SQLException sqle) {
@@ -195,10 +203,13 @@ public class ConcreteWordDAO implements WordDAO {
                 "WHERE token = ? AND source = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setInt(1, model.getFrequency());
             cmd.setString(2, model.getToken());
             cmd.setInt(3, model.getSource());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -215,13 +226,14 @@ public class ConcreteWordDAO implements WordDAO {
                 "WHERE token = ? AND source = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            
-            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
-            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             
             cmd.setString(1, token.get());
             cmd.setInt(2, source.get());
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

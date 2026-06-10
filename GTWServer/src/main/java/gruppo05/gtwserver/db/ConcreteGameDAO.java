@@ -102,11 +102,14 @@ public class ConcreteGameDAO implements GameDAO {
                 "VALUES (?,?,?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getPlayer());
             cmd.setInt(2, model.getChallenge());
             cmd.setString(3, model.getResult().toString());
             cmd.setInt(4, model.getResponseTime());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -123,8 +126,13 @@ public class ConcreteGameDAO implements GameDAO {
                 "VALUES (?,?,?,?);";        
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
                 
@@ -163,11 +171,14 @@ public class ConcreteGameDAO implements GameDAO {
                 "WHERE player = ? AND challenge = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getResult().toString());
             cmd.setInt(2, model.getResponseTime());            
             cmd.setString(3, model.getPlayer());
             cmd.setInt(4, model.getChallenge());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -186,13 +197,14 @@ public class ConcreteGameDAO implements GameDAO {
                 "WHERE player = ? AND challenge = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            
-            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
-            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             
             cmd.setString(1, player.get());
             cmd.setInt(2, challenge.get());
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

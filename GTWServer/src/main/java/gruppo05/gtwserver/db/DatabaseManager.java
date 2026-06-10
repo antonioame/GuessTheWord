@@ -62,21 +62,24 @@ public class DatabaseManager {
                 "password           TEXT NOT NULL, " +
                 "PRIMARY KEY(username) " +
                 ");";
+        
         String crtTblPlayer = 
                 "CREATE TABLE IF NOT EXISTS player (" +
                 "username           TEXT NOT NULL, " +
                 "password           TEXT NOT NULL, " +
                 "totalPlayedTime    INTEGER DEFAULT 0, " + 
-                "totalGamesWon    INTEGER DEFAULT 0, " +
-                "totalGamesPlayed INTEGER DEFAULT 0, " +
+                "totalGamesWon      INTEGER DEFAULT 0, " +
+                "totalGamesPlayed   INTEGER DEFAULT 0, " +
                 "PRIMARY KEY(username) " +
                 ");";
+        
         String crtTblSource = 
                 "CREATE TABLE IF NOT EXISTS source (" +
                 "id                 INTEGER NOT NULL, " +
                 "path               TEXT, " + 
                 "PRIMARY KEY(id) " +
                 ");";
+        
         String crtTblWord = 
                 "CREATE TABLE IF NOT EXISTS word (" +
                 "token              TEXT NOT NULL, " + 
@@ -86,6 +89,7 @@ public class DatabaseManager {
                 "FOREIGN KEY(source)        REFERENCES source(id) " +
                 "                           ON DELETE CASCADE " +
                 ");";
+        
         String crtTblChallenge = 
                 "CREATE TABLE IF NOT EXISTS challenge (" +
                 "code               INTEGER NOT NULL, " + 
@@ -97,6 +101,7 @@ public class DatabaseManager {
                 "FOREIGN KEY(word, source)  REFERENCES word(token, source) "  +
                 "                           ON DELETE RESTRICT " +
                 ");";
+        
         String crtTblGame = 
                 "CREATE TABLE IF NOT EXISTS game (" +
                 "player             TEXT NOT NULL, " +
@@ -110,7 +115,8 @@ public class DatabaseManager {
                 "                           ON DELETE RESTRICT " +
                 ");";
         
-        String crtTgrPlayer = 
+        // Trigger per la gestione delle ridondanze di player
+        String crtTgrGame = 
                 "CREATE TRIGGER IF NOT EXISTS incrementTotalsInPlayer " +
                 "AFTER INSERT ON game " +
                 "FOR EACH ROW " +
@@ -163,17 +169,20 @@ public class DatabaseManager {
         try (Connection conn = getConnection();
                 Statement cmd = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                cmd.execute(ENABLE_FOREIGN_KEYS);
+                
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
 
-                cmd.execute(ENABLE_FOREIGN_KEYS);
                 cmd.execute(crtTblAdmin);
                 cmd.execute(crtTblPlayer);
                 cmd.execute(crtTblSource);
                 cmd.execute(crtTblWord);
                 cmd.execute(crtTblChallenge);
                 cmd.execute(crtTblGame);
-                cmd.execute(crtTgrPlayer);
+                cmd.execute(crtTgrGame);
                 cmd.execute(crtVwWord);
                 cmd.execute(crtTgrSource);
 
@@ -182,10 +191,9 @@ public class DatabaseManager {
                 try {
                     conn.rollback();
                 } catch (SQLException ex) {
-                    throw new SQLException("Commit fallito - Rollback fallito", ex);
+                    throw new SQLException("Commit fallito - Rollback fallito", ex.getMessage(), ex);
                 }
-                throw new SQLException("Commit fallito - Rollback effettuato", sqle);
-
+                throw new SQLException("Commit fallito - Rollback effettuato", sqle.getMessage(), sqle);
             }
         } catch (SQLException ex) {
             // Debug: da cambiare

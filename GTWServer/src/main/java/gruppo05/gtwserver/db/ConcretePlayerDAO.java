@@ -98,9 +98,12 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 "VALUES (?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getUsername());
             cmd.setString(2, model.getPassword());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -117,8 +120,13 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 "VALUES (?,?);";     
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
                 
@@ -156,9 +164,12 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 "WHERE username = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getPassword());
             cmd.setString(2, model.getUsername());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -175,12 +186,13 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 "WHERE username = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            
-            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
-            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             
             cmd.setString(1, username.get());
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare

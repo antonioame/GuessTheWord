@@ -48,7 +48,7 @@ public class ConcreteSourceDAO implements SourceDAO {
         final String query = 
                 "SELECT * " +
                 "FROM source " +
-                "WHERE id = ?;";
+                "WHERE id = ? AND path IS NOT NULL;";
         
         try(Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmd = conn.prepareStatement(query)) {
@@ -74,7 +74,7 @@ public class ConcreteSourceDAO implements SourceDAO {
         final String query = 
                 "SELECT * " +
                 "FROM source " +
-                "WHERE path IN NOT NULL;";
+                "WHERE path IS NOT NULL;";
         
         try (Connection conn = DatabaseManager.getConnection();
                 Statement cmd = conn.createStatement();
@@ -99,9 +99,12 @@ public class ConcreteSourceDAO implements SourceDAO {
                 "VALUES (?,?);";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setInt(1, model.getId());
             cmd.setString(2, model.getPath().toString());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -118,8 +121,13 @@ public class ConcreteSourceDAO implements SourceDAO {
                 "VALUES (?,?);";     
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             try {
+                // Il comando di abilitazione dei vincoli di integrità referenziale
+                // deve essere abilitato fuori dalla transazione
+                st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                
                 // Tutto deve essere eseguito in una transazione
                 conn.setAutoCommit(false);
                 
@@ -156,9 +164,12 @@ public class ConcreteSourceDAO implements SourceDAO {
                 "WHERE id = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             cmd.setString(1, model.getPath().toString());
             cmd.setInt(2, model.getId());
+            
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
             // Debug: da cambiare
@@ -175,16 +186,17 @@ public class ConcreteSourceDAO implements SourceDAO {
                 "WHERE id = ?;";
         
         try (Connection conn = DatabaseManager.getConnection();
-                PreparedStatement cmd = conn.prepareStatement(query)) {
-            
-            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
-            cmd.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
+                PreparedStatement cmd = conn.prepareStatement(query);
+                Statement st = conn.createStatement()) {
             
             cmd.setInt(1, id.get());
+            
+            // Necessario se vogliamo far rispettare i vincoli di integrità referenziale
+            st.execute(DatabaseManager.ENABLE_FOREIGN_KEYS);
             cmd.executeUpdate();
         } catch (SQLException ex) {
-                // Debug: da cambiare
-                ex.printStackTrace();
+            // Debug: da cambiare
+            ex.printStackTrace();
         }    
     }
     

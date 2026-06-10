@@ -21,6 +21,7 @@ import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGenerator;
 import gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor;
 import gruppo05.gtwshared.utility.Difficulty;
+import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
 
 /**
  * @class GameSetupController
@@ -129,7 +130,7 @@ public class GameSetupController {
                 
                 // Inizializza il motore di estrazione definendo le regole: similarità, priorità di frequenza e stop words
                 WordExtractor extractor = new WordExtractor(
-                        (w1, w2) -> w1.contains(w2) || w2.contains(w1), 
+                        new LetterFrequencySimilarity(), 
                         (f1, f2) -> f1 < f2,                            
                         stopWords, 
                         random

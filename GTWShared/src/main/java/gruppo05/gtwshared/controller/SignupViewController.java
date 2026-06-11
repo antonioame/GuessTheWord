@@ -56,7 +56,7 @@ public class SignupViewController implements Initializable {
     }    
 
     @FXML
-    private void switchToLogin(ActionEvent event) throws IOException {
+    public void switchToLogin(ActionEvent event) throws IOException {
         Stage stage = (Stage) outerContainer.getScene().getWindow();
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
@@ -83,7 +83,7 @@ public class SignupViewController implements Initializable {
             alert.showAndWait();
             return;
         }
-        signupManager.validateInfo(txfUsername.getText(), txfPswd.getText());
+        signupManager.registerInfo(txfUsername.getText(), txfPswd.getText());
     }
     
     public void setSignupManager(SignupManager signupManager) {

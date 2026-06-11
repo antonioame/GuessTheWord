@@ -125,7 +125,27 @@ public class App extends Application {
         });
         
         ctrl.setLoginManager(loginMgr);
-        ctrl.setSignupManager(new ServerSignupManager());
+        
+        ServerSignupManager signupMgr = new ServerSignupManager();
+        signupMgr.setOnSuccessCallback(() -> {
+            // Se tutto va bene, cambi la schermata in quella di login per accedere
+            Stage signupStage = SceneNavigator.getStage();
+            
+            FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
+            try {
+                Parent loginRoot = loginLoader.load();
+                LoginViewController loginCtrl = (LoginViewController) loginLoader.getController();
+                loginCtrl.setLoginManager(loginMgr);
+                loginCtrl.setSignupManager(signupMgr);    
+                
+                stage.setScene(new Scene(loginRoot));
+                stage.show();
+            } catch (IOException ex) {
+                // Debug: da cambiare
+                ex.printStackTrace();
+            }
+        });
+        ctrl.setSignupManager(signupMgr);
         
         stage.setScene(new Scene(root));
         // Assicura lo spegnimento pulito del server all'atto della chiusura della finestra JavaFX

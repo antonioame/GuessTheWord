@@ -18,7 +18,7 @@ public class ClientSignupManager implements SignupManager {
     }
     
     @Override
-    public void validateInfo(String username, String password) {
+    public void registerInfo(String username, String password) {
         NetworkMessage.RegisterRequest lr = new NetworkMessage.RegisterRequest(username, password);
 
         try {

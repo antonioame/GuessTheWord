@@ -19,15 +19,37 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *
  * @author francesco-vecchione
+ * @brief Classe di test per la verifica del DAO concreto ConcreteSourceDAO.
+ *
+ * Utilizza lo stato controllato generato da DebugDB per convalidare il ciclo di vita 
+ * dell'entità Source. Verifica in particolare i meccanismi di cancellazione logica 
+ * (soft delete), accertandosi che i record con percorso nullo vengano ignorati e 
+ * che le transazioni in blocco rispettino l'atomicità.
  */
 public class ConcreteSourceDAOTest {
     
+    /**
+     * @brief Nome del file di database locale SQLite utilizzato per isolare i test. 
+     */
     private final static String DB_NAME = "ServerDB";
+    
+    /**
+     * @brief Riferimento all'utility di debug per il popolamento diretto delle tabelle. 
+     */
     private final DebugDB ddb;
+    
+    /**
+     * @brief Il Data Access Object (DAO) sotto analisi in questa suite di test. 
+     */
     private final SourceDAO sdao;
     
+    /**
+     * @brief Costruttore predefinito.
+     *
+     * Inizializza l'utility di debug del database e assegna il riferimento all'istanza 
+     * concreta del DAO delle sorgenti.
+     */
     public ConcreteSourceDAOTest() {
         ddb = new DebugDB();
         sdao = new ConcreteSourceDAO();
@@ -41,12 +63,26 @@ public class ConcreteSourceDAOTest {
     public static void tearDownClass() {
     }
     
+    /**
+     * @brief Configura l'ambiente prima dell'esecuzione di ogni singolo test case.
+     *
+     * Ricostruisce lo schema relazionale delle tabelle e inserisce i record iniziali di 
+     * debug per assicurare la consistenza e l'isolamento degli ambienti d'esecuzione.
+     *
+     * @throws SQLException In caso di anomalie nella connessione JDBC o nell'esecuzione delle query.
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         DatabaseManager.initDB();
         ddb.initDebugDBWithoutDAO();
     }
     
+    /**
+     * @brief Esegue la rimozione del file di database alla conclusione di ciascun test.
+     *
+     * Garantisce il completo isolamento tra i casi di test eliminando il database SQLite locale, 
+     * impedendo la persistenza di record sporchi o alterati.
+     */
     @AfterEach
     public void tearDown() {
         // Cancella il database alla fine di ogni operazione
@@ -56,6 +92,12 @@ public class ConcreteSourceDAOTest {
     
     // test per il metodo selectById
 
+    /**
+     * @brief Verifica il corretto recupero di una sorgente valida tramite il suo codice identificativo.
+     *
+     * Controlla che il record 6, pre-caricato dallo script di debug, sia rilevato come presente 
+     * e contenga un percorso file non nullo.
+     */
     @Test
     public void testSelectByIdExisting() {
         // Presuppone l'esistenza della sorgente valida con ID 6 nel database di debug
@@ -67,6 +109,12 @@ public class ConcreteSourceDAOTest {
         assertNotNull(result.get().getPath(), "Il path associato alla sorgente non deve essere null.");
     }
 
+    /**
+     * @brief Verifica che la ricerca di una sorgente non registrata produca un esito vuoto.
+     *
+     * Interroga il DAO impostando un ID inesistente ("999"), appurando che il sistema ritorni 
+     * un Optional vuoto anziché lanciare eccezioni a runtime.
+     */
     @Test
     public void testSelectByIdNotExisting() {
         Optional<Integer> id = Optional.of(999);
@@ -75,6 +123,12 @@ public class ConcreteSourceDAOTest {
         assertFalse(result.isPresent(), "La sorgente con ID inesistente non deve essere trovata.");
     }
 
+    /**
+     * @brief Verifica la gestione protetta di selectById in caso di parametro vuoto.
+     *
+     * Assicura che l'invio di un Optional.empty() non avvii interrogazioni ma venga 
+     * intercettato restituendo un esito controllato vuoto.
+     */
     @Test
     public void testSelectByIdEmptyOptional() {
         Optional<Source> result = sdao.selectById(Optional.empty());
@@ -82,6 +136,12 @@ public class ConcreteSourceDAOTest {
         assertFalse(result.isPresent(), "L'invio di un Optional vuoto deve ritornare un Optional vuoto.");
     }
 
+    /**
+     * @brief Verifica che selectById escluda i record con percorso nullo (cancellati logicamente).
+     *
+     * Inserisce direttamente via SQL un record anomalo avente PATH NULL. Il test accerta che la 
+     * clausola restrittiva del DAO escluda l'elemento, considerandolo rimosso dal sistema.
+     */
     @Test
     public void testSelectByIdWithNullPathInDB() {
         // Forza l'inserimento nel DB di un record sporco con PATH NULL saltando il DAO per testare la nuova clausola WHERE
@@ -99,6 +159,12 @@ public class ConcreteSourceDAOTest {
 
     // test per il metodo selectAll
 
+    /**
+     * @brief Verifica il recupero complessivo di tutte le sorgenti attive.
+     *
+     * Valuta la consistenza dell'elenco estratto, verificando che sia non nullo e contenga 
+     * le fonti correttamente inizializzate dal dataset di debug.
+     */
     @Test
     public void testSelectAll() {
         List<Source> result = sdao.selectAll();
@@ -107,6 +173,12 @@ public class ConcreteSourceDAOTest {
         assertFalse(result.isEmpty(), "La lista delle sorgenti valide non dovrebbe essere vuota.");
     }
 
+    /**
+     * @brief Verifica che selectAll filtri ed escluda i record con percorso nullo.
+     *
+     * Introduce forzatamente una sorgente con PATH NULL. Il test certifica che il metodo 
+     * selectAll non incrementi il proprio conteggio, escludendo la riga orfana mediante i filtri SQL.
+     */
     @Test
     public void testSelectAllFiltersOutNullPaths() {
         int sizeBefore = sdao.selectAll().size();
@@ -126,16 +198,28 @@ public class ConcreteSourceDAOTest {
 
     // test per il metodo insert
 
+    /**
+     * @brief Verifica l'inserimento corretto di una nuova sorgente valida.
+     *
+     * Memorizza un oggetto Source ben formato e ne constata la stabilità effettuando 
+     * una successiva selectById di riscontro sul codice identificativo dedicato.
+     */
     @Test
     public void testInsertValid() {
-        Source newSource = new Source(10, Paths.get("gamedata/sources/source10.txt"));
+        Source newSource = new Source(10, Paths.get("/fake/path/source10.txt"));
         sdao.insert(newSource);
         
         Optional<Source> retrieved = sdao.selectById(Optional.of(10));
         assertTrue(retrieved.isPresent(), "La nuova sorgente deve essere presente nel DB.");
-        assertEquals(Paths.get("gamedata/sources/source10.txt"), retrieved.get().getPath());
+        assertEquals(Paths.get("/fake/path/source10.txt"), retrieved.get().getPath());
     }
 
+    /**
+     * @brief Verifica l'immunità del metodo insert a fronte di parametri in ingresso nulli.
+     *
+     * Controlla che il passaggio di un riferimento null venga scartato dalle clausole di guardia 
+     * interne al DAO senza alterare il quantitativo totale di righe memorizzate nella tabella.
+     */
     @Test
     public void testInsertNull() {
         int sizeBefore = sdao.selectAll().size();
@@ -145,9 +229,15 @@ public class ConcreteSourceDAOTest {
         assertEquals(sizeBefore, sizeAfter, "L'inserimento di un oggetto null non deve alterare lo stato del DB.");
     }
 
+    /**
+     * @brief Verifica l'inibizione dell'inserimento in caso di chiave primaria duplicata.
+     *
+     * Tenta di registrare una sorgente fornendo un ID già occupato nel sistema (id = 6). 
+     * Il test valida il blocco dell'operazione volto a preservare la consistenza dell'indice.
+     */
     @Test
     public void testInsertDuplicateId() {
-        Source duplicateSource = new Source(6, Paths.get("gamedata/sources/duplicate.txt"));
+        Source duplicateSource = new Source(6, Paths.get("/fake/path/duplicate.txt"));
         
         int sizeBefore = sdao.selectAll().size();
         sdao.insert(duplicateSource);
@@ -158,11 +248,17 @@ public class ConcreteSourceDAOTest {
 
     // test per il metodo insertAll
 
+    /**
+     * @brief Verifica la persistenza di massa di una collezione di sorgenti valide.
+     *
+     * Invia al metodo insertAll un elenco contenente due istanze configurate correttamente, 
+     * certificando che la tabella incrementi di due unità e che i record siano leggibili.
+     */
     @Test
     public void testInsertAllValid() {
         List<Source> list = new ArrayList<>();
-        list.add(new Source(20, Paths.get("gamedata/sources/source20.txt")));
-        list.add(new Source(21, Paths.get("gamedata/sources/source21.txt")));
+        list.add(new Source(20, Paths.get("/fake/path/source20.txt")));
+        list.add(new Source(21, Paths.get("/fake/path/source21.txt")));
         
         int sizeBefore = sdao.selectAll().size();
         sdao.insertAll(list);
@@ -173,6 +269,12 @@ public class ConcreteSourceDAOTest {
         assertTrue(sdao.selectById(Optional.of(21)).isPresent());
     }
 
+    /**
+     * @brief Verifica la tolleranza di insertAll verso collezioni vuote o nulle.
+     *
+     * Fornisce input vuoti o privi di riferimenti al metodo massivo per convalidare la stabilità 
+     * difensiva ed escludere l'insorgenza di eccezioni impreviste a runtime.
+     */
     @Test
     public void testInsertAllNullOrEmpty() {
         int sizeBefore = sdao.selectAll().size();
@@ -184,13 +286,19 @@ public class ConcreteSourceDAOTest {
         assertEquals(sizeBefore, sdao.selectAll().size());
     }
 
+    /**
+     * @brief Verifica l'atomicità di insertAll mediante rollback transazionale in caso di errore.
+     *
+     * Crea un elenco miscellaneo in cui il secondo record viola la chiave primaria (ID 6 esistente). 
+     * Il test dimostra che l'intero blocco viene respinto, annullando anche l'inserimento della prima fonte valida.
+     */
     @Test
     public void testInsertAllWithRollback() {
         int sizeBefore = sdao.selectAll().size();
         List<Source> list = new ArrayList<>();
-        list.add(new Source(30, Paths.get("gamedata/sources/source30.txt")));
+        list.add(new Source(30, Paths.get("/fake/path/source30.txt")));
         // Il secondo elemento fallisce per violazione di chiave primaria (ID 6 già esistente)
-        list.add(new Source(6, Paths.get("gamedata/sources/source6_fail.txt")));
+        list.add(new Source(6, Paths.get("/fake/path/source6_fail.txt")));
         
         sdao.insertAll(list);
         
@@ -201,20 +309,32 @@ public class ConcreteSourceDAOTest {
 
     // test per il metodo update
 
+    /**
+     * @brief Verifica la modifica dei campi informativi di una sorgente registrata.
+     *
+     * Modifica il percorso del file associato alla sorgente 6 e interroga nuovamente il 
+     * database per verificare la persistenza del nuovo tracciato.
+     */
     @Test
     public void testUpdateExisting() {
         Optional<Integer> id = Optional.of(6);
         Optional<Source> original = sdao.selectById(id);
         assertTrue(original.isPresent());
         
-        Source updatedSource = new Source(6, Paths.get("gamedata/sources/new_path_2026.txt"));
+        Source updatedSource = new Source(6, Paths.get("/fake/path/new_path_2026.txt"));
         sdao.update(updatedSource);
         
         Optional<Source> retrieved = sdao.selectById(id);
         assertTrue(retrieved.isPresent());
-        assertEquals(Paths.get("gamedata/sources/new_path_2026.txt"), retrieved.get().getPath(), "Il percorso (path) deve risultare aggiornato.");
+        assertEquals(Paths.get("/fake/path/new_path_2026.txt"), retrieved.get().getPath(), "Il percorso (path) deve risultare aggiornato.");
     }
 
+    /**
+     * @brief Verifica che il metodo update gestisca in sicurezza argomenti nulli.
+     *
+     * Assicura l'assenza di crash dell'applicazione nel caso in cui venga passato un 
+     * riferimento nullo, interrompendo anzitempo l'invocazione delle routine SQL.
+     */
     @Test
     public void testUpdateNull() {
         assertDoesNotThrow(() -> sdao.update(null), "L'aggiornamento di un oggetto null non deve sollevare eccezioni.");
@@ -222,9 +342,15 @@ public class ConcreteSourceDAOTest {
 
     // test per il metodo delete
 
+    /**
+     * @brief Verifica l'eliminazione di una sorgente priva di legami referenziali esterni.
+     *
+     * Inserisce un record di test isolato (id = 40) e procede alla sua rimozione, verificando 
+     * il corretto decremento della cardinalità complessiva dei dati attivi.
+     */
     @Test
     public void testDeleteNoReferences() {
-        Source tempSource = new Source(40, Paths.get("gamedata/sources/temp.txt"));
+        Source tempSource = new Source(40, Paths.get("/fake/path/temp.txt"));
         sdao.insert(tempSource);
         
         int sizeAfterInsert = sdao.selectAll().size();
@@ -235,6 +361,16 @@ public class ConcreteSourceDAOTest {
         assertFalse(sdao.selectById(Optional.of(40)).isPresent());
     }
 
+    /**
+     * @brief Verifica il meccanismo di soft delete (cancellazione logica) su sorgenti referenziate.
+     *
+     * Tenta l'eliminazione della sorgente 6, la quale è vincolata a righe dipendenti nelle tabelle 
+     * word e challenge. Il test dimostra che, per preservare l'integrità referenziale, il record non 
+     * viene rimosso fisicamente, ma il suo campo 'path' viene impostato a NULL, escludendolo 
+     * dalle normali operazioni del DAO pur mantenendo intatta la struttura relazionale.
+     *
+     * @throws SQLException In caso di anomalie di interrogazione diretta a basso livello tramite JDBC.
+     */
     @Test
     public void testDeleteWithReferences() throws SQLException {
         int sizeBefore = sdao.selectAll().size();
@@ -267,7 +403,13 @@ public class ConcreteSourceDAOTest {
             }
         }
     }
-
+    
+    /**
+     * @brief Verifica che la chiamata a delete con un Optional vuoto non muti lo stato del DB.
+     *
+     * Sottopone un Optional.empty() al metodo di rimozione, accertando che l'azione venga 
+     * ignorata senza applicare modifiche alle tabelle.
+     */
     @Test
     public void testDeleteEmptyOptional() {
         int sizeBefore = sdao.selectAll().size();

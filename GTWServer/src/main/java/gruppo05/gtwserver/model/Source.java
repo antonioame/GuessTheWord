@@ -1,19 +1,19 @@
 package gruppo05.gtwserver.model;
 
 import java.nio.file.Path;
-import java.util.Objects;
 import java.util.Random;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Rappresenta una sorgente di dati (Source) identificata da un id numerico e associata a un percorso di file.
  * @invariant
- * L'identificativo composto SourceId e il percorso del file sono immutabili (final).
+ * L'identificativo id e il percorso del file sono immutabili (final).
  */
 public class Source {
     
+    /**
+     * @brief L'identificativo numerico univoco della sorgente, utilizzato come chiave primaria.
+     */
     private final int id;
     
     /**
@@ -48,7 +48,10 @@ public class Source {
                 path);
     }
 
-    // Da commentare
+    /**
+     * @brief Restituisce l'identificativo numerico della sorgente.
+     * @return L'identificativo id della sorgente.
+     */
     public int getId() {
         return id;
     }
@@ -61,7 +64,10 @@ public class Source {
         return path;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code della sorgente basandosi sull'identificativo id.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -69,7 +75,14 @@ public class Source {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questa sorgente con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con la sorgente corrente.
+     * @return true se l'oggetto specificato è uguale a questa sorgente, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Source e ha lo stesso id di questo oggetto.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia SourceDAO per la gestione della persistenza degli oggetti Source.
  * @invariant
- * La classe gestisce oggetti di tipo Source identificati da una chiave di tipo SourceId.
+ * La classe gestisce oggetti di tipo Source identificati dal codice numerico id (int).
  */
 public class ConcreteSourceDAO implements SourceDAO {
  
@@ -39,6 +37,10 @@ public class ConcreteSourceDAO implements SourceDAO {
         
     }
     
+    /**
+     * @brief Recupera una sorgente tramite il suo identificativo univoco.
+     * @copydoc SourceDAO#selectById(Optional)
+     */
     @Override
     public Optional<Source> selectById(Optional<Integer> id) {
         if(!id.isPresent()) return Optional.empty();
@@ -67,6 +69,10 @@ public class ConcreteSourceDAO implements SourceDAO {
         return result;        
     }
     
+    /**
+     * @brief Recupera tutte le istanze di sorgenti memorizzate nel database.
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Source> selectAll() {
         List<Source> result = new ArrayList<>();
@@ -90,6 +96,12 @@ public class ConcreteSourceDAO implements SourceDAO {
         return result;        
     }
 
+    /**
+     * @brief Inserisce una nuova sorgente all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void insert(Source model) {
         if(model == null) return;
@@ -112,6 +124,13 @@ public class ConcreteSourceDAO implements SourceDAO {
         }    
     }
 
+    /**
+     * @brief Inserisce una lista di sorgenti all'interno del database.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza modificare il database.
+     * In caso di errore durante il batch, viene eseguito il rollback dell'intera transazione.
+     */
     @Override
     public void insertAll(List<Source> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -154,6 +173,12 @@ public class ConcreteSourceDAO implements SourceDAO {
         }   
     }
 
+    /**
+     * @brief Aggiorna il percorso di una sorgente esistente all'interno del database.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void update(Source model) {
         if(model == null) return;
@@ -177,6 +202,12 @@ public class ConcreteSourceDAO implements SourceDAO {
         }    
     }
 
+    /**
+     * @brief Cancella una sorgente dal database tramite il suo identificativo univoco.
+     * @copydoc SourceDAO#delete(Optional)
+     * @post
+     * Se l'Optional è vuoto, l'operazione termina senza apportare modifiche.
+     */
     @Override
     public void delete(Optional<Integer> id) {
         if(!id.isPresent()) return;

@@ -2,20 +2,19 @@ package gruppo05.gtwserver.model;
 
 import gruppo05.gtwshared.utility.Difficulty;
 import java.sql.Date;
-import java.util.Objects;
 import java.util.Random;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Rappresenta una sfida (Challenge) all'interno del sistema, definita da una parola segreta, una difficoltà e una sorgente.
  * @invariant
  * Tutti i campi interni dell'oggetto sono immutabili (final).
  */
 public class Challenge {
     
-    // Da commentare
+    /**
+     * @brief Il codice numerico univoco della sfida, utilizzato come chiave primaria.
+     */
     private final int code;
     
     /**
@@ -73,7 +72,10 @@ public class Challenge {
                 source);
     }
 
-    // Da commentare
+    /**
+     * @brief Restituisce il codice identificativo univoco della sfida.
+     * @return Il codice numerico della sfida.
+     */
     public int getCode() {
         return code;
     }
@@ -110,7 +112,10 @@ public class Challenge {
         return source;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code della sfida basandosi sul codice identificativo univoco.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -118,7 +123,14 @@ public class Challenge {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questa sfida con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con la sfida corrente.
+     * @return true se l'oggetto specificato è uguale a questa sfida, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Challenge e ha lo stesso codice di questo oggetto.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

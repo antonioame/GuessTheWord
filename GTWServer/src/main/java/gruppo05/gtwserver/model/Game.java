@@ -4,17 +4,22 @@ import gruppo05.gtwshared.utility.Result;
 import java.util.Objects;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Rappresenta una singola partita giocata da un utente in una specifica sfida.
  * @invariant
- * Tutti i campi interni dell'oggetto, inclusa la chiave composta GameId, sono immutabili (final).
+ * I campi interni dell'oggetto, che costituiscono la chiave primaria composta
+ * (player e challenge) e i dati di gioco, sono immutabili (final).
  */
 public class Game {
     
+    /**
+     * @brief Lo username del giocatore, parte della chiave primaria composta.
+     */
     private final String player;
     
+    /**
+     * @brief Il codice identificativo della sfida, parte della chiave primaria composta.
+     */
     private final int challenge;
     
     /**
@@ -45,12 +50,18 @@ public class Game {
         this.responseTime = timeToAnswer;
     }
 
-    // Da commentare
+    /**
+     * @brief Restituisce lo username del giocatore.
+     * @return Lo username del giocatore.
+     */
     public String getPlayer() {
         return player;
     }
     
-    // Da commentare
+    /**
+     * @brief Restituisce il codice identificativo della sfida.
+     * @return Il codice numerico della sfida.
+     */
     public int getChallenge() {
         return challenge;
     }
@@ -71,7 +82,10 @@ public class Game {
         return responseTime;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code dell'oggetto Game basandosi sulla chiave primaria composta.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 5;
@@ -80,7 +94,14 @@ public class Game {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questo oggetto Game con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con la partita corrente.
+     * @return true se l'oggetto specificato è uguale a questa partita, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Game e presenta gli stessi valori per player e challenge.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

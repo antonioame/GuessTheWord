@@ -13,12 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia ChallengeDAO per la gestione della persistenza degli oggetti Challenge.
  * @invariant
- * La classe gestisce oggetti di tipo Challenge identificati da una chiave di tipo ChallengeId.
+ * La classe gestisce oggetti di tipo Challenge identificati dal codice numerico code (int).
  */
 public class ConcreteChallengeDAO implements ChallengeDAO {
 
@@ -40,6 +38,10 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
                 rs.getInt("source"));
     }
     
+    /**
+     * @brief Recupera una sfida tramite il suo codice identificativo univoco.
+     * @copydoc ChallengeDAO#selectById(Optional)
+     */
     @Override
     public Optional<Challenge> selectById(Optional<Integer> code) {
         if(!code.isPresent()) return Optional.empty();
@@ -68,6 +70,10 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         return result;
     }
     
+    /**
+     * @brief Recupera tutte le istanze di sfide memorizzate nel database.
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Challenge> selectAll() {
         List<Challenge> result = new ArrayList<>();
@@ -91,6 +97,12 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         return result;
     }
     
+    /**
+     * @brief Inserisce una nuova sfida all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void insert(Challenge model) {
         if(model == null) return;
@@ -117,6 +129,13 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         }
     }
 
+    /**
+     * @brief Inserisce una lista di sfide all'interno del database.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza modificare il database.
+     * In caso di errore durante il batch, viene eseguito il rollback dell'intera transazione.
+     */
     @Override
     public void insertAll(List<Challenge> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -163,6 +182,12 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         }
     }
     
+    /**
+     * @brief Aggiorna i dati di una sfida esistente all'interno del database.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void update(Challenge model) {
         if(model == null) return;
@@ -190,6 +215,12 @@ public class ConcreteChallengeDAO implements ChallengeDAO {
         }
     }
 
+    /**
+     * @brief Cancella una sfida dal database tramite il suo codice identificativo univoco.
+     * @copydoc ChallengeDAO#delete(Optional)
+     * @post
+     * Se l'Optional è vuoto, l'operazione termina senza apportare modifiche.
+     */
     @Override
     public void delete(Optional<Integer> code) {
         if(!code.isPresent()) return;

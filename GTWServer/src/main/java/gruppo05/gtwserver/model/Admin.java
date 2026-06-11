@@ -3,16 +3,16 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- *
  * @author francesco-vecchione
- * 
- * @brief Rappresenta un amministratore del sistema, identificato in modo univoco da un AdminId.
+ * @brief Rappresenta un amministratore del sistema, identificato in modo univoco dallo username.
  * @invariant
- * L'identificativo id e la password dell'amministratore sono immutabili (final).
+ * Lo username e la password dell'amministratore sono immutabili (final).
  */
 public class Admin {
     
-    // Da commentare
+    /**
+     * @brief Lo username dell'amministratore, utilizzato come chiave primaria.
+     */
     private final String username;
     
     /**
@@ -34,7 +34,10 @@ public class Admin {
         this.password = password;
     }
 
-    // Da commentare
+    /**
+     * @brief Restituisce lo username dell'amministratore.
+     * @return Lo username dell'amministratore.
+     */
     public String getUsername() {
         return username;
     }
@@ -47,7 +50,10 @@ public class Admin {
         return password;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code dell'amministratore basandosi sullo username.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -55,7 +61,14 @@ public class Admin {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questo amministratore con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con l'amministratore corrente.
+     * @return true se l'oggetto specificato è uguale a questo amministratore, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Admin e ha lo stesso username di questo oggetto.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

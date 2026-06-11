@@ -3,16 +3,17 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Rappresenta una parola (Word) registrata nel sistema con la relativa frequenza di comparsa in una specifica sorgente.
  * @invariant
- * Tutti i campi interni dell'oggetto, inclusa la chiave composta WordId, sono immutabili (final).
+ * Tutti i campi interni dell'oggetto, che costituiscono la chiave primaria
+ * composta (token e source) e la frequenza, sono immutabili (final).
  */
 public class Word {
     
-    // Da commentare
+    /**
+     * @brief La stringa testuale della parola, parte della chiave primaria composta.
+     */
     private final String token;
     
     /**
@@ -20,7 +21,9 @@ public class Word {
      */
     private final int frequency;
 
-    // Da commentare
+    /**
+     * @brief L'identificativo numerico della sorgente di provenienza, parte della chiave primaria composta.
+     */
     private final int source;
     
     /**
@@ -41,7 +44,10 @@ public class Word {
         this.source = source;
     }
 
-    // Da commentare
+    /**
+     * @brief Restituisce la stringa testuale della parola.
+     * @return La stringa che rappresenta la parola.
+     */
     public String getToken() {
         return token;
     }
@@ -54,12 +60,18 @@ public class Word {
         return frequency;
     }
     
-    // Da commentare
+    /**
+     * @brief Restituisce l'identificativo numerico della sorgente di provenienza.
+     * @return L'identificativo della sorgente.
+     */
     public int getSource() {
         return source;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code dell'oggetto Word basandosi sulla chiave primaria composta.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 3;
@@ -68,7 +80,14 @@ public class Word {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questo oggetto Word con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con la parola corrente.
+     * @return true se l'oggetto specificato è uguale a questa parola, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Word e presenta gli stessi valori per token e source.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

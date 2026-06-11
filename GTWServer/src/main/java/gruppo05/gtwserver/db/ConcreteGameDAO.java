@@ -12,12 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia GameDAO per la gestione della persistenza degli oggetti Game.
  * @invariant
- * La classe gestisce oggetti di tipo Game identificati da una chiave di tipo GameId.
+ * La classe gestisce oggetti di tipo Game identificati da una chiave primaria composta da player (String) e challenge (int).
  */
 public class ConcreteGameDAO implements GameDAO {
 
@@ -38,7 +36,12 @@ public class ConcreteGameDAO implements GameDAO {
                 rs.getInt("responseTime"));
     } 
     
-    
+    /**
+     * @brief Recupera una partita tramite la sua chiave primaria composta.
+     * @copydoc GameDAO#selectById(Optional, Optional)
+     * @post
+     * Se almeno uno dei due Optional è vuoto, restituisce un Optional vuoto senza interrogare il database.
+     */
     @Override
     public Optional<Game> selectById(Optional<String> player, Optional<Integer> challenge) {
         // Essendo che il metodo deve tornare un unico record, entrambi i campi della chiave
@@ -70,6 +73,10 @@ public class ConcreteGameDAO implements GameDAO {
         return result;
     }
     
+    /**
+     * @brief Recupera tutte le istanze di partite memorizzate nel database.
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Game> selectAll() {
         List<Game> result = new ArrayList<>();
@@ -93,6 +100,13 @@ public class ConcreteGameDAO implements GameDAO {
         return result;
     }
 
+    /**
+     * @brief Inserisce una nuova partita all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     * L'inserimento attiva il trigger database 'incrementTotalsInPlayer' per aggiornare le statistiche del rispettivo giocatore.
+     */
     @Override
     public void insert(Game model) {
         if(model == null) return;
@@ -117,6 +131,14 @@ public class ConcreteGameDAO implements GameDAO {
         }    
     }
 
+    /**
+     * @brief Inserisce una lista di partite all'interno del database.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza modificare il database.
+     * In caso di errore durante il batch, viene eseguito il rollback dell'intera transazione.
+     * Gli inserimenti andati a buon fine attivano a cascata il trigger database per l'aggiornamento dei totali dei giocatori coinvolti.
+     */
     @Override
     public void insertAll(List<Game> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -161,6 +183,12 @@ public class ConcreteGameDAO implements GameDAO {
         }    
     }
 
+    /**
+     * @brief Aggiorna i dati di una partita esistente all'interno del database.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void update(Game model) {
         if(model == null) return;
@@ -186,6 +214,12 @@ public class ConcreteGameDAO implements GameDAO {
         }        
     }
 
+    /**
+     * @brief Cancella una partita dal database tramite la sua chiave primaria composta.
+     * @copydoc GameDAO#delete(Optional, Optional)
+     * @post
+     * Se almeno uno dei due Optional è vuoto, l'operazione termina senza apportare modifiche.
+     */
     @Override
     public void delete(Optional<String> player, Optional<Integer> challenge) {
         // Essendo che il metodo deve tornare un unico record, entrambi i campi della chiave

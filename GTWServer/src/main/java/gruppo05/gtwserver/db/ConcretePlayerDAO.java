@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia PlayerDAO per la gestione della persistenza degli oggetti Player.
  * @invariant
- * La classe gestisce oggetti di tipo Player identificati da una chiave di tipo PlayerId.
+ * La classe gestisce oggetti di tipo Player identificati dallo username di tipo String.
  */
 public class ConcretePlayerDAO implements PlayerDAO {
 
@@ -38,6 +36,10 @@ public class ConcretePlayerDAO implements PlayerDAO {
                 rs.getInt("totalGamesPlayed"));
     }
     
+    /**
+     * @brief Recupera un giocatore tramite il suo username.
+     * @copydoc PlayerDAO#selectById(Optional)
+     */
     @Override
     public Optional<Player> selectById(Optional<String> username) {
         if(!username.isPresent()) return Optional.empty();
@@ -66,6 +68,10 @@ public class ConcretePlayerDAO implements PlayerDAO {
         return result;    
     }
     
+    /**
+     * @brief Recupera tutte le istanze di giocatori memorizzate nel database.
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Player> selectAll() {
         List<Player> result = new ArrayList<>();
@@ -88,6 +94,13 @@ public class ConcretePlayerDAO implements PlayerDAO {
         return result;    
     }
 
+    /**
+     * @brief Inserisce un nuovo giocatore all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     * I campi relativi alle statistiche cumulative (totalPlayedTime, totalGamesWon, totalGamesPlayed) vengono inizializzati a 0 dal database come valore di default.
+     */
     @Override
     public void insert(Player model) {
         if(model == null) return;
@@ -111,6 +124,14 @@ public class ConcretePlayerDAO implements PlayerDAO {
         }    
     }
 
+    /**
+     * @brief Inserisce una lista di giocatori all'interno del database.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza modificare il database.
+     * In caso di errore durante il batch, viene eseguito il rollback dell'intera transazione.
+     * Per ogni record inserito con successo, le statistiche cumulative partono dal valore predefinito 0.
+     */
     @Override
     public void insertAll(List<Player> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -153,6 +174,13 @@ public class ConcretePlayerDAO implements PlayerDAO {
         }        
     }
     
+    /**
+     * @brief Aggiorna le credenziali di un giocatore esistente all'interno del database.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     * I campi delle statistiche cumulative non vengono alterati direttamente da questa query, in quanto la loro consistenza e il loro incremento sono delegati ai trigger interni del database all'inserimento delle partite.
+     */
     @Override
     public void update(Player model) {
         if(model == null) return;
@@ -177,6 +205,12 @@ public class ConcretePlayerDAO implements PlayerDAO {
         }     
     }
 
+    /**
+     * @brief Cancella un giocatore dal database tramite il suo username.
+     * @copydoc PlayerDAO#delete(Optional)
+     * @post
+     * Se l'Optional è vuoto, l'operazione termina senza apportare modifiche.
+     */
     @Override
     public void delete(Optional<String> username) {
         if(!username.isPresent()) return;

@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia WordDAO per la gestione della persistenza degli oggetti Word.
  * @invariant
- * La classe gestisce oggetti di tipo Word identificati da una chiave di tipo WordId.
+ * La classe gestisce oggetti di tipo Word identificati da una chiave primaria composta da token (String) e source (int).
  */
 public class ConcreteWordDAO implements WordDAO {
     
@@ -36,6 +34,16 @@ public class ConcreteWordDAO implements WordDAO {
                 rs.getInt("source"));
     }
 
+    /**
+     * @brief Recupera una specifica parola tramite la sua chiave primaria composta.
+     *
+     * L'interrogazione viene eseguita sulla vista 'availableWords', restituendo solo i record 
+     * associati a sorgenti attive aventi un percorso di file system valido (path IS NOT NULL).
+     * 
+     * @copydoc WordDAO#selectById(Optional, Optional)
+     * @post
+     * Se almeno uno dei due Optional è vuoto, restituisce un Optional vuoto senza interrogare il database.
+     */
     @Override
     public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) {
         if(!token.isPresent() || !source.isPresent()) return Optional.empty();
@@ -44,7 +52,7 @@ public class ConcreteWordDAO implements WordDAO {
         
         final String query = 
                 "SELECT * " +
-                "FROM word " +
+                "FROM availableWords " +
                 "WHERE token = ? AND source = ?;";
         
         try(Connection conn = DatabaseManager.getConnection();
@@ -65,6 +73,14 @@ public class ConcreteWordDAO implements WordDAO {
         return result;    
     }
     
+    /**
+     * @brief Recupera tutte le parole disponibili all'interno del sistema.
+     *
+     * L'interrogazione viene eseguita sulla vista 'availableWords', restituendo solo i record 
+     * associati a sorgenti attive aventi un percorso di file system valido (path IS NOT NULL).
+     * 
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Word> selectAll() {
         List<Word> result = new ArrayList<>();
@@ -89,6 +105,16 @@ public class ConcreteWordDAO implements WordDAO {
         return result;      
     }
 
+    /**
+     * @brief Filtra le parole disponibili in base ai parametri specificati.
+     *
+     * Come per il metodo selectAll(), la ricerca si appoggia alla vista 'availableWords' per escludere
+     * preventivamente i record legati a sorgenti non configurate.
+     *
+     * @copydoc WordDAO#selectAllWhere(Optional, Optional, Optional)
+     * @post
+     * Se tutti i parametri forniti sono vuoti, il metodo delega l'esecuzione a selectAll().
+     */
     @Override
     public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
         if(!token.isPresent() && !frequenza.isPresent() && !source.isPresent()) return selectAll();
@@ -127,6 +153,12 @@ public class ConcreteWordDAO implements WordDAO {
         return result;
     }
     
+    /**
+     * @brief Inserisce una nuova parola all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void insert(Word model) {
         if(model == null) return;
@@ -149,7 +181,14 @@ public class ConcreteWordDAO implements WordDAO {
             ex.printStackTrace();
         }    
     }
-
+    
+    /**
+     * @brief Inserisce una lista di parole all'interno del database mediante un'unica transazione batch.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza apportare modifiche.
+     * In caso di fallimento di uno o più inserimenti, viene eseguito il rollback totale dei comandi del batch.
+     */
     @Override
     public void insertAll(List<Word> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -193,6 +232,12 @@ public class ConcreteWordDAO implements WordDAO {
         }     
     }
 
+    /**
+     * @brief Aggiorna la frequenza di una parola esistente identificata dalla chiave composta.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void update(Word model) {
         if(model == null) return;
@@ -217,6 +262,12 @@ public class ConcreteWordDAO implements WordDAO {
         }   
     }
 
+    /**
+     * @brief Elimina una parola dal database basandosi sulla chiave token-sorgente.
+     * @copydoc WordDAO#delete(Optional, Optional)
+     * @post
+     * Se almeno uno dei due Optional è vuoto, l'operazione viene interrotta senza applicare modifiche.
+     */
     @Override
     public void delete(Optional<String> token, Optional<Integer> source) {
         if(!token.isPresent() || !source.isPresent()) return;

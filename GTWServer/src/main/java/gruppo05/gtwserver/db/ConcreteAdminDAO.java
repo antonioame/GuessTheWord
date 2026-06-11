@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Implementazione dell'interfaccia AdminDAO per la gestione della persistenza degli oggetti Admin.
  * @invariant
- * La classe gestisce oggetti di tipo Admin identificati da una chiave di tipo AdminId.
+ * La classe gestisce oggetti di tipo Admin identificati dallo username di tipo String.
  */
 public class ConcreteAdminDAO implements AdminDAO {
 
@@ -35,6 +33,10 @@ public class ConcreteAdminDAO implements AdminDAO {
                 rs.getString("password"));
     }
     
+    /**
+     * @brief Recupera un amministratore tramite il suo username.
+     * @copydoc AdminDAO#selectById(Optional)
+     */
     @Override
     public Optional<Admin> selectById(Optional<String> username) {
         if(!username.isPresent()) return Optional.empty();
@@ -63,6 +65,10 @@ public class ConcreteAdminDAO implements AdminDAO {
         return result;
     }
     
+    /**
+     * @brief Recupera tutte le istanze di amministratori memorizzate nel database.
+     * @copydoc DAO#selectAll()
+     */
     @Override
     public List<Admin> selectAll() {
         List<Admin> result = new ArrayList<>();
@@ -85,6 +91,12 @@ public class ConcreteAdminDAO implements AdminDAO {
         return result;
     }
     
+    /**
+     * @brief Inserisce un nuovo amministratore all'interno del database.
+     * @copydoc DAO#insert(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void insert(Admin model) {
         if(model == null) return;
@@ -107,6 +119,13 @@ public class ConcreteAdminDAO implements AdminDAO {
         }
     }
     
+    /**
+     * @brief Inserisce una lista di amministratori all'interno del database.
+     * @copydoc DAO#insertAll(List)
+     * @post
+     * Se la lista è null o vuota, l'operazione termina senza modificare il database.
+     * In caso di errore durante il batch, viene eseguito il rollback dell'intera transazione.
+     */
     @Override
     public void insertAll(List<Admin> modelList) {
         if(modelList == null || modelList.isEmpty()) return;
@@ -149,6 +168,12 @@ public class ConcreteAdminDAO implements AdminDAO {
         }
     }
 
+    /**
+     * @brief Aggiorna la password di un amministratore esistente all'interno del database.
+     * @copydoc DAO#update(Object)
+     * @post
+     * Se il parametro model è null, l'operazione termina senza modificare il database.
+     */
     @Override
     public void update(Admin model) {
         if(model == null) return;
@@ -172,6 +197,12 @@ public class ConcreteAdminDAO implements AdminDAO {
         }
     }
 
+    /**
+     * @brief Cancella un amministratore dal database tramite il suo username.
+     * @copydoc AdminDAO#delete(Optional)
+     * @post
+     * Se l'Optional è vuoto, l'operazione termina senza apportare modifiche.
+     */
     @Override
     public void delete(Optional<String> username) {
         if(!username.isPresent()) return;

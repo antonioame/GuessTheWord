@@ -10,39 +10,77 @@ import java.sql.Statement;
 import java.time.LocalDate;
 
 /**
- *  
  * @author francesco-vecchione
+ * @brief Classe di utility per il testing e il debug del Database.
+ * 
+ * Consente il popolamento diretto delle tabelle del database tramite query SQL batch,
+ * bypassando i DAO per garantire uno stato iniziale pulito, controllato e deterministico 
+ * prima dell'esecuzione dei test d'integrazione o di sistema.
  */
 public class DebugDB {
+    
+    /** 
+     * @brief Query per l'inserimento diretto di un amministratore. 
+     */
     public static final String INSERT_ADMIN = 
             "INSERT INTO admin (username, password) " +
             "VALUES (?,?);";
+    
+    /** 
+     * @brief Query per l'inserimento diretto di un giocatore. 
+     */
     public static final String INSERT_PLAYER = 
             "INSERT INTO player (username, password) " +
             "VALUES (?,?);";
+    
+    /** 
+     * @brief Query per l'inserimento diretto del record di una partita. 
+     */
     public static final String INSERT_GAME = 
             "INSERT INTO game (player, challenge, result, responseTime) " +
             "VALUES (?,?,?,?);";
+    
+    /** 
+     * @brief Query per l'inserimento diretto di una sfida (challenge). 
+     */
     public static final String INSERT_CHALLENGE = 
             "INSERT INTO challenge (code, date, difficulty, word, source) " +
             "VALUES (?,?,?,?,?);";
+    
+    /** 
+     * @brief Query per l'inserimento diretto di una parola. 
+     */
     public static final String INSERT_WORD = 
             "INSERT INTO word (token, frequency, source) " +
             "VALUES (?,?,?);";
+    
+    /** 
+     * @brief Query per l'inserimento diretto di una sorgente di testo. 
+     */
     public static final String INSERT_SOURCE = 
             "INSERT INTO source (id, path) " +
             "VALUES (?,?);";
     
-    /*
-        Stato attuale delle ridondanze per ciascun giocatore all'atto dell'inserimento di questi dati:
-                            totalPlayedTime         totalGamesWon       totalGamesPlayed
-        FrancoNeri:         0                       0                   0
-        AlexGiallo:         55                      2                   3
-        CarloBlu:           50                      1                   2
-        RobertoViola:       60                      1                   3
-        CarmineMagenta:     50                      0                   2
-    */
-    public void initDebugDBWithoutDAO() {
+    /**
+     * @brief Inizializza il database con un dataset completo di debug senza ricorrere ai DAO.
+     * 
+     * Il metodo esegue l'intera procedura di popolamento all'interno di una transazione SQL atomica.
+     * Prima dell'esecuzione dei batch, vengono attivati i vincoli di integrità referenziale (Foreign Keys).
+     * In caso di errore durante uno qualsiasi degli inserimenti, viene invocato il rollback per ripristinare 
+     * lo stato precedente.
+     * 
+     * @note Stato delle ridondanze atteso per ciascun giocatore a seguito dell'esecuzione dei trigger di database:
+     * | Giocatore       | totalPlayedTime | totalGamesWon | totalGamesPlayed |
+     * | :-------------- | :-------------- | :------------ | :--------------- |
+     * | FrancoNeri      | 0               | 0             | 0                |
+     * | AlexGiallo      | 55              | 2             | 3                |
+     * | CarloBlu        | 50              | 1             | 2                |
+     * | RobertoViola    | 60              | 1             | 3                |
+     * | CarmineMagenta  | 50              | 0             | 2                |
+     * 
+     * @throws SQLException Se si verifica un errore irreparabile di commit o rollback.
+     */
+    public void initDebugDBWithoutDAO() throws SQLException {
         try(Connection conn = DatabaseManager.getConnection();
                 PreparedStatement cmdAdmin = conn.prepareStatement(INSERT_ADMIN);
                 PreparedStatement cmdPlayer = conn.prepareStatement(INSERT_PLAYER);
@@ -85,6 +123,11 @@ public class DebugDB {
         }
     }
     
+    /**
+     * @brief Popola in modalità batch gli amministratori di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella admin.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */
     private void insertDebugAdmins(PreparedStatement cmd) throws SQLException {
         
         cmd.setString(1, "MarioRossi");
@@ -101,6 +144,11 @@ public class DebugDB {
         cmd.executeBatch();
     }
     
+    /**
+     * @brief Popola in modalità batch i giocatori di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella player.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */    
     private void insertDebugPlayers(PreparedStatement cmd) throws SQLException {
         
         cmd.setString(1, "FrancoNeri");
@@ -132,6 +180,11 @@ public class DebugDB {
         cmd.executeBatch();
     }
     
+    /**
+     * @brief Popola in modalità batch le sessioni di gioco di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella game.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */
     private void insertDebugGames(PreparedStatement cmd) throws SQLException {
         
         // game 1 RobertoViola vs CarmineMagenta
@@ -208,6 +261,11 @@ public class DebugDB {
         cmd.executeBatch();
     }
     
+    /**
+     * @brief Popola in modalità batch le sfide giornaliere (challenges) di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella challenge.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */
     private void insertDebugChallenges(PreparedStatement cmd) throws SQLException {
         
         cmd.setInt(1, 1);
@@ -259,6 +317,11 @@ public class DebugDB {
         cmd.executeBatch();
     }
     
+    /**
+     * @brief Popola in modalità batch il dizionario di parole di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella word.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */
     private void insertDebugWords(PreparedStatement cmd) throws SQLException {
         
         cmd.setString(1, "metallo");
@@ -325,6 +388,11 @@ public class DebugDB {
         cmd.executeBatch();
     }
     
+    /**
+     * @brief Popola in modalità batch i file sorgente di debug.
+     * @param[inout] cmd Lo statement preparato associato alla tabella source.
+     * @throws SQLException In caso di anomalie nei parametri o nella scrittura del batch.
+     */
     private void insertDebugSource(PreparedStatement cmd) throws SQLException {
         
         cmd.setInt(1, 6);

@@ -3,18 +3,19 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- *
  * @author francesco-vecchione
- * 
  * @brief Rappresenta un giocatore (Player) registrato nel sistema con le relative statistiche di gioco aggregate.
  * @invariant
- * Tutti i campi dell'oggetto, inclusi i contatori delle statistiche e l'identificativo PlayerId, sono immutabili (final).
+ * Tutti i campi dell'oggetto sono immutabili (final).
  * @invariant
- * Il numero di partite vinte (totalGamesWon) deve essere minore o uguale al numero di partite totali giocate (totalGamesPlayed).
+ * Il numero di partite vinte (totalGamesWon) deve essere minore o uguale al
+ * numero di partite totali giocate (totalGamesPlayed).
  */
 public class Player {
     
-    // Da commentare
+    /**
+     * @brief Lo username del giocatore, utilizzato come chiave primaria.
+     */
     private final String username;
     
     /**
@@ -59,7 +60,9 @@ public class Player {
         this.totalGamesPlayed = totalGamesPlayed;
     }
 
-    // Da commentare
+    /**
+     * @brief Lo username del giocatore, utilizzato come chiave primaria.
+     */
     public String getUsername() {
         return username;
     }
@@ -96,7 +99,10 @@ public class Player {
         return totalGamesPlayed;
     }
 
-    // Da commentare
+    /**
+     * @brief Calcola l'hash code del giocatore basandosi sullo username.
+     * @return Il valore dell'hash code calcolato.
+     */
     @Override
     public int hashCode() {
         int hash = 7;
@@ -104,7 +110,14 @@ public class Player {
         return hash;
     }
 
-    // Da commentare
+    /**
+     * @brief Confronta questo giocatore con l'oggetto specificato per verificarne l'uguaglianza.
+     * @param[in] obj L'oggetto da confrontare con il giocatore corrente.
+     * @return true se l'oggetto specificato è uguale a questo giocatore, false altrimenti.
+     * @post
+     * Il risultato è true se e solo se l'oggetto passato non è null,
+     * è un'istanza di Player e ha lo stesso username di questo oggetto.
+     */
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {

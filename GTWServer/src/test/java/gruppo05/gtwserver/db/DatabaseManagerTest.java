@@ -19,14 +19,29 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- *
  * @author francesco-vecchione
+ * @brief Classe di test per la verifica delle funzionalità di DatabaseManager.
+ * 
+ * Verifica la corretta creazione delle tabelle, delle viste, l'integrità dei vincoli 
+ * e l'attivazione dei relativi trigger custom definiti per il database SQLite del server.
  */
 public class DatabaseManagerTest {
     
+    /** 
+     * @brief Nome del file di database locale SQLite utilizzato per i test. 
+     */
     private final static String DB_NAME = "ServerDB";
+    
+    /** 
+     * @brief Riferimento alla classe di utility per il popolamento diretto del database. 
+     */
     private final DebugDB ddb;
     
+    /**
+     * @brief Costruttore predefinito.
+     * 
+     * Inizializza l'istanza dell'utility DebugDB per il popolamento del database.
+     */
     public DatabaseManagerTest() {
         ddb = new DebugDB();
     }
@@ -39,12 +54,26 @@ public class DatabaseManagerTest {
     public static void tearDownClass() {
     }
     
+    /**
+     * @brief Configura l'ambiente prima dell'esecuzione di ciascun metodo di test.
+     * 
+     * Ricrea la struttura delle tabelle e inserisce il dataset deterministico di debug 
+     * bypassando i DAO per garantire uno stato noto del database.
+     * 
+     * @throws SQLException In caso di errore durante la scrittura o l'inizializzazione sul database.
+     */
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws SQLException {
         DatabaseManager.initDB();
         ddb.initDebugDBWithoutDAO();
     }
     
+    /**
+     * @brief Pulisce l'ambiente al termine di ciascun metodo di test.
+     * 
+     * Rimuove fisicamente il file del database locale per garantire il completo isolamento 
+     * ed evitare l'interferenza di residui di dati tra i vari test consecutivi.
+     */
     @AfterEach
     public void tearDown() {
         // Cancella il database alla fine di ogni operazione
@@ -52,6 +81,14 @@ public class DatabaseManagerTest {
         if(db.exists()) db.delete();
     }
 
+    /**
+     * @brief Verifica l'ottenimento di una connessione valida verso il database.
+     * 
+     * Controlla che l'oggetto Connection non sia null e che risulti effettivamente aperto 
+     * prima della chiusura del costrutto try-with-resources.
+     * 
+     * @throws SQLException In caso di anomalie nella connessione JDBC.
+     */
     @Test
     public void testGetConnection() throws SQLException {
         try(Connection conn = DatabaseManager.getConnection()) {
@@ -60,6 +97,14 @@ public class DatabaseManagerTest {
         }
     }    
     
+    /**
+     * @brief Verifica l'effettiva creazione delle tabelle di sistema all'avvio dell'applicazione.
+     * 
+     * Ispeziona i metadati del database tramite il driver JDBC per assicurarsi che tutte le tabelle 
+     * principali ('admin', 'player', 'game', 'challenge', 'word', 'source') siano registrate correttamente.
+     * 
+     * @throws SQLException In caso di fallimento nell'interrogazione dei metadati SQL.
+     */
     @Test
     public void testInitDBCreateTables() throws SQLException {
         
@@ -89,6 +134,14 @@ public class DatabaseManagerTest {
         }
     }
     
+    /**
+     * @brief Verifica l'effettiva creazione delle viste all'interno del database.
+     * 
+     * Ispeziona i metadati SQL per accertare che la vista 'availableWords' sia configurata 
+     * e rilevabile nel sistema come oggetto di tipo VIEW.
+     * 
+     * @throws SQLException In caso di errore durante la lettura dei metadati del database.
+     */
     @Test
     public void testInitDBCreateViews() throws SQLException {
         
@@ -103,6 +156,17 @@ public class DatabaseManagerTest {
         }
     }
     
+    /**
+     * @brief Test del trigger 'incrementTotalsInPlayer' per l'aggiornamento incrementale delle statistiche.
+     * 
+     * Inserisce una nuova sfida e simula il completamento di due partite da parte di giocatori differenti 
+     * (FrancoNeri e AlexGiallo). Successivamente rilegge i dati aggregati dei giocatori per verificare che 
+     * il trigger di INSERT sulla tabella 'game' abbia correttamente ricalcolato i totali di tempo giocato, 
+     * partite giocate e vinte a partire dai rispettivi valori preesistenti.
+     * 
+     * @throws SQLException In caso di fallimento nelle operazioni SQL.
+     * @throws Exception Se la query di controllo restituisce un record imprevisto.
+     */
     @Test
     public void testInitDBTriggerOnGame() throws SQLException, Exception {
         
@@ -177,6 +241,16 @@ public class DatabaseManagerTest {
         } 
     }
     
+    /**
+     * @brief Test del comportamento standard dei vincoli referenziali su una sorgente non utilizzata.
+     * 
+     * Prova ad eliminare la sorgente con id = 7 (che nel dataset iniziale non è referenziata da alcuna sfida). 
+     * Trattandosi di un record libero da legami attivi con la tabella 'challenge', il trigger 'deleteOnlyUnreferencedWords' 
+     * non intercetta la query a monte, permettendo la rimozione del record da 'source' e, di riflesso, 
+     * l'eliminazione a cascata ('ON DELETE CASCADE') di tutte le parole ad essa associate nella tabella 'word'.
+     * 
+     * @throws SQLException In caso di errore durante l'esecuzione del comando SQL.
+     */
     @Test
     public void testInitDBTriggerOnSourceNotUsed() throws SQLException {
         
@@ -207,6 +281,17 @@ public class DatabaseManagerTest {
         }
     }
     
+    /**
+     * @brief Test del trigger 'deleteOnlyUnreferencedWords' su una sorgente utilizzata in delle sfide.
+     * 
+     * Esegue una richiesta di rimozione per la sorgente con id = 6, la quale è legata a sfide attive 
+     * (tramite le parole 'amicizia' e 'amore'). Il test certifica che l'attivazione del trigger BEFORE DELETE 
+     * impedisce la cancellazione del record principale da 'source' (mediante un comando RAISE(IGNORE)), impostando 
+     * al contempo il campo 'path' a NULL, e pulendo dalla tabella 'word' solo le parole appartenenti alla medesima sorgente 
+     * che non figurano in alcuna sfida attiva ('metallo', 'creatività', 'farfalla', 'ricerca').
+     * 
+     * @throws SQLException In caso di anomalie nella transazione o nell'esecuzione SQL.
+     */
     @Test
     public void testInitDBTriggerOnSourceUsed() throws SQLException {
         

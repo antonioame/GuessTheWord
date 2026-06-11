@@ -4,6 +4,8 @@ import gruppo05.gtwserver.db.AdminDAO;
 import gruppo05.gtwserver.db.ConcreteAdminDAO;
 import gruppo05.gtwserver.model.Admin;
 import gruppo05.gtwshared.controller.LoginManager;
+import gruppo05.gtwshared.utility.SecurityUtils;
+
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -43,7 +45,8 @@ public class ServerLoginManager implements LoginManager {
             return;
         } 
         
-        if(!o.get().getPassword().equals(password)) {
+        String hashedPassword = SecurityUtils.hashPassword(password);
+        if(!o.get().getPassword().equals(hashedPassword)) {
             Alert alert = new Alert(Alert.AlertType.ERROR, "Password non corretta");
             alert.showAndWait();
             return;

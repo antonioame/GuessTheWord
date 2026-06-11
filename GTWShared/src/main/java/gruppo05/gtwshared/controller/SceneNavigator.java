@@ -1,4 +1,4 @@
-package gruppo05.gtwserver.controller;
+package gruppo05.gtwshared.controller;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

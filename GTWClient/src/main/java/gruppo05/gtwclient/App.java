@@ -2,7 +2,7 @@ package gruppo05.gtwclient;
 
 import gruppo05.gtwclient.controller.ClientLoginManager;
 import gruppo05.gtwclient.controller.ClientSignupManager;
-import gruppo05.gtwclient.controller.SceneNavigator;
+import gruppo05.gtwshared.controller.SceneNavigator;
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwclient.networking.ClientConnectionCreator;
 import gruppo05.gtwshared.controller.LoginViewController;

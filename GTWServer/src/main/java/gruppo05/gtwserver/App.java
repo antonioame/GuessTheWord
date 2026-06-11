@@ -8,7 +8,7 @@ import gruppo05.gtwserver.db.WordDAO;
 import gruppo05.gtwserver.db.ConcreteSourceDAO;
 import gruppo05.gtwserver.db.ConcreteWordDAO;
 import gruppo05.gtwserver.controller.AdminDashboardViewController;
-import gruppo05.gtwserver.controller.SceneNavigator;
+import gruppo05.gtwshared.controller.SceneNavigator;
 import gruppo05.gtwserver.networking.ServerConnection;
 import gruppo05.gtwserver.networking.ServerConnectionCreator;
 import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;

@@ -8,7 +8,7 @@ import gruppo05.gtwshared.networking.NetworkConnectionCreator;
 import gruppo05.gtwshared.dto.CallbackDTO;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import javafx.scene.control.Alert;
-import gruppo05.gtwclient.controller.SceneNavigator;
+import gruppo05.gtwshared.controller.SceneNavigator;
 import gruppo05.gtwclient.controller.LobbyViewController;
 import gruppo05.gtwclient.controller.WaitingViewController;
 import gruppo05.gtwclient.controller.GameViewController;

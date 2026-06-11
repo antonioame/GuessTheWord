@@ -6,6 +6,7 @@ import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.networking.ServerConnection;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
+import gruppo05.gtwshared.controller.SceneNavigator;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;

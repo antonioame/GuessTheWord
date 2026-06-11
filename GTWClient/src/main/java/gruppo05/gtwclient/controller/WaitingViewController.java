@@ -1,6 +1,7 @@
 package gruppo05.gtwclient.controller;
 
 import gruppo05.gtwclient.networking.ClientConnection;
+import gruppo05.gtwshared.controller.SceneNavigator;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

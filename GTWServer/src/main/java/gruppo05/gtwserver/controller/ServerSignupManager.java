@@ -4,6 +4,7 @@ import gruppo05.gtwserver.db.AdminDAO;
 import gruppo05.gtwserver.db.ConcreteAdminDAO;
 import gruppo05.gtwserver.model.Admin;
 import gruppo05.gtwshared.controller.SignupManager;
+import gruppo05.gtwshared.utility.SecurityUtils;
 import java.util.Optional;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -26,7 +27,8 @@ public class ServerSignupManager implements SignupManager {
             return;
         } 
         
-        dao.insert(new Admin(username, password));
+        String hashedPassword = SecurityUtils.hashPassword(password);
+        dao.insert(new Admin(username, hashedPassword));
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Il nuovo admin è stato registrato correttamente");
         alert.showAndWait();
         

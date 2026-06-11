@@ -33,6 +33,7 @@ import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimil
  * @invariant I parametri generati (testo cifrato, parola target, timer) rimangono costanti per l'intero ciclo di vita dell'istanza.
  * @see QuestionGenerator
  * @see PresetConfig
+ * @see LetterFrequencySimilarity
  * @author chiara
  * @version 1.0
  */
@@ -168,29 +169,39 @@ public class GameSetupController {
      * @brief Fornisce la difficoltà ufficiale decretata dal sistema per la sessione.
      * @return Enum `Difficulty` rappresentante il livello applicato.
      */
-    public Difficulty getMatchDifficulty() { return matchDifficulty; }
+    public Difficulty getMatchDifficulty() { 
+        return matchDifficulty; 
+    }
 
     /**
      * @brief Fornisce il limite temporale imposto ai giocatori.
      * @return Intero esprimente i secondi a disposizione.
      */
-    public int getTimer() { return timer; }
+    public int getTimer() { 
+        return timer; 
+    }
 
     /**
      * @brief Fornisce l'elaborato testuale mascherato dal cifrario.
      * @return Stringa contenente il testo cifrato da mostrare nell'interfaccia.
      */
-    public String getCipheredText() { return cipheredText; }
+    public String getCipheredText() { 
+        return cipheredText; 
+    }
 
     /**
      * @brief Fornisce la chiave di risoluzione in chiaro.
      * @return Stringa della parola originale necessaria per superare la sfida.
      */
-    public String getTargetWord() { return targetWord; }
+    public String getTargetWord() { 
+        return targetWord; 
+    }
 
     /**
      * @brief Fornisce la provenienza del materiale testuale.
      * @return Intero rappresentante l'ID univoco della sorgente documentale.
      */
-    public int getSourceId() { return sourceId; }
+    public int getSourceId() { 
+        return sourceId; 
+    }
 }

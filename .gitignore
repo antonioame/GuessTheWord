@@ -10,3 +10,6 @@ GTWShared/target/
 personal_files
 /GTWServer/nbproject/
 shellscripts/
+
+.DS_Store
+Thumbs.db

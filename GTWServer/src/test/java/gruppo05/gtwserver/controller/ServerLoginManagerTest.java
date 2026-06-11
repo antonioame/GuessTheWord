@@ -4,6 +4,8 @@ import gruppo05.gtwserver.db.AdminDAO;
 import gruppo05.gtwserver.db.ConcreteAdminDAO;
 import gruppo05.gtwserver.db.DatabaseManager;
 import gruppo05.gtwserver.model.Admin;
+import gruppo05.gtwshared.utility.SecurityUtils;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,7 +71,8 @@ public class ServerLoginManagerTest {
                 return;
             }
 
-            if (!o.get().getPassword().equals(password)) {
+            String hashedPassword = SecurityUtils.hashPassword(password);
+            if (!o.get().getPassword().equals(hashedPassword)) {
                 lastErrorMessage = "Password non corretta";
                 return;
             }
@@ -110,7 +113,7 @@ public class ServerLoginManagerTest {
 
         // Inserisce un admin di test nel DB
         ConcreteAdminDAO dao = new ConcreteAdminDAO();
-        dao.insert(new Admin("adminTest", "password123"));
+        dao.insert(new Admin("adminTest", SecurityUtils.hashPassword("password123")));
 
         loginManager = new TestableServerLoginManager();
     }

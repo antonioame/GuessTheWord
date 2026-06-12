@@ -33,6 +33,7 @@ import java.util.Set;
 public class App extends Application {
 
     private ServerConnection connection;
+    private ServerConnectionCreator connectionCreator;
     
     @Override
     public void start(Stage stage) throws IOException {     
@@ -43,7 +44,8 @@ public class App extends Application {
         DatabaseManager.initDB();
         
         // Crea la connessione di rete e avvia il server in ascolto
-        connection = new ServerConnectionCreator().createConnection();
+        connectionCreator = new ServerConnectionCreator();
+        connection = connectionCreator.createConnection();
 
         // Carica la schermata di Login condivisa definita in GTWShared
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
@@ -65,7 +67,7 @@ public class App extends Application {
                     dashboardStage.setMinHeight(500);
                 }
                 
-                adminCtrl.setConnection(connection);
+                adminCtrl.setConnection(connection, connectionCreator);
                 
                 // Istanzia i DAO per la gestione dei sorgenti e delle parole estratte
                 SourceDAO sourceDao = new ConcreteSourceDAO();

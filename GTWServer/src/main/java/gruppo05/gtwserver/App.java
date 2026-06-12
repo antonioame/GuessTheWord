@@ -15,6 +15,7 @@ import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 import gruppo05.gtwserver.sourcemanager.internal.io.IOManager;
+import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
 import gruppo05.gtwshared.controller.LoginViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -110,7 +111,7 @@ public class App extends Application {
                     new SourceManagerConfig.Builder(
                         sourceDao,
                         wordDao,
-                        String::equalsIgnoreCase,       // TODO Criterio per determinare la similarità testuale
+                        new LetterFrequencySimilarity(), // Criterio per determinare la similarità testuale
                         (freq1, freq2) -> freq1 < freq2 // Criterio per il fallback delle parole basato sulla frequenza
                     )
                     .withCustomStopWords(stopWords)

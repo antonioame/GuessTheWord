@@ -5,8 +5,8 @@ import gruppo05.gtwshared.controller.LoginManager;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.SecurityUtils;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -29,8 +29,12 @@ public class ClientLoginManager implements LoginManager {
         try {
             conn.send(lr);
         } catch (IOException ex) {
-            // Debug: da cambiare
-            ex.printStackTrace();             
+            // Errore di rete durante l'invio: notifica l'utente tramite Alert
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile inviare la richiesta di login. Connessione al server non disponibile.");
+                alert.setHeaderText("Errore di rete");
+                alert.showAndWait();
+            });
         }
     }
     

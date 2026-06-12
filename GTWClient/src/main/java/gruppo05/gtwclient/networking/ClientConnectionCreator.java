@@ -43,6 +43,13 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     private ResultViewController resultViewController;
 
     /**
+     * @brief Callback opzionale invocata quando il server chiude inaspettatamente la connessione.
+     * @details Viene impostata da {@link gruppo05.gtwclient.App} dopo la creazione dei manager
+     * di autenticazione, per poter mostrare un Alert e navigare alla LoginView.
+     */
+    private Runnable onServerDisconnect = null;
+
+    /**
      * Imposta il controller della vista di gioco.
      * @param gameViewController Il controller della GameView.
      */
@@ -67,6 +74,17 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     }
 
     /**
+     * @brief Imposta la callback invocata in caso di chiusura improvvisa della connessione da parte del server.
+     * @details Deve essere chiamata da {@link gruppo05.gtwclient.App} subito dopo
+     *          aver istanziato i manager di autenticazione, in modo che la callback abbia
+     *          accesso alle istanze corrette per la navigazione alla LoginView.
+     * @param[in] callback Runnable da eseguire sul thread JavaFX alla disconnessione.
+     */
+    public void setOnServerDisconnect(Runnable callback) {
+        this.onServerDisconnect = callback;
+    }
+
+    /**
      * @brief Inizializza la connessione verso il server leggendo i parametri di configurazione.
      * * @details Legge il file "client.properties", configura il socket e definisce le callback
      * per gestire i messaggi in entrata e le interruzioni di linea.
@@ -82,11 +100,31 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                 config.getIp(),
                 config.getPort(),
                 this::handleMessage,
-                (index) -> System.out.println("Disconnessione dal server o server offline.")
+                (index) -> handleServerDisconnect()
         );
         
         this.connection.connect();
         return this.connection;
+    }
+
+    /**
+     * @brief Gestisce la disconnessione improvvisa del server.
+     * @details Viene invocata dal thread di rete (non Thread JavaFX).
+     *          Usa {@link Platform#runLater} per mostrare un Alert bloccante
+     *          sul thread UI e poi eseguire il callback configurato
+     *          (navigazione per tornare alla LoginView).
+     */
+    private void handleServerDisconnect() {
+        System.out.println("[ClientConnection] Disconnessione dal server o server offline.");
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR,
+                    "La connessione con il server è stata interrotta inaspettatamente.");
+            alert.setHeaderText("Server disconnesso");
+            alert.showAndWait();
+            if (onServerDisconnect != null) {
+                onServerDisconnect.run();
+            }
+        });
     }
 
     /**
@@ -122,7 +160,10 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         }
                     } else {
                         // Notifica errore login tramite Alert
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "L'utente non è registrato");
+                        String errorMsg = (dto.getMessage() != null && !dto.getMessage().isEmpty()) 
+                                ? dto.getMessage() 
+                                : "L'utente non è registrato";
+                        Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg);
                         alert.showAndWait();
                     }
                     break;

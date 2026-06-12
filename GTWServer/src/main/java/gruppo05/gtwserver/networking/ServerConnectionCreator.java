@@ -143,7 +143,16 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                         // Salvo in memoria lo stato "loggato" legando l'username al canale TCP
                         loggedUsers.put(channelIndex, dto.getUsername());
                         connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
-                    } else {
+                        
+                        // Controllo delle sessioni duplicate
+                        if (loggedUsers.containsValue(dto.getUsername())) {
+                            // L'utente risulta già presente nella mappa dei loggati
+                            System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
+                            connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
+                            break; // Interrompiamo l'esecuzione del case
+                        }
+                    } 
+                    else {
                         connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Credenziali errate"));
                     }
                     break;

@@ -3,6 +3,7 @@ package gruppo05.gtwserver.networking;
 import java.io.IOException;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,15 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
     private final Object matchLock = new Object();
     
     /**
+     * @brief Callback opzionale notificata dalla UI quando un canale TCP si chiude.
+     * @details È opzionale perché il server è in grado di essere attivo e online in background anche
+     *          senza che la dashboard UI sia stata avviata o che l'amministratore abbia 
+     *          effettuato l'accesso. Viene impostata dalla dashboard dopo il login per
+     *          aggiornare il contatore dei client connessi con meccanismo event-driven. TODO
+     */
+    private Consumer<Integer> uiDisconnectCallback = null;
+
+    /**
      * @brief Costruisce e avvia il server leggendo la configurazione locale.
      * @details Legge il file "server.properties" per ottenere la porta di ascolto, istanzia 
      * il ServerSocket e inietta le lambda expression per intercettare i messaggi e le disconnessioni.
@@ -99,6 +109,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
 
     /**
      * @brief Pulizia dello stato dell'utente e della partita in caso di disconnessione.
+     * @details Oltre alle operazioni di pulizia interne, notifica la callback UI
+     *          (se registrata) per aggiornare il contatore dei client connessi.
      * @param channelIndex L'indice del canale che si è disconnesso.
      */
     private void handleDisconnect(Integer channelIndex) {
@@ -113,6 +125,22 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                 waitingDifficulty = null;
             }
         }
+
+        // Notifica la dashboard (se presente) dell'avvenuta disconnessione
+        if (uiDisconnectCallback != null) {
+            uiDisconnectCallback.accept(channelIndex);
+        }
+    }
+
+    /**
+     * @brief Registra la callback della UI per gli eventi di disconnessione client.
+     * @details Viene chiamata dalla dashboard dopo il login per ricevere notifiche
+     *          puntuali sugli eventi di disconnessione (meccanismo event-driven).
+     * 
+     * @param[in] callback La funzione da invocare all'atto di ogni disconnessione.
+     */
+    public void setUiDisconnectCallback(Consumer<Integer> callback) {
+        this.uiDisconnectCallback = callback;
     }
 
     /**
@@ -140,17 +168,18 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     
                     // Verifica dell'esistenza dell'utente e match esatto della password
                     if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
-                        // Salvo in memoria lo stato "loggato" legando l'username al canale TCP
-                        loggedUsers.put(channelIndex, dto.getUsername());
-                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
                         
-                        // Controllo delle sessioni duplicate
+                        // Controllo preventivo delle sessioni duplicate PRIMA di registrare l'utente
                         if (loggedUsers.containsValue(dto.getUsername())) {
-                            // L'utente risulta già presente nella mappa dei loggati
+                            // L'utente è già autenticato su un altro canale: accesso simultaneo bloccato
                             System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
                             connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
                             break; // Interrompiamo l'esecuzione del case
                         }
+
+                        // Nessuna sessione attiva => Registra l'utente e notifica il successo
+                        loggedUsers.put(channelIndex, dto.getUsername());
+                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
                     } 
                     else {
                         connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Credenziali errate"));

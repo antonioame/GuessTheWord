@@ -268,6 +268,20 @@ public abstract class NetworkConnection {
         return threads.size() == expectedChannels();
     }
 
+    /**
+     * @brief Verifica se un determinato indice di canale è attualmente occupato da un thread attivo.
+     * @details Utile per le sottoclassi che implementano logica di assegnazione dinamica degli indici
+     *          (es. per riutilizzare uno slot liberato da una disconnessione precedente).
+     * 
+     * @param[in] channelIndex Indice da controllare.
+     * @return true Se esiste un {@link ConnectionThread} attivo con quell'indice, false altrimenti.
+     */
+    protected boolean isChannelActive(int channelIndex) {
+        synchronized (threads) {
+            return threads.stream().anyMatch(ct -> ct.channelIndex == channelIndex);
+        }
+    }
+
     // METODO HELPER
 
     /**

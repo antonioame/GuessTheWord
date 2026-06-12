@@ -40,8 +40,9 @@ public class ServerConnection extends NetworkConnection {
     /**
      * @brief Callback invocata nel momento esatto in cui un client stabilisce la connessione.
      * @details Utile per notificare la UI o i controller di gioco.
+     * Non è final per consentire la registrazione tardiva da parte della dashboard (che parte dopo il login).
      */
-    private final Consumer<Integer> onClientConnected;
+    private Consumer<Integer> onClientConnected;
 
     // COSTRUTTORE
 
@@ -89,8 +90,71 @@ public class ServerConnection extends NetworkConnection {
     }
 
     /**
+     * @brief Sovrascrive il metodo della superclasse con un loop di accept continuo.
+     * @details Nella superclasse, ogni thread di setup chiama {@code accept()} una sola volta
+     *          e termina: dopo una disconnessione nessuno è più in ascolto, quindi le
+     *          riconnessioni vengono perse.
+     *
+     *          Questa implementazione, invece, avvia un unico thread che gira in loop: ad ogni iterazione
+     *          accetta un client, gli assegna il primo slot libero (0 o 1) e avvia il relativo
+     *          {@link gruppo05.gtwshared.networking.NetworkConnection.ConnectionThread}.
+     *          Così ogni disconnessione libera lo slot e il loop lo riassegna al client successivo.
+     */
+    @Override
+    public void connect() {
+        Thread acceptLoop = new Thread(() -> {
+            while (!serverSocket.isClosed()) {
+                try {
+                    // FASE 1) Attesa bloccante del prossimo client in ingresso
+                    Socket socket = serverSocket.accept();
+                    // FASE 2) Assegnare indice più basso non ancora in uso (0 o 1)
+                    int channelIndex = nextAvailableIndex();
+                    // FASE 3) Log della nuova connessione (prima di avviare il thread)
+                    onChannelReady(socket, channelIndex);
+                    // FASE 4) Avviare il thread di lettura e registrare il canale nella lista attiva
+                    startChannel(socket, channelIndex);
+                    // FASE 5) Notifica la UI DOPO startChannel()
+                        // in questo modo, getActiveChannelCount() riflette già il nuovo thread appena inserito nella lista
+                    if (onClientConnected != null) {
+                        onClientConnected.accept(channelIndex);
+                    }
+                } catch (IOException ex) {
+                    // Il ServerSocket è stato chiuso intenzionalmente (stopServer): uscita pulita dal loop
+                    
+                    if (!serverSocket.isClosed()) {
+                        System.err.println("[ServerConnection] Errore durante accept(): " + ex.getMessage());
+                    }
+                }
+            }
+        }, "ServerAcceptLoop");
+
+        acceptLoop.setDaemon(true);
+        acceptLoop.start();
+    }
+
+    /**
+     * @brief Calcola l'indice di canale più basso attualmente disponibile.
+     * @details Scorre gli indici da 0 a {@link #MAX_CLIENTS} - 1 e restituisce il primo
+     *          non ancora occupato da un canale attivo.
+     *          Se tutti gli slot sono occupati, restituisce {@code MAX_CLIENTS} come valore
+     *          di overflow (che l'app dovrà gestire come client in eccesso).
+     * @return Indice intero da assegnare al prossimo canale.
+     */
+    private int nextAvailableIndex() {
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            if (!isChannelActive(i)) return i;
+        }
+        // Tutti gli slot (0 e 1) sono occupati => Ritorna indice di overflow
+        return MAX_CLIENTS;
+    }
+
+    /**
      * @brief Metodo eseguito subito dopo l'instaurazione fisica della connessione con un client.
-     * @details Registra a terminale l'IP del nuovo client connesso ed esegue la callback specifica.
+     * @details Registra a terminale l'IP del nuovo client connesso.
+     *          La notifica alla UI tramite {@code onClientConnected} viene
+     *          invece emessa nel loop {@link #connect()} dopo la chiamata a
+     *          {@code startChannel()}, in modo che {@code getActiveChannelCount()}
+     *          rifletta già il canale appena aggiunto.
      * @param[in] socket       La socket del client appena connesso.
      * @param[in] channelIndex L'indice identificativo univoco assegnato al canale (0 o 1).
      */
@@ -101,6 +165,16 @@ public class ServerConnection extends NetworkConnection {
         if (onClientConnected != null) {
             onClientConnected.accept(channelIndex);
         }
+    }
+
+    /**
+     * @brief Registra (o sostituisce) la callback per gli eventi di nuova connessione client.
+     * @details Consente alla dashboard di registrarsi come osservatore in un secondo momento,
+     *          anche dopo che il server è già in ascolto e che i thread di accettazione sono partiti.
+     * @param[in] onClientConnected Nuova callback da associare all'evento di connessione.
+     */
+    public void setOnClientConnected(Consumer<Integer> onClientConnected) {
+        this.onClientConnected = onClientConnected;
     }
 
     // METODI DI SUPPORTO

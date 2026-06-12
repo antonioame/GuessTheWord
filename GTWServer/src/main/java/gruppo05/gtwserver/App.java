@@ -15,6 +15,7 @@ import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
 import gruppo05.gtwserver.sourcemanager.internal.io.IOManager;
+import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
 import gruppo05.gtwshared.controller.LoginViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -33,6 +34,7 @@ import java.util.Set;
 public class App extends Application {
 
     private ServerConnection connection;
+    private ServerConnectionCreator connectionCreator;
     
     @Override
     public void start(Stage stage) throws IOException {     
@@ -43,7 +45,8 @@ public class App extends Application {
         DatabaseManager.initDB();
         
         // Crea la connessione di rete e avvia il server in ascolto
-        connection = new ServerConnectionCreator().createConnection();
+        connectionCreator = new ServerConnectionCreator();
+        connection = connectionCreator.createConnection();
 
         // Carica la schermata di Login condivisa definita in GTWShared
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
@@ -65,7 +68,7 @@ public class App extends Application {
                     dashboardStage.setMinHeight(500);
                 }
                 
-                adminCtrl.setConnection(connection);
+                adminCtrl.setConnection(connection, connectionCreator);
                 
                 // Istanzia i DAO per la gestione dei sorgenti e delle parole estratte
                 SourceDAO sourceDao = new ConcreteSourceDAO();
@@ -108,7 +111,7 @@ public class App extends Application {
                     new SourceManagerConfig.Builder(
                         sourceDao,
                         wordDao,
-                        String::equalsIgnoreCase,       // TODO Criterio per determinare la similarità testuale
+                        new LetterFrequencySimilarity(), // Criterio per determinare la similarità testuale
                         (freq1, freq2) -> freq1 < freq2 // Criterio per il fallback delle parole basato sulla frequenza
                     )
                     .withCustomStopWords(stopWords)

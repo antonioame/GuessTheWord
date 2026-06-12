@@ -19,6 +19,7 @@ import gruppo05.gtwshared.utility.Difficulty;
 import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
 import gruppo05.gtwserver.controller.GameSetupController;
+import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 
 /**
  * @class ServerConnectionCreator
@@ -81,6 +82,17 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      *          aggiornare il contatore dei client connessi con meccanismo event-driven. TODO
      */
     private Consumer<Integer> uiDisconnectCallback = null;
+    
+    /** @brief Riferimento al SourceManager globale iniettato da App.java  */
+    private final BasicSourceManager sourceManager;
+
+    /**
+     * @brief Costruttore con dipendenza per il SourceManager.
+     * @param sourceManager L'istanza globale unica per la generazione di domande.
+     */
+    public ServerConnectionCreator(BasicSourceManager sourceManager) {
+        this.sourceManager = sourceManager;
+    }
 
     /**
      * @brief Costruisce e avvia il server leggendo la configurazione locale.
@@ -225,7 +237,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             connection.sendTo(p2Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
                             
                             // Genera i dati della partita tramite controller dedicato
-                            GameSetupController setupController = new GameSetupController();
+                            // Passaggio del sourceManager globale al GameSetupController
+                            GameSetupController setupController = new GameSetupController(this.sourceManager);
                             setupController.generateMatchData(waitingDifficulty, requestedDifficulty);
 
                             Challenge newChallenge = new Challenge(

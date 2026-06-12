@@ -35,6 +35,7 @@ public class App extends Application {
 
     private ServerConnection connection;
     private ServerConnectionCreator connectionCreator;
+    private BasicSourceManager globalSourceManager;
     
     @Override
     public void start(Stage stage) throws IOException {     
@@ -45,7 +46,7 @@ public class App extends Application {
         DatabaseManager.initDB();
         
         // Crea la connessione di rete e avvia il server in ascolto
-        connectionCreator = new ServerConnectionCreator();
+        connectionCreator = new ServerConnectionCreator(globalSourceManager);
         connection = connectionCreator.createConnection();
 
         // Carica la schermata di Login condivisa definita in GTWShared

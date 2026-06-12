@@ -17,6 +17,7 @@ import gruppo05.gtwserver.db.ConcreteWordDAO;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Word;
+import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGenerator;
 import gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor;
@@ -26,41 +27,42 @@ import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimil
 /**
  * @class GameSetupController
  * @brief Controller dedicato all'inizializzazione e alla parametrizzazione di una sessione di gioco.
- * @details Questa classe astrae la logica di business dal layer di rete. 
- * Ha la responsabilità esclusiva di mediare i conflitti sulle difficoltà selezionate dai client, 
- * calcolare i vincoli temporali (timer) e orchestrare il motore di generazione testuale 
- * interfacciandosi con il Data Access Object (DAO).
- * @invariant I parametri generati (testo cifrato, parola target, timer) rimangono costanti per l'intero ciclo di vita dell'istanza.
- * @see QuestionGenerator
- * @see PresetConfig
- * @see LetterFrequencySimilarity
- * @author chiara
+ * @details Gestisce la preparazione logica della partita: seleziona la difficoltà finale, 
+ * calcola il tempo a disposizione ed estrae i dati di gioco dal database. Riceve l'istanza 
+ * globale di BasicSourceManager e la utilizza per interrogare i preset già configurati in App.java.
  * @version 1.0
  */
 public class GameSetupController {
 
-    /** @brief Difficoltà definitiva stabilita per il match corrente. */
+    /** @brief Gestore centralizzato per la generazione dei testi cifrati e delle domande. */
+    private final BasicSourceManager sourceManager;
+    
+    /** @brief Livello di difficoltà stabilito per la partita corrente. */
     private Difficulty matchDifficulty;
     
-    /** @brief Tempo limite in secondi calcolato per la risoluzione della sfida. */
+    /** @brief Tempo in secondi a disposizione dei giocatori. */
     private int timer;
     
-    /** @brief Stralcio di testo offuscato tramite algoritmo di cifratura (Caesar Cipher). */
+    /** @brief Testo cifrato che verrà mostrato ai giocatori. */
     private String cipheredText;
     
-    /** @brief La soluzione in chiaro attesa dal sistema per la vittoria. */
+    /** @brief Soluzione in chiaro che i giocatori dovranno indovinare. */
     private String targetWord;
     
-    /** @brief Identificativo della sorgente testuale nel database da cui è stata estratta la parola. */
+    /** @brief Identificativo univoco della Source prelevata dal database. */
     private int sourceId;
 
     /**
-     * @brief Costruttore di default per il setup controller.
-     * @details Alloca la memoria e imposta i valori di fallback di sicurezza per prevenire 
-     * crash di sistema qualora i sottosistemi di generazione o il database non fossero raggiungibili.
-     * @post L'oggetto viene istanziato in uno stato di sicurezza valido e utilizzabile.
+     * @brief Costruttore con Dependency Injection per il SourceManager.
+     * @details Inizializza il controller assegnando dei valori di default (fallback).
+     * Questo garantisce che l'oggetto abbia uno stato coerente anche qualora 
+     * la generazione dei dati non vada a buon fine.
+     * @param sourceManager L'istanza centralizzata creata all'avvio dell'applicazione.
      */
-    public GameSetupController() {
+    public GameSetupController(BasicSourceManager sourceManager) {
+        this.sourceManager = sourceManager;
+        
+        // Inizializzazione dei valori di default per prevenire stati nulli
         this.cipheredText = "TESTO***DI***FALLBACK";
         this.targetWord = "DEFAULT";
         this.sourceId = 1;
@@ -69,139 +71,102 @@ public class GameSetupController {
     }
 
     /**
-     * @brief Coordina il processo di estrazione e cifratura in base alle preferenze dei giocatori.
-     * @details Risolve stocasticamente (50/50) eventuali discrepanze tra le difficoltà richieste 
-     * e modella di conseguenza i parametri del PresetConfig (offset, tolleranza, frequenza).
-     * @param[in] p1Difficulty Il livello di difficoltà proposto dal Giocatore 1.
-     * @param[in] p2Difficulty Il livello di difficoltà proposto dal Giocatore 2.
-     * @pre I parametri p1Difficulty e p2Difficulty non devono essere nulli.
-     * @post Le variabili di istanza (cipheredText, targetWord, timer) vengono sovrascritte con i dati reali generati.
+     * @brief Genera e imposta i dati fondamentali per la partita.
+     * @details Seleziona casualmente la difficoltà tra quelle proposte dai due giocatori,
+     * imposta il timer corrispondente, preleva una Source casuale dal DB e genera il
+     * contenuto di gioco tramite il manager globale.
+     * 
+     * @param p1Difficulty Difficoltà proposta dal Giocatore 1.
+     * @param p2Difficulty Difficoltà proposta dal Giocatore 2.
      */
     public void generateMatchData(Difficulty p1Difficulty, Difficulty p2Difficulty) {
         Random random = new Random();
         
-        // Seleziona casualmente la difficoltà se i due giocatori hanno scelto opzioni diverse
+        // 1. Scelta della difficoltà: con probabilità del 50% vince la scelta del P1, altrimenti quella del P2
         this.matchDifficulty = random.nextBoolean() ? p1Difficulty : p2Difficulty;
 
-        final int offset;
-        final int maxFreq;
-        
-        // Imposta i vincoli di gioco (tempo, chiavi di cifratura e rarità della parola) in base alla difficoltà
+        // 2. Assegnazione del tempo in base alla difficoltà estratta
         switch (this.matchDifficulty) {
             case EASY:
-                this.timer = 90;
-                offset = 1;      
-                maxFreq = 200;   
+                this.timer = 90; // Più tempo per la modalità facile
                 break;
             case HARD:
-                this.timer = 30;
-                offset = 7;      
-                maxFreq = 30;    
+                this.timer = 30; // Tempo ridotto per la modalità difficile
                 break;
             case NORMAL:
             default:
-                this.timer = 60;
-                offset = 3;
-                maxFreq = 100;
+                this.timer = 60; // Tempo standard di default
                 break;
         }
 
         try {
+            // 3. Inizializzazione dell'accesso al Database
             SourceDAO sourceDao = new ConcreteSourceDAO();
-            List<Source> sources = sourceDao.selectAll(); // Recupera tutte le fonti di testo disponibili dal database
             
+            // 4. Recupero di tutte le sorgenti di testo disponibili
+            List<Source> sources = sourceDao.selectAll();
+            
+            // Procediamo solo se il database ha restituito dei risultati
             if (!sources.isEmpty()) {
-                // Seleziona casualmente una delle fonti disponibili e ne memorizza l'ID
+                
+                // 5. Estrazione di un elemento casuale dalla lista delle sorgenti
                 Source selectedSource = sources.get(random.nextInt(sources.size()));
+                
+                // Memorizziamo l'ID della sorgente selezionata per statistiche/controlli futuri
                 this.sourceId = selectedSource.getId(); 
                 
-                WordDAO wordDao = new ConcreteWordDAO();
-                // Estrae tutte le parole note e crea una mappa {Token -> Frequenza} per la valutazione della difficoltà
-                Map<String, Integer> wordFrequencies = wordDao.selectAll().stream()
-                        .collect(Collectors.toMap(
-                                w -> w.getToken(), 
-                                Word::getFrequency, 
-                                (v1, v2) -> v1)); // Risolve eventuali collisioni mantenendo il primo valore
-                
-                // Set di parole non rilevanti che non devono essere scelte come target
-                Set<String> stopWords = new HashSet<>(Arrays.asList(
-                        "il", "lo", "la", "i", "gli", "le", "di", "a", "da", 
-                        "in", "con", "su", "per", "tra", "fra", "un", "una", "uno"
-                ));
-                
-                // Inizializza il motore di estrazione definendo le regole: similarità, priorità di frequenza e stop words
-                WordExtractor extractor = new WordExtractor(
-                        new LetterFrequencySimilarity(), 
-                        (f1, f2) -> f1 < f2,                            
-                        stopWords, 
-                        random
+                // 6. Generazione della domanda tramite il manager
+                // Si richiama il preset passando il nome della difficoltà (es. "EASY", "NORMAL") come stringa
+                this.sourceManager.generateQuestion(
+                        selectedSource, 
+                        this.matchDifficulty.name(), 
+                        
+                        // Callback di Successo: viene eseguita se il testo è generato correttamente
+                        (question) -> {
+                            this.cipheredText = question.getText(); // Salva il testo cifrato
+                            this.targetWord = question.getAnswer(); // Salv la asoluzione reale
+                        },
+                        
+                        // Callback di Errore: viene eseguita in caso di problemi interni al manager
+                        (exception) -> {
+                            System.err.println("Errore nella generazione del testo: " + exception.getMessage());
+                        }
                 );
-                
-                QuestionGenerator generator = new QuestionGenerator(extractor, random);
-                
-                // Costruisce la configurazione del generatore utilizzando i parametri calcolati nello switch
-                PresetConfig dynamicConfig = new PresetConfig.Builder()
-                        .withNumberOfPeriods(2)
-                        .withShiftingOffset(offset)
-                        .withMaximumWordFrequency(maxFreq)
-                        .withMaximumSimilarWordInQuestionText(1)
-                        .build();
-                
-                long estimatedWords = 1000L; // Dimensione stimata per ottimizzare l'elaborazione dello stream
-                
-                // Legge il file di testo sorgente riga per riga suddividendolo in singole parole
-                try (Stream<String> textStream = Files.lines(selectedSource.getPath())
-                        .flatMap(line -> Arrays.stream(line.split("\\s+")))) {
-                    
-                    // Delega al generatore la creazione del quiz effettivo e aggiorna lo stato del Controller
-                    Question q = generator.generateQuestion(textStream, wordFrequencies, dynamicConfig, estimatedWords);
-                    this.cipheredText = q.getText();   
-                    this.targetWord = q.getAnswer();   
-                }
             }
         } catch (Exception e) {
-            // Logga l'errore; i valori originali impostati nel costruttore (fallback) garantiranno che il gioco non crashi
-            System.err.println("Errore critico generazione domanda, utilizzo fallback. Motivo: " + e.getMessage());
+            // Cattura eventuali eccezioni relative all'accesso al database
+            System.err.println("Errore critico: " + e.getMessage());
         }
     }
 
     /**
-     * @brief Fornisce la difficoltà ufficiale decretata dal sistema per la sessione.
-     * @return Enum `Difficulty` rappresentante il livello applicato.
+     * @brief Restituisce la difficoltà definitiva della partita.
+     * @return Difficoltà della partita (Difficulty).
      */
-    public Difficulty getMatchDifficulty() { 
-        return matchDifficulty; 
-    }
+    public Difficulty getMatchDifficulty() { return matchDifficulty; }
 
     /**
-     * @brief Fornisce il limite temporale imposto ai giocatori.
-     * @return Intero esprimente i secondi a disposizione.
+     * @brief Restituisce la durata della partita.
+     * @return Tempo a disposizione in secondi.
      */
-    public int getTimer() { 
-        return timer; 
-    }
+    public int getTimer() { return timer; }
 
     /**
-     * @brief Fornisce l'elaborato testuale mascherato dal cifrario.
-     * @return Stringa contenente il testo cifrato da mostrare nell'interfaccia.
+     * @brief Restituisce il testo di gioco (es. il testo da decifrare).
+     * @return Il testo cifrato elaborato dal manager.
      */
-    public String getCipheredText() { 
-        return cipheredText; 
-    }
+    public String getCipheredText() { return cipheredText; }
 
     /**
-     * @brief Fornisce la chiave di risoluzione in chiaro.
-     * @return Stringa della parola originale necessaria per superare la sfida.
+     * @brief Restituisce la parola o il testo che rappresenta la soluzione.
+     * @return La soluzione in chiaro attesa dal sistema.
      */
-    public String getTargetWord() { 
-        return targetWord; 
-    }
+    public String getTargetWord() { return targetWord; }
 
     /**
-     * @brief Fornisce la provenienza del materiale testuale.
-     * @return Intero rappresentante l'ID univoco della sorgente documentale.
+     * @brief Restituisce l'ID della Source utilizzata per questa partita.
+     * @return Identificativo intero della Source nel database.
      */
-    public int getSourceId() { 
-        return sourceId; 
-    }
+    public int getSourceId() { return sourceId; }
+    
 }

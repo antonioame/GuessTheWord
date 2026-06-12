@@ -27,15 +27,32 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         SceneNavigator.init(stage);
         
-        connection = new ClientConnectionCreator().createConnection();
+        ClientConnectionCreator creator = new ClientConnectionCreator();
+        connection = creator.createConnection();
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource(
                 "/gruppo05/gtwshared/controller/LoginView.fxml"));
         
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
-        ctrl.setLoginManager(new ClientLoginManager(connection));
-        ctrl.setSignupManager(new ClientSignupManager(connection));
+        
+        ClientLoginManager loginMgr  = new ClientLoginManager(connection);
+        ClientSignupManager signupMgr = new ClientSignupManager(connection);
+        ctrl.setLoginManager(loginMgr);
+        ctrl.setSignupManager(signupMgr);
+        
+        // Registra il callback di disconnessione improvvisa del server:
+            // 1) Mostra un Alert (già gestito in ClientConnectionCreator)
+            // 2) Riporta utente client alla schermata di login (reinizializzando i manager)
+        creator.setOnServerDisconnect(() -> {
+            try {
+                LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
+                loginCtrl.setLoginManager(new ClientLoginManager(connection));
+                loginCtrl.setSignupManager(new ClientSignupManager(connection));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         
         stage.setScene(new Scene(root));
         stage.setOnCloseRequest(event -> {

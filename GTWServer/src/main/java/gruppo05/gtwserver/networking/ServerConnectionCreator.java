@@ -140,17 +140,18 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     
                     // Verifica dell'esistenza dell'utente e match esatto della password
                     if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
-                        // Salvo in memoria lo stato "loggato" legando l'username al canale TCP
-                        loggedUsers.put(channelIndex, dto.getUsername());
-                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
                         
-                        // Controllo delle sessioni duplicate
+                        // Controllo preventivo delle sessioni duplicate PRIMA di registrare l'utente
                         if (loggedUsers.containsValue(dto.getUsername())) {
-                            // L'utente risulta già presente nella mappa dei loggati
+                            // L'utente è già autenticato su un altro canale: accesso simultaneo bloccato
                             System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
                             connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
                             break; // Interrompiamo l'esecuzione del case
                         }
+
+                        // Nessuna sessione attiva => Registra l'utente e notifica il successo
+                        loggedUsers.put(channelIndex, dto.getUsername());
+                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
                     } 
                     else {
                         connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Credenziali errate"));

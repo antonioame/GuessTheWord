@@ -40,8 +40,9 @@ public class ServerConnection extends NetworkConnection {
     /**
      * @brief Callback invocata nel momento esatto in cui un client stabilisce la connessione.
      * @details Utile per notificare la UI o i controller di gioco.
+     * Non è final per consentire la registrazione tardiva da parte della dashboard (che parte dopo il login).
      */
-    private final Consumer<Integer> onClientConnected;
+    private Consumer<Integer> onClientConnected;
 
     // COSTRUTTORE
 
@@ -101,6 +102,16 @@ public class ServerConnection extends NetworkConnection {
         if (onClientConnected != null) {
             onClientConnected.accept(channelIndex);
         }
+    }
+
+    /**
+     * @brief Registra (o sostituisce) la callback per gli eventi di nuova connessione client.
+     * @details Consente alla dashboard di registrarsi come osservatore in un secondo momento,
+     *          anche dopo che il server è già in ascolto e che i thread di accettazione sono partiti.
+     * @param[in] onClientConnected Nuova callback da associare all'evento di connessione.
+     */
+    public void setOnClientConnected(Consumer<Integer> onClientConnected) {
+        this.onClientConnected = onClientConnected;
     }
 
     // METODI DI SUPPORTO

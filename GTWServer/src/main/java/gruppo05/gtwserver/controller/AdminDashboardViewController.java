@@ -5,6 +5,7 @@ import gruppo05.gtwserver.db.ConcretePlayerDAO;
 import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.networking.ServerConnection;
+import gruppo05.gtwserver.networking.ServerConnectionCreator;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,11 +58,34 @@ public class AdminDashboardViewController implements Initializable {
     private final List<Source> loadedSources = new ArrayList<>();
 
     /**
-     * @brief Configura la connessione di rete del server.
-     * @param[in] connection Istanza attiva di ServerConnection.
+     * @brief   Configura la connessione di rete e registra le callback evento per aggiornare
+     *          il contatore dei client connessi (con meccanismo event-driven).
+     * @details Alla chiamata:
+     *          <ol>
+     *            <li>Legge subito il numero di canali già attivi (client connessi prima del login).</li>
+     *            <li>Registra {@code setOnClientConnected} su {@link ServerConnection} per ricevere
+     *                notifiche sulle nuove connessioni TCP.</li>
+     *            <li>Registra {@code setUiDisconnectCallback} su {@link ServerConnectionCreator}
+     *                per ricevere notifiche sulle disconnessioni.</li>
+     *          </ol>
+     * @param[in] connection        Istanza attiva di ServerConnection.
+     * @param[in] connectionCreator Istanza del creator che gestisce la logica di disconnessione.
      */
-    public void setConnection(ServerConnection connection) {
+    public void setConnection(ServerConnection connection, ServerConnectionCreator connectionCreator) {
         this.connection = connection;
+
+        // FASE 1) Lettura iniziale: catturare i client già connessi prima dell'attivazione della dashboard
+        updateConnectedClients(connection.getActiveChannelCount());
+
+        // FASE 2) Callback event-driven per le nuove connessioni TCP
+        connection.setOnClientConnected(
+            index -> updateConnectedClients(connection.getActiveChannelCount())
+        );
+
+        // FASE 3) Callback event-driven per le disconnessioni
+        connectionCreator.setUiDisconnectCallback(
+            index -> updateConnectedClients(connection.getActiveChannelCount())
+        );
     }
 
     /**

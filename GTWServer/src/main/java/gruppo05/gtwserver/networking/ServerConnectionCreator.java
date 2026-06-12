@@ -71,7 +71,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      * millisecondo, garantendo che la coppia venga formata in modo atomico e sicuro.
      */
     private final Object matchLock = new Object();
-
+    
     /**
      * @brief Costruisce e avvia il server leggendo la configurazione locale.
      * @details Legge il file "server.properties" per ottenere la porta di ascolto, istanzia 

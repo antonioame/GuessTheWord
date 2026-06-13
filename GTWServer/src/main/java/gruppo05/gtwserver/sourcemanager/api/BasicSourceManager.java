@@ -19,9 +19,11 @@ import gruppo05.gtwserver.sourcemanager.internal.io.IOManager;
 import gruppo05.gtwserver.sourcemanager.internal.analysis.SourceAnalyzer;
 import gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGenerator;
 import gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor;
+import java.util.HashSet;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -54,7 +56,7 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
         this.ioManager = new IOManager(config.getSourceDao(), config.getWordDao());
         
         // 2. Logica dei "Sensible Defaults" per le StopWords
-        java.util.Set<String> finalStopWords = config.getStopWords();
+        Set<String> finalStopWords = config.getStopWords();
         
         // Se la configurazione non ha stopwords (null), tentiamo di caricare quelle di default
         if (finalStopWords == null || finalStopWords.isEmpty()) {
@@ -63,7 +65,7 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
                 finalStopWords = ioManager.readDefaultStopWords();
             } catch (Exception e) {
                 System.err.println("[BasicSourceManager] ERRORE: Impossibile caricare le stopwords di default. Verrà usato un set vuoto.");
-                finalStopWords = new java.util.HashSet<>();
+                finalStopWords = new HashSet<>();
             }
         }
         

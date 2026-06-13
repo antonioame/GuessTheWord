@@ -141,21 +141,26 @@ public class App extends Application {
                 
                 for (String fileName : defaultFiles) {
                     try {
-                        URL resourceUrl = App.class.getResource("/" + fileName);
                         Path path = null;
+                        Path[] possiblePaths = {
+                            Paths.get("data", fileName),                                        // 1. Quando avviato da eseguibili/ (per simulare comportamento del revisore)
+                            Paths.get("src", "main", "resources", fileName),            // 2. Quando avviato dall'IDE (in GTWServer/)
+                            Paths.get("GTWServer", "src", "main", "resources", fileName)// 3. Quando avviato dalla root del progetto
+                        };
                         
-                        if (resourceUrl != null) {
-                            path = Paths.get(resourceUrl.toURI());
-                        } else {
-                            // Meccanismo di Fallback basato sul Path
-                            Path fallback = Paths.get("src/main/resources", fileName);
-                            if (Files.exists(fallback)) {
-                                path = fallback.toAbsolutePath();
-                            } else {
-                                fallback = Paths.get("GTWServer/src/main/resources", fileName);
-                                if (Files.exists(fallback)) {
-                                    path = fallback.toAbsolutePath();
-                                }
+                        // Cerca il file sul filesystem
+                        for (Path p : possiblePaths) {
+                            if (Files.exists(p)) {
+                                path = p.toAbsolutePath();
+                                break;
+                            }
+                        }
+                        
+                        // Se non lo trova sul filesystem, prova con il resource URL (solo fuori dal JAR)
+                        if (path == null) {
+                            URL resourceUrl = App.class.getResource("/" + fileName);
+                            if (resourceUrl != null && !resourceUrl.getProtocol().equals("jar")) {
+                                path = Paths.get(resourceUrl.toURI());
                             }
                         }
                         

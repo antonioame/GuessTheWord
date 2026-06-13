@@ -9,7 +9,6 @@ GTWShared/target/
 # File Personali
 personal_files
 /GTWServer/nbproject/
-shellscripts/
 
 .DS_Store
 Thumbs.db

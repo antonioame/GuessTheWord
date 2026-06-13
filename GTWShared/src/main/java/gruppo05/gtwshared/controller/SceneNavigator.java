@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * Utility Class per Routing e Navigazione della Finestra Server.
+ * Utility Class per Routing e Navigazione dell'Interfaccia Grafica.
  */
 public class SceneNavigator {
     private static Stage primaryStage;

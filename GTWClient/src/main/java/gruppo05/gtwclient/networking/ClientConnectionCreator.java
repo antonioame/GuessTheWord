@@ -238,6 +238,13 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     }
                     break;
                 
+                case WRONG_ANSWER:
+                    System.out.println("Tentativo errato!");
+                    if (gameViewController != null) {
+                        gameViewController.showWrongAnswer();
+                    }
+                    break;
+                
                 case GAME_RESULT:
                     // Visualizzazione esito finale e navigazione alla vista risultati
                     System.out.println("Partita terminata! Esito: " + dto.getGameResult());

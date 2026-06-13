@@ -54,6 +54,10 @@ public enum MessageType {
      * @brief Server -> Client: l'avversario ha inviato una risposta.
      */
     OPPONENT_ANSWERED,
+    /**
+     * @brief Server -> Client: il tentativo è errato.
+     */
+    WRONG_ANSWER,
 
     // 4. GESTIONE CONNESSIONE
     /**

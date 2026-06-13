@@ -1,28 +1,13 @@
 package gruppo05.gtwserver.controller;
 
-import java.nio.file.Files;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.ConcreteSourceDAO; 
-import gruppo05.gtwserver.db.WordDAO;
-import gruppo05.gtwserver.db.ConcreteWordDAO;       
-import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.model.Source;
-import gruppo05.gtwserver.model.Word;
-import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
-import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
-import gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGenerator;
-import gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor;
+import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import gruppo05.gtwshared.utility.Difficulty;
-import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
 
 /**
  * @class GameSetupController
@@ -35,7 +20,7 @@ import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimil
 public class GameSetupController {
 
     /** @brief Gestore centralizzato per la generazione dei testi cifrati e delle domande. */
-    private final BasicSourceManager sourceManager;
+    private final SourceManager sourceManager;
     
     /** @brief Livello di difficoltà stabilito per la partita corrente. */
     private Difficulty matchDifficulty;
@@ -59,7 +44,7 @@ public class GameSetupController {
      * la generazione dei dati non vada a buon fine.
      * @param sourceManager L'istanza centralizzata creata all'avvio dell'applicazione.
      */
-    public GameSetupController(BasicSourceManager sourceManager) {
+    public GameSetupController(SourceManager sourceManager) {
         this.sourceManager = sourceManager;
         
         // Inizializzazione dei valori di default per prevenire stati nulli
@@ -117,14 +102,18 @@ public class GameSetupController {
                 
                 // 6. Generazione della domanda tramite il manager
                 // Si richiama il preset passando il nome della difficoltà (es. "EASY", "NORMAL") come stringa
+                System.out.println("Inizio generazione domanda");
                 this.sourceManager.generateQuestion(
                         selectedSource, 
                         this.matchDifficulty.name(), 
                         
                         // Callback di Successo: viene eseguita se il testo è generato correttamente
                         (question) -> {
+                            System.out.println("Domanda generata con successo");
                             this.cipheredText = question.getText(); // Salva il testo cifrato
                             this.targetWord = question.getAnswer(); // Salv la asoluzione reale
+                            System.out.println(cipheredText);
+                            System.out.println(targetWord);
                         },
                         
                         // Callback di Errore: viene eseguita in caso di problemi interni al manager

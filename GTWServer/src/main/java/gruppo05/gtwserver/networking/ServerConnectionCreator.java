@@ -19,7 +19,7 @@ import gruppo05.gtwshared.utility.Difficulty;
 import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
 import gruppo05.gtwserver.controller.GameSetupController;
-import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
+import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 
 /**
  * @class ServerConnectionCreator
@@ -84,13 +84,13 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
     private Consumer<Integer> uiDisconnectCallback = null;
     
     /** @brief Riferimento al SourceManager globale iniettato da App.java  */
-    private final BasicSourceManager sourceManager;
+    private final SourceManager sourceManager;
 
     /**
      * @brief Costruttore con dipendenza per il SourceManager.
      * @param sourceManager L'istanza globale unica per la generazione di domande.
      */
-    public ServerConnectionCreator(BasicSourceManager sourceManager) {
+    public ServerConnectionCreator(SourceManager sourceManager) {
         this.sourceManager = sourceManager;
     }
 

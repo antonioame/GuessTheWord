@@ -43,6 +43,7 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
     private final SourceAnalyzer sourceAnalyzer;
     private final ExecutorService executor;
     private final Map<String, PresetConfig> presets;
+    private static final String MODULE_SANITIZATION_REGEX = "[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]";
 
     /**
      * @brief Costruttore principale che configura tutti i sottomoduli interni ed il pool di thread.
@@ -53,7 +54,7 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
      * Tutti i componenti interni IOManager, SourceAnalyzer e QuestionGenerator sono pronti all'uso.
      */
     public BasicSourceManager(SourceManagerConfig config) {
-        this.ioManager = new IOManager(config.getSourceDao(), config.getWordDao());
+        this.ioManager = new IOManager(config.getSourceDao(), config.getWordDao(), MODULE_SANITIZATION_REGEX);
         
         // 2. Logica dei "Sensible Defaults" per le StopWords
         Set<String> finalStopWords = config.getStopWords();
@@ -75,7 +76,8 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
             config.getSimilarityFunction(), 
             config.getFallbackWordCriterion(), 
             finalStopWords, 
-            new Random()
+            new Random(),
+            MODULE_SANITIZATION_REGEX
         );
         this.questionGenerator = new QuestionGenerator(extractor, new Random());
         this.executor = Executors.newFixedThreadPool(4);

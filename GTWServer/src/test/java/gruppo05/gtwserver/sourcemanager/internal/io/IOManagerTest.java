@@ -36,12 +36,15 @@ public class IOManagerTest {
     private FakeSourceDAO fakeSourceDao;
     private FakeWordDAO fakeWordDao;
     private IOManager ioManager;
+    
+    // Regola di sanificazione per il test
+    private static final String TEST_REGEX = "[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]";
 
     @BeforeEach
     void setUp() {
         fakeSourceDao = new FakeSourceDAO();
         fakeWordDao = new FakeWordDAO();
-        ioManager = new IOManager(fakeSourceDao, fakeWordDao);
+        ioManager = new IOManager(fakeSourceDao, fakeWordDao, TEST_REGEX);
     }
 
     /**

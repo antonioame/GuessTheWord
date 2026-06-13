@@ -43,6 +43,11 @@ public class WordExtractor {
  * @brief Generatore di numeri pseudocasuali utilizzato per selezionare una parola tra quelle idonee.
  */
     private final Random random;
+    /**
+     * @brief Espressione regolare iniettata dall'orchestratore per uniformare la pulizia del testo.
+     * Garantisce che l'estrattore veda le parole esattamente come le vede il database.
+     */
+    private final String sanitizationRegex;
 
 
 /**
@@ -51,16 +56,18 @@ public class WordExtractor {
  * @param[in] fallbackWordCriterion Il criterio basato sulle frequenze per selezionare parole alternative.
  * @param[in] stopWords             L'insieme di parole da ignorare nell'estrazione.
  * @param[in] random                La sorgente di casualità per la selezione delle parole.
+ * @param[in] sanitizationRegex     La regola Regex globale per ripulire la punteggiatura e gli apostrofi.
  * @pre
  * Tutti i parametri passati al costruttore devono essere non nulli.
  * @post
  * Lo stato interno del componente viene configurato stabilmente con le dipendenze fornite.
  */
-    public WordExtractor(BiPredicate<String, String> similarityFunction, BiPredicate<Integer, Integer> fallbackWordCriterion, Set<String> stopWords, Random random) {
+    public WordExtractor(BiPredicate<String, String> similarityFunction, BiPredicate<Integer, Integer> fallbackWordCriterion, Set<String> stopWords, Random random, String sanitizationRegex) {
         this.similarityFunction = similarityFunction;
         this.fallbackWordCriterion = fallbackWordCriterion;
         this.stopWords = stopWords;
         this.random = random;
+        this.sanitizationRegex = sanitizationRegex;
     }
 
 /**
@@ -117,19 +124,31 @@ public class WordExtractor {
 
         throw new QuestionGenerationException("Impossibile estrarre una parola valida: il testo non contiene candidati idonei.");
     }
+    
+    /**
+     * @brief Applica la regola di pulizia globale a una stringa di testo.
+     * Rimuove punteggiatura, apostrofi e caratteri speciali, sostituendoli con spazi,
+     * per evitare anomalie durante la scomposizione in token e la ricerca nel database.
+     * @param[in] text Il testo originale "sporco" proveniente dal file.
+     * @return Una nuova stringa normalizzata contenente solo i caratteri consentiti.
+     */
+    private String sanitizeText(String text) {
+        return text.replaceAll(this.sanitizationRegex, " ");
+    }
 
 /**
  * @brief Isola le parole del testo originale che superano i controlli di stop-words e frequenza massima.
+ * Prima dell'analisi, il testo viene sanificato per rimuovere apostrofi (es. "l'efficienza" diventa "l efficienza")
+ * in modo da interrogare la mappa delle frequenze con token puri.
  * @param[in] text                 Il testo sorgente da scansionare.
  * @param[in] wordFrequencies     La mappa delle frequenze delle parole.
  * @param[in] maximumWordFrequency La soglia massima di frequenza ammessa.
  * @return Una stringa (stralcio) contenente le sole parole idonee separate da spazi.
  */
     private String filterByStopWordsAndMaximumFrequency(String text, Map<String, Integer> wordFrequencies, int maximumWordFrequency) {
+        String cleanedText = sanitizeText(text);
         // Uso della Stream API per filtrare in modo dichiarativo e lineare
-        return Arrays.stream(text.split("\\s+"))
-                // Pulisce la punteggiatura e rimuove gli spazi
-                .map(w -> w.replace(".", "").trim())
+        return Arrays.stream(cleanedText.split("\\s+"))
                 // Scarta stringhe vuote
                 .filter(w -> !w.isEmpty())
                 // Scarta le stop-words
@@ -153,12 +172,15 @@ public class WordExtractor {
 
 /**
  * @brief Estrae dal testo originale tutte le parole che risultano simili al candidato correntemente in analisi.
+ * Applica la sanificazione a monte per impedire che segni di punteggiatura falsino la funzione di similarità.
  * @param[in] text       Il testo completo di partenza.
  * @param[in] targetWord La parola target che ha fallito il test di similarità
  * @return La lista univoca delle parole simili individuate.
  */
     private List<String> extractSimilarWords(String text, String targetWord) {
-        return Arrays.stream(text.split("\\s+"))
+        String cleanedText = sanitizeText(text);
+        
+        return Arrays.stream(cleanedText.split("\\s+"))
                 .map(w -> w.replace(".", "").trim())
                 .filter(w -> !w.isEmpty())
                 // Una parola non va considerata come "simile" a se stessa

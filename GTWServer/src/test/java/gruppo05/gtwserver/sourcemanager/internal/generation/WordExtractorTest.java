@@ -29,6 +29,9 @@ public class WordExtractorTest {
     private Map<String, Integer> wordFrequencies;
     private PresetConfig dummyConfig;
     private Random fixedRandom;
+    
+    // Regola di sanificazione per il test
+    private static final String TEST_REGEX = "[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]";
 
     @BeforeEach
     public void setUp() {
@@ -43,7 +46,7 @@ public class WordExtractorTest {
         // Il fallback premia chi ha la frequenza minore
         BiPredicate<Integer, Integer> fallbackCrit = (freqOld, freqNew) -> freqNew < freqOld;
 
-        extractor = new WordExtractor(simFunc, fallbackCrit, stopWords, fixedRandom);
+        extractor = new WordExtractor(simFunc, fallbackCrit, stopWords, fixedRandom, TEST_REGEX);
 
         // Usiamo il Builder reale.
         // Soglia max frequenza = 10, Soglia parole simili < 2

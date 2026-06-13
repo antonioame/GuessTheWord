@@ -43,19 +43,28 @@ public class IOManager {
      * @brief Oggetto DAO per l'accesso e la persistenza delle entità Word.
      */
     private final WordDAO wordDao;
+    
+    /**
+     * @brief Regola di sanificazione globale del modulo testuale iniettata dall'orchestratore.
+     * Definisce l'espressione regolare utilizzata per rimuovere la punteggiatura e mantenere
+     * coerente la scomposizione delle parole con le fasi successive (es. estrazione e cifratura).
+     */
+    private final String sanitizationRegex;
 
     /**
      * @brief Costruttore del gestore di IO dell'applicazione.
      * @param[in] sourceDao Oggetto DAO per la persistenza dei sorgenti.
      * @param[in] wordDao Oggetto DAO per la persistenza delle parole.
+     * @param[in] sanitizationRegex L'espressione regolare per pulire il testo da caratteri non validi.
      * @pre
-     * Entrambi i parametri di input sourceDao e wordDao devono essere diversi da null.
+     * Tutti i parametri di input devono essere diversi da null.
      * @post
      * L'istanza di IOManager viene creata con i relativi DAO correttamente configurati.
      */
-    public IOManager(SourceDAO sourceDao, WordDAO wordDao) {
+    public IOManager(SourceDAO sourceDao, WordDAO wordDao, String sanitizationRegex) {
         this.sourceDao = sourceDao;
         this.wordDao = wordDao;
+        this.sanitizationRegex = sanitizationRegex;
     }
     
     /**
@@ -258,9 +267,8 @@ public class IOManager {
             return Stream.empty();
         }
 
-        // Rimozione spietata: TUTTO ciò che non è una lettera o un numero diventa uno spazio.
-        // Via l'apostrofo dalle parentesi quadre della Regex!
-        String cleaned = line.replaceAll("[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]", " ");
+        // Applicazione rigorosa della regola di business globale del modulo
+        String cleaned = line.replaceAll(this.sanitizationRegex, " ");
 
         // Tokenizzazione per spazi
         String[] tokens = cleaned.trim().split("\\s+");

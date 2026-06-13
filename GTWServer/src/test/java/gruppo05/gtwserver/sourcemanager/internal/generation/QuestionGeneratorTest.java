@@ -28,6 +28,9 @@ public class QuestionGeneratorTest {
     private StubWordExtractor stubWordExtractor;
     private ControlledRandom controlledRandom;
     private Map<String, Integer> dummyFrequencies;
+    
+    // Regola di sanificazione per il test
+    private static final String TEST_REGEX = "[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]";
 
     /**
      * @brief Estensione mock manuale di Random per forzare i risultati desiderati nel test.
@@ -53,7 +56,7 @@ public class QuestionGeneratorTest {
         private String fixedWord = "chiave";
 
         public StubWordExtractor() {
-            super((s1, s2) -> true, (i1, i2) -> true, Collections.emptySet(), new Random());
+            super((s1, s2) -> true, (i1, i2) -> true, Collections.emptySet(), new Random(), TEST_REGEX);
         }
 
         public void setFixedWord(String word) {

@@ -91,9 +91,8 @@ public class GameViewController implements Initializable {
      */
     @FXML
     void onSubmit(ActionEvent event) {
-        if (timeline != null) {
-            timeline.stop();
-        }
+        // NON fermare il timer qui, in modo da consentire nuovi tentativi se la parola inviata è errata.
+        // In questo modo, il giocatore può ritentare l'inserimento di una nuova parola.
         
         gameActive = false;
         btnSubmit.setDisable(true);
@@ -109,6 +108,22 @@ public class GameViewController implements Initializable {
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @brief Gestisce un tentativo errato pulendo l'interfaccia e permettendo all'utente di riprovare con un nuovo inserimento.
+     * @details Consente un inserimento rapido di una nuova risposta, in modo tale da non far perdere tempo all'utente
+     *          nel cancellare l'ultima risposta inviata come tentativo errato.
+     */
+    public void showWrongAnswer() {
+        if (timeline != null) {
+            gameActive = true;
+            lblStatus.setText("Tentativo errato, riprova!");
+            txfAnswer.clear();
+            txfAnswer.setDisable(false);
+            btnSubmit.setDisable(true);
+            txfAnswer.requestFocus();
         }
     }
 

@@ -57,30 +57,43 @@ public class IOManager {
         this.sourceDao = sourceDao;
         this.wordDao = wordDao;
     }
+    
+    /**
+     * @brief Legge il contenuto grezzo (raw) del file sorgente per preservarne l'estetica.
+     * Utilizzato dal generatore di domande per mantenere intatta la formattazione, 
+     * la punteggiatura e le maiuscole originali dell'autore.
+     * @param[in] source L'oggetto sorgente testuale da cui leggere.
+     * @return Uno Stream di stringhe, dove ogni elemento rappresenta una riga intatta del file originale.
+     * @throws SourceNotFoundException Se il file non esiste, è inaccessibile o il percorso non è valido.
+     * @post Lo stream restituito deve essere chiuso dal chiamante (es. tramite try-with-resources) per liberare il file lock.
+     */
+    public Stream<String> readRawLines(Source source) throws SourceNotFoundException {
+        if (source == null || source.getPath() == null || !Files.exists(source.getPath())) {
+            throw new SourceNotFoundException();
+        }
+        try {
+            return Files.lines(source.getPath(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new SourceNotFoundException();
+        }
+    }
 
     /**
-     * @brief Legge il contenuto del file associato ad un sorgente restituendo uno stream pigro di parole e punti.
-     * @param[in] source L'oggetto sorgente contenente il path del file da leggere.
-     * @return Uno Stream di stringhe in cui compaiono esclusivamente parole purificate e punti singoli.
-     * @pre
-     * Il sorgente non deve essere null e il percorso del file associato deve essere valido ed esistente.
-     * @post
-     * Viene restituito un flusso aperto per la lettura sequenziale del file. La chiusura dello stream è delegata al chiamante.
+     * @brief Legge il file sorgente estraendone un flusso di sole parole pure.
+     * Utilizzato esclusivamente dall'analizzatore per il calcolo statistico delle frequenze, 
+     * elimina completamente qualsiasi segno di interpunzione.
+     * @param[in] source L'oggetto sorgente testuale da elaborare.
+     * @return Uno Stream di token rappresentanti le singole parole, privi di punteggiatura.
+     * @throws SourceNotFoundException Se il file non esiste o il percorso non è valido.
+     * @post Lo stream restituito non contiene stringhe vuote o segni di punteggiatura isolati.
      */
-    public Stream<String> readSourceWordsAndPeriods(Source source) throws SourceNotFoundException {
-        if (source == null || source.getPath() == null) {
+    public Stream<String> readSourceWords(Source source) throws SourceNotFoundException {
+        if (source == null || source.getPath() == null || !Files.exists(source.getPath())) {
             throw new SourceNotFoundException();
         }
-
-        Path path = source.getPath();
-        if (!Files.exists(path)) {
-            throw new SourceNotFoundException();
-        }
-
         try {
-            // Sfruttiamo Files.lines per una lettura lazy guidata dalla StreamAPI, riducendo l'impatto sulla memoria
-            return Files.lines(path)
-                    .flatMap(this::extractWordsAndPeriodsFromLine);
+            return Files.lines(source.getPath(), StandardCharsets.UTF_8)
+                    .flatMap(this::extractWordsFromLine);
         } catch (IOException e) {
             throw new SourceNotFoundException();
         }
@@ -234,29 +247,24 @@ public class IOManager {
     }
 
     /**
-     * @brief Algoritmo interno di tokenizzazione di una singola riga di testo per estrarre parole e punti singoli.
-     * @param[in] line La stringa testuale grezza estratta dal file sorgente.
-     * @return Uno stream di token contenente parole pulite e punti singoli estratti dalla riga corrente.
-     * @pre
-     * La stringa passata in input non deve essere nulla.
-     * @post
-     * Tutti i caratteri speciali non ammessi vengono eliminati, e i punti consecutivi vengono unificati in un unico punto indipendente.
+     * @brief Esegue una tokenizzazione pura su una riga di testo, estraendo solo parole valide.
+     * Poiché l'estetica è gestita altrove, elimina apostrofi e punteggiatura trasformandoli in spazi.
+     * @param[in] line La riga testuale da pulire.
+     * @return Uno Stream contenente i singoli token puliti.
+     * @post Parole composte per elisione (es. "dell'animo") vengono divise in due token puri ("dell", "animo").
      */
-    private Stream<String> extractWordsAndPeriodsFromLine(String line) {
+    private Stream<String> extractWordsFromLine(String line) {
         if (line == null || line.trim().isEmpty()) {
             return Stream.empty();
         }
 
-        // 1. Pulizia caratteri: manteniamo lettere (comprese le accentate italiane), numeri e punti, sostituendo il resto con uno spazio
-        String cleaned = line.replaceAll("[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ.]", " ");
+        // Rimozione spietata: TUTTO ciò che non è una lettera o un numero diventa uno spazio.
+        // Via l'apostrofo dalle parentesi quadre della Regex!
+        String cleaned = line.replaceAll("[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]", " ");
 
-        // 2. Unificazione dei punti: qualsiasi sequenza di più punti consecutivi (es. "...") viene ridotta a un singolo punto isolato da spazi
-        cleaned = cleaned.replaceAll("\\.+", " . ");
-
-        // 3. Tokenizzazione per spazi bianchi multipli
+        // Tokenizzazione per spazi
         String[] tokens = cleaned.trim().split("\\s+");
 
-        // Ritorna lo stream filtrando eventuali residui vuoti dovuti alla formattazione regex
         return Arrays.stream(tokens).filter(token -> !token.isEmpty());
     }
 }

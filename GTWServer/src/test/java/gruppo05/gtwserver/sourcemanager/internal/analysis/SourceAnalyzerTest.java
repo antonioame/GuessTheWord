@@ -51,9 +51,9 @@ class SourceAnalyzerTest {
 		assertEquals(1, frequencies.get("sviluppo"));
 	}
 
-	@Test
-	void testGetSourceMapWordFrequencyFiltersOutPeriods() {
-		Stream<String> tokenStream = Stream.of("Inizio", ".", "Fine", ".");
+        @Test
+	void testGetSourceMapWordFrequencyIgnoresEmptyOrNullStrings() {
+		Stream<String> tokenStream = Stream.of("Inizio", "", null, "Fine");
 		
 		Map<String, Integer> frequencies = analyzer.getSourceMapWordFrequency(tokenStream);
 		
@@ -61,7 +61,7 @@ class SourceAnalyzerTest {
 		assertEquals(2, frequencies.size());
 		assertTrue(frequencies.containsKey("inizio"));
 		assertTrue(frequencies.containsKey("fine"));
-		assertFalse(frequencies.containsKey("."));
+		assertFalse(frequencies.containsKey(""));
 	}
 
 	@Test

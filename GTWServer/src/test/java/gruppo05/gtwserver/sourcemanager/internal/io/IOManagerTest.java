@@ -44,55 +44,78 @@ public class IOManagerTest {
         ioManager = new IOManager(fakeSourceDao, fakeWordDao);
     }
 
+    /**
+     * @brief Verifica la lettura delle righe grezze per l'estetica del generatore.
+     */
     @Test
-    void testReadSourceWordsAndPeriods_Success(@TempDir Path tempDir) throws Exception {
-        // Prepariamo un file di prova temporaneo
+    void testReadRawLines_Success(@TempDir Path tempDir) throws Exception {
+        Path textFile = tempDir.resolve("raw_source.txt");
+        List<String> lines = Arrays.asList(
+                "L'inizio.",
+                "La fine!"
+        );
+        Files.write(textFile, lines);
+        Source source = new Source(1, textFile);
+
+        Stream<String> lineStream = ioManager.readRawLines(source);
+        List<String> resultLines = lineStream.collect(Collectors.toList());
+
+        assertEquals(2, resultLines.size());
+        assertEquals("L'inizio.", resultLines.get(0));
+        assertEquals("La fine!", resultLines.get(1)); // Punteggiatura intatta!
+    }
+
+    /**
+     * @brief Verifica l'estrazione pura delle parole per il database statistico.
+     */
+    @Test
+    void testReadSourceWords_Success(@TempDir Path tempDir) throws Exception {
         Path textFile = tempDir.resolve("test_source.txt");
         List<String> lines = Arrays.asList(
                 "Ciao mondo... Questo e' un test.",
-                "Java 8 funziona molto bene!"
+                "Java 8 funziona dell'animo!"
         );
         Files.write(textFile, lines);
 
-        // Creiamo la sorgente reale usando il costruttore del model
         Source source = new Source(1, textFile);
 
-        // Esecuzione dell'algoritmo di lettura
-        Stream<String> wordStream = ioManager.readSourceWordsAndPeriods(source);
+        Stream<String> wordStream = ioManager.readSourceWords(source);
         List<String> resultTokens = wordStream.collect(Collectors.toList());
 
-        // Verifiche
         assertNotNull(resultTokens);
         assertTrue(resultTokens.contains("Ciao"));
         assertTrue(resultTokens.contains("mondo"));
-        assertTrue(resultTokens.contains(".")); // Il blocco "..." deve diventare un singolo punto
         assertTrue(resultTokens.contains("Questo"));
         assertTrue(resultTokens.contains("test"));
         assertTrue(resultTokens.contains("Java"));
         assertTrue(resultTokens.contains("8"));
         
+        // Verifica che la punteggiatura forte sia SPARITA
+        assertFalse(resultTokens.contains("."));
+        assertFalse(resultTokens.contains("..."));
+        
+        // Verifica la pulizia dell'apostrofo (e' diventa e, dell'animo diventa dell e animo)
+        assertTrue(resultTokens.contains("e"));
         assertFalse(resultTokens.contains("e'"));
-        assertFalse(resultTokens.contains("bene!"));
+        assertTrue(resultTokens.contains("dell"));
+        assertTrue(resultTokens.contains("animo"));
     }
 
     @Test
-    void testReadSourceWordsAndPeriods_SourceNotFoundException() {
-        // Usiamo un path inesistente
+    void testReadSourceWords_SourceNotFoundException() {
         Source source = new Source(1, Paths.get("percorso_fittizio_inesistente.txt"));
 
         assertThrows(SourceNotFoundException.class, () -> {
-            ioManager.readSourceWordsAndPeriods(source);
+            ioManager.readSourceWords(source);
         });
     }
 
     @Test
     void testReadSourceMapFrequency_Success() throws Exception {
         Source source = new Source(42, Paths.get("dummy.txt"));
-
-        // Popoliamo il database fake con dati prestabiliti usando il costruttore di Word
         fakeWordDao.insert(new Word("casa", 10, 42));
         fakeWordDao.insert(new Word("albero", 5, 42));
-        fakeWordDao.insert(new Word("intruso", 1, 99)); // Appartiene a un'altra sorgente
+        fakeWordDao.insert(new Word("intruso", 1, 99));
 
         Map<String, Integer> frequencyMap = ioManager.readSourceMapFrequency(source);
 
@@ -106,8 +129,6 @@ public class IOManagerTest {
     @Test
     void testReadSourceMapFrequency_EmptyOrNotFound() {
         Source source = new Source(99, Paths.get("dummy.txt"));
-        // Il database è vuoto per questa sorgente
-
         assertThrows(FrequencyMapNotFoundException.class, () -> {
             ioManager.readSourceMapFrequency(source);
         });
@@ -116,10 +137,7 @@ public class IOManagerTest {
     @Test
     void testWriteSource_Success() throws Exception {
         Source source = new Source(10, Paths.get("dummy.txt"));
-        
         ioManager.writeSource(source);
-
-        // Verifichiamo che l'elemento sia stato effettivamente aggiunto alla mappa interna del DAO
         assertEquals(1, fakeSourceDao.database.size());
         assertTrue(fakeSourceDao.database.containsValue(source));
     }
@@ -127,9 +145,7 @@ public class IOManagerTest {
     @Test
     void testWriteSource_StorageException() {
         Source source = new Source(10, Paths.get("dummy.txt"));
-        // Configuriamo il finto DAO per fallire di proposito
         fakeSourceDao.shouldFailOnInsert = true;
-
         assertThrows(StorageException.class, () -> {
             ioManager.writeSource(source);
         });
@@ -138,14 +154,12 @@ public class IOManagerTest {
     @Test
     void testWriteSourceMapFrequency_Success() throws Exception {
         Source source = new Source(1, Paths.get("dummy.txt"));
-
         Map<String, Integer> frequencies = new HashMap<>();
         frequencies.put("test", 3);
         frequencies.put("junit", 1);
 
         ioManager.writeSourceMapFrequency(source, frequencies);
 
-        // Verifichiamo il salvataggio massivo controllando i valori nella mappa
         assertEquals(2, fakeWordDao.database.size());
         assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getToken().equals("test") && w.getFrequency() == 3));
         assertTrue(fakeWordDao.database.values().stream().anyMatch(w -> w.getToken().equals("junit") && w.getFrequency() == 1));
@@ -154,165 +168,117 @@ public class IOManagerTest {
     @Test
     void testDeleteSource_Success() throws Exception {
         Source source = new Source(100, Paths.get("dummy.txt"));
-        
-        // Popoliamo il database fake solo con il sorgente
         fakeSourceDao.insert(source);
-
-        // Eseguiamo la cancellazione
         ioManager.deleteSource(source);
-
-        // Assicuriamoci che la sorgente sia rimossa.
         assertTrue(fakeSourceDao.database.isEmpty());
     }
 
     @Test
     void testGetEstimatedWordCount_Success(@TempDir Path tempDir) throws Exception {
-        // Prepariamo un file con esattamente 21 byte (3 parole stimate: 21 / 7 = 3)
         Path testFile = tempDir.resolve("stima.txt");
-        String content = "1234567 8901234 56789"; // 21 caratteri ASCII = 21 byte
+        String content = "1234567 8901234 56789"; 
         Files.write(testFile, content.getBytes());
-
         Source source = new Source(10, testFile);
-
         long estimated = ioManager.getEstimatedWordCount(source);
-
-        // Verifichiamo che il calcolo rispetti l'euristica (byte / 7)
         assertEquals(3, estimated);
     }
 
     @Test
     void testGetEstimatedWordCount_EmptyFile(@TempDir Path tempDir) throws Exception {
-        // Prepariamo un file completamente vuoto (0 byte)
         Path emptyFile = tempDir.resolve("vuoto.txt");
         Files.createFile(emptyFile);
-
         Source source = new Source(11, emptyFile);
-
         long estimated = ioManager.getEstimatedWordCount(source);
-
-        // Verifichiamo che il limite inferiore di sicurezza (Math.max(1, ...)) funzioni
         assertEquals(1, estimated);
     }
 
     @Test
     void testGetEstimatedWordCount_SourceNotFoundExceptions() {
-        // Test 1: Source null
-        assertThrows(SourceNotFoundException.class, () -> {
-            ioManager.getEstimatedWordCount(null);
-        });
-
-        // Test 2: Source con Path null
+        assertThrows(SourceNotFoundException.class, () -> { ioManager.getEstimatedWordCount(null); });
         Source sourceNullPath = new Source(12, null);
-        assertThrows(SourceNotFoundException.class, () -> {
-            ioManager.getEstimatedWordCount(sourceNullPath);
-        });
-
-        // Test 3: Source con Path inesistente
-        Source sourceNotExists = new Source(13, Paths.get("file_inesistente_ghost.txt"));
-        assertThrows(SourceNotFoundException.class, () -> {
-            ioManager.getEstimatedWordCount(sourceNotExists);
-        });
+        assertThrows(SourceNotFoundException.class, () -> { ioManager.getEstimatedWordCount(sourceNullPath); });
+        Source sourceNotExists = new Source(13, Paths.get("ghost.txt"));
+        assertThrows(SourceNotFoundException.class, () -> { ioManager.getEstimatedWordCount(sourceNotExists); });
     }
 
     // --- CLASSI FAKE INTERNE AL TEST ---
 
-    /**
-     * Implementazione In-Memory del database per i Source.
-     */
     private static class FakeSourceDAO implements SourceDAO {
-        // Usiamo una Map per simulare il DB
         public final Map<Integer, Source> database = new HashMap<>();
         public boolean shouldFailOnInsert = false;
-
-        @Override
-        public Optional<Source> selectById(Optional<Integer> id) {
-            // Estrazione sicura dell'id dall'Optional per cercare nella Map
-            if (id.isPresent()) {
-                return Optional.ofNullable(database.get(id.get()));
-            }
-            return Optional.empty();
+        
+        @Override 
+        public Optional<Source> selectById(Optional<Integer> id) { 
+            return id.flatMap(i -> Optional.ofNullable(database.get(i))); 
         }
-
-        @Override
-        public List<Source> selectAll() {
-            return new ArrayList<>(database.values());
+        
+        @Override 
+        public List<Source> selectAll() { 
+            return new ArrayList<>(database.values()); 
         }
-
-        @Override
-        public void insert(Source item) {
-            if (shouldFailOnInsert) throw new RuntimeException("Simulated Database Error");
-            database.put(item.getId(), item);
+        
+        @Override 
+        public void insert(Source item) { 
+            if (shouldFailOnInsert) throw new RuntimeException("DB Error"); 
+            database.put(item.getId(), item); 
         }
-
-        @Override
-        public void insertAll(List<Source> items) {
-            for (Source item : items) {
-                insert(item);
-            }
+        
+        @Override 
+        public void insertAll(List<Source> items) { 
+            items.forEach(this::insert); 
         }
-
-        @Override
-        public void update(Source model) {
-            database.put(model.getId(), model);
+        
+        @Override 
+        public void update(Source model) { 
+            database.put(model.getId(), model); 
         }
-
-        @Override
-        public void delete(Optional<Integer> id) {
-            // Estrazione sicura per la rimozione
-            id.ifPresent(database::remove);
+        
+        @Override 
+        public void delete(Optional<Integer> id) { 
+            id.ifPresent(database::remove); 
         }
     }
 
-    /**
-     * Implementazione In-Memory del database per le Word.
-     */
     private static class FakeWordDAO implements WordDAO {
-        
-        // Rinominato in WordId come hai richiesto
         private static class WordId {
-            private final String token;
+            private final String token; 
             private final int source;
-
-            public WordId(String token, int source) {
-                this.token = token;
-                this.source = source;
+            
+            public WordId(String token, int source) { 
+                this.token = token; 
+                this.source = source; 
             }
-
-            @Override
-            public int hashCode() {
-                int hash = 7;
-                hash = 71 * hash + Objects.hashCode(this.token);
-                hash = 71 * hash + this.source;
-                return hash;
+            
+            @Override 
+            public int hashCode() { 
+                return Objects.hash(token, source); 
             }
-
-            @Override
+            
+            @Override 
             public boolean equals(Object obj) {
                 if (this == obj) return true;
                 if (obj == null || getClass() != obj.getClass()) return false;
-                final WordId other = (WordId) obj;
-                if (this.source != other.source) return false;
-                return Objects.equals(this.token, other.token);
+                WordId other = (WordId) obj;
+                return source == other.source && Objects.equals(token, other.token);
             }
         }
         
         public final Map<WordId, Word> database = new HashMap<>();
 
-        @Override
+        @Override 
         public Optional<Word> selectById(Optional<String> token, Optional<Integer> source) {
             if (token.isPresent() && source.isPresent()) {
                 return Optional.ofNullable(database.get(new WordId(token.get(), source.get())));
             }
             return Optional.empty();
         }
-
-        @Override
-        public List<Word> selectAll() {
-            return new ArrayList<>(database.values());
+        
+        @Override 
+        public List<Word> selectAll() { 
+            return new ArrayList<>(database.values()); 
         }
-
-        // --- FIX: Implementazione reale del filtro per il Mock del Database ---
-        @Override
+        
+        @Override 
         public List<Word> selectAllWhere(Optional<String> token, Optional<Integer> frequenza, Optional<Integer> source) {
             return database.values().stream()
                     .filter(w -> token.map(t -> t.equals(w.getToken())).orElse(true))
@@ -320,25 +286,23 @@ public class IOManagerTest {
                     .filter(w -> source.map(s -> s.equals(w.getSource())).orElse(true))
                     .collect(Collectors.toList());
         }
-
-        @Override
-        public void insert(Word item) {
-            database.put(new WordId(item.getToken(), item.getSource()), item);
+        
+        @Override 
+        public void insert(Word item) { 
+            database.put(new WordId(item.getToken(), item.getSource()), item); 
         }
-
-        @Override
-        public void insertAll(List<Word> items) {
-            for (Word item : items) {
-                insert(item);
-            }
+        
+        @Override 
+        public void insertAll(List<Word> items) { 
+            items.forEach(this::insert); 
         }
-
-        @Override
-        public void update(Word model) {
-            database.put(new WordId(model.getToken(), model.getSource()), model);
+        
+        @Override 
+        public void update(Word model) { 
+            database.put(new WordId(model.getToken(), model.getSource()), model); 
         }
-
-        @Override
+        
+        @Override 
         public void delete(Optional<String> token, Optional<Integer> source) {
             if (token.isPresent() && source.isPresent()) {
                 database.remove(new WordId(token.get(), source.get()));

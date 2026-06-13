@@ -191,4 +191,15 @@ public class SourceManagerConfigTest {
             config.getStopWords().add("new_stop");
         });
     }
+    
+    @Test
+    public void testDefaultStopWordsIsNull() {
+        // Creiamo una config SENZA chiamare .withCustomStopWords()
+        SourceManagerConfig config = new SourceManagerConfig.Builder(mockSourceDao, mockWordDao, dummySimFunc, dummyFallbackCrit)
+                .addPreset("p1", dummyPreset)
+                .build();
+
+        // Verifichiamo che il valore rimanga null (che scatenerà l'IOManager)
+        assertNull(config.getStopWords(), "Se non specificato, l'insieme di stop words deve essere null per attivare il caricamento di default.");
+    }
 }

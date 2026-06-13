@@ -84,27 +84,24 @@ public class QuestionGeneratorTest {
                 .withShiftingOffset(3)
                 .build();
 
-        // Stream strutturato: Frase 1. Frase 2 contenente la parola target. (7 token in totale)
-        Stream<String> sourceStream = Stream.of("Prima", "frase", ".", "La", "chiave", "funziona", ".");
-        long estimatedWordCount = 7L;
+        // FIX: Mettiamo la parola bersaglio nella prima frase
+        Stream<String> sourceStream = Stream.of(
+                "La chiave funziona perfettamente.", 
+                "Questa è una frase in più che verrà ignorata."
+        );
         
-        // La nuova stima per il salto calcolerà maxSkip = 7 * 0.85 = 5.
-        // Vogliamo che salti la prima frase. Impostando il random a 0.4, 
-        // calcolerà randomSkip = 0.4 * 5 = 2.
-        // Salterà i primi 2 token ("Prima", "frase"), troverà il "." e inizierà a leggere da "La".
-        controlledRandom.setForcedDouble(0.4);
+        controlledRandom.setForcedDouble(0.0);
         stubWordExtractor.setFixedWord("chiave");
 
-        // AGGIUNTO: Passiamo estimatedWordCount alla firma del metodo
-        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config, estimatedWordCount);
+        Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config, 10L);
 
         assertNotNull(result);
         assertEquals("chiave", result.getAnswer());
         
-        // Verifica cifratura della parola "chiave" con offset 3: "fkldyh"
         assertTrue(result.getText().contains("fkldyh"), "Il testo dovrebbe contenere la parola cifrata 'fkldyh'");
-        assertFalse(result.getText().contains("chiave"), "Il testo non dovrebbe più contenere la parola in chiaro");
-        assertEquals("La fkldyh funziona.", result.getText());
+        
+        // FIX: Ora ci aspettiamo solo la prima riga cifrata!
+        assertEquals("La fkldyh funziona perfettamente.", result.getText(), "Avendo chiesto 1 solo periodo, si ferma al primo punto.");
     }
 
     /**
@@ -135,16 +132,15 @@ public class QuestionGeneratorTest {
                 .withShiftingOffset(1) // Shift di 1
                 .build();
 
-        Stream<String> sourceStream = Stream.of("Un", "test", "chiamato", "Test", ".");
+        // FIX: Passiamo la riga intera
+        Stream<String> sourceStream = Stream.of("Un test chiamato Test.");
         
-        // Impostiamo il random a 0.0 in modo che randomSkip sia 0 e inizi a leggere dalla primissima parola
         controlledRandom.setForcedDouble(0.0);
         stubWordExtractor.setFixedWord("test");
 
-        // Passiamo una stima fittizia di 5 parole
         Question result = questionGenerator.generateQuestion(sourceStream, dummyFrequencies, config, 5L);
 
-        // Dovrebbe cifrare solo "test" in "uftu", lasciando invariato "Test"
+        // Dovrebbe cifrare solo "test" (minuscolo) in "uftu", lasciando invariato "Test" (maiuscolo)
         assertTrue(result.getText().contains("uftu"));
         assertTrue(result.getText().contains("Test"));
         assertFalse(result.getText().contains("Uftu"));

@@ -174,7 +174,8 @@ public class SourceManagerIntegrationTest {
         Path tempFilePath = tempDir.resolve("test_source.txt");
         Files.write(tempFilePath, Arrays.asList(
             "Questa è la prima riga del file di test.", 
-            "Questa è la seconda riga per popolare le frequenze."
+            "Questa è la seconda riga per popolare le frequenze.",
+            "Questa è la terza riga che permette al generatore di completare il lavoro!"
         ));
 
         dummySource = new Source(1, tempFilePath);

@@ -83,62 +83,88 @@ public class QuestionGenerator {
     }
 
     /**
-     * @brief Estrae uno stralcio di testo partendo da un indice casuale fino a completare i periodi richiesti.
-     * @param[in] source             Stream sorgente di token (parole e punti).
-     * @param[in] numberOfPeriods    Numero di frasi (terminate da '.') da includere nello stralcio.
-     * @param[in] estimatedWordCount Numero di parole stimate presenti nella fonte.
-     * @return Lo stralcio di testo estratto sotto forma di stringa unica.
-     * @pre
-     * Lo stream dei token deve essere popolato e numberOfPeriods deve essere maggiore di zero.
-     * @post
-     * Viene restituita una stringa non vuota formata concatenando i token isolati,
-     * garantendo la corretta spaziatura tra le parole.
+     * @brief Estrae uno stralcio di testo aggregando le righe grezze fino a raggiungere il numero di frasi richiesto.
+     * Garantisce che il testo estratto inizi sempre all'inizio di una frase logica e termini con la punteggiatura.
+     * @param[in] sourceLines Lo stream di righe intere e formattate lette dal file sorgente.
+     * @param[in] numberOfPeriods Il numero di frasi da accumulare.
+     * @param[in] estimatedWordCount Stima del numero di parole totali per calcolare il salto.
+     * @return Una stringa contenente il periodo di gioco completo e ben formattato.
+     * @throws QuestionGenerationException Se il testo estratto risulta vuoto o insufficiente.
      */
-    private String extractQuestionText(Stream<String> source, int numberOfPeriods, long estimatedWordCount) throws QuestionGenerationException {
+    private String extractQuestionText(Stream<String> sourceLines, int numberOfPeriods, long estimatedWordCount) throws QuestionGenerationException {
         
-        // 1. Calcolo del salto casuale. 
-        // Riduciamo la stima del 15% per evitare di saltare troppo vicini alla fine del file
-        long maxSkip = Math.max(0, (long)(estimatedWordCount * 0.85));
+        long estimatedLines = Math.max(1, estimatedWordCount / 10);
+        long maxSkip = Math.max(0, (long)(estimatedLines * 0.85));
         long randomSkip = (maxSkip > 0) ? (long)(random.nextDouble() * maxSkip) : 0;
 
-        // 2. Saltiamo 'randomSkip' token nello stream e otteniamo un Iterator
-        Iterator<String> iterator = source.skip(randomSkip).iterator();
-        
-        // 3. Poiché abbiamo saltato a caso, potremmo essere a metà frase. 
-        // Scartiamo tutto finché non troviamo il primo punto '.', così iniziamo da una frase pulita.
-        if (randomSkip > 0) {
-            while (iterator.hasNext()) {
-                if (".".equals(iterator.next())) {
-                    break;
-                }
-            }
-        }
-
-        // 4. Inizia l'estrazione manuale ("takeWhile")
-        StringBuilder sb = new StringBuilder();
+        java.util.Iterator<String> iterator = sourceLines.skip(randomSkip).iterator();
+        StringBuilder rawText = new StringBuilder();
         int periodCount = 0;
-        
-        while (iterator.hasNext()) {
-            String token = iterator.next();
-            
-            if (sb.length() > 0 && !".".equals(token)) {
-                sb.append(" ");
-            }
-            sb.append(token);
 
-            if (".".equals(token)) {
-                periodCount++;
-                if (periodCount == numberOfPeriods) {
-                    break; // Esci e ferma il caricamento in memoria!
+        // FLAG INTELLIGENTE: Se abbiamo saltato a caso, dobbiamo ignorare il testo
+        // fino a quando non troviamo la fine della frase in cui siamo atterrati.
+        boolean isSeekingStart = (randomSkip > 0);
+
+        while (iterator.hasNext()) {
+            String line = iterator.next().trim();
+            if (line.isEmpty()) continue;
+
+            // --- FASE 1: Ricerca di un inizio pulito ---
+            if (isSeekingStart) {
+                int firstPunctuation = -1;
+                for (int i = 0; i < line.length(); i++) {
+                    char c = line.charAt(i);
+                    if (c == '.' || c == '!' || c == '?') {
+                        firstPunctuation = i;
+                        break;
+                    }
                 }
+
+                if (firstPunctuation != -1) {
+                    // Trovato! Scartiamo la "coda" della frase spezzata e teniamo il resto
+                    line = line.substring(firstPunctuation + 1).trim();
+                    isSeekingStart = false; // Inizio trovato, disattiviamo la ricerca!
+                    
+                    if (line.isEmpty()) {
+                        continue; // Se la riga finiva esattamente col punto, passiamo alla riga successiva
+                    }
+                } else {
+                    // Questa riga non contiene punteggiatura ed è solo un pezzo centrale
+                    // di una frase spezzata. La scartiamo completamente.
+                    continue; 
+                }
+            }
+
+            // --- FASE 2: Accumulo normale del testo ---
+            if (rawText.length() > 0) {
+                rawText.append(" ");
+            }
+            rawText.append(line);
+            
+            periodCount = 0;
+            for (int i = 0; i < rawText.length(); i++) {
+                char c = rawText.charAt(i);
+                if (c == '.' || c == '!' || c == '?') {
+                    periodCount++;
+                }
+            }
+
+            if (periodCount >= numberOfPeriods) {
+                break; // Obiettivo raggiunto!
             }
         }
 
-        String result = sb.toString().trim();
+        String result = rawText.toString().trim();
         if (result.isEmpty()) {
             throw new QuestionGenerationException("Impossibile formare un periodo valido. Riprovare.");
         }
-        
+
+        // Taglio estetico sull'ultimo segno di punteggiatura per evitare frasi mozze alla fine
+        int lastPunctuation = Math.max(result.lastIndexOf('.'), Math.max(result.lastIndexOf('!'), result.lastIndexOf('?')));
+        if (lastPunctuation != -1 && lastPunctuation < result.length() - 1) {
+            result = result.substring(0, lastPunctuation + 1);
+        }
+
         return result;
     }
 

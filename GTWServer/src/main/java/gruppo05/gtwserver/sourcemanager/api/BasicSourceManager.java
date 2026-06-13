@@ -97,7 +97,7 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
         this.executor.submit(() -> {
             try {
                 ioManager.writeSource(source);
-                try (Stream<String> wordsAndPeriods = ioManager.readSourceWordsAndPeriods(source)) {
+                try (Stream<String> wordsAndPeriods = ioManager.readSourceWords(source)) {
                     Map<String, Integer> frequencies = sourceAnalyzer.getSourceMapWordFrequency(wordsAndPeriods);
                     ioManager.writeSourceMapFrequency(source, frequencies);
                 }
@@ -155,14 +155,14 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
             
                 try {
                     // TENTATIVO 1: Lettura ottimizzata con salto (skip)
-                    try (Stream<String> stream = ioManager.readSourceWordsAndPeriods(source)) {
+                    try (Stream<String> stream = ioManager.readRawLines(source)) {
                         question = questionGenerator.generateQuestion(stream, frequencies, config, estimatedWordCount);
                     }
                 } catch (QuestionGenerationException e) {
                     // TENTATIVO 2: Se il salto ha esaurito il file, ripartiamo da 0.
                     // Riapriamo un nuovo Stream fresco e passiamo '0' come stima.
                     // Passando 0, il QuestionGenerator calcolerà uno skip di 0 e leggerà dall'inizio.
-                    try (Stream<String> fallbackStream = ioManager.readSourceWordsAndPeriods(source)) {
+                    try (Stream<String> fallbackStream = ioManager.readRawLines(source)) {
                         question = questionGenerator.generateQuestion(fallbackStream, frequencies, config, 0);
                     }
                 }

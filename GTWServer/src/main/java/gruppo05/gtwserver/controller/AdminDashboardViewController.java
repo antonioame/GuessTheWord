@@ -2,6 +2,7 @@ package gruppo05.gtwserver.controller;
 
 import gruppo05.gtwserver.db.PlayerDAO;
 import gruppo05.gtwserver.db.ConcretePlayerDAO;
+import gruppo05.gtwserver.db.ConcreteSourceDAO;
 import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.networking.ServerConnection;
@@ -204,6 +205,18 @@ public class AdminDashboardViewController implements Initializable {
         try {
             List<Player> players = new ConcretePlayerDAO().selectAll();
             tblPlayers.setItems(FXCollections.observableArrayList(players));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            List<Source> sources = new ConcreteSourceDAO().selectAll();
+            loadedSources.addAll(sources);
+            for (Source s : sources) {
+                if (s.getPath() != null) {
+                    lstSources.getItems().add(s.getPath().getFileName().toString());
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

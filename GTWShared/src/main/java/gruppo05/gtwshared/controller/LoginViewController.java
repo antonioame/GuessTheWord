@@ -25,30 +25,52 @@ import javafx.stage.Stage;
  */
 public class LoginViewController implements Initializable {
 
-    @FXML
-    private Pane outerContainer;
-    @FXML
-    private TextField txfUsername;
-    @FXML
-    private TextField txfPswd;
-    @FXML
-    private Hyperlink linkToLogin;
-    @FXML
-    private Button btnExit;
-    @FXML
-    private Button btnConfirm;
+    @FXML private Pane outerContainer;
+    @FXML private TextField txfUsername;
+    @FXML private TextField txfPswd; // o PasswordField se lo hai cambiato in FXML
+    @FXML private Hyperlink linkToLogin;
+    @FXML private Button btnExit;
+    @FXML private Button btnConfirm;
 
     private LoginManager loginManager;  
     private SignupManager signupManager;
     
-    /**
-     * Initializes the controller class.
-     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        setupButtonBinding();
+    }    
+
+    /*
+     * Metodo di supporto per incapsulare la logica di binding del pulsante,
+     * in modo da poterla riutilizzare quando serve ripristinarlo.
+     */
+    private void setupButtonBinding() {
         btnConfirm.disableProperty().bind(Bindings.or(
                 txfUsername.textProperty().isEmpty(), txfPswd.textProperty().isEmpty()));
-    }    
+    }
+
+    @FXML
+    private void onConfirm(ActionEvent event) throws IOException {
+        // 1. Rimuove il binding per poter modificare lo stato manualmente senza lanciare eccezioni
+        btnConfirm.disableProperty().unbind();
+        
+        // 2. Disabilita immediatamente il pulsante per prevenire il doppio clic
+        btnConfirm.setDisable(true);
+
+        // 3. Invia la richiesta al server
+        loginManager.validateInfo(txfUsername.getText(), txfPswd.getText());
+    }
+
+    /*
+     * Da invocare quando il server risponde con un LOGIN_RESPONSE fallito (es. credenziali errate).
+     * Sblocca l'interfaccia e permette un nuovo tentativo.
+     */
+    public void resetLoginButton() {
+        Platform.runLater(() -> {
+            btnConfirm.setDisable(false);
+            setupButtonBinding(); // Ripristina il vincolo sui campi vuoti
+        });
+    }
 
     @FXML
     private void switchToSignup(ActionEvent event) throws IOException {
@@ -68,11 +90,6 @@ public class LoginViewController implements Initializable {
     @FXML
     private void exitApp(ActionEvent event) {
         Platform.exit();
-    }
-
-    @FXML
-    private void onConfirm(ActionEvent event) throws IOException {
-        loginManager.validateInfo(txfUsername.getText(), txfPswd.getText());
     }
     
     public void setLoginManager(LoginManager loginManager) {

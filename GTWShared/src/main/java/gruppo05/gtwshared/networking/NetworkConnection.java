@@ -348,8 +348,23 @@ public abstract class NetworkConnection {
          */
         void send(Serializable data) throws IOException {
             if (oos == null) throw new IOException("Stream di output non ancora inizializzato.");
-            oos.writeObject(data);
-            oos.flush();  // flush esplicito: evita che messaggi brevi restino nel buffer
+            
+            try {
+                oos.writeObject(data);
+                oos.flush();  // flush esplicito: evita che messaggi brevi restino nel buffer
+            } catch (IOException e) {
+                System.err.println("[NetworkConnection] Errore I/O sul canale " + channelIndex 
+                        + ". Impossibile inviare dati, chiusura forzata del socket in corso.");
+                
+                // Forza la chiusura del socket per innescare la pulizia di sistema (onDisconnect)
+                try {
+                    closeSocket();
+                } catch (IOException ignored) {
+                    // Ignora le eccezioni durante la chiusura
+                }
+                // Lancia un'eccezione 
+                throw new IOException("Socket interrotto.", e);
+            }
         }
 
         /**

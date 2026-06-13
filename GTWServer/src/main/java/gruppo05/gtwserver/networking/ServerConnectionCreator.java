@@ -177,19 +177,31 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     // Recupero utente dal database e verifica credenziali
                     AdminDAO adminDao = new ConcreteAdminDAO();
                     Optional<Admin> admin = adminDao.selectById(Optional.of(dto.getUsername())); 
-                    
+
                     // Verifica dell'esistenza dell'utente e match esatto della password
                     if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
-                        
-                        // Controllo preventivo delle sessioni duplicate PRIMA di registrare l'utente
-                        if (loggedUsers.containsValue(dto.getUsername())) {
-                            // L'utente è già autenticato su un altro canale: accesso simultaneo bloccato
-                            System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
-                            connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
-                            break; // Interrompiamo l'esecuzione del case
+
+                        // Verifica stato dell'utente nei client attivi
+                        boolean userAlreadyLogged = loggedUsers.containsValue(dto.getUsername());
+                        boolean sameChannel = dto.getUsername().equals(loggedUsers.get(channelIndex));
+
+                        if (userAlreadyLogged) {
+                            if (sameChannel) {
+                                // È lo stesso client che ha inviato la richiesta due volte di fila (es. doppio clic).
+                                // Ignoriamo in silenzio per non sporcare la CLI del server.
+                                break; 
+                            } else {
+                                // VERO tentativo di accesso simultaneo da un SECONDO client!
+                                System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
+                                connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
+                                break; // Interrompe l'esecuzione del case
+                            }
                         }
 
-                        // Nessuna sessione attiva => Registra l'utente e notifica il successo
+                        // PRIMO accesso valido
+                        System.out.println("[Server] Accesso corretto e primo login per l'utente: " + dto.getUsername());
+
+                        // Registra l'utente e notifica il successo
                         loggedUsers.put(channelIndex, dto.getUsername());
                         connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
                     } 

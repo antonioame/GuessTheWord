@@ -36,10 +36,12 @@ public class App extends Application {
         Parent root = loader.load();
         LoginViewController ctrl = (LoginViewController) loader.getController();
         
-        ClientLoginManager loginMgr  = new ClientLoginManager(connection);
-        ClientSignupManager signupMgr = new ClientSignupManager(connection);
+        ClientLoginManager loginMgr  = new ClientLoginManager(connection, () -> ctrl.resetLoginButton());
+        ClientSignupManager signupMgr = new ClientSignupManager(connection, null);
         ctrl.setLoginManager(loginMgr);
         ctrl.setSignupManager(signupMgr);
+        
+        creator.setLoginViewController(ctrl);
         
         // Registra il callback di disconnessione improvvisa del server:
             // 1) Mostra un Alert (già gestito in ClientConnectionCreator)
@@ -47,8 +49,12 @@ public class App extends Application {
         creator.setOnServerDisconnect(() -> {
             try {
                 LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
-                loginCtrl.setLoginManager(new ClientLoginManager(connection));
-                loginCtrl.setSignupManager(new ClientSignupManager(connection));
+                
+                loginCtrl.setLoginManager(new ClientLoginManager(connection, () -> loginCtrl.resetLoginButton()));
+                loginCtrl.setSignupManager(new ClientSignupManager(connection, null));
+                
+                creator.setLoginViewController(loginCtrl);
+                
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -62,7 +68,7 @@ public class App extends Application {
                     connection.disconnect();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Disconnessione client conclusa.");
             } finally {
                 Platform.exit();
                 System.exit(0);

@@ -5,6 +5,8 @@ import gruppo05.gtwshared.controller.SignupManager;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.SecurityUtils;
 import java.io.IOException;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 /**
  *
@@ -13,9 +15,12 @@ import java.io.IOException;
 public class ClientSignupManager implements SignupManager {
     
     private final ClientConnection conn;
+    // Anche qui è utile una callback per gestire il blocco/sblocco del tasto "Registrati"
+    private final Runnable onSendErrorCallback;
 
-    public ClientSignupManager(ClientConnection conn) {
+    public ClientSignupManager(ClientConnection conn, Runnable onSendErrorCallback) {
         this.conn = conn;
+        this.onSendErrorCallback = onSendErrorCallback;
     }
     
     @Override
@@ -26,9 +31,15 @@ public class ClientSignupManager implements SignupManager {
         try {
             conn.send(lr);
         } catch (IOException ex) {
-            // Debug: da cambiare
-            ex.printStackTrace();             
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile contattare il server per la registrazione.");
+                alert.setHeaderText("Errore di rete");
+                alert.showAndWait();
+                
+                if (onSendErrorCallback != null) {
+                    onSendErrorCallback.run();
+                }
+            });             
         }
     }
-    
 }

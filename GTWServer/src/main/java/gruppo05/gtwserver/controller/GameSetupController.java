@@ -8,6 +8,7 @@ import gruppo05.gtwserver.db.ConcreteSourceDAO;
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import gruppo05.gtwshared.utility.Difficulty;
+import java.util.function.Consumer;
 
 /**
  * @class GameSetupController
@@ -64,9 +65,9 @@ public class GameSetupController {
      * @param p1Difficulty Difficoltà proposta dal Giocatore 1.
      * @param p2Difficulty Difficoltà proposta dal Giocatore 2.
      */
-    public void generateMatchData(Difficulty p1Difficulty, Difficulty p2Difficulty) {
+    public void generateMatchData(Difficulty p1Difficulty, Difficulty p2Difficulty, Consumer<String> onError) {
         Random random = new Random();
-        
+
         // 1. Scelta della difficoltà: con probabilità del 50% vince la scelta del P1, altrimenti quella del P2
         this.matchDifficulty = random.nextBoolean() ? p1Difficulty : p2Difficulty;
 
@@ -87,45 +88,58 @@ public class GameSetupController {
         try {
             // 3. Inizializzazione dell'accesso al Database
             SourceDAO sourceDao = new ConcreteSourceDAO();
-            
+
             // 4. Recupero di tutte le sorgenti di testo disponibili
             List<Source> sources = sourceDao.selectAll();
-            
-            // Procediamo solo se il database ha restituito dei risultati
-            if (!sources.isEmpty()) {
-                
+
+            // Procede solo se il database ha restituito dei risultati
+            if (sources != null && !sources.isEmpty()) {
+
                 // 5. Estrazione di un elemento casuale dalla lista delle sorgenti
                 Source selectedSource = sources.get(random.nextInt(sources.size()));
-                
-                // Memorizziamo l'ID della sorgente selezionata per statistiche/controlli futuri
+
+                // Memorizza l'ID della sorgente selezionata per statistiche/controlli futuri
                 this.sourceId = selectedSource.getId(); 
-                
+
                 // 6. Generazione della domanda tramite il manager
-                // Si richiama il preset passando il nome della difficoltà (es. "EASY", "NORMAL") come stringa
                 System.out.println("Inizio generazione domanda");
                 this.sourceManager.generateQuestion(
                         selectedSource, 
                         this.matchDifficulty.name(), 
-                        
+
                         // Callback di Successo: viene eseguita se il testo è generato correttamente
                         (question) -> {
                             System.out.println("Domanda generata con successo");
                             this.cipheredText = question.getText(); // Salva il testo cifrato
-                            this.targetWord = question.getAnswer(); // Salv la asoluzione reale
+                            this.targetWord = question.getAnswer(); // Salva la soluzione reale
                             System.out.println(cipheredText);
                             System.out.println(targetWord);
                         },
-                        
+
                         // Callback di Errore: viene eseguita in caso di problemi interni al manager
                         (exception) -> {
                             System.err.println("Errore nella generazione del testo: " + exception.getClass());
                             exception.printStackTrace();
+
+                            // Attiva la callback di errore passata dal chiamante
+                            if (onError != null) {
+                                onError.accept("Errore nella generazione della domanda di gioco.");
+                            }
                         }
                 );
+            } else {
+                // Gestione del caso in cui non ci siano fonti nel database
+                System.err.println("Nessuna sorgente trovata nel database.");
+                if (onError != null) {
+                    onError.accept("Errore: Nessuna fonte disponibile nel database per avviare la partita.");
+                }
             }
         } catch (Exception e) {
-            // Cattura eventuali eccezioni relative all'accesso al database
+            // Cattura eventuali eccezioni relative all'accesso al database o errori a runtime
             System.err.println("Errore critico: " + e.getMessage());
+            if (onError != null) {
+                onError.accept("Errore critico durante la preparazione della partita.");
+            }
         }
     }
 

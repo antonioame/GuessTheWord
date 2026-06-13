@@ -284,11 +284,34 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     break;
                 
                 case TEXT_MESSAGE:
-                    // Gestione notifiche testuali dal server
-                    Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Server: " + dto.getMessage());
-                    infoAlert.setHeaderText("Notifica");
-                    infoAlert.showAndWait(); 
-                    System.out.println("Notifica dal Server: " + dto.getMessage());
+                    String message = dto.getMessage();
+                    
+                    // Controllo se è un messaggio di errore critico che richiede il reindirizzamento
+                    if (message != null && message.startsWith("ERROR_REDIRECT:")) {
+                        String cleanMessage = message.replace("ERROR_REDIRECT:", "");
+                        
+                        // Mostra l'alert di errore
+                        Alert errorAlert = new Alert(Alert.AlertType.ERROR, cleanMessage);
+                        errorAlert.setHeaderText("Errore di avvio partita");
+                        errorAlert.showAndWait();
+                        
+                        System.err.println("Matchmaking annullato: " + cleanMessage);
+                        
+                        // Forza il ritorno alla Lobby per sbloccare l'utente
+                        try {
+                            LobbyViewController lobbyCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/LobbyView.fxml");
+                            lobbyCtrl.setConnection(connection);
+                            lobbyCtrl.setUsername(connection.getUsername());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        // Gestione delle normali notifiche testuali dal server
+                        Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Server: " + message);
+                        infoAlert.setHeaderText("Notifica");
+                        infoAlert.showAndWait(); 
+                        System.out.println("Notifica dal Server: " + message);
+                    }
                     break;
                 
                 default:

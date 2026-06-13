@@ -20,6 +20,7 @@ import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
 import gruppo05.gtwserver.controller.GameSetupController;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
+import javafx.event.EventType;
 
 /**
  * @class ServerConnectionCreator
@@ -225,6 +226,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
 
                 case PLAY_REQUEST:
                     // Gestione matchmaking: se non c'è nessuno in attesa, accoda il giocatore
+                    // Estraggo la difficoltà
                     Difficulty requestedDifficulty = dto.getDifficulty() != null ? dto.getDifficulty() : Difficulty.NORMAL;
 
                     synchronized (matchLock) {
@@ -234,7 +236,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             waitingDifficulty = requestedDifficulty;
                             connection.sendTo(channelIndex, new NetworkMessage.PlayResponse(CallbackDTO.Status.WAITING));
                             System.out.println("Canale " + channelIndex + " in attesa di un avversario.");
-                            
+
                         } else if (!waitingChannel.equals(channelIndex)) {
                             // Se un altro utente è in coda, avvia la sfida
                             int p1Channel = waitingChannel;
@@ -247,19 +249,45 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             // Notifico a entrambi che la ricerca ha avuto successo (MATCH_FOUND)
                             connection.sendTo(p1Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
                             connection.sendTo(p2Channel, new NetworkMessage.PlayResponse(CallbackDTO.Status.MATCH_FOUND));
-                            
+
                             // Genera i dati della partita tramite controller dedicato
                             // Passaggio del sourceManager globale al GameSetupController
                             GameSetupController setupController = new GameSetupController(this.sourceManager);
-                            setupController.generateMatchData(waitingDifficulty, requestedDifficulty);
 
+                            // Flag per tracciare se si verifica un errore durante la generazione
+                            boolean[] setupFailed = {false};
+
+                            // Passaggio della callback di errore al GameSetupController
+                            setupController.generateMatchData(waitingDifficulty, requestedDifficulty, (errorMessage) -> {
+                                setupFailed[0] = true; // Segnala che la generazione è fallita
+                                try {
+                                    String errorPayload = "ERROR_REDIRECT:" + errorMessage;
+                                    NetworkMessage errorMsg = new NetworkMessage.TextMessage(errorPayload);
+
+                                    // Invia il messaggio di errore per far tornare i client alla lobby
+                                    connection.sendTo(p1Channel, errorMsg);
+                                    connection.sendTo(p2Channel, errorMsg);
+                                } catch (IOException e) {
+                                    System.err.println("Errore nell'invio del messaggio di fallimento ai client: " + e.getMessage());
+                                }
+                            });
+
+                            // Se c'è stato un errore, interrompe l'avvio della partita e resettiamo la coda
+                            if (setupFailed[0]) {
+                                System.err.println("Generazione partita fallita. Matchmaking annullato.");
+                                waitingChannel = null;
+                                waitingDifficulty = null;
+                                break; // Esce dallo switch, fermando l'avvio del match
+                            }
+
+                            // Nessun errore: crea la sfida e prosegue
                             Challenge newChallenge = new Challenge(
                                 new java.sql.Date(System.currentTimeMillis()), 
                                 setupController.getMatchDifficulty(), 
                                 setupController.getTargetWord(), 
                                 setupController.getSourceId()
                             );
-                            
+
                             // Registra la sfida per entrambi i giocatori
                             activeGames.put(p1Channel, newChallenge);
                             activeGames.put(p2Channel, newChallenge);

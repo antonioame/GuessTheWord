@@ -90,8 +90,7 @@ public abstract class NetworkConnection {
     /**
      * @brief Avvia asincronamente la fase di setup di tutti i canali richiesti.
      * @details Crea un numero di thread di setup pari a {@link #expectedChannels()}. 
-     * Ogni thread tenterà di ottenere una socket tramite {@link #createSocket()}, invocherà 
-     * il metodo {@link #onChannelReady} e infine avvierà il thread di lettura continuo.
+     * Ogni thread tenterà di ottenere una socket in loop finché non ci riesce.
      */
     public void connect() {
 
@@ -105,24 +104,34 @@ public abstract class NetworkConnection {
 
             // Creazione di un thread separato per gestire l'apertura del canale
             Thread setupThread = new Thread(() -> {
-                try {
+                boolean connected = false;
+                boolean hasFailed = false; // Flag per tracciare se c'è stata una disconnessione
+                
+                while (!connected) {
+                    try {
                     // Creazione della socket delegata alla sottoclasse
-                    Socket socket = createSocket();
+                        Socket socket = createSocket();
+                        connected = true; 
+                        
+                        // Se aveva fallito in precedenza, significa che ora si è RICONNESSO
+                        if (hasFailed) {
+                            onReconnected(channelIndex); 
+                        }
 
-                    // Operazione aggiuntiva opzionale post-connessione
-                    onChannelReady(socket, channelIndex);
+                        onChannelReady(socket, channelIndex);
+                        startChannel(socket, channelIndex);
 
-                    // Avvio effettivo del thread di ascolto
-                    startChannel(socket, channelIndex);
+                    } catch (IOException ex) {
+                        hasFailed = true; // Imposta il flag a true al primo fallimento
+                        System.err.println("[NetworkConnection] Canale offline. Ritento in 5s...");
 
-                } catch (IOException ex) {
-                    // Messaggio di errore in caso di problemi durante la connessione
-                    System.err.println("[NetworkConnection] Errore apertura canale "
-                            + channelIndex + ": " + ex.getMessage());
-
-                    // Se è definito un gestore di disconnessione, viene notificato
-                    if (onDisconnect != null)
-                        onDisconnect.accept(channelIndex);
+                        try {
+                            Thread.sleep(5000); 
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            break;
+                        }
+                    }
                 }
             }, "SetupChannel-" + channelIndex);
 
@@ -132,6 +141,14 @@ public abstract class NetworkConnection {
             // Avvio del thread di setup
             setupThread.start();
         }
+    }
+    
+    /**
+     * @brief Metodo invocato SOLO se la connessione viene ristabilita dopo almeno un tentativo fallito.
+     * @param[in] channelIndex L'identificativo numerico del canale.
+     */
+    protected void onReconnected(int channelIndex) {
+        // Implementazione di default vuota
     }
 
     // METODI DI UTILITA' E GESTIONE INTERNA

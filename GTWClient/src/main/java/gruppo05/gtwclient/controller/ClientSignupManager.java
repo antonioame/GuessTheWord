@@ -28,13 +28,26 @@ public class ClientSignupManager implements SignupManager {
 
         try {
             conn.send(lr);
+            
+        } catch (IllegalArgumentException ex) {
+            // IL SERVER E' OFFLINE: Nessun canale attivo
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Attendi che la connessione venga stabilita in background prima di registrarti.");
+                alert.setHeaderText("Server non raggiungibile");
+                alert.show();
+                
+                if (SignupViewController.instance != null) {
+                    SignupViewController.instance.resetSignupButton();
+                }
+            });
+            
         } catch (IOException ex) {
+            // ERRORE DI RETE IMPREVISTO DURANTE L'INVIO
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile contattare il server per la registrazione.");
                 alert.setHeaderText("Errore di rete");
                 alert.showAndWait();
                 
-                // Sblocca la UI usando l'istanza statica
                 if (SignupViewController.instance != null) {
                     SignupViewController.instance.resetSignupButton();
                 }

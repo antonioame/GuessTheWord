@@ -175,51 +175,68 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
             switch (dto.getEventType()) {
                 
                 case LOGIN_REQUEST:
-                    // Recupero utente dal database e verifica credenziali
-                    AdminDAO adminDao = new ConcreteAdminDAO();
-                    Optional<Admin> admin = adminDao.selectById(Optional.of(dto.getUsername())); 
+                    // 1. Recupero utente dal database tramite ConcretePlayerDAO
+                    PlayerDAO playerDao = new ConcretePlayerDAO();
+                    Optional<Player> playerOpt = playerDao.selectById(Optional.of(dto.getUsername())); 
 
-                    // Verifica dell'esistenza dell'utente e match esatto della password
-                    if (admin.isPresent() && admin.get().getPassword().equals(dto.getPassword())) {
+                    // CASO A: player presente nel database
+                    if (playerOpt.isPresent()) {
+                        Player player = playerOpt.get();
 
-                        // Verifica stato dell'utente nei client attivi
-                        boolean userAlreadyLogged = loggedUsers.containsValue(dto.getUsername());
-                        boolean sameChannel = dto.getUsername().equals(loggedUsers.get(channelIndex));
+                        // CASO B: password è corretta
+                        if (player.getPassword().equals(dto.getPassword())) {
 
-                        if (userAlreadyLogged) {
-                            if (sameChannel) {
-                                // È lo stesso client che ha inviato la richiesta due volte di fila (es. doppio clic).
-                                // Ignoriamo in silenzio per non sporcare la CLI del server.
-                                break; 
-                            } else {
-                                // VERO tentativo di accesso simultaneo da un SECONDO client
-                                System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
-                                connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
-                                break; // Interrompe l'esecuzione del case
+                            // Verifica stato dell'utente nei client attivi
+                            boolean userAlreadyLogged = loggedUsers.containsValue(dto.getUsername());
+                            boolean sameChannel = dto.getUsername().equals(loggedUsers.get(channelIndex));
+
+                            // CASO C: L'utente è già loggato
+                            if (userAlreadyLogged) {
+                                if (sameChannel) {
+                                    // È lo stesso client che ha inviato la richiesta due volte di fila (es. doppio clic).
+                                    // Ignoriamo in silenzio per non sporcare la CLI del server.
+                                    break; 
+                                } else {
+                                    // VERO tentativo di accesso simultaneo da un SECONDO client
+                                    System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
+                                    connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
+                                    break; // Interrompe l'esecuzione del case
+                                }
                             }
+
+                            // CASO D: Successo. Player presente, password corretta, non loggato altrove
+                            System.out.println("[Server] Accesso corretto per l'utente: " + dto.getUsername());
+
+                            // Registra l'utente e notifica il successo
+                            loggedUsers.put(channelIndex, dto.getUsername());
+                            connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
+
+                        } else {
+                            // L'utente esiste, ma la password è SBAGLIATA
+                            connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Password errata."));
                         }
 
-                        // PRIMO accesso valido
-                        System.out.println("[Server] Accesso corretto e primo login per l'utente: " + dto.getUsername());
-
-                        // Registra l'utente e notifica il successo
-                        loggedUsers.put(channelIndex, dto.getUsername());
-                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginSuccess(false));
-                    } 
-                    else {
-                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Credenziali errate"));
+                    } else {
+                        // L'utente NON ESISTE nel database
+                        connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Utente non trovato nel database."));
                     }
+
                     break;
 
                 case REGISTER_REQUEST:
-                    // Creazione nuovo utente se l'username non esiste già
-                    AdminDAO signupDao = new ConcreteAdminDAO();
-                    
+                    // Creazione nuovo utente se l'username non esiste già nella tabella Player
+                    PlayerDAO signupDao = new ConcretePlayerDAO();
+
                     // Controllo preventivo per evitare violazioni di chiave primaria sul Database
                     if (signupDao.selectById(Optional.of(dto.getUsername())).isPresent()) {
+
+                        // L'utente esiste già
                         connection.sendTo(channelIndex, NetworkMessage.RegisterResponse.registerFailed("Username già in uso"));
+
                     } else {
-                        signupDao.insert(new Admin(dto.getUsername(), dto.getPassword()));
+                        // L'utente non esiste: possiamo procedere con l'inserimento
+                        signupDao.insert(new Player(dto.getUsername(), dto.getPassword(), 0, 0, 0));
+
                         connection.sendTo(channelIndex, NetworkMessage.RegisterResponse.registerSuccess());
                     }
                     break;
@@ -338,8 +355,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     // Recupera e invia lo storico partite dell'utente
                     if (currentUsername == null) return; 
                     
-                    PlayerDAO playerDao = new ConcretePlayerDAO();
-                    Optional<Player> p = playerDao.selectById(Optional.of(currentUsername));
+                    PlayerDAO playerD = new ConcretePlayerDAO();
+                    Optional<Player> p = playerD.selectById(Optional.of(currentUsername));
                     
                     if (p.isPresent()) {
                         Player player = p.get();

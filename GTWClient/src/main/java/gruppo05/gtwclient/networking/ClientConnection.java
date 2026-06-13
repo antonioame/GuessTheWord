@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import gruppo05.gtwshared.networking.NetworkConnection;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 /**
  * @class ClientConnection
@@ -113,6 +115,18 @@ public class ClientConnection extends NetworkConnection {
      */
     public void disconnect() throws IOException {
         disconnectChannel(0);
+    }
+    
+    @Override
+    protected void onReconnected(int channelIndex) {
+        // Sposta l'esecuzione sul thread della UI di JavaFX
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Connessione Ristabilita");
+            alert.setHeaderText("Server Trovato!");
+            alert.setContentText("Il canale " + channelIndex + " si è connesso con successo al server.");
+            alert.show();
+        });
     }
 
     private String username;

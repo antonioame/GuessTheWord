@@ -56,8 +56,8 @@ public class LoginViewController implements Initializable {
     @FXML
     private void onConfirm(ActionEvent event) throws IOException {
         isProcessing.set(true); // Congela l'interfaccia istantaneamente
-        loginManager.validateInfo(txfUsername.getText(), txfPswd.getText());
-    }
+            loginManager.validateInfo(txfUsername.getText(), txfPswd.getText());
+        }
     
     public void resetLoginButton() {
         Platform.runLater(() -> {

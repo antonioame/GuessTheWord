@@ -29,13 +29,27 @@ public class ClientLoginManager implements LoginManager {
 
         try {
             conn.send(lr);
-        } catch (IOException ex) {
+            
+        } catch (IllegalArgumentException ex) {
+            // IL SERVER E' OFFLINE: Nessun canale attivo
             Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile inviare la richiesta di login. Connessione al server non disponibile.");
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Attendi che la connessione venga stabilita in background prima di effettuare il login.");
+                alert.setHeaderText("Server non raggiungibile");
+                alert.show(); // Usiamo show() per non bloccare il thread
+                
+                // Sblocca la UI usando l'istanza statica
+                if (LoginViewController.instance != null) {
+                    LoginViewController.instance.resetLoginButton();
+                }
+            });
+            
+        } catch (IOException ex) {
+            // ERRORE DI RETE IMPREVISTO DURANTE L'INVIO
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Impossibile inviare la richiesta di login. Connessione interrotta.");
                 alert.setHeaderText("Errore di rete");
                 alert.showAndWait();
                 
-                // Sblocca la UI usando l'istanza statica
                 if (LoginViewController.instance != null) {
                     LoginViewController.instance.resetLoginButton();
                 }

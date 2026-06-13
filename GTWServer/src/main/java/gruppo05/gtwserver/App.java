@@ -5,6 +5,7 @@ import gruppo05.gtwserver.controller.ServerSignupManager;
 import gruppo05.gtwserver.db.DatabaseManager;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;
+import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.db.ConcreteSourceDAO;
 import gruppo05.gtwserver.db.ConcreteWordDAO;
 import gruppo05.gtwserver.controller.AdminDashboardViewController;
@@ -23,6 +24,11 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 
 /**
  * JavaFX App
@@ -124,6 +130,63 @@ public class App extends Application {
             }
         });
         ctrl.setSignupManager(signupMgr);
+        
+        // ---------------------------------------------------------
+        // 3. AUTO-AGGIUNTA SORGENTI DI DEFAULT (NON BLOCCANTE E SICURA)
+        // ---------------------------------------------------------
+        Thread autoAddSourcesThread = new Thread(() -> {
+            String[] defaultFiles = {"example_text_1.txt", "example_text_2.txt"};
+            try {
+                List<Source> existingSources = sourceDao.selectAll();
+                
+                for (String fileName : defaultFiles) {
+                    try {
+                        URL resourceUrl = App.class.getResource("/" + fileName);
+                        Path path = null;
+                        
+                        if (resourceUrl != null) {
+                            path = Paths.get(resourceUrl.toURI());
+                        } else {
+                            // Meccanismo di Fallback basato sul Path
+                            Path fallback = Paths.get("src/main/resources", fileName);
+                            if (Files.exists(fallback)) {
+                                path = fallback.toAbsolutePath();
+                            } else {
+                                fallback = Paths.get("GTWServer/src/main/resources", fileName);
+                                if (Files.exists(fallback)) {
+                                    path = fallback.toAbsolutePath();
+                                }
+                            }
+                        }
+                        
+                        if (path != null && Files.exists(path)) {
+                            final Path finalPath = path.toAbsolutePath();
+                            boolean alreadyExists = existingSources.stream()
+                                    .anyMatch(s -> s.getPath() != null && s.getPath().toAbsolutePath().equals(finalPath));
+                                    
+                            if (!alreadyExists) {
+                                Source source = new Source(finalPath);
+                                globalSourceManager.addSource(source, () -> {
+                                    System.out.println("[INFO] Sorgente di default aggiunta con successo: " + fileName);
+                                }, (e) -> {
+                                    System.err.println("[WARN] Errore nell'aggiunta della sorgente di default " + fileName + ": " + e.getMessage());
+                                });
+                            } else {
+                                System.out.println("[INFO] Sorgente di default già presente nel sistema: " + fileName);
+                            }
+                        } else {
+                            System.out.println("[WARN] File di default non trovato (ignorato in modo sicuro): " + fileName);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("[WARN] Impossibile caricare il file di default " + fileName + " in modo sicuro: " + e.getMessage());
+                    }
+                }
+            } catch (Exception mainException) {
+                System.err.println("[WARN] Errore generale nell'auto-aggiunta delle sorgenti: " + mainException.getMessage());
+            }
+        });
+        autoAddSourcesThread.setDaemon(true);
+        autoAddSourcesThread.start();
         
         stage.setScene(new Scene(root));
         stage.setOnCloseRequest(event -> {

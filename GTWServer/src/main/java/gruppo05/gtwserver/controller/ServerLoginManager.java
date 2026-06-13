@@ -40,6 +40,7 @@ public class ServerLoginManager implements LoginManager {
         Optional<Admin> o = dao.selectById(Optional.of(username));
         
         if(!o.isPresent()) {
+            System.err.println("[Login Error] Utente non trovato: " + username);
             Alert alert = new Alert(Alert.AlertType.ERROR, "L'utente non è registrato");
             alert.showAndWait();
             return;
@@ -47,6 +48,7 @@ public class ServerLoginManager implements LoginManager {
         
         String hashedPassword = SecurityUtils.hashPassword(password);
         if(!o.get().getPassword().equals(hashedPassword)) {
+            System.err.println("[Login Error] Password errata per utente: " + username);
             Alert alert = new Alert(Alert.AlertType.ERROR, "Password non corretta");
             alert.showAndWait();
             return;

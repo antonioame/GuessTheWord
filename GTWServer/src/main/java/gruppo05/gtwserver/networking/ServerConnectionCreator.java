@@ -191,7 +191,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                                 // Ignoriamo in silenzio per non sporcare la CLI del server.
                                 break; 
                             } else {
-                                // VERO tentativo di accesso simultaneo da un SECONDO client!
+                                // VERO tentativo di accesso simultaneo da un SECONDO client
                                 System.out.println("[Server] Bloccato accesso simultaneo per l'utente: " + dto.getUsername());
                                 connection.sendTo(channelIndex, NetworkMessage.LoginResponse.loginFailed("Account già connesso da un altro dispositivo."));
                                 break; // Interrompe l'esecuzione del case

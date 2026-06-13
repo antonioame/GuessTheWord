@@ -24,6 +24,7 @@ public class ServerSignupManager implements SignupManager {
         
         // Controllo specifico per username esistente
         if(dao.selectById(Optional.of(username)).isPresent()) {
+            System.err.println("[Signup Error] Tentativo di registrazione fallito: " + username + " già esistente");
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR, "Errore: Username già in uso");
                 alert.showAndWait();
@@ -38,7 +39,7 @@ public class ServerSignupManager implements SignupManager {
         
         String hashedPassword = SecurityUtils.hashPassword(password);
         dao.insert(new Admin(username, hashedPassword));
-        
+        System.out.println("Admin aggiunto con successo!");
         Platform.runLater(() -> {
             Alert alert = new Alert(Alert.AlertType.INFORMATION, "Il nuovo admin è stato registrato correttamente");
             alert.showAndWait();

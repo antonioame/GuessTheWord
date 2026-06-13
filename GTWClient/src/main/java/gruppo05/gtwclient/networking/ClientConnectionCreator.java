@@ -157,6 +157,8 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         // SBLOCCO IL PULSANTE DI LOGIN!
                         if (LoginViewController.instance != null) {
                             LoginViewController.instance.resetLoginButton();
+                            
+                        System.out.println("Login fallito: " + errorMsg);
                         }
                     }
                     break;
@@ -184,6 +186,8 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         // SBLOCCO IL PULSANTE DI REGISTRAZIONE!
                         if (SignupViewController.instance != null) {
                             SignupViewController.instance.resetSignupButton();
+                            
+                        System.out.println("Registrazione fallita: " + errorMsg);
                         }
                     }
                     break;

@@ -2,6 +2,7 @@ package gruppo05.gtwclient.controller;
 
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwshared.controller.LoginManager;
+import gruppo05.gtwshared.controller.LoginViewController;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.SecurityUtils;
 import java.io.IOException;
@@ -15,12 +16,9 @@ import javafx.scene.control.Alert;
 public class ClientLoginManager implements LoginManager {
 
     private final ClientConnection conn;
-    private final Runnable onSendErrorCallback; // Callback per sbloccare la UI
 
-    // Aggiorna il costruttore
-    public ClientLoginManager(ClientConnection conn, Runnable onSendErrorCallback) {
+    public ClientLoginManager(ClientConnection conn) {
         this.conn = conn;
-        this.onSendErrorCallback = onSendErrorCallback;
     }
     
     @Override
@@ -37,9 +35,9 @@ public class ClientLoginManager implements LoginManager {
                 alert.setHeaderText("Errore di rete");
                 alert.showAndWait();
                 
-                // Se l'invio fallisce, sblocchiamo subito il pulsante!
-                if (onSendErrorCallback != null) {
-                    onSendErrorCallback.run();
+                // Sblocca la UI usando l'istanza statica
+                if (LoginViewController.instance != null) {
+                    LoginViewController.instance.resetLoginButton();
                 }
             });
         }

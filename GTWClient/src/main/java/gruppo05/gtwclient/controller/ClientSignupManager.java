@@ -2,6 +2,7 @@ package gruppo05.gtwclient.controller;
 
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwshared.controller.SignupManager;
+import gruppo05.gtwshared.controller.SignupViewController;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.SecurityUtils;
 import java.io.IOException;
@@ -15,12 +16,9 @@ import javafx.scene.control.Alert;
 public class ClientSignupManager implements SignupManager {
     
     private final ClientConnection conn;
-    // Anche qui è utile una callback per gestire il blocco/sblocco del tasto "Registrati"
-    private final Runnable onSendErrorCallback;
 
-    public ClientSignupManager(ClientConnection conn, Runnable onSendErrorCallback) {
+    public ClientSignupManager(ClientConnection conn) {
         this.conn = conn;
-        this.onSendErrorCallback = onSendErrorCallback;
     }
     
     @Override
@@ -36,8 +34,9 @@ public class ClientSignupManager implements SignupManager {
                 alert.setHeaderText("Errore di rete");
                 alert.showAndWait();
                 
-                if (onSendErrorCallback != null) {
-                    onSendErrorCallback.run();
+                // Sblocca la UI usando l'istanza statica
+                if (SignupViewController.instance != null) {
+                    SignupViewController.instance.resetSignupButton();
                 }
             });             
         }

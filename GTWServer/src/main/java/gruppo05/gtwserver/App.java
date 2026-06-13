@@ -14,6 +14,7 @@ import gruppo05.gtwserver.networking.ServerConnectionCreator;
 import gruppo05.gtwserver.config.SourceManagerInitializer; 
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import gruppo05.gtwshared.controller.LoginViewController;
+import gruppo05.gtwshared.controller.SignupViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -34,15 +35,13 @@ public class App extends Application {
     
     @Override
     public void start(Stage stage) throws IOException {     
-        // Inizializza lo stage per la navigazione delle schermate lato server
+        // Inizializzazione navigazione e database
         SceneNavigator.init(stage);
         
         // Inizializza il database SQLite (crea schema e tabelle se il file del database non esiste)
         DatabaseManager.initDB();
         
-        // ---------------------------------------------------------
-        // 1. INIZIALIZZAZIONE DEL CORE (SOURCE MANAGER)
-        // ---------------------------------------------------------
+        // Inizializzazione sorgenti e server di rete
         SourceDAO sourceDao = new ConcreteSourceDAO();
         WordDAO wordDao = new ConcreteWordDAO();
         
@@ -59,14 +58,25 @@ public class App extends Application {
         connectionCreator = new ServerConnectionCreator(globalSourceManager);
         connection = connectionCreator.createConnection();
 
-        // ---------------------------------------------------------
-        // 3. CARICAMENTO UI
-        // ---------------------------------------------------------
+        // Caricamento UI Login
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
         Parent root = loader.load();
         LoginViewController ctrl = loader.getController();
         
-        // Istanzia il gestore dell'autenticazione per l'amministratore del server
+        // --- FIX DEFINITIVO PER IL TASTO CONFERMA (LOGIN) ---
+        // Svincoliamo il bottone e forziamo lo sblocco se l'admin corregge i dati dopo un errore
+        ctrl.getTxfPswd().textProperty().addListener((obs, oldVal, newVal) -> {
+            ctrl.getBtnConfirm().disableProperty().unbind();
+            ctrl.getBtnConfirm().setDisable(false);
+        });
+        
+        ctrl.getTxfUsername().textProperty().addListener((obs, oldVal, newVal) -> {
+            ctrl.getBtnConfirm().disableProperty().unbind();
+            ctrl.getBtnConfirm().setDisable(false);
+        });
+        // ----------------------------------------------------
+        
+        // Gestione Login Admin
         ServerLoginManager loginMgr = new ServerLoginManager();
         loginMgr.setOnSuccessCallback(() -> {
             try {
@@ -90,12 +100,20 @@ public class App extends Application {
         
         ctrl.setLoginManager(loginMgr);
         
+        // Gestione Signup Admin
         ServerSignupManager signupMgr = new ServerSignupManager();
         signupMgr.setOnSuccessCallback(() -> {
             FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
             try {
                 Parent loginRoot = loginLoader.load();
                 LoginViewController loginCtrl = loginLoader.getController();
+                
+                // --- APPLICAZIONE STESSO FIX ANCHE ALLA LOGIN DOPO SIGNUP ---
+                loginCtrl.getTxfPswd().textProperty().addListener((obs, oldVal, newVal) -> {
+                    loginCtrl.getBtnConfirm().disableProperty().unbind();
+                    loginCtrl.getBtnConfirm().setDisable(false);
+                });
+                
                 loginCtrl.setLoginManager(loginMgr);
                 loginCtrl.setSignupManager(signupMgr);   
                 

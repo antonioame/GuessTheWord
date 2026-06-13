@@ -17,6 +17,7 @@ import gruppo05.gtwclient.controller.HistoryViewController;
 import gruppo05.gtwclient.controller.ClientLoginManager;
 import gruppo05.gtwclient.controller.ClientSignupManager;
 import gruppo05.gtwshared.controller.LoginViewController;
+import gruppo05.gtwshared.controller.SignupViewController;
 
 /**
  * @class ClientConnectionCreator
@@ -40,18 +41,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     
     /** Controller per la visualizzazione dei risultati finali. */
     private ResultViewController resultViewController;
-
-    /** Controller per la gestione della vista di Login. */
-    private LoginViewController loginViewController;
     
-    /** Controller per la gestione della vista di Registrazione. */
-    private gruppo05.gtwshared.controller.SignupViewController signupViewController;
-
-    /**
-     * @brief Callback opzionale invocata quando il server chiude inaspettatamente la connessione.
-     * @details Viene impostata da {@link gruppo05.gtwclient.App} dopo la creazione dei manager
-     * di autenticazione, per poter mostrare un Alert e navigare alla LoginView.
-     */
     private Runnable onServerDisconnect = null;
 
     /**
@@ -78,30 +68,6 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
         this.resultViewController = resultViewController;
     }
 
-    // NUOVO: Setter per il LoginViewController
-    /**
-     * Imposta il controller della vista di login.
-     * @param loginViewController Il controller della LoginView.
-     */
-    public void setLoginViewController(LoginViewController loginViewController) {
-        this.loginViewController = loginViewController;
-    }
-    
-    /**
-     * Imposta il controller della vista di registrazione.
-     * @param signupViewController Il controller della SignupView.
-     */
-    public void setSignupViewController(gruppo05.gtwshared.controller.SignupViewController signupViewController) {
-        this.signupViewController = signupViewController;
-    }
-
-    /**
-     * @brief Imposta la callback invocata in caso di chiusura improvvisa della connessione da parte del server.
-     * @details Deve essere chiamata da {@link gruppo05.gtwclient.App} subito dopo
-     * aver istanziato i manager di autenticazione, in modo che la callback abbia
-     * accesso alle istanze corrette per la navigazione alla LoginView.
-     * @param[in] callback Runnable da eseguire sul thread JavaFX alla disconnessione.
-     */
     public void setOnServerDisconnect(Runnable callback) {
         this.onServerDisconnect = callback;
     }
@@ -188,9 +154,9 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg);
                         alert.showAndWait();
                         
-                        // Sblocca l'interfaccia se il login è stato rifiutato
-                        if (loginViewController != null) {
-                            loginViewController.resetLoginButton();
+                        // SBLOCCO IL PULSANTE DI LOGIN!
+                        if (LoginViewController.instance != null) {
+                            LoginViewController.instance.resetLoginButton();
                         }
                     }
                     break;
@@ -203,22 +169,22 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         alert.showAndWait();
                         try {
                             LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
-                            // Passo la lambda che richiama resetLoginButton()
-                            loginCtrl.setLoginManager(new ClientLoginManager(connection, () -> loginCtrl.resetLoginButton()));
-
-                            // Passiamo null
-                            loginCtrl.setSignupManager(new ClientSignupManager(connection, null));
+                            loginCtrl.setLoginManager(new ClientLoginManager(connection));
+                            loginCtrl.setSignupManager(new ClientSignupManager(connection));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        // Notifica errore registrazione
-                        Alert alert = new Alert(Alert.AlertType.ERROR, "La registrazione non è andata a buon fine");
+                        String errorMsg = (dto.getMessage() != null && !dto.getMessage().isEmpty()) 
+                                ? dto.getMessage() 
+                                : "La registrazione non è andata a buon fine";
+                        Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg);
                         alert.showAndWait();
-
-                        // Sblocca l'interfaccia
-                        if (signupViewController != null) 
-                            signupViewController.resetSignupButton();
+                        
+                        // SBLOCCO IL PULSANTE DI REGISTRAZIONE!
+                        if (SignupViewController.instance != null) {
+                            SignupViewController.instance.resetSignupButton();
+                        }
                     }
                     break;
                 
@@ -304,7 +270,6 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     Alert infoAlert = new Alert(Alert.AlertType.INFORMATION, "Messaggio dal Server: " + dto.getMessage());
                     infoAlert.setHeaderText("Notifica");
                     infoAlert.showAndWait(); 
-
                     System.out.println("Notifica dal Server: " + dto.getMessage());
                     break;
                 

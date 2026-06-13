@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,50 +27,41 @@ import javafx.stage.Stage;
  */
 public class LoginViewController implements Initializable {
 
+    // Variabile statica
+    public static LoginViewController instance;
+
     @FXML private Pane outerContainer;
     @FXML private TextField txfUsername;
-    @FXML private TextField txfPswd; // o PasswordField se lo hai cambiato in FXML
+    @FXML private TextField txfPswd;
     @FXML private Hyperlink linkToLogin;
     @FXML private Button btnExit;
     @FXML private Button btnConfirm;
 
     private LoginManager loginManager;  
     private SignupManager signupManager;
+    private BooleanProperty isProcessing = new SimpleBooleanProperty(false);
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        setupButtonBinding();
+        instance = this; 
+        
+        // Binding: si blocca se i campi sono vuoti O se sta processando
+        btnConfirm.disableProperty().bind(
+            isProcessing
+            .or(txfUsername.textProperty().isEmpty())
+            .or(txfPswd.textProperty().isEmpty())
+        );
     }    
-
-    /*
-     * Metodo di supporto per incapsulare la logica di binding del pulsante,
-     * in modo da poterla riutilizzare quando serve ripristinarlo.
-     */
-    private void setupButtonBinding() {
-        btnConfirm.disableProperty().bind(Bindings.or(
-                txfUsername.textProperty().isEmpty(), txfPswd.textProperty().isEmpty()));
-    }
 
     @FXML
     private void onConfirm(ActionEvent event) throws IOException {
-        // 1. Rimuove il binding per poter modificare lo stato manualmente senza lanciare eccezioni
-        btnConfirm.disableProperty().unbind();
-        
-        // 2. Disabilita immediatamente il pulsante per prevenire il doppio clic
-        btnConfirm.setDisable(true);
-
-        // 3. Invia la richiesta al server
+        isProcessing.set(true); // Congela l'interfaccia istantaneamente
         loginManager.validateInfo(txfUsername.getText(), txfPswd.getText());
     }
-
-    /*
-     * Da invocare quando il server risponde con un LOGIN_RESPONSE fallito (es. credenziali errate).
-     * Sblocca l'interfaccia e permette un nuovo tentativo.
-     */
+    
     public void resetLoginButton() {
         Platform.runLater(() -> {
-            btnConfirm.setDisable(false);
-            setupButtonBinding(); // Ripristina il vincolo sui campi vuoti
+            isProcessing.set(false); // Sblocca l'interfaccia dopo l'errore del server
         });
     }
 
@@ -87,6 +80,18 @@ public class LoginViewController implements Initializable {
         stage.show();
     }
 
+    public javafx.scene.control.TextField getTxfPswd() { 
+        return txfPswd; 
+    }
+    
+    public javafx.scene.control.TextField getTxfUsername() { 
+        return txfUsername; 
+    }
+    
+    public javafx.scene.control.Button getBtnConfirm() { 
+        return btnConfirm; 
+    }
+    
     @FXML
     private void exitApp(ActionEvent event) {
         Platform.exit();

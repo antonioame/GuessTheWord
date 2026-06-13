@@ -162,9 +162,6 @@ public class ServerConnection extends NetworkConnection {
     protected void onChannelReady(Socket socket, int channelIndex) {
         System.out.println("[ServerConnection] Client " + channelIndex
                 + " connesso da " + socket.getInetAddress().getHostAddress());
-        if (onClientConnected != null) {
-            onClientConnected.accept(channelIndex);
-        }
     }
 
     /**

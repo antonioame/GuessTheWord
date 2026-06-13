@@ -71,4 +71,17 @@ public class WaitingViewController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     }
+
+    /**
+     * @brief Aggiorna la UI per mostrare che l'avversario è stato trovato.
+     * @details Viene chiamato da ClientConnectionCreator quando arriva MATCH_FOUND.
+     */
+    public void showMatchFound() {
+        if (lblStatus != null) {
+            lblStatus.setText("Avversario trovato! Preparazione partita...");
+        }
+        if (btnCancel != null) {
+            btnCancel.setDisable(true); // Da questo momento, impossibile annullare
+        }
+    }
 }

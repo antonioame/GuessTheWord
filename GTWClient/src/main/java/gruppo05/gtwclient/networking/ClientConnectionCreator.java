@@ -195,6 +195,14 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                 case PLAY_RESPONSE:
                     if (dto.getStatus() == CallbackDTO.Status.MATCH_FOUND) {
                         System.out.println("Avversario trovato! Preparazione partita.");
+                        try {
+                            WaitingViewController waitingCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/WaitingView.fxml");
+                            waitingCtrl.setConnection(connection);
+                            waitingCtrl.setUsername(connection.getUsername());
+                            waitingCtrl.showMatchFound();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         // Attesa in coda (UI di caricamento)
                         System.out.println("In attesa di un avversario.");
@@ -211,8 +219,14 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                 case GAME_START:
                     // Inizializzazione della partita con i dati del DTO
                     System.out.println("Inizio partita contro " + dto.getOpponentUsername());
-                    if (gameViewController != null) {
-                        gameViewController.initGame(dto);
+                    try {
+                        GameViewController gameCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwclient/controller/GameView.fxml");
+                        gameCtrl.setConnection(connection);
+                        gameCtrl.setUsername(connection.getUsername());
+                        gameCtrl.initGame(dto);
+                        this.gameViewController = gameCtrl;
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                     break;
                 

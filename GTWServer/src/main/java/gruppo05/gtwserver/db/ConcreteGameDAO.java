@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia GameDAO per la gestione della persistenza degli oggetti Game.
  * @invariant
  * La classe gestisce oggetti di tipo Game identificati da una chiave primaria composta da player (String) e challenge (int).

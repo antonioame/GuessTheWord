@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia PlayerDAO per la gestione della persistenza degli oggetti Player.
  * @invariant
  * La classe gestisce oggetti di tipo Player identificati dallo username di tipo String.

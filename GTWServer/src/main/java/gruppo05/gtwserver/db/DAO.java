@@ -3,7 +3,6 @@ package gruppo05.gtwserver.db;
 import java.util.List;
 
 /**
- * @author francesco-vecchione
  * @brief Interfaccia generica radice per il pattern Data Access Object (DAO)
  * che definisce le operazioni CRUD.
  * @param <T> Il tipo di entità del modello gestito dal DAO.

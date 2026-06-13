@@ -17,7 +17,6 @@ import javafx.scene.control.Alert;
  * Nasconde la complessità della gestione multi-canale del padre, fissando 
  * implicitamente tutte le comunicazioni sull'indice di canale 0.
  * 
- * @author chiara
  * @version 1.0
  */
 public class ClientConnection extends NetworkConnection {

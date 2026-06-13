@@ -3,7 +3,6 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta una parola (Word) registrata nel sistema con la relativa frequenza di comparsa in una specifica sorgente.
  * @invariant
  * Tutti i campi interni dell'oggetto, che costituiscono la chiave primaria

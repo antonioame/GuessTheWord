@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author francesco-vecchione
  * @brief Classe di test per la verifica del DAO concreto ConcreteSourceDAO.
  *
  * Utilizza lo stato controllato generato da DebugDB per convalidare il ciclo di vita 

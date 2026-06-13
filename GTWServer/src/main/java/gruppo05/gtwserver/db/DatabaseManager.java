@@ -8,7 +8,6 @@ import java.sql.Statement;
 
 /**
  *
- * @author francesco-vecchione
  * 
  * @brief Gestore centralizzato del database SQLite per il server.
  * @invariant

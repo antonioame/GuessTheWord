@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author francesco-vecchione
  * @brief Classe di test per la verifica del DAO concreto ConcreteAdminDAO.
  * 
  * Sfrutta il dataset controllato fornito da DebugDB per testare l'accuratezza e 

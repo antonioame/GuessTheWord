@@ -4,7 +4,6 @@ import gruppo05.gtwserver.model.Challenge;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Sottointerfaccia DAO per la gestione della persistenza delle sfide (Challenge).
  */
 public interface ChallengeDAO extends DAO<Challenge> {

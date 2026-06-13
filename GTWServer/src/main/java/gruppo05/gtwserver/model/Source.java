@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.util.Random;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta una sorgente di dati (Source) identificata da un id numerico e associata a un percorso di file.
  * @invariant
  * L'identificativo id e il percorso del file sono immutabili (final).

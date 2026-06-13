@@ -2,7 +2,6 @@ package gruppo05.gtwshared.utility;
 
 /**
  *
- * @author francesco-vecchione
  * 
  * @brief Rappresenta gli esiti possibili di una partita disputata da un giocatore.
  * @invariant

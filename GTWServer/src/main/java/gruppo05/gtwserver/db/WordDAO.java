@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Sottointerfaccia DAO per la gestione della persistenza delle parole (Word).
  */
 public interface WordDAO extends DAO<Word> {

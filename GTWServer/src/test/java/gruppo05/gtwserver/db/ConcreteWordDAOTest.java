@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author francesco-vecchione
  * @brief Classe di test per la verifica del DAO concreto ConcreteWordDAO.
  *
  * Utilizza lo stato controllato del database generato da DebugDB per convalidare 

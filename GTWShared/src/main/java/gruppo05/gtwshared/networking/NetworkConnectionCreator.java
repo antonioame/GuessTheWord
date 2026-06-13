@@ -20,7 +20,6 @@ import javafx.scene.control.Alert;
  * @details Fornisce i metodi base per leggere la configurazione da file locale e 
  * definisce l'interfaccia per la creazione di connessioni specifiche.
  * 
- * @author chiara
  * @version 1.0
  */
 public abstract class NetworkConnectionCreator {

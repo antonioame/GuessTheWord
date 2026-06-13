@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.internal.analysis;
 
-/**
- *
- * @author Hermann
- */
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.Collections;

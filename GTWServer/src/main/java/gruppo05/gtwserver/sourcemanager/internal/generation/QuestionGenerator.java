@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.internal.generation;
 
-/**
- *
- * @author Hermann
- */
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.exception.QuestionGenerationException;

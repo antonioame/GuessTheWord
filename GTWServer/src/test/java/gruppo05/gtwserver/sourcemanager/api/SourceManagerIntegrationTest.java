@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.api;
 
-/**
- *
- * @author Hermann
- */
 import gruppo05.gtwserver.db.DAO;
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.WordDAO;

@@ -50,7 +50,6 @@ import gruppo05.gtwshared.utility.Difficulty;
  * </li>
  * </ol>
  * 
- * @author chiara
  * @version 1.0
  */
 public abstract class NetworkMessage implements Serializable {

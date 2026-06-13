@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia AdminDAO per la gestione della persistenza degli oggetti Admin.
  * @invariant
  * La classe gestisce oggetti di tipo Admin identificati dallo username di tipo String.

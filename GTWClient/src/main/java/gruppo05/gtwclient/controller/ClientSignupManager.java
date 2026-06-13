@@ -9,10 +9,6 @@ import java.io.IOException;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
-/**
- *
- * @author francesco-vecchione
- */
 public class ClientSignupManager implements SignupManager {
     
     private final ClientConnection conn;

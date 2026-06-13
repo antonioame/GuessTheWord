@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * @author francesco-vecchione
  * @brief Classe di test per la verifica delle funzionalità di DatabaseManager.
  * 
  * Verifica la corretta creazione delle tabelle, delle viste, l'integrità dei vincoli 

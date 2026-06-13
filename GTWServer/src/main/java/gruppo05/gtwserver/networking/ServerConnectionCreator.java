@@ -30,7 +30,6 @@ import javafx.event.EventType;
  * messaggi in arrivo. Gestisce in modo thread-safe l'autenticazione, la coda di matchmaking, 
  * l'avvio delle partite e l'aggiornamento delle statistiche persistenti tramite DAO.
  * 
- * @author chiara
  * @version 1.0
  */
 public class ServerConnectionCreator extends NetworkConnectionCreator {

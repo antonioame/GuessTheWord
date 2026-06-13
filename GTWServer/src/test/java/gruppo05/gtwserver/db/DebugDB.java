@@ -10,7 +10,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 
 /**
- * @author francesco-vecchione
  * @brief Classe di utility per il testing e il debug del Database.
  * 
  * Consente il popolamento diretto delle tabelle del database tramite query SQL batch,

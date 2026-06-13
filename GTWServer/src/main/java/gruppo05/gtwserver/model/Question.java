@@ -1,9 +1,5 @@
 package gruppo05.gtwserver.model;
 
-/**
- *
- * @author Hermann
- */
 import java.util.Objects;
 
 /**

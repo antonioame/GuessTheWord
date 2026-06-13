@@ -7,7 +7,6 @@ package gruppo05.gtwserver.sourcemanager.api.config;
 
 /**
  *
- * @author Hermann
  */
 
 /**

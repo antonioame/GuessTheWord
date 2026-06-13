@@ -52,12 +52,27 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
      */
     public BasicSourceManager(SourceManagerConfig config) {
         this.ioManager = new IOManager(config.getSourceDao(), config.getWordDao());
-        this.sourceAnalyzer = new SourceAnalyzer(config.getStopWords());
+        
+        // 2. Logica dei "Sensible Defaults" per le StopWords
+        java.util.Set<String> finalStopWords = config.getStopWords();
+        
+        // Se la configurazione non ha stopwords (null), tentiamo di caricare quelle di default
+        if (finalStopWords == null || finalStopWords.isEmpty()) {
+            try {
+                System.out.println("[BasicSourceManager] Nessuna stopword custom fornita. Caricamento default in corso...");
+                finalStopWords = ioManager.readDefaultStopWords();
+            } catch (Exception e) {
+                System.err.println("[BasicSourceManager] ERRORE: Impossibile caricare le stopwords di default. Verrà usato un set vuoto.");
+                finalStopWords = new java.util.HashSet<>();
+            }
+        }
+        
+        this.sourceAnalyzer = new SourceAnalyzer(finalStopWords);
         
         WordExtractor extractor = new WordExtractor(
             config.getSimilarityFunction(), 
             config.getFallbackWordCriterion(), 
-            config.getStopWords(), 
+            finalStopWords, 
             new Random()
         );
         this.questionGenerator = new QuestionGenerator(extractor, new Random());

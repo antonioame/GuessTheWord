@@ -118,7 +118,8 @@ public class GameSetupController {
                         
                         // Callback di Errore: viene eseguita in caso di problemi interni al manager
                         (exception) -> {
-                            System.err.println("Errore nella generazione del testo: " + exception.getMessage());
+                            System.err.println("Errore nella generazione del testo: " + exception.getClass());
+                            exception.printStackTrace();
                         }
                 );
             }

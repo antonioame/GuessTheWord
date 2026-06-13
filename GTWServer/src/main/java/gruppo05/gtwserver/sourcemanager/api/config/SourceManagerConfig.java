@@ -57,7 +57,7 @@ public class SourceManagerConfig {
         this.similarityFunction = builder.similarityFunction;
         this.fallbackWordCriterion = builder.fallbackWordCriterion;
         this.presets = Collections.unmodifiableMap(new HashMap<>(builder.presets));
-        this.stopWords = Collections.unmodifiableSet(new HashSet<>(builder.stopWords));
+        this.stopWords = builder.stopWords == null ? null : Collections.unmodifiableSet(new HashSet<>(builder.stopWords));
     }
     /**
      * @brief Recupera il DAO relativo alle sorgenti di dati.
@@ -130,7 +130,7 @@ public class SourceManagerConfig {
         /**
          * @brief Insieme interno cumulativo per memorizzare le parole da escludere.
          */
-        private Set<String> stopWords = new HashSet<>();
+        private Set<String> stopWords = null;
         /**
          * @brief Costruttore del Builder che accetta e valida tutti i parametri obbligatori del sistema.
          * @param[in] sourceDao      Il data access object per le sorgenti.

@@ -158,9 +158,14 @@ public class QuestionGenerator {
 
         // Cifratura preventiva della singola parola chiave
         String encryptedWord = shiftString(word, shiftingOffset);
+        
+        // Costruiamo la Regex con i Word Boundaries (\b).
+        // Usiamo Pattern.quote per evitare che eventuali caratteri speciali nella parola rompano la Regex.
+        String regex = "\\b" + java.util.regex.Pattern.quote(word) + "\\b";
 
-        // Sostituzione globale e Case Sensitive (Pattern sensitive) all'interno dello stralcio
-        return text.replace(word, encryptedWord);
+        // Sostituzione globale sicura.
+        // Matcher.quoteReplacement previene errori se la parola cifrata contiene simboli interpretati da replaceAll come i dollari ($)
+        return text.replaceAll(regex, java.util.regex.Matcher.quoteReplacement(encryptedWord));
     }
 
     /**

@@ -11,6 +11,7 @@ import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
+import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
 import gruppo05.gtwshared.utility.Difficulty;
 import java.util.function.BiPredicate;
 
@@ -63,7 +64,7 @@ public final class SourceManagerInitializer {
 
         // 2. Definizione delle funzioni strategiche
         // Esempio: due parole sono simili se sono uguali ignorando il case
-        BiPredicate<String, String> similarityFunction = String::equalsIgnoreCase; 
+        BiPredicate<String, String> similarityFunction = new LetterFrequencySimilarity(); 
         
         // Esempio: il criterio di fallback preferisce la parola con la frequenza minore
         BiPredicate<Integer, Integer> fallbackCriterion = (freq1, freq2) -> freq1 < freq2;

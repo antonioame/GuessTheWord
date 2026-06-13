@@ -4,7 +4,6 @@ import gruppo05.gtwserver.model.Admin;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Sottointerfaccia DAO per la gestione della persistenza degli amministratori.
  */
 public interface AdminDAO extends DAO<Admin> {

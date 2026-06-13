@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia ChallengeDAO per la gestione della persistenza degli oggetti Challenge.
  * @invariant
  * La classe gestisce oggetti di tipo Challenge identificati dal codice numerico code (int).

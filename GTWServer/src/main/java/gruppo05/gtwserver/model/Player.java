@@ -3,7 +3,6 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta un giocatore (Player) registrato nel sistema con le relative statistiche di gioco aggregate.
  * @invariant
  * Tutti i campi dell'oggetto sono immutabili (final).

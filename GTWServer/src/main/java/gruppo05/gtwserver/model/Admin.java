@@ -3,7 +3,6 @@ package gruppo05.gtwserver.model;
 import java.util.Objects;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta un amministratore del sistema, identificato in modo univoco dallo username.
  * @invariant
  * Lo username e la password dell'amministratore sono immutabili (final).

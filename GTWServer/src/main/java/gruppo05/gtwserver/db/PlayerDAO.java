@@ -4,7 +4,6 @@ import gruppo05.gtwserver.model.Player;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Sottointerfaccia DAO per la gestione della persistenza dei giocatori (Player).
  */
 public interface PlayerDAO extends DAO<Player> {

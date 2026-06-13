@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia WordDAO per la gestione della persistenza degli oggetti Word.
  * @invariant
  * La classe gestisce oggetti di tipo Word identificati da una chiave primaria composta da token (String) e source (int).

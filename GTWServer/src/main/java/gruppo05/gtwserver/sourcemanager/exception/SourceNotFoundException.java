@@ -7,7 +7,6 @@ package gruppo05.gtwserver.sourcemanager.exception;
 
 /**
  *
- * @author Hermann
  */
 public class SourceNotFoundException extends RuntimeException {
 

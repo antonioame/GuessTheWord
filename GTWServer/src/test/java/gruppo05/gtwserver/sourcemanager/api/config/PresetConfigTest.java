@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.api.config;
 
-/**
- *
- * @author Hermann
- */
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 

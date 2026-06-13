@@ -5,7 +5,6 @@ import java.sql.Date;
 import java.util.Random;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta una sfida (Challenge) all'interno del sistema, definita da una parola segreta, una difficoltà e una sorgente.
  * @invariant
  * Tutti i campi interni dell'oggetto sono immutabili (final).

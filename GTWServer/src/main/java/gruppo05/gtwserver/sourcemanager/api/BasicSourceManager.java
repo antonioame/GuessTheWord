@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.api;
 
-/**
- *
- * @author Hermann
- */
 import gruppo05.gtwserver.model.Source;
 import gruppo05.gtwserver.model.Question;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;

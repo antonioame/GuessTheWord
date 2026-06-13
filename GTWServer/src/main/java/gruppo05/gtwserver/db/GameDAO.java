@@ -4,7 +4,6 @@ import gruppo05.gtwserver.model.Game;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Sottointerfaccia DAO per la gestione della persistenza delle partite (Game).
  */
 public interface GameDAO extends DAO<Game> {

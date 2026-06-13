@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * @author francesco-vecchione
  * @brief Implementazione dell'interfaccia SourceDAO per la gestione della persistenza degli oggetti Source.
  * @invariant
  * La classe gestisce oggetti di tipo Source identificati dal codice numerico id (int).

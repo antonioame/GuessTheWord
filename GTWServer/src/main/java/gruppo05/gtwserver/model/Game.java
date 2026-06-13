@@ -4,7 +4,6 @@ import gruppo05.gtwshared.utility.Result;
 import java.util.Objects;
 
 /**
- * @author francesco-vecchione
  * @brief Rappresenta una singola partita giocata da un utente in una specifica sfida.
  * @invariant
  * I campi interni dell'oggetto, che costituiscono la chiave primaria composta

@@ -2,7 +2,6 @@ package gruppo05.gtwshared.utility;
 
 /**
  *
- * @author francesco-vecchione
  *
  * @brief Rappresenta i livelli di difficoltà disponibili per le sfide del gioco.
  * @invariant

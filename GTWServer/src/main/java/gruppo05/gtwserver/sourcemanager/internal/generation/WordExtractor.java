@@ -5,10 +5,6 @@
  */
 package gruppo05.gtwserver.sourcemanager.internal.generation;
 
-/**
- *
- * @author Hermann
- */
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

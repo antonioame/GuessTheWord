@@ -323,31 +323,55 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                 case ANSWER_SUBMISSION:
                     // Verifica l'esito della risposta inviata dall'utente
                     if (currentUsername == null) return; 
-                    Challenge ch = activeGames.remove(channelIndex);
+                    Challenge ch = activeGames.get(channelIndex);
                     
                     if (ch != null) {
+                        // TODO la riga sotto funziona correttamente perché sono previsti esattamente 2 giocatori
                         int opponentChannel = (channelIndex == 0) ? 1 : 0;
-                        activeGames.remove(opponentChannel);
                         
-                        // Controllo della validità
+                        boolean isTimeout = dto.getProposedWord() == null || dto.getProposedWord().trim().isEmpty();
                         boolean isCorrect = ch.getWord().equalsIgnoreCase(dto.getProposedWord());
                         String opponentUsername = loggedUsers.getOrDefault(opponentChannel, "Avversario");
 
-                        // Calcola risultati per vincitore e perdente
-                        Result resultForSender = isCorrect ? Result.WIN : Result.LOSE;
-                        Result resultForOpponent = isCorrect ? Result.LOSE : Result.WIN;
-                        
-                        // Notifica esiti ai client
-                        connection.sendTo(channelIndex, new NetworkMessage.GameResult(resultForSender, ch.getWord(), isCorrect ? currentUsername : opponentUsername, dto.getResponseTime()));
-                        connection.sendTo(opponentChannel, new NetworkMessage.GameResult(resultForOpponent, ch.getWord(), isCorrect ? currentUsername : opponentUsername, dto.getResponseTime()));
-                        
-                        // Persiste i risultati sul DB
-                        ChallengeDAO challengeDao = new ConcreteChallengeDAO();
-                        challengeDao.insert(ch);
-                        
-                        GameDAO gameDao = new ConcreteGameDAO();
-                        gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
-                        gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
+                        if (isCorrect) {
+                            activeGames.remove(channelIndex);
+                            activeGames.remove(opponentChannel);
+
+                            // Calcola risultati per vincitore e perdente
+                            Result resultForSender = Result.WIN;
+                            Result resultForOpponent = Result.LOSE;
+                            
+                            // Notifica esiti ai client
+                            connection.sendTo(channelIndex, new NetworkMessage.GameResult(resultForSender, ch.getWord(), currentUsername, dto.getResponseTime()));
+                            connection.sendTo(opponentChannel, new NetworkMessage.GameResult(resultForOpponent, ch.getWord(), currentUsername, dto.getResponseTime()));
+                            
+                            // Persiste i risultati sul DB
+                            ChallengeDAO challengeDao = new ConcreteChallengeDAO();
+                            challengeDao.insert(ch);
+                            
+                            GameDAO gameDao = new ConcreteGameDAO();
+                            gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
+                            gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
+                        } else if (isTimeout) {
+                            activeGames.remove(channelIndex);
+                            activeGames.remove(opponentChannel);
+
+                            Result resultForSender = Result.DRAW;
+                            Result resultForOpponent = Result.DRAW;
+                            
+                            connection.sendTo(channelIndex, new NetworkMessage.GameResult(resultForSender, ch.getWord(), null, dto.getResponseTime()));
+                            connection.sendTo(opponentChannel, new NetworkMessage.GameResult(resultForOpponent, ch.getWord(), null, dto.getResponseTime()));
+                            
+                            ChallengeDAO challengeDao = new ConcreteChallengeDAO();
+                            challengeDao.insert(ch);
+                            
+                            GameDAO gameDao = new ConcreteGameDAO();
+                            gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
+                            gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
+                        } else {
+                            // Tentativo errato
+                            connection.sendTo(channelIndex, new NetworkMessage.WrongAnswer());
+                        }
                     }
                     break;
 

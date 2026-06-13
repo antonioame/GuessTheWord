@@ -706,6 +706,23 @@ public abstract class NetworkMessage implements Serializable {
         }
     }
 
+    /**
+     * @class WrongAnswer
+     * @brief Segnale (Server -> Client): Il tentativo di risposta inviato dal Client è errato.
+     */
+    public static class WrongAnswer extends NetworkMessage {
+        private static final long serialVersionUID = 16L;
+
+        public WrongAnswer() { 
+            super(MessageType.WRONG_ANSWER); 
+        }
+
+        @Override
+        public CallbackDTO toDTO() { 
+            return new CallbackDTO.Builder(getType()).build(); 
+        }
+    }
+
     // 4. GESTIONE DELLA CONNESSIONE
     
     /**

@@ -2,6 +2,8 @@ package gruppo05.gtwserver.controller;
 
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.ConcreteSourceDAO; 
@@ -99,13 +101,17 @@ public class GameSetupController {
                 Source selectedSource = sources.get(random.nextInt(sources.size()));
 
                 // Memorizza l'ID della sorgente selezionata per statistiche/controlli futuri
-                this.sourceId = selectedSource.getId(); 
+                this.sourceId = selectedSource.getId();
 
-                // 6. Generazione della domanda tramite il manager
+                // 6. Generazione sincrona della domanda tramite il manager
+                // Usiamo un CountDownLatch per attendere il completamento della callback asincrona
+                // prima di restituire il controllo al chiamante.
+                CountDownLatch latch = new CountDownLatch(1);
+
                 System.out.println("Inizio generazione domanda");
                 this.sourceManager.generateQuestion(
-                        selectedSource, 
-                        this.matchDifficulty.name(), 
+                        selectedSource,
+                        this.matchDifficulty.name(),
 
                         // Callback di Successo: viene eseguita se il testo è generato correttamente
                         (question) -> {
@@ -114,6 +120,7 @@ public class GameSetupController {
                             this.targetWord = question.getAnswer(); // Salva la soluzione reale
                             System.out.println(cipheredText);
                             System.out.println(targetWord);
+                            latch.countDown(); // Sblocca il thread chiamante
                         },
 
                         // Callback di Errore: viene eseguita in caso di problemi interni al manager
@@ -125,8 +132,19 @@ public class GameSetupController {
                             if (onError != null) {
                                 onError.accept("Errore nella generazione della domanda di gioco.");
                             }
+                            latch.countDown(); // Sblocca il thread chiamante anche in caso di errore
                         }
                 );
+
+                // Attende massimo 15 secondi per il completamento della generazione della domanda
+                boolean completed = latch.await(15, TimeUnit.SECONDS);
+                if (!completed) {
+                    System.err.println("[GameSetupController] Timeout nella generazione della domanda.");
+                    if (onError != null) {
+                        onError.accept("Timeout nella generazione della domanda di gioco.");
+                    }
+                }
+                
             } else {
                 // Gestione del caso in cui non ci siano fonti nel database
                 System.err.println("Nessuna sorgente trovata nel database.");

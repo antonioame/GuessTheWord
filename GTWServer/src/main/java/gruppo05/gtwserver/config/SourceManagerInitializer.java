@@ -11,7 +11,7 @@ import gruppo05.gtwserver.sourcemanager.api.BasicSourceManager;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
 import gruppo05.gtwserver.sourcemanager.api.config.PresetConfig;
 import gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig;
-import gruppo05.gtwserver.sourcemanager.internal.similarity.LetterFrequencySimilarity;
+import gruppo05.gtwserver.utility.LetterFrequencySimilarity;
 import gruppo05.gtwshared.utility.Difficulty;
 import java.util.function.BiPredicate;
 

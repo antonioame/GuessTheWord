@@ -1,4 +1,4 @@
-package gruppo05.gtwserver.sourcemanager.internal.similarity;
+package gruppo05.gtwserver.utility;
 
 import java.util.function.BiPredicate;
 

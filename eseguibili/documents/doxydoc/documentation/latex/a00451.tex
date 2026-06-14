@@ -1,0 +1,145 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config}
+\hypertarget{a00451}{}\label{a00451}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+
+
+Configurazione dei parametri per la generazione delle domande.  
+
+
+\doxysubsubsection*{Composti}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{a00455}{Builder}}
+\begin{DoxyCompactList}\small\item\em \doxylink{a00455}{Builder} per la creazione guidata e validata di istanze di \doxylink{a00451}{Preset\+Config}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{a00451_a04e7b6136052638139d7f1d9a8685a92}{get\+Number\+Of\+Periods}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il numero di periodi. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00451_a83bd45a98857c05cb5bbd0d91f8e759b}{get\+Maximum\+Word\+Frequency}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la massima frequenza delle parole consentita. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00451_a40aab3df2679fe70d8c6c40030a41569}{get\+Maximum\+Similar\+Word\+In\+Question\+Text}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il numero massimo di parole simili nel testo della domanda. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00451_aab5ee52716237419bfde13eaa8476f01}{get\+Shifting\+Offset}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce l\textquotesingle{}offset di shifting. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00451_a5d2057f2f250fcc6b17abc1b7fc1a145}{Preset\+Config}} (\mbox{\hyperlink{a00455}{Builder}} builder)
+\begin{DoxyCompactList}\small\item\em Costruttore privato che inizializza la configurazione tramite il \doxylink{a00455}{Builder}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00451_a14ec5b8ff9b23dbb0be4d3f9f307b09a}\label{a00451_a14ec5b8ff9b23dbb0be4d3f9f307b09a} 
+final int {\bfseries number\+Of\+Periods}
+\begin{DoxyCompactList}\small\item\em Numero di periodi da estrarre dalla sorgente. \end{DoxyCompactList}\item 
+\Hypertarget{a00451_accc1189d9a7abf9670dd5a24511d1046}\label{a00451_accc1189d9a7abf9670dd5a24511d1046} 
+final int {\bfseries maximum\+Word\+Frequency}
+\begin{DoxyCompactList}\small\item\em Massima frequenza consentita per una parola affinché venga estratta. \end{DoxyCompactList}\item 
+\Hypertarget{a00451_a776b28d373539028491fdb0572fa7e8d}\label{a00451_a776b28d373539028491fdb0572fa7e8d} 
+final int {\bfseries maximum\+Similar\+Word\+In\+Question\+Text}
+\begin{DoxyCompactList}\small\item\em Numero massimo di parole simili consentite nel testo della domanda. \end{DoxyCompactList}\item 
+\Hypertarget{a00451_aa8745c10be1f1007d9d2d7f05be816d1}\label{a00451_aa8745c10be1f1007d9d2d7f05be816d1} 
+final int {\bfseries shifting\+Offset}
+\begin{DoxyCompactList}\small\item\em Offset di shifting utilizzato per la cifratura del testo della domanda. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Configurazione dei parametri per la generazione delle domande. 
+
+\begin{DoxyInvariant}{Invariante}
+Il numero di periodi deve essere maggiore di zero. 
+
+La massima frequenza delle parole deve essere maggiore di zero. 
+
+Il numero massimo di parole simili nel testo della domanda deve essere maggiore o uguale a zero. 
+
+L\textquotesingle{}offset di shifting deve essere maggiore o uguale a zero. 
+\end{DoxyInvariant}
+
+
+\label{doc-constructors}
+\Hypertarget{a00451_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00451_a5d2057f2f250fcc6b17abc1b7fc1a145}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}!PresetConfig@{PresetConfig}}
+\index{PresetConfig@{PresetConfig}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+\doxysubsubsection{\texorpdfstring{PresetConfig()}{PresetConfig()}}
+{\footnotesize\ttfamily \label{a00451_a5d2057f2f250fcc6b17abc1b7fc1a145} 
+gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Preset\+Config (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00455}{Builder}}}]{builder}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Costruttore privato che inizializza la configurazione tramite il \doxylink{a00455}{Builder}. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em builder} & Il builder contenente i parametri di configurazione. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro builder non deve essere nullo. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+L\textquotesingle{}oggetto \doxylink{a00451}{Preset\+Config} viene istanziato con i valori validati dal builder. 
+\end{DoxyPostcond}
+
+
+\label{doc-func-members}
+\Hypertarget{a00451_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00451_a40aab3df2679fe70d8c6c40030a41569}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}!getMaximumSimilarWordInQuestionText@{getMaximumSimilarWordInQuestionText}}
+\index{getMaximumSimilarWordInQuestionText@{getMaximumSimilarWordInQuestionText}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+\doxysubsubsection{\texorpdfstring{getMaximumSimilarWordInQuestionText()}{getMaximumSimilarWordInQuestionText()}}
+{\footnotesize\ttfamily \label{a00451_a40aab3df2679fe70d8c6c40030a41569} 
+int gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+get\+Maximum\+Similar\+Word\+In\+Question\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il numero massimo di parole simili nel testo della domanda. 
+
+\begin{DoxyReturn}{Restituisce}
+Il numero massimo di parole simili. 
+\end{DoxyReturn}
+\Hypertarget{a00451_a83bd45a98857c05cb5bbd0d91f8e759b}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}!getMaximumWordFrequency@{getMaximumWordFrequency}}
+\index{getMaximumWordFrequency@{getMaximumWordFrequency}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+\doxysubsubsection{\texorpdfstring{getMaximumWordFrequency()}{getMaximumWordFrequency()}}
+{\footnotesize\ttfamily \label{a00451_a83bd45a98857c05cb5bbd0d91f8e759b} 
+int gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+get\+Maximum\+Word\+Frequency (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la massima frequenza delle parole consentita. 
+
+\begin{DoxyReturn}{Restituisce}
+La massima frequenza delle parole. 
+\end{DoxyReturn}
+\Hypertarget{a00451_a04e7b6136052638139d7f1d9a8685a92}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}!getNumberOfPeriods@{getNumberOfPeriods}}
+\index{getNumberOfPeriods@{getNumberOfPeriods}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+\doxysubsubsection{\texorpdfstring{getNumberOfPeriods()}{getNumberOfPeriods()}}
+{\footnotesize\ttfamily \label{a00451_a04e7b6136052638139d7f1d9a8685a92} 
+int gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+get\+Number\+Of\+Periods (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il numero di periodi. 
+
+\begin{DoxyReturn}{Restituisce}
+Il numero di periodi. 
+\end{DoxyReturn}
+\Hypertarget{a00451_aab5ee52716237419bfde13eaa8476f01}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}!getShiftingOffset@{getShiftingOffset}}
+\index{getShiftingOffset@{getShiftingOffset}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig}}
+\doxysubsubsection{\texorpdfstring{getShiftingOffset()}{getShiftingOffset()}}
+{\footnotesize\ttfamily \label{a00451_aab5ee52716237419bfde13eaa8476f01} 
+int gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+get\+Shifting\+Offset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce l\textquotesingle{}offset di shifting. 
+
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}offset di shifting. 
+\end{DoxyReturn}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/sourcemanager/api/config/Preset\+Config.\+java\end{DoxyCompactItemize}

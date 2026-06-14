@@ -1,0 +1,135 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller}
+\hypertarget{a00311}{}\label{a00311}\index{gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}}
+
+
+Controller Java\+FX per la gestione della schermata principale della Lobby.  
+
+
+Diagramma delle classi per gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00311}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00311_ae4766cdea3106a7a31de264fa02c2b46}{set\+Connection}} (\mbox{\hyperlink{a00323}{Client\+Connection}} \mbox{\hyperlink{a00311_a1864ce5dcaae542a47883874685d67da}{connection}})
+\begin{DoxyCompactList}\small\item\em Configura la connessione di rete del client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00311_a8fd3a201120e3b52670b547f2a9744d7}{set\+Username}} (String \mbox{\hyperlink{a00311_a1448f1d5e19978318f79afaab3513774}{username}})
+\begin{DoxyCompactList}\small\item\em Imposta lo username dell\textquotesingle{}utente loggato nella sessione corrente ed aggiorna l\textquotesingle{}interfaccia grafica. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00311_a23ce422afbd310e1761418484fb4a532}{initialize}} (URL location, Resource\+Bundle resources)
+\begin{DoxyCompactList}\small\item\em Inizializza l\textquotesingle{}interfaccia grafica impostando il messaggio di benvenuto. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00311_a5d79c220090560ed2d4b0fe3ca09bbd2}{get\+Selected\+Difficulty}} ()
+\begin{DoxyCompactList}\small\item\em Recupera la difficoltà attualmente selezionata dall\textquotesingle{}utente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00311_ad6ec36048bb3e8619fb68cf307a6a9ea}\label{a00311_ad6ec36048bb3e8619fb68cf307a6a9ea} 
+Label {\bfseries lbl\+Welcome}
+\begin{DoxyCompactList}\small\item\em Etichetta per mostrare il messaggio di benvenuto. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a51c8f244a0ca792ace20e4218817e81f}\label{a00311_a51c8f244a0ca792ace20e4218817e81f} 
+Button {\bfseries btn\+Play}
+\begin{DoxyCompactList}\small\item\em Pulsante per avviare il matchmaking. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a498eac85e59e77cba479813df1a9e833}\label{a00311_a498eac85e59e77cba479813df1a9e833} 
+Button {\bfseries btn\+History}
+\begin{DoxyCompactList}\small\item\em Pulsante per accedere allo storico partite. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a8418f0e5f0f28aa71de18db47131ddd7}\label{a00311_a8418f0e5f0f28aa71de18db47131ddd7} 
+Button {\bfseries btn\+Exit}
+\begin{DoxyCompactList}\small\item\em Pulsante per uscire dall\textquotesingle{}applicazione. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a4286948ae1cc4fc01c35ae98e8476638}\label{a00311_a4286948ae1cc4fc01c35ae98e8476638} 
+Toggle\+Button {\bfseries btn\+Easy}
+\begin{DoxyCompactList}\small\item\em Pulsante di selezione per la difficoltà facile. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_afbc0e8d6187875ff0acc00441f10b5eb}\label{a00311_afbc0e8d6187875ff0acc00441f10b5eb} 
+Toggle\+Button {\bfseries btn\+Normal}
+\begin{DoxyCompactList}\small\item\em Pulsante di selezione per la difficoltà normale. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a1b97917235b22325c63af1aa3bcd5929}\label{a00311_a1b97917235b22325c63af1aa3bcd5929} 
+Toggle\+Button {\bfseries btn\+Hard}
+\begin{DoxyCompactList}\small\item\em Pulsante di selezione per la difficoltà difficile. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a572ffec04be4fa8ac8e39743bcccfca3}\label{a00311_a572ffec04be4fa8ac8e39743bcccfca3} 
+Toggle\+Group {\bfseries difficulty\+Group}
+\begin{DoxyCompactList}\small\item\em Gruppo di pulsanti per la selezione esclusiva della difficoltà. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a1864ce5dcaae542a47883874685d67da}\label{a00311_a1864ce5dcaae542a47883874685d67da} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} {\bfseries connection}
+\begin{DoxyCompactList}\small\item\em Connessione di rete del client verso il server. \end{DoxyCompactList}\item 
+\Hypertarget{a00311_a1448f1d5e19978318f79afaab3513774}\label{a00311_a1448f1d5e19978318f79afaab3513774} 
+String {\bfseries username}
+\begin{DoxyCompactList}\small\item\em Username dell\textquotesingle{}utente loggato. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller Java\+FX per la gestione della schermata principale della Lobby. 
+
+Gestisce i re-\/indirizzamenti e i comandi principali dell\textquotesingle{}utente, come l\textquotesingle{}avvio della partita (matchmaking), la consultazione dello storico ed il logout. 
+
+\label{doc-func-members}
+\Hypertarget{a00311_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00311_a5d79c220090560ed2d4b0fe3ca09bbd2}\index{gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}!getSelectedDifficulty@{getSelectedDifficulty}}
+\index{getSelectedDifficulty@{getSelectedDifficulty}!gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}}
+\doxysubsubsection{\texorpdfstring{getSelectedDifficulty()}{getSelectedDifficulty()}}
+{\footnotesize\ttfamily \label{a00311_a5d79c220090560ed2d4b0fe3ca09bbd2} 
+\mbox{\hyperlink{a00751}{Difficulty}} gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller.\+get\+Selected\+Difficulty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Recupera la difficoltà attualmente selezionata dall\textquotesingle{}utente. 
+
+\begin{DoxyReturn}{Restituisce}
+Difficoltà scelta (EASY, NORMAL, o HARD). Se nulla è selezionato, restituisce NORMAL come fallback. 
+\end{DoxyReturn}
+\Hypertarget{a00311_a23ce422afbd310e1761418484fb4a532}\index{gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}!initialize@{initialize}}
+\index{initialize@{initialize}!gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{a00311_a23ce422afbd310e1761418484fb4a532} 
+void gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller.\+initialize (\begin{DoxyParamCaption}\item[{URL}]{location}{, }\item[{Resource\+Bundle}]{resources}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza l\textquotesingle{}interfaccia grafica impostando il messaggio di benvenuto. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em location} & Percorso relativo per la risoluzione dell\textquotesingle{}oggetto root. \\
+\hline
+\mbox{\texttt{in}}  & {\em resources} & Risorse localizzate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00311_ae4766cdea3106a7a31de264fa02c2b46}\index{gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}!setConnection@{setConnection}}
+\index{setConnection@{setConnection}!gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}}
+\doxysubsubsection{\texorpdfstring{setConnection()}{setConnection()}}
+{\footnotesize\ttfamily \label{a00311_ae4766cdea3106a7a31de264fa02c2b46} 
+void gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller.\+set\+Connection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00323}{Client\+Connection}}}]{connection}{}\end{DoxyParamCaption})}
+
+
+
+Configura la connessione di rete del client. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em connection} & Istanza attiva di \doxylink{a00323}{Client\+Connection}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00311_a8fd3a201120e3b52670b547f2a9744d7}\index{gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}!setUsername@{setUsername}}
+\index{setUsername@{setUsername}!gruppo05.gtwclient.controller.LobbyViewController@{gruppo05.gtwclient.controller.LobbyViewController}}
+\doxysubsubsection{\texorpdfstring{setUsername()}{setUsername()}}
+{\footnotesize\ttfamily \label{a00311_a8fd3a201120e3b52670b547f2a9744d7} 
+void gruppo05.\+gtwclient.\+controller.\+Lobby\+View\+Controller.\+set\+Username (\begin{DoxyParamCaption}\item[{String}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Imposta lo username dell\textquotesingle{}utente loggato nella sessione corrente ed aggiorna l\textquotesingle{}interfaccia grafica. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em username} & Nome utente corrente. \\
+\hline
+\end{DoxyParams}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/controller/Lobby\+View\+Controller.\+java\end{DoxyCompactItemize}

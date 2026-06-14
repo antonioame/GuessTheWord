@@ -1,0 +1,108 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+controller.\+Scene\+Navigator}
+\hypertarget{a00635}{}\label{a00635}\index{gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}}
+
+
+Utility Class per Routing e Navigazione dell\textquotesingle{}Interfaccia Grafica.  
+
+
+\doxysubsubsection*{Membri pubblici statici}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{a00635_a9f51b1f19a162953b2d20b5f30f8f11f}{init}} (Stage stage)
+\begin{DoxyCompactList}\small\item\em Inizializza lo stage primario per la navigazione. \end{DoxyCompactList}\item 
+static Stage \mbox{\hyperlink{a00635_ac234e75dfb14246e7f7d4866078e12f3}{get\+Stage}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce lo stage primario attualmente in uso. \end{DoxyCompactList}\item 
+static void \mbox{\hyperlink{a00635_afd6cf60d507232be2a05dca079a60e1f}{navigate\+To}} (String fxml\+Path)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Carica ed imposta una nuova scena a partire dal file FXML indicato. \end{DoxyCompactList}\item 
+static$<$ T $>$ T \mbox{\hyperlink{a00635_a94da24f0a456304681c6b72921d1a0c2}{navigate\+And\+Get\+Controller}} (String fxml\+Path)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Imposta una nuova scena a partire dal file FXML e ne restituisce il controller associato. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00635_ac99575582b7d4b3a685afdb893877f22}\label{a00635_ac99575582b7d4b3a685afdb893877f22} 
+static Stage {\bfseries primary\+Stage}
+\begin{DoxyCompactList}\small\item\em Riferimento statico (e globale) allo stage principale (finestra dell\textquotesingle{}applicazione). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Utility Class per Routing e Navigazione dell\textquotesingle{}Interfaccia Grafica. 
+
+\label{doc-func-members}
+\Hypertarget{a00635_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00635_ac234e75dfb14246e7f7d4866078e12f3}\index{gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}!getStage@{getStage}}
+\index{getStage@{getStage}!gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}}
+\doxysubsubsection{\texorpdfstring{getStage()}{getStage()}}
+{\footnotesize\ttfamily \label{a00635_ac234e75dfb14246e7f7d4866078e12f3} 
+Stage gruppo05.\+gtwshared.\+controller.\+Scene\+Navigator.\+get\+Stage (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Restituisce lo stage primario attualmente in uso. 
+
+\begin{DoxyReturn}{Restituisce}
+Stage primario dell\textquotesingle{}applicazione. 
+\end{DoxyReturn}
+\Hypertarget{a00635_a9f51b1f19a162953b2d20b5f30f8f11f}\index{gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}!init@{init}}
+\index{init@{init}!gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily \label{a00635_a9f51b1f19a162953b2d20b5f30f8f11f} 
+void gruppo05.\+gtwshared.\+controller.\+Scene\+Navigator.\+init (\begin{DoxyParamCaption}\item[{Stage}]{stage}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Inizializza lo stage primario per la navigazione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em stage} & Stage primario dell\textquotesingle{}applicazione. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00635_a94da24f0a456304681c6b72921d1a0c2}\index{gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}!navigateAndGetController@{navigateAndGetController}}
+\index{navigateAndGetController@{navigateAndGetController}!gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}}
+\doxysubsubsection{\texorpdfstring{navigateAndGetController()}{navigateAndGetController()}}
+{\footnotesize\ttfamily \label{a00635_a94da24f0a456304681c6b72921d1a0c2} 
+static$<$ T $>$ T gruppo05.\+gtwshared.\+controller.\+Scene\+Navigator.\+navigate\+And\+Get\+Controller (\begin{DoxyParamCaption}\item[{String}]{fxml\+Path}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Imposta una nuova scena a partire dal file FXML e ne restituisce il controller associato. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em fxml\+Path} & Percorso della risorsa FXML nel classpath. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Controller tipizzato rispetto alla schermata caricata. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & In caso di problemi nel caricamento del file FXML. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00635_afd6cf60d507232be2a05dca079a60e1f}\index{gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}!navigateTo@{navigateTo}}
+\index{navigateTo@{navigateTo}!gruppo05.gtwshared.controller.SceneNavigator@{gruppo05.gtwshared.controller.SceneNavigator}}
+\doxysubsubsection{\texorpdfstring{navigateTo()}{navigateTo()}}
+{\footnotesize\ttfamily \label{a00635_afd6cf60d507232be2a05dca079a60e1f} 
+void gruppo05.\+gtwshared.\+controller.\+Scene\+Navigator.\+navigate\+To (\begin{DoxyParamCaption}\item[{String}]{fxml\+Path}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+Carica ed imposta una nuova scena a partire dal file FXML indicato. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em fxml\+Path} & Percorso della risorsa FXML nel classpath. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & In caso di problemi nel caricamento del file FXML. \\
+\hline
+\end{DoxyExceptions}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/controller/Scene\+Navigator.\+java\end{DoxyCompactItemize}

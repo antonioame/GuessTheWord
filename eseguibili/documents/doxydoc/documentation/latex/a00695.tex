@@ -1,0 +1,132 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request}
+\hypertarget{a00695}{}\label{a00695}\index{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}}
+
+
+Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Inviazione dei dati per creare un nuovo profilo.  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00695}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00695_aaf2623969626a0c28cd27539fd5ef8aa}{Register\+Request}} (String \mbox{\hyperlink{a00695_af67a5b4ac7057366a42d2050ab1b913a}{username}}, String \mbox{\hyperlink{a00695_a955279d67e4a63f8944a73c9bdc1568c}{password}})
+\begin{DoxyCompactList}\small\item\em Struttura la richiesta di inserimento. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00695_a616e46a6b99d67c763f218dbb8863580}{get\+Username}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il nuovo username scelto. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00695_a4baca8bac13d128a4400531926b15fb8}{get\+Password}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la nuova password associata. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} \mbox{\hyperlink{a00695_a20ec6058e0f2bcd3ed3a8f2bd3dae10c}{to\+DTO}} ()
+\begin{DoxyCompactList}\small\item\em Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_a8deb505fc607f2cd821f0e42ae2e5061}{get\+Type}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il tipo discriminante del messaggio. \end{DoxyCompactList}\item 
+Local\+Date\+Time \mbox{\hyperlink{a00683_abe9887af469319aec23b6c8fcf5a3206}{get\+Timestamp}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il momento di generazione. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00683_a0f4fccf839305a8e172dcdb40ad38137}{to\+String}} ()
+\begin{DoxyCompactList}\small\item\em Ritorna una traccia descrittiva per debug e logging di rete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00695_af67a5b4ac7057366a42d2050ab1b913a}\label{a00695_af67a5b4ac7057366a42d2050ab1b913a} 
+final String {\bfseries username}
+\begin{DoxyCompactList}\small\item\em Username per la registrazione. \end{DoxyCompactList}\item 
+\Hypertarget{a00695_a955279d67e4a63f8944a73c9bdc1568c}\label{a00695_a955279d67e4a63f8944a73c9bdc1568c} 
+final String {\bfseries password}
+\begin{DoxyCompactList}\small\item\em Password per la registrazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00695_a25292d12cc1813620e16642db930cdd7}\label{a00695_a25292d12cc1813620e16642db930cdd7} 
+static final long {\bfseries serial\+Version\+UID} = 4L
+\begin{DoxyCompactList}\small\item\em Versione di serializzazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Altri membri ereditati}
+\doxysubsection*{Membri protetti ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e}{Network\+Message}} (\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_aae9d1a7d43240d769f8abe4e1114f9dc}{type}})
+\begin{DoxyCompactList}\small\item\em Costruttore interno per la base del messaggio. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Inviazione dei dati per creare un nuovo profilo. 
+
+\label{doc-constructors}
+\Hypertarget{a00695_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00695_aaf2623969626a0c28cd27539fd5ef8aa}\index{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}!RegisterRequest@{RegisterRequest}}
+\index{RegisterRequest@{RegisterRequest}!gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}}
+\doxysubsubsection{\texorpdfstring{RegisterRequest()}{RegisterRequest()}}
+{\footnotesize\ttfamily \label{a00695_aaf2623969626a0c28cd27539fd5ef8aa} 
+\mbox{\hyperlink{a00695}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request.\+Register\+Request}} (\begin{DoxyParamCaption}\item[{String}]{username}{, }\item[{String}]{password}{}\end{DoxyParamCaption})}
+
+
+
+Struttura la richiesta di inserimento. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em username} & Il nome desiderato (possibile chiave primaria db). \\
+\hline
+{\em password} & Il segreto da conservare. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00695_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00695_a4baca8bac13d128a4400531926b15fb8}\index{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}!getPassword@{getPassword}}
+\index{getPassword@{getPassword}!gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}}
+\doxysubsubsection{\texorpdfstring{getPassword()}{getPassword()}}
+{\footnotesize\ttfamily \label{a00695_a4baca8bac13d128a4400531926b15fb8} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request.\+get\+Password (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la nuova password associata. 
+
+\begin{DoxyReturn}{Restituisce}
+Stringa password. 
+\end{DoxyReturn}
+\Hypertarget{a00695_a616e46a6b99d67c763f218dbb8863580}\index{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}!getUsername@{getUsername}}
+\index{getUsername@{getUsername}!gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}}
+\doxysubsubsection{\texorpdfstring{getUsername()}{getUsername()}}
+{\footnotesize\ttfamily \label{a00695_a616e46a6b99d67c763f218dbb8863580} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request.\+get\+Username (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il nuovo username scelto. 
+
+\begin{DoxyReturn}{Restituisce}
+Stringa nome. 
+\end{DoxyReturn}
+\Hypertarget{a00695_a20ec6058e0f2bcd3ed3a8f2bd3dae10c}\index{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}!toDTO@{toDTO}}
+\index{toDTO@{toDTO}!gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest@{gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest}}
+\doxysubsubsection{\texorpdfstring{toDTO()}{toDTO()}}
+{\footnotesize\ttfamily \label{a00695_a20ec6058e0f2bcd3ed3a8f2bd3dae10c} 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request.\+to\+DTO (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. 
+
+\begin{DoxyReturn}{Restituisce}
+Il \doxylink{a00647}{Callback\+DTO} compilato a dovere con i dati della sottoclasse invocatrice. 
+\end{DoxyReturn}
+
+
+Reimplementa \mbox{\hyperlink{a00683_a5e1fdf66c76c4b202a2325096271edec}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Message.\+java\end{DoxyCompactItemize}

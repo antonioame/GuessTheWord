@@ -1,0 +1,151 @@
+\doxysection{Riferimenti per l\textquotesingle{}interfaccia gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager}
+\hypertarget{a00467}{}\label{a00467}\index{gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}}
+
+
+Interfaccia principale per la gestione delle fonti e la generazione di domande.  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00467}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00467_ada48a721e24656527737675dd04884db}{add\+Source}} (\mbox{\hyperlink{a00431}{Source}} source, Runnable on\+Success, Consumer$<$ Exception $>$ on\+Failure)
+\begin{DoxyCompactList}\small\item\em Aggiunge in modo asincrono una fonte al sistema. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00467_a1b1f8124ae31576c98e197b0031b62e5}{remove\+Source}} (\mbox{\hyperlink{a00431}{Source}} source, Runnable on\+Success, Consumer$<$ Exception $>$ on\+Failure)
+\begin{DoxyCompactList}\small\item\em Rimuove in modo asincrono una fonte dal sistema. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00467_a83b52a4c53eb6d268a74d9a9454787c4}{generate\+Question}} (\mbox{\hyperlink{a00431}{Source}} source, String preset\+Name, Consumer$<$ \mbox{\hyperlink{a00427}{Question}} $>$ on\+Success, Consumer$<$ Exception $>$ on\+Failure)
+\begin{DoxyCompactList}\small\item\em Genera in modo asincrono una domanda a partire da una fonte e una configurazione preimpostata. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00467_a829a8136196797100fc408361895e06a}{shutdown}} ()
+\begin{DoxyCompactList}\small\item\em Avvia la procedura di spegnimento del manager, interrompendo l\textquotesingle{}accettazione di nuovi task. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Interfaccia principale per la gestione delle fonti e la generazione di domande. 
+
+\begin{DoxyInvariant}{Invariante}
+Non ci sono invarianti di stato esplicite in quanto si tratta di un\textquotesingle{}interfaccia, ma le classi che la implementano devono garantire che la chiamata al metodo shutdown rilasci in modo consistente i thread e le risorse allocate. 
+\end{DoxyInvariant}
+
+
+\label{doc-func-members}
+\Hypertarget{a00467_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00467_ada48a721e24656527737675dd04884db}\index{gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}!addSource@{addSource}}
+\index{addSource@{addSource}!gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}}
+\doxysubsubsection{\texorpdfstring{addSource()}{addSource()}}
+{\footnotesize\ttfamily \label{a00467_ada48a721e24656527737675dd04884db} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager.\+add\+Source (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{, }\item[{Runnable}]{on\+Success}{, }\item[{Consumer$<$ Exception $>$}]{on\+Failure}{}\end{DoxyParamCaption})}
+
+
+
+Aggiunge in modo asincrono una fonte al sistema. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & Il componente sorgente da registrare nel sistema. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Success} & Callback da eseguire in caso di successo della registrazione. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Failure} & Callback da eseguire in caso di errore, a cui viene passata l\textquotesingle{}eccezione riscontrata. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro source non deve essere nullo. I parametri on\+Success e on\+Failure non devono essere nulli. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+La sorgente viene presa in carico dal sistema per l\textquotesingle{}analisi e l\textquotesingle{}immagazzinamento dei dati. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00447_abe4958c4bd37c3510e1606983c53a449}{gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Basic\+Source\+Manager}}.
+
+\Hypertarget{a00467_a83b52a4c53eb6d268a74d9a9454787c4}\index{gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}!generateQuestion@{generateQuestion}}
+\index{generateQuestion@{generateQuestion}!gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}}
+\doxysubsubsection{\texorpdfstring{generateQuestion()}{generateQuestion()}}
+{\footnotesize\ttfamily \label{a00467_a83b52a4c53eb6d268a74d9a9454787c4} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager.\+generate\+Question (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{, }\item[{String}]{preset\+Name}{, }\item[{Consumer$<$ \mbox{\hyperlink{a00427}{Question}} $>$}]{on\+Success}{, }\item[{Consumer$<$ Exception $>$}]{on\+Failure}{}\end{DoxyParamCaption})}
+
+
+
+Genera in modo asincrono una domanda a partire da una fonte e una configurazione preimpostata. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & La sorgente da cui estrarre i dati per la generazione della domanda. \\
+\hline
+\mbox{\texttt{in}}  & {\em preset\+Name} & Il nome del preset di configurazione da applicare per i criteri di generazione. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Success} & Callback da eseguire in caso di successo, a cui viene passata la domanda generata. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Failure} & Callback da eseguire in caso di errore (es. \doxylink{a00475}{Preset\+Not\+Found\+Exception}), a cui viene passata l\textquotesingle{}eccezione. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro source non deve essere nullo. Il parametro preset\+Name non deve essere nullo o vuoto. I parametri on\+Success e on\+Failure non devono essere nulli. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Viene avviato il processo di estrazione e cifratura del testo basato sui vincoli del preset scelto. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00447_a7c58f3d897cb0c07ff063f89cf817fdb}{gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Basic\+Source\+Manager}}.
+
+\Hypertarget{a00467_a1b1f8124ae31576c98e197b0031b62e5}\index{gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}!removeSource@{removeSource}}
+\index{removeSource@{removeSource}!gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}}
+\doxysubsubsection{\texorpdfstring{removeSource()}{removeSource()}}
+{\footnotesize\ttfamily \label{a00467_a1b1f8124ae31576c98e197b0031b62e5} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager.\+remove\+Source (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{, }\item[{Runnable}]{on\+Success}{, }\item[{Consumer$<$ Exception $>$}]{on\+Failure}{}\end{DoxyParamCaption})}
+
+
+
+Rimuove in modo asincrono una fonte dal sistema. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & Il componente sorgente da rimuovere. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Success} & Callback da eseguire in caso di successo della rimozione. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Failure} & Callback da eseguire in caso di errore, a cui viene passata l\textquotesingle{}eccezione riscontrata. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro source non deve essere nullo. I parametri on\+Success e on\+Failure non devono essere nulli. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+La sorgente e i relativi dati associati (come le frequenze delle parole) vengono rimossi dal sistema. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00447_aa9a3bcbc58f12f6c2655a3e7c0782174}{gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Basic\+Source\+Manager}}.
+
+\Hypertarget{a00467_a829a8136196797100fc408361895e06a}\index{gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}!shutdown@{shutdown}}
+\index{shutdown@{shutdown}!gruppo05.gtwserver.sourcemanager.api.SourceManager@{gruppo05.gtwserver.sourcemanager.api.SourceManager}}
+\doxysubsubsection{\texorpdfstring{shutdown()}{shutdown()}}
+{\footnotesize\ttfamily \label{a00467_a829a8136196797100fc408361895e06a} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Source\+Manager.\+shutdown (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Avvia la procedura di spegnimento del manager, interrompendo l\textquotesingle{}accettazione di nuovi task. 
+
+\begin{DoxyPrecond}{Precondizione}
+Il manager non deve essere già stato spento definitivamente. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+L\textquotesingle{}esecutore interno rifiuta nuovi task, ma completa quelli già sottomessi. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00447_aad1d0b3a24cfdeddb34361ae47fd0e92}{gruppo05.\+gtwserver.\+sourcemanager.\+api.\+Basic\+Source\+Manager}}.
+
+
+
+La documentazione per questa interfaccia è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/sourcemanager/api/Source\+Manager.\+java\end{DoxyCompactItemize}

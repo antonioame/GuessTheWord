@@ -1,0 +1,172 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result}
+\hypertarget{a00719}{}\label{a00719}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+
+
+Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Fine ufficiale dei giochi, decreto di vittoria/sconfitta.  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00719}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00719_a86af12d764f165911c2c2773d119d96e}{Game\+Result}} (\mbox{\hyperlink{a00755}{Result}} \mbox{\hyperlink{a00719_af7111c88c5a4549ff72f86b390b5c521}{result}}, String \mbox{\hyperlink{a00719_ae01db30e3e7d4b870fa109454657491c}{correct\+Word}}, String \mbox{\hyperlink{a00719_a1d84619924f1947abc7f96a3bf0b524f}{winner\+Username}}, int \mbox{\hyperlink{a00719_a225938af71eb8670faf81b943aa886da}{winner\+Response\+Time}})
+\begin{DoxyCompactList}\small\item\em Composizione del tabellone finale da proiettare post-\/partita. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00755}{Result}} \mbox{\hyperlink{a00719_a409ba83902fd6f9c293a049322d32623}{get\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Mostra al ricevente il suo bilancio. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00719_a208dc260932bb8ca840fa5c4789592ea}{get\+Correct\+Word}} ()
+\begin{DoxyCompactList}\small\item\em Svela il mistero alla base della challenge generata in \doxylink{a00711}{Game\+Start}. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00719_af15ed9e797385f7125a432d0ba8929d2}{get\+Winner\+Username}} ()
+\begin{DoxyCompactList}\small\item\em Mostra il colpevole della fine della partita. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00719_aa4cea258dffa7dc3b6b9a993e3bf0f47}{get\+Winner\+Response\+Time}} ()
+\begin{DoxyCompactList}\small\item\em Valore comparativo finale. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} \mbox{\hyperlink{a00719_a4b05b35aaaf7c0e93c96ce32d0dbbde8}{to\+DTO}} ()
+\begin{DoxyCompactList}\small\item\em Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_a8deb505fc607f2cd821f0e42ae2e5061}{get\+Type}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il tipo discriminante del messaggio. \end{DoxyCompactList}\item 
+Local\+Date\+Time \mbox{\hyperlink{a00683_abe9887af469319aec23b6c8fcf5a3206}{get\+Timestamp}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il momento di generazione. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00683_a0f4fccf839305a8e172dcdb40ad38137}{to\+String}} ()
+\begin{DoxyCompactList}\small\item\em Ritorna una traccia descrittiva per debug e logging di rete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00719_af7111c88c5a4549ff72f86b390b5c521}\label{a00719_af7111c88c5a4549ff72f86b390b5c521} 
+final \mbox{\hyperlink{a00755}{Result}} {\bfseries result}
+\begin{DoxyCompactList}\small\item\em Risultato del gioco. \end{DoxyCompactList}\item 
+\Hypertarget{a00719_ae01db30e3e7d4b870fa109454657491c}\label{a00719_ae01db30e3e7d4b870fa109454657491c} 
+final String {\bfseries correct\+Word}
+\begin{DoxyCompactList}\small\item\em La parola originale. \end{DoxyCompactList}\item 
+\Hypertarget{a00719_a1d84619924f1947abc7f96a3bf0b524f}\label{a00719_a1d84619924f1947abc7f96a3bf0b524f} 
+final String {\bfseries winner\+Username}
+\begin{DoxyCompactList}\small\item\em Username del vincitore. \end{DoxyCompactList}\item 
+\Hypertarget{a00719_a225938af71eb8670faf81b943aa886da}\label{a00719_a225938af71eb8670faf81b943aa886da} 
+final int {\bfseries winner\+Response\+Time}
+\begin{DoxyCompactList}\small\item\em Tempo di risposta del vincitore in ms. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00719_a6575bb8ec34854832eee2372fffc1bee}\label{a00719_a6575bb8ec34854832eee2372fffc1bee} 
+static final long {\bfseries serial\+Version\+UID} = 10L
+\begin{DoxyCompactList}\small\item\em Versione di serializzazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Altri membri ereditati}
+\doxysubsection*{Membri protetti ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e}{Network\+Message}} (\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_aae9d1a7d43240d769f8abe4e1114f9dc}{type}})
+\begin{DoxyCompactList}\small\item\em Costruttore interno per la base del messaggio. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Fine ufficiale dei giochi, decreto di vittoria/sconfitta. 
+
+\label{doc-constructors}
+\Hypertarget{a00719_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00719_a86af12d764f165911c2c2773d119d96e}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!GameResult@{GameResult}}
+\index{GameResult@{GameResult}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{GameResult()}{GameResult()}}
+{\footnotesize\ttfamily \label{a00719_a86af12d764f165911c2c2773d119d96e} 
+\mbox{\hyperlink{a00719}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+Game\+Result}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00755}{Result}}}]{result}{, }\item[{String}]{correct\+Word}{, }\item[{String}]{winner\+Username}{, }\item[{int}]{winner\+Response\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Composizione del tabellone finale da proiettare post-\/partita. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em result} & Verdetto strettamente relativo per il fruitore specifico (Io = Vinto, Tu = Perso). \\
+\hline
+{\em correct\+Word} & La parola svelata, in chiaro, letta dal db per risoluzione educativa al giocatore battuto. \\
+\hline
+{\em winner\+Username} & Chi ha dato per primo la soluzione (usato graficamente per "{}\+Il vincitore è X"{}). \\
+\hline
+{\em winner\+Response\+Time} & Il tempo che ha sancito il termine cronometrico. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00719_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00719_a208dc260932bb8ca840fa5c4789592ea}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!getCorrectWord@{getCorrectWord}}
+\index{getCorrectWord@{getCorrectWord}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{getCorrectWord()}{getCorrectWord()}}
+{\footnotesize\ttfamily \label{a00719_a208dc260932bb8ca840fa5c4789592ea} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+get\+Correct\+Word (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Svela il mistero alla base della challenge generata in \doxylink{a00711}{Game\+Start}. 
+
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}originale parola estratta. 
+\end{DoxyReturn}
+\Hypertarget{a00719_a409ba83902fd6f9c293a049322d32623}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!getResult@{getResult}}
+\index{getResult@{getResult}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{getResult()}{getResult()}}
+{\footnotesize\ttfamily \label{a00719_a409ba83902fd6f9c293a049322d32623} 
+\mbox{\hyperlink{a00755}{Result}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+get\+Result (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Mostra al ricevente il suo bilancio. 
+
+\begin{DoxyReturn}{Restituisce}
+Il verdetto personale relativo al ricevitore di questo messaggio. 
+\end{DoxyReturn}
+\Hypertarget{a00719_aa4cea258dffa7dc3b6b9a993e3bf0f47}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!getWinnerResponseTime@{getWinnerResponseTime}}
+\index{getWinnerResponseTime@{getWinnerResponseTime}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{getWinnerResponseTime()}{getWinnerResponseTime()}}
+{\footnotesize\ttfamily \label{a00719_aa4cea258dffa7dc3b6b9a993e3bf0f47} 
+int gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+get\+Winner\+Response\+Time (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Valore comparativo finale. 
+
+\begin{DoxyReturn}{Restituisce}
+Millisecondi del timer. 
+\end{DoxyReturn}
+\Hypertarget{a00719_af15ed9e797385f7125a432d0ba8929d2}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!getWinnerUsername@{getWinnerUsername}}
+\index{getWinnerUsername@{getWinnerUsername}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{getWinnerUsername()}{getWinnerUsername()}}
+{\footnotesize\ttfamily \label{a00719_af15ed9e797385f7125a432d0ba8929d2} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+get\+Winner\+Username (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Mostra il colpevole della fine della partita. 
+
+\begin{DoxyReturn}{Restituisce}
+Username vincente (o null). 
+\end{DoxyReturn}
+\Hypertarget{a00719_a4b05b35aaaf7c0e93c96ce32d0dbbde8}\index{gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}!toDTO@{toDTO}}
+\index{toDTO@{toDTO}!gruppo05.gtwshared.networking.NetworkMessage.GameResult@{gruppo05.gtwshared.networking.NetworkMessage.GameResult}}
+\doxysubsubsection{\texorpdfstring{toDTO()}{toDTO()}}
+{\footnotesize\ttfamily \label{a00719_a4b05b35aaaf7c0e93c96ce32d0dbbde8} 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result.\+to\+DTO (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. 
+
+\begin{DoxyReturn}{Restituisce}
+Il \doxylink{a00647}{Callback\+DTO} compilato a dovere con i dati della sottoclasse invocatrice. 
+\end{DoxyReturn}
+
+
+Reimplementa \mbox{\hyperlink{a00683_a5e1fdf66c76c4b202a2325096271edec}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Message.\+java\end{DoxyCompactItemize}

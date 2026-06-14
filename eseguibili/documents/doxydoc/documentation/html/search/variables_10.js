@@ -1,0 +1,21 @@
+var searchData=
+[
+  ['targetword_0',['targetWord',['../a00343.html#a22ad8228a3efce05dc507d65f7a0cf1f',1,'gruppo05::gtwserver::controller::GameSetupController']]],
+  ['tblhistory_1',['tblHistory',['../a00307.html#ad73c9fe6d0196901f97dc776d773c8c3',1,'gruppo05::gtwclient::controller::HistoryViewController']]],
+  ['tblplayers_2',['tblPlayers',['../a00339.html#a855b7799875fcd65d7bfa0cfd449195e',1,'gruppo05::gtwserver::controller::AdminDashboardViewController']]],
+  ['text_3',['text',['../a00427.html#a549adecdd7ee6260846b31aa289a0dc6',1,'gruppo05.gtwserver.model.Question.text'],['../a00747.html#ad76f34ba09849cfbd575f3e2ab05c548',1,'gruppo05.gtwshared.networking.NetworkMessage.TextMessage.text']]],
+  ['text_5fmessage_4',['TEXT_MESSAGE',['../a00663.html#a83b70a0ac49f4170962e8f5b69cf2119',1,'gruppo05::gtwshared::networking::MessageType']]],
+  ['threads_5',['threads',['../a00671.html#ab9e1d89fbb5f38dd20802bd190faa1b0',1,'gruppo05::gtwshared::networking::NetworkConnection']]],
+  ['timeline_6',['timeline',['../a00303.html#a17394b7d41073d2f6e34cd6d5ef4048f',1,'gruppo05::gtwclient::controller::GameViewController']]],
+  ['timer_7',['timer',['../a00343.html#a8c34c65f8e0960fb6470b4dc0e490290',1,'gruppo05.gtwserver.controller.GameSetupController.timer'],['../a00711.html#aca4edba07b4000555b1595fe3e6c62c4',1,'gruppo05.gtwshared.networking.NetworkMessage.GameStart.timer']]],
+  ['timestamp_8',['timestamp',['../a00683.html#a6cb2c9e0b379e4c6baa4f7e244d2b37b',1,'gruppo05::gtwshared::networking::NetworkMessage']]],
+  ['token_9',['token',['../a00435.html#ae921005aecd2bd17055d2b415adb352b',1,'gruppo05::gtwserver::model::Word']]],
+  ['totalgamesplayed_10',['totalGamesPlayed',['../a00423.html#a7507b3e5d5693e99e0e785615c6383e4',1,'gruppo05::gtwserver::model::Player']]],
+  ['totalgameswon_11',['totalGamesWon',['../a00423.html#a4ef68227e74b89958b0a1a180dd152d9',1,'gruppo05::gtwserver::model::Player']]],
+  ['totalmatchesplayed_12',['totalMatchesPlayed',['../a00743.html#a2be24478b87719f5e1e9d5def5ea5340',1,'gruppo05::gtwshared::networking::NetworkMessage::HistoryResponse']]],
+  ['totalmatcheswon_13',['totalMatchesWon',['../a00743.html#a71d2d15049480714e34ca15c59580a37',1,'gruppo05::gtwshared::networking::NetworkMessage::HistoryResponse']]],
+  ['totalplayedtime_14',['totalPlayedTime',['../a00423.html#a57934e6fb78186b753e2425c72909474',1,'gruppo05.gtwserver.model.Player.totalPlayedTime'],['../a00743.html#ad56e1966197e757cc680a327db0ec43b',1,'gruppo05.gtwshared.networking.NetworkMessage.HistoryResponse.totalPlayedTime']]],
+  ['txacipheredtext_15',['txaCipheredText',['../a00303.html#a281d4a189b3991b3d32f8d989f99a83c',1,'gruppo05::gtwclient::controller::GameViewController']]],
+  ['txfanswer_16',['txfAnswer',['../a00303.html#a23106c166bad09b34a8736b3d00542a0',1,'gruppo05::gtwclient::controller::GameViewController']]],
+  ['type_17',['type',['../a00683.html#aae9d1a7d43240d769f8abe4e1114f9dc',1,'gruppo05::gtwshared::networking::NetworkMessage']]]
+];

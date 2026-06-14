@@ -1,0 +1,427 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Connection}
+\hypertarget{a00671}{}\label{a00671}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+
+
+Classe astratta che modella una connessione di rete generica (Client o Server).  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+networking.\+Network\+Connection\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.777778cm]{a00671}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Composti}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Connection\+Thread}
+\begin{DoxyCompactList}\small\item\em Lavoratore in background dedicato alla ricezione persistente su una singola socket. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00671_ab19fe620951c2f066390c88cb31114f2}{connect}} ()
+\begin{DoxyCompactList}\small\item\em Avvia asincronamente la fase di setup di tutti i canali richiesti. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_aa1ec2213c014192ed26439c6357a9a65}{send\+To}} (int channel\+Index, Serializable data)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Invia un oggetto serializzato verso uno specifico canale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a6d9da908552048f422ca1fd8406f7067}{broadcast}} (Serializable data)
+\begin{DoxyCompactList}\small\item\em Invia lo stesso oggetto a tutti i canali correntemente attivi (Broadcast). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_ae01fc7880c363b794e0c9df587665647}{broadcast\+Except}} (int excluded\+Index, Serializable data)
+\begin{DoxyCompactList}\small\item\em Invia un messaggio a tutti i canali attivi ad eccezione di uno specifico (Multicast filtrato). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a16396f5bfcf3a64e8a9ea7472b714e3b}{disconnect\+Channel}} (int channel\+Index)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Chiude forzatamente il socket e il flusso di rete associati a un canale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a21e090e1f64d99e2d022b0f734b5d022}{disconnect\+All}} ()
+\begin{DoxyCompactList}\small\item\em Itera su tutti i canali attivi chiudendone i rispettivi socket. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00671_afc1a0f0150a19b6355730260e5697759}{get\+Active\+Channel\+Count}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il conteggio in tempo reale dei thread di rete attivi e validi. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00671_a98a516726913130bde2d8915b0dbcdf6}{are\+All\+Channels\+Ready}} ()
+\begin{DoxyCompactList}\small\item\em Controlla se la rete è pronta all\textquotesingle{}uso secondo i requisiti della sottoclasse. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri protetti}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00671_a9ec14843abece34e49b69535051f9e01}{Network\+Connection}} (Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}}, Consumer$<$ Integer $>$ \mbox{\hyperlink{a00671_a55d9bdc060c18e51aa40077069cc23a7}{on\+Disconnect}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per istanziare una connessione di rete. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00671_a8f09f0bdc8efe12a65ccdb02c5225c3f}{Network\+Connection}} (Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}})
+\begin{DoxyCompactList}\small\item\em Costruttore semplificato senza la gestione degli eventi di disconnessione. \end{DoxyCompactList}\item 
+abstract Socket \mbox{\hyperlink{a00671_a0a0d24ebc3c0a4e49ccf7ed627f7cb83}{create\+Socket}} ()  throws IOException
+\begin{DoxyCompactList}\small\item\em Metodo astratto che delega alla sottoclasse la fornitura di una socket pronta. \end{DoxyCompactList}\item 
+abstract int \mbox{\hyperlink{a00671_a8235ce4b4c52628ede970c5ff727096d}{expected\+Channels}} ()
+\begin{DoxyCompactList}\small\item\em Metodo astratto che definisce quanti canali la connessione deve gestire. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_affd43cb1b8890caa95e558ebfdd3c7d8}{on\+Reconnected}} (int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Metodo invocato SOLO se la connessione viene ristabilita dopo almeno un tentativo fallito. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a6cebdc384b33ff45d40d869c0e0477ca}{on\+Channel\+Ready}} (Socket socket, int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Metodo eseguito subito dopo la creazione fisica della socket. \end{DoxyCompactList}\item 
+final void \mbox{\hyperlink{a00671_aeaed7958ff05d15ac9af749c6f4d5ee7}{start\+Channel}} (Socket socket, int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Istituisce, registra in memoria e avvia il thread di ascolto persistente per un canale. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00671_a8994c9fd1bc21969951021419e9a56f0}{is\+Channel\+Active}} (int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Verifica se un determinato indice di canale è attualmente occupato da un thread attivo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+Connection\+Thread \mbox{\hyperlink{a00671_a77a71705e99f2bf088e66f0b9910f832}{get\+Thread}} (int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Ricerca in modo sincronizzato un Connection\+Thread specifico tramite il suo indice. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+final List$<$ Connection\+Thread $>$ \mbox{\hyperlink{a00671_ab9e1d89fbb5f38dd20802bd190faa1b0}{threads}} = Collections.\+synchronized\+List(new Array\+List$<$$>$())
+\begin{DoxyCompactList}\small\item\em Lista thread-\/safe dei canali di comunicazione attivi. \end{DoxyCompactList}\item 
+final Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}}
+\begin{DoxyCompactList}\small\item\em Callback invocata automaticamente alla ricezione di un messaggio su qualsiasi canale. \end{DoxyCompactList}\item 
+final Consumer$<$ Integer $>$ \mbox{\hyperlink{a00671_a55d9bdc060c18e51aa40077069cc23a7}{on\+Disconnect}}
+\begin{DoxyCompactList}\small\item\em Callback opzionale invocata quando un canale di rete viene chiuso. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe astratta che modella una connessione di rete generica (Client o Server). 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Gestisce un insieme di canali di comunicazione indipendenti tramite la classe interna {\ttfamily \doxylink{}{Connection\+Thread}}. Fornisce un\textquotesingle{}architettura thread-\/safe per inviare e ricevere oggetti serializzabili attraverso socket TCP. La logica di creazione delle socket e la determinazione del numero di canali è delegata alle classi figlie tramite i metodi astratti {\ttfamily \doxylink{a00671_a0a0d24ebc3c0a4e49ccf7ed627f7cb83}{create\+Socket()}} e {\ttfamily \doxylink{a00671_a8235ce4b4c52628ede970c5ff727096d}{expected\+Channels()}}. 
+
+\label{doc-constructors}
+\Hypertarget{a00671_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00671_a9ec14843abece34e49b69535051f9e01}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!NetworkConnection@{NetworkConnection}}
+\index{NetworkConnection@{NetworkConnection}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{NetworkConnection()}{NetworkConnection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{a00671_a9ec14843abece34e49b69535051f9e01} 
+gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+Network\+Connection (\begin{DoxyParamCaption}\item[{Bi\+Consumer$<$ Integer, Serializable $>$}]{on\+Receive}{, }\item[{Consumer$<$ Integer $>$}]{on\+Disconnect}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Costruttore completo per istanziare una connessione di rete. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em on\+Receive} & La callback invocata ad ogni messaggio in ingresso. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Disconnect} & La callback invocata alla chiusura di un canale. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00671_a8f09f0bdc8efe12a65ccdb02c5225c3f}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!NetworkConnection@{NetworkConnection}}
+\index{NetworkConnection@{NetworkConnection}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{NetworkConnection()}{NetworkConnection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{a00671_a8f09f0bdc8efe12a65ccdb02c5225c3f} 
+gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+Network\+Connection (\begin{DoxyParamCaption}\item[{Bi\+Consumer$<$ Integer, Serializable $>$}]{on\+Receive}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Costruttore semplificato senza la gestione degli eventi di disconnessione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em on\+Receive} & La callback invocata ad ogni messaggio in ingresso. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00671_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00671_a98a516726913130bde2d8915b0dbcdf6}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!areAllChannelsReady@{areAllChannelsReady}}
+\index{areAllChannelsReady@{areAllChannelsReady}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{areAllChannelsReady()}{areAllChannelsReady()}}
+{\footnotesize\ttfamily \label{a00671_a98a516726913130bde2d8915b0dbcdf6} 
+boolean gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+are\+All\+Channels\+Ready (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Controlla se la rete è pronta all\textquotesingle{}uso secondo i requisiti della sottoclasse. 
+
+\begin{DoxyReturn}{Restituisce}
+true se il numero di canali attivi coincide con i canali attesi, false altrimenti. 
+\end{DoxyReturn}
+\Hypertarget{a00671_a6d9da908552048f422ca1fd8406f7067}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!broadcast@{broadcast}}
+\index{broadcast@{broadcast}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{broadcast()}{broadcast()}}
+{\footnotesize\ttfamily \label{a00671_a6d9da908552048f422ca1fd8406f7067} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+broadcast (\begin{DoxyParamCaption}\item[{Serializable}]{data}{}\end{DoxyParamCaption})}
+
+
+
+Invia lo stesso oggetto a tutti i canali correntemente attivi (Broadcast). 
+
+È un\textquotesingle{}operazione thread-\/safe. Se l\textquotesingle{}invio fallisce su un canale, viene loggato l\textquotesingle{}errore ma il ciclo continua per tentare di recapitare il pacchetto agli altri. 
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em data} & Il payload da inviare a tutti. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00671_ae01fc7880c363b794e0c9df587665647}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!broadcastExcept@{broadcastExcept}}
+\index{broadcastExcept@{broadcastExcept}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{broadcastExcept()}{broadcastExcept()}}
+{\footnotesize\ttfamily \label{a00671_ae01fc7880c363b794e0c9df587665647} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+broadcast\+Except (\begin{DoxyParamCaption}\item[{int}]{excluded\+Index}{, }\item[{Serializable}]{data}{}\end{DoxyParamCaption})}
+
+
+
+Invia un messaggio a tutti i canali attivi ad eccezione di uno specifico (Multicast filtrato). 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em excluded\+Index} & L\textquotesingle{}indice del canale a cui NON inviare il pacchetto. \\
+\hline
+\mbox{\texttt{in}}  & {\em data} & Il payload da inviare. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00671_ab19fe620951c2f066390c88cb31114f2}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!connect@{connect}}
+\index{connect@{connect}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily \label{a00671_ab19fe620951c2f066390c88cb31114f2} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+connect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Avvia asincronamente la fase di setup di tutti i canali richiesti. 
+
+Crea un numero di thread di setup pari a {\ttfamily \doxylink{a00671_a8235ce4b4c52628ede970c5ff727096d}{expected\+Channels()}}. Ogni thread tenterà di ottenere una socket in loop finché non ci riesce. 
+
+Reimplementata in \mbox{\hyperlink{a00439_a9e40209e89013dd2cd28620306add01c}{gruppo05.\+gtwserver.\+networking.\+Server\+Connection}}.
+
+\Hypertarget{a00671_a0a0d24ebc3c0a4e49ccf7ed627f7cb83}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!createSocket@{createSocket}}
+\index{createSocket@{createSocket}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{createSocket()}{createSocket()}}
+{\footnotesize\ttfamily \label{a00671_a0a0d24ebc3c0a4e49ccf7ed627f7cb83} 
+abstract Socket gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+create\+Socket (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Metodo astratto che delega alla sottoclasse la fornitura di una socket pronta. 
+
+Nel caso di un Server, utilizzerà server\+Socket.\+accept(), mentre nel caso di un Client creerà una new Socket(ip, porta). \begin{DoxyReturn}{Restituisce}
+Una Socket connessa e pronta per l\textquotesingle{}apertura degli stream. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se si verifica un errore di rete durante la creazione o l\textquotesingle{}accettazione. \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplementata in \mbox{\hyperlink{a00323_ae029159734489c884d13c9d57bd74cb2}{gruppo05.\+gtwclient.\+networking.\+Client\+Connection}}, e \mbox{\hyperlink{a00439_a6efec5804691a7530980b4adeb069231}{gruppo05.\+gtwserver.\+networking.\+Server\+Connection}}.
+
+\Hypertarget{a00671_a21e090e1f64d99e2d022b0f734b5d022}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!disconnectAll@{disconnectAll}}
+\index{disconnectAll@{disconnectAll}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{disconnectAll()}{disconnectAll()}}
+{\footnotesize\ttfamily \label{a00671_a21e090e1f64d99e2d022b0f734b5d022} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+disconnect\+All (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Itera su tutti i canali attivi chiudendone i rispettivi socket. 
+
+Crea una copia della lista per evitare eccezioni di concorrenza durante la modifica strutturale operata dai thread morenti. \Hypertarget{a00671_a16396f5bfcf3a64e8a9ea7472b714e3b}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!disconnectChannel@{disconnectChannel}}
+\index{disconnectChannel@{disconnectChannel}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{disconnectChannel()}{disconnectChannel()}}
+{\footnotesize\ttfamily \label{a00671_a16396f5bfcf3a64e8a9ea7472b714e3b} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+disconnect\+Channel (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{}\end{DoxyParamCaption}) throws IOException}
+
+
+
+Chiude forzatamente il socket e il flusso di rete associati a un canale. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}indice del canale da troncare. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se si verifica un errore durante la chiusura fisica del socket. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00671_a8235ce4b4c52628ede970c5ff727096d}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!expectedChannels@{expectedChannels}}
+\index{expectedChannels@{expectedChannels}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{expectedChannels()}{expectedChannels()}}
+{\footnotesize\ttfamily \label{a00671_a8235ce4b4c52628ede970c5ff727096d} 
+abstract int gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+expected\+Channels (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}, {\ttfamily [protected]}}
+
+
+
+Metodo astratto che definisce quanti canali la connessione deve gestire. 
+
+\begin{DoxyReturn}{Restituisce}
+Il numero atteso di canali. 
+\end{DoxyReturn}
+
+
+Reimplementata in \mbox{\hyperlink{a00323_a1ce486996299817a6b8c2e0bec3ec28c}{gruppo05.\+gtwclient.\+networking.\+Client\+Connection}}, e \mbox{\hyperlink{a00439_a967c98c56b20e165c6b403b5acc82cdf}{gruppo05.\+gtwserver.\+networking.\+Server\+Connection}}.
+
+\Hypertarget{a00671_afc1a0f0150a19b6355730260e5697759}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!getActiveChannelCount@{getActiveChannelCount}}
+\index{getActiveChannelCount@{getActiveChannelCount}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{getActiveChannelCount()}{getActiveChannelCount()}}
+{\footnotesize\ttfamily \label{a00671_afc1a0f0150a19b6355730260e5697759} 
+int gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+get\+Active\+Channel\+Count (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il conteggio in tempo reale dei thread di rete attivi e validi. 
+
+\begin{DoxyReturn}{Restituisce}
+Il numero intero di canali correntemente aperti. 
+\end{DoxyReturn}
+\Hypertarget{a00671_a77a71705e99f2bf088e66f0b9910f832}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!getThread@{getThread}}
+\index{getThread@{getThread}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{getThread()}{getThread()}}
+{\footnotesize\ttfamily \label{a00671_a77a71705e99f2bf088e66f0b9910f832} 
+Connection\+Thread gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+get\+Thread (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Ricerca in modo sincronizzato un Connection\+Thread specifico tramite il suo indice. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}indice da cercare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}istanza del thread che gestisce quel canale. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em Illegal\+Argument\+Exception} & Se nessun thread nella lista ha l\textquotesingle{}indice richiesto. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00671_a8994c9fd1bc21969951021419e9a56f0}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!isChannelActive@{isChannelActive}}
+\index{isChannelActive@{isChannelActive}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{isChannelActive()}{isChannelActive()}}
+{\footnotesize\ttfamily \label{a00671_a8994c9fd1bc21969951021419e9a56f0} 
+boolean gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+is\+Channel\+Active (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Verifica se un determinato indice di canale è attualmente occupato da un thread attivo. 
+
+Utile per le sottoclassi che implementano logica di assegnazione dinamica degli indici (es. per riutilizzare uno slot liberato da una disconnessione precedente).
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & Indice da controllare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+true Se esiste un {\ttfamily \doxylink{}{Connection\+Thread}} attivo con quell\textquotesingle{}indice, false altrimenti. 
+\end{DoxyReturn}
+\Hypertarget{a00671_a6cebdc384b33ff45d40d869c0e0477ca}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!onChannelReady@{onChannelReady}}
+\index{onChannelReady@{onChannelReady}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{onChannelReady()}{onChannelReady()}}
+{\footnotesize\ttfamily \label{a00671_a6cebdc384b33ff45d40d869c0e0477ca} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+on\+Channel\+Ready (\begin{DoxyParamCaption}\item[{Socket}]{socket}{, }\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Metodo eseguito subito dopo la creazione fisica della socket. 
+
+Le sottoclassi possono sovrascriverlo per eseguire logiche custom (es. log di rete, avvisi UI) appena la connessione TCP viene stabilita ma prima che inizi l\textquotesingle{}ascolto. 
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em socket} & La socket appena instaurata. \\
+\hline
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}identificativo numerico del canale. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplementata in \mbox{\hyperlink{a00439_a1e7acd1f47b1e5a1c671edd6ba86807d}{gruppo05.\+gtwserver.\+networking.\+Server\+Connection}}.
+
+\Hypertarget{a00671_affd43cb1b8890caa95e558ebfdd3c7d8}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!onReconnected@{onReconnected}}
+\index{onReconnected@{onReconnected}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{onReconnected()}{onReconnected()}}
+{\footnotesize\ttfamily \label{a00671_affd43cb1b8890caa95e558ebfdd3c7d8} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+on\+Reconnected (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Metodo invocato SOLO se la connessione viene ristabilita dopo almeno un tentativo fallito. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}identificativo numerico del canale. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplementata in \mbox{\hyperlink{a00323_aa34bb8783e59d19ef14832e0e5d2d59c}{gruppo05.\+gtwclient.\+networking.\+Client\+Connection}}.
+
+\Hypertarget{a00671_aa1ec2213c014192ed26439c6357a9a65}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!sendTo@{sendTo}}
+\index{sendTo@{sendTo}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{sendTo()}{sendTo()}}
+{\footnotesize\ttfamily \label{a00671_aa1ec2213c014192ed26439c6357a9a65} 
+void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+send\+To (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{, }\item[{Serializable}]{data}{}\end{DoxyParamCaption}) throws IOException}
+
+
+
+Invia un oggetto serializzato verso uno specifico canale. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}indice del canale destinatario. \\
+\hline
+\mbox{\texttt{in}}  & {\em data} & L\textquotesingle{}oggetto (che implementa Serializable) da trasmettere. \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se lo stream è chiuso, non inizializzato, o cade la connessione. \\
+\hline
+{\em Illegal\+Argument\+Exception} & Se l\textquotesingle{}indice specificato non corrisponde a nessun canale attivo. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00671_aeaed7958ff05d15ac9af749c6f4d5ee7}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!startChannel@{startChannel}}
+\index{startChannel@{startChannel}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{startChannel()}{startChannel()}}
+{\footnotesize\ttfamily \label{a00671_aeaed7958ff05d15ac9af749c6f4d5ee7} 
+final void gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+start\+Channel (\begin{DoxyParamCaption}\item[{Socket}]{socket}{, }\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Istituisce, registra in memoria e avvia il thread di ascolto persistente per un canale. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em socket} & La socket connessa. \\
+\hline
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}identificativo numerico assegnato al canale. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-variable-members}
+\Hypertarget{a00671_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00671_a55d9bdc060c18e51aa40077069cc23a7}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!onDisconnect@{onDisconnect}}
+\index{onDisconnect@{onDisconnect}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{onDisconnect}{onDisconnect}}
+{\footnotesize\ttfamily \label{a00671_a55d9bdc060c18e51aa40077069cc23a7} 
+final Consumer$<$Integer$>$ gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+on\+Disconnect\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Callback opzionale invocata quando un canale di rete viene chiuso. 
+
+Viene chiamata passando l\textquotesingle{}indice del canale disconnesso, sia in caso di chiusura volontaria che di caduta della connessione. \Hypertarget{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!onReceive@{onReceive}}
+\index{onReceive@{onReceive}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{onReceive}{onReceive}}
+{\footnotesize\ttfamily \label{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0} 
+final Bi\+Consumer$<$Integer, Serializable$>$ gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+on\+Receive\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Callback invocata automaticamente alla ricezione di un messaggio su qualsiasi canale. 
+
+Riceve in input due parametri\+: l\textquotesingle{}indice del canale (Integer) da cui proviene il messaggio e il payload deserializzato (Serializable). \Hypertarget{a00671_ab9e1d89fbb5f38dd20802bd190faa1b0}\index{gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}!threads@{threads}}
+\index{threads@{threads}!gruppo05.gtwshared.networking.NetworkConnection@{gruppo05.gtwshared.networking.NetworkConnection}}
+\doxysubsubsection{\texorpdfstring{threads}{threads}}
+{\footnotesize\ttfamily \label{a00671_ab9e1d89fbb5f38dd20802bd190faa1b0} 
+final List$<$Connection\+Thread$>$ gruppo05.\+gtwshared.\+networking.\+Network\+Connection.\+threads = Collections.\+synchronized\+List(new Array\+List$<$$>$())\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Lista thread-\/safe dei canali di comunicazione attivi. 
+
+Essendo utilizzata da thread paralleli, la lista è wrappata in Collections.\+synchronized\+List. Gli accessi in iterazione devono essere sincronizzati esplicitamente. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Connection.\+java\end{DoxyCompactItemize}

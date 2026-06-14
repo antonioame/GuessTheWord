@@ -1,0 +1,54 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test.\+Testable\+Server\+Login\+Manager}
+\hypertarget{a00519}{}\label{a00519}\index{gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager@{gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager}}
+Diagramma delle classi per gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test.\+Testable\+Server\+Login\+Manager\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00519}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00519_abec9bd94e2d4098513d9d563aba2bd55}{validate\+Info}} (String username, String password)
+\begin{DoxyCompactList}\small\item\em Sovrascrive {\ttfamily validate\+Info} invocando il callback direttamente sul thread corrente, senza coinvolgere il Java\+FX Application Thread. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00347}{gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00347_a610ae5547de0916c4ae316d47240eaf3}{set\+On\+Success\+Callback}} (Runnable r)
+\item 
+void \mbox{\hyperlink{a00347_ac6e604ea017774a7460877097fbec70f}{set\+On\+Failure\+Callback}} (Runnable r)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Versione testabile di {\ttfamily \doxylink{a00347}{Server\+Login\+Manager}} che sovrascrive le interazioni con Java\+FX per rendere la logica di business verificabile. Tiene traccia degli errori in {\ttfamily \doxylink{}{last\+Error\+Message}} e invoca il callback direttamente sul thread corrente, senza delegare a {\ttfamily Platform.\+run\+Later}. 
+
+\label{doc-func-members}
+\Hypertarget{a00519_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00519_abec9bd94e2d4098513d9d563aba2bd55}\index{gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager@{gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager}!validateInfo@{validateInfo}}
+\index{validateInfo@{validateInfo}!gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager@{gruppo05.gtwserver.controller.ServerLoginManagerTest.TestableServerLoginManager}}
+\doxysubsubsection{\texorpdfstring{validateInfo()}{validateInfo()}}
+{\footnotesize\ttfamily \label{a00519_abec9bd94e2d4098513d9d563aba2bd55} 
+void gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test.\+Testable\+Server\+Login\+Manager.\+validate\+Info (\begin{DoxyParamCaption}\item[{String}]{username}{, }\item[{String}]{password}{}\end{DoxyParamCaption})}
+
+
+
+Sovrascrive {\ttfamily validate\+Info} invocando il callback direttamente sul thread corrente, senza coinvolgere il Java\+FX Application Thread. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em username} & Nome utente da verificare. \\
+\hline
+\mbox{\texttt{in}}  & {\em password} & Password da verificare. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplementa \mbox{\hyperlink{a00347}{gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/controller/Server\+Login\+Manager\+Test.\+java\end{DoxyCompactItemize}

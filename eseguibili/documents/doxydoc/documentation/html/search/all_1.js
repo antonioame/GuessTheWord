@@ -1,0 +1,23 @@
+var searchData=
+[
+  ['basicsourcemanager_0',['BasicSourceManager',['../a00447.html',1,'gruppo05.gtwserver.sourcemanager.api.BasicSourceManager'],['../a00447.html#a8e5947e696e7a8c9d8a9845994ebfa41',1,'gruppo05.gtwserver.sourcemanager.api.BasicSourceManager.BasicSourceManager()']]],
+  ['basicsourcemanagertest_1',['BasicSourceManagerTest',['../a00555.html',1,'gruppo05::gtwserver::sourcemanager::api']]],
+  ['broadcast_2',['broadcast',['../a00671.html#a6d9da908552048f422ca1fd8406f7067',1,'gruppo05::gtwshared::networking::NetworkConnection']]],
+  ['broadcastexcept_3',['broadcastExcept',['../a00671.html#ae01fc7880c363b794e0c9df587665647',1,'gruppo05::gtwshared::networking::NetworkConnection']]],
+  ['btnaddsource_4',['btnAddSource',['../a00339.html#afe41d6fb964e2b61ecd8451cbe5d4915',1,'gruppo05::gtwserver::controller::AdminDashboardViewController']]],
+  ['btnback_5',['btnBack',['../a00307.html#abc1a37e65522b6e6efacca9a65e874cd',1,'gruppo05::gtwclient::controller::HistoryViewController']]],
+  ['btnbacktolobby_6',['btnBackToLobby',['../a00315.html#a2571e140ada2c2961c69791ca9f6f75a',1,'gruppo05::gtwclient::controller::ResultViewController']]],
+  ['btncancel_7',['btnCancel',['../a00319.html#a7ca4133c8d6327cfa4a281f8bfdeaec4',1,'gruppo05::gtwclient::controller::WaitingViewController']]],
+  ['btneasy_8',['btnEasy',['../a00311.html#a4286948ae1cc4fc01c35ae98e8476638',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnexit_9',['btnExit',['../a00311.html#a8418f0e5f0f28aa71de18db47131ddd7',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnhard_10',['btnHard',['../a00311.html#a1b97917235b22325c63af1aa3bcd5929',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnhistory_11',['btnHistory',['../a00311.html#a498eac85e59e77cba479813df1a9e833',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnnormal_12',['btnNormal',['../a00311.html#afbc0e8d6187875ff0acc00441f10b5eb',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnplay_13',['btnPlay',['../a00311.html#a51c8f244a0ca792ace20e4218817e81f',1,'gruppo05::gtwclient::controller::LobbyViewController']]],
+  ['btnremovesource_14',['btnRemoveSource',['../a00339.html#a5d1034bb6b06b31b376a6341ce1d7996',1,'gruppo05::gtwserver::controller::AdminDashboardViewController']]],
+  ['btnsubmit_15',['btnSubmit',['../a00303.html#ab38122c7e6dc40c60ba12bb7f698d93e',1,'gruppo05::gtwclient::controller::GameViewController']]],
+  ['build_16',['build',['../a00455.html#a4876ae6d6ca227bb6c5b1fa4e61d4ff4',1,'gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder.build()'],['../a00463.html#a9fe567f3221e5539413771a58d86f0a8',1,'gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig.Builder.build()'],['../a00659.html#aefb8fb070446f2fd3837ec07e6c0174e',1,'gruppo05.gtwshared.dto.CallbackDTO.Builder.build()']]],
+  ['builder_17',['Builder',['../a00455.html',1,'gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder'],['../a00463.html',1,'gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig.Builder'],['../a00659.html',1,'gruppo05.gtwshared.dto.CallbackDTO.Builder'],['../a00455.html#a921efa179d8fa328d26dd23a80b420c4',1,'gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder.Builder()'],['../a00463.html#ac17b49f5d089bf6f58e67907d37131a9',1,'gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig.Builder.Builder()'],['../a00659.html#aa410e965aba30a8112ad5db502b8c69e',1,'gruppo05.gtwshared.dto.CallbackDTO.Builder.Builder()']]],
+  ['buildletterfrequencyvector_18',['buildLetterFrequencyVector',['../a00511.html#a4cc4779ea4eabe624590ca6490efbbb3',1,'gruppo05::gtwserver::utility::LetterFrequencySimilarity']]],
+  ['bytestohex_19',['bytesToHex',['../a00759.html#a4c2e00707a9d712e2b491601f00d1e70',1,'gruppo05::gtwshared::utility::SecurityUtils']]]
+];

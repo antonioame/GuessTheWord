@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['activegames_0',['activeGames',['../a00443.html#a150df026d52faa50a835de35c66a3b7e',1,'gruppo05::gtwserver::networking::ServerConnectionCreator']]],
+  ['adao_1',['adao',['../a00523.html#ae745c2f8d3a7fd0fca1c331c8d78e173',1,'gruppo05::gtwserver::db::ConcreteAdminDAOTest']]],
+  ['addpreset_2',['addPreset',['../a00463.html#a8c561f2d34a3651403a708de1c0fa762',1,'gruppo05::gtwserver::sourcemanager::api::config::SourceManagerConfig::Builder']]],
+  ['addsource_3',['addSource',['../a00447.html#abe4958c4bd37c3510e1606983c53a449',1,'gruppo05.gtwserver.sourcemanager.api.BasicSourceManager.addSource()'],['../a00467.html#ada48a721e24656527737675dd04884db',1,'gruppo05.gtwserver.sourcemanager.api.SourceManager.addSource()']]],
+  ['admin_4',['Admin',['../a00411.html',1,'gruppo05.gtwserver.model.Admin'],['../a00411.html#abad14556128c3687e8666a52a70dc71a',1,'gruppo05.gtwserver.model.Admin.Admin()']]],
+  ['admindao_5',['AdminDAO',['../a00355.html',1,'gruppo05::gtwserver::db']]],
+  ['admindashboardviewcontroller_6',['AdminDashboardViewController',['../a00339.html',1,'gruppo05::gtwserver::controller']]],
+  ['alphabet_5fsize_7',['ALPHABET_SIZE',['../a00511.html#a3fec378ba7271f809d2a0835d508047e',1,'gruppo05::gtwserver::utility::LetterFrequencySimilarity']]],
+  ['answer_8',['answer',['../a00427.html#aaf285bc9a4e6730daffdc26284fcfd78',1,'gruppo05::gtwserver::model::Question']]],
+  ['answer_5fsubmission_9',['ANSWER_SUBMISSION',['../a00663.html#a705389c69907fabd6b887a7e9666e2ff',1,'gruppo05::gtwshared::networking::MessageType']]],
+  ['answerdata_10',['answerData',['../a00659.html#a620670178d308ecb16d3ebf6e56bed3a',1,'gruppo05::gtwshared::dto::CallbackDTO::Builder']]],
+  ['answersubmission_11',['AnswerSubmission',['../a00715.html',1,'gruppo05.gtwshared.networking.NetworkMessage.AnswerSubmission'],['../a00715.html#a131934d799f83f2e7e1cf91bf8fd0423',1,'gruppo05.gtwshared.networking.NetworkMessage.AnswerSubmission.AnswerSubmission()']]],
+  ['app_12',['App',['../a00291.html',1,'gruppo05.gtwclient.App'],['../a00331.html',1,'gruppo05.gtwserver.App']]],
+  ['areallchannelsready_13',['areAllChannelsReady',['../a00671.html#a98a516726913130bde2d8915b0dbcdf6',1,'gruppo05::gtwshared::networking::NetworkConnection']]],
+  ['arebothclientsconnected_14',['areBothClientsConnected',['../a00439.html#a13473ce0ddd4604071ff0c1427415673',1,'gruppo05::gtwserver::networking::ServerConnection']]],
+  ['ascii_5flowercase_5foffset_15',['ASCII_LOWERCASE_OFFSET',['../a00511.html#a53cd184e11f2e4f74c721eb2d4b34221',1,'gruppo05::gtwserver::utility::LetterFrequencySimilarity']]],
+  ['avgresponsetime_16',['avgResponseTime',['../a00743.html#abe3f1d8dca09696de973e7b2cdebfb12',1,'gruppo05::gtwshared::networking::NetworkMessage::HistoryResponse']]]
+];

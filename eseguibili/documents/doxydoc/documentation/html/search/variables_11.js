@@ -1,0 +1,8 @@
+var searchData=
+[
+  ['uidatabaseupdatecallback_0',['uiDatabaseUpdateCallback',['../a00443.html#ab1341bb82d0e43e183be55e7b53523b1',1,'gruppo05::gtwserver::networking::ServerConnectionCreator']]],
+  ['uidisconnectcallback_1',['uiDisconnectCallback',['../a00443.html#a2e1b710b5e2711b6976929a979a6de56',1,'gruppo05::gtwserver::networking::ServerConnectionCreator']]],
+  ['url_2',['URL',['../a00391.html#aec6acd844040f4c2585f2f3c49e989f3',1,'gruppo05::gtwserver::db::DatabaseManager']]],
+  ['username_3',['USERNAME',['../a00391.html#a905df596fb0376e997ac5e9b45c63a8f',1,'gruppo05::gtwserver::db::DatabaseManager']]],
+  ['username_4',['username',['../a00303.html#a4c2651e438b4575d284aacd3dff6f061',1,'gruppo05.gtwclient.controller.GameViewController.username'],['../a00307.html#abf6902b5c03cff43b9da0a900ea650d0',1,'gruppo05.gtwclient.controller.HistoryViewController.username'],['../a00311.html#a1448f1d5e19978318f79afaab3513774',1,'gruppo05.gtwclient.controller.LobbyViewController.username'],['../a00315.html#ae8d1cce646ec2088bb93f698793d7265',1,'gruppo05.gtwclient.controller.ResultViewController.username'],['../a00319.html#a188876035b9bb715aca54753a7f74e9b',1,'gruppo05.gtwclient.controller.WaitingViewController.username'],['../a00411.html#ad2edaeca0284229da541165b9d7319d4',1,'gruppo05.gtwserver.model.Admin.username'],['../a00423.html#acef830af7b1f098be0e22cbdd3305588',1,'gruppo05.gtwserver.model.Player.username'],['../a00687.html#a60e4311daea028b2d4d5b62204a04cb1',1,'gruppo05.gtwshared.networking.NetworkMessage.LoginRequest.username'],['../a00695.html#af67a5b4ac7057366a42d2050ab1b913a',1,'gruppo05.gtwshared.networking.NetworkMessage.RegisterRequest.username']]]
+];

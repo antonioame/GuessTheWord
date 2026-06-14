@@ -1,0 +1,83 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+controller.\+Login\+View\+Controller}
+\hypertarget{a00631}{}\label{a00631}\index{gruppo05.gtwshared.controller.LoginViewController@{gruppo05.gtwshared.controller.LoginViewController}}
+Diagramma delle classi per gruppo05.\+gtwshared.\+controller.\+Login\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00631}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00631_aedce9b79695afdce7aa7398779d5af6e}\label{a00631_aedce9b79695afdce7aa7398779d5af6e} 
+void {\bfseries initialize} (URL url, Resource\+Bundle rb)
+\item 
+void \mbox{\hyperlink{a00631_a271e23017d7230bbd95e263f28e7edab}{reset\+Login\+Button}} ()
+\item 
+\Hypertarget{a00631_a90cd535f3f0386dd5badbeda63f82975}\label{a00631_a90cd535f3f0386dd5badbeda63f82975} 
+void {\bfseries set\+Login\+Manager} (\mbox{\hyperlink{a00627}{Login\+Manager}} login\+Manager)
+\item 
+\Hypertarget{a00631_a2d8945fdae054007515dd6e964e08465}\label{a00631_a2d8945fdae054007515dd6e964e08465} 
+void {\bfseries set\+Signup\+Manager} (\mbox{\hyperlink{a00639}{Signup\+Manager}} signup\+Manager)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00631_af7203c0fe7460b3cfcd77ecc49f70f06}\label{a00631_af7203c0fe7460b3cfcd77ecc49f70f06} 
+void {\bfseries on\+Confirm} (Action\+Event event)  throws IOException 
+\item 
+\Hypertarget{a00631_a684640477b092d3a3a5e2b3e0c060f8c}\label{a00631_a684640477b092d3a3a5e2b3e0c060f8c} 
+void {\bfseries switch\+To\+Signup} (Action\+Event event)  throws IOException 
+\item 
+\Hypertarget{a00631_a2cde53819192700322d276ba5e99b1a8}\label{a00631_a2cde53819192700322d276ba5e99b1a8} 
+void {\bfseries exit\+App} (Action\+Event event)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00631_aa6ccca5b68c821f584da694939578fc3}\label{a00631_aa6ccca5b68c821f584da694939578fc3} 
+Pane {\bfseries outer\+Container}
+\item 
+\Hypertarget{a00631_ac44d24447601fdee285e5964d9752471}\label{a00631_ac44d24447601fdee285e5964d9752471} 
+Text\+Field {\bfseries txf\+Username}
+\item 
+\Hypertarget{a00631_af427ccca70daff754dfbbe03889763f3}\label{a00631_af427ccca70daff754dfbbe03889763f3} 
+Text\+Field {\bfseries txf\+Pswd}
+\item 
+\Hypertarget{a00631_af38e735a66e1d2b946addbda2c0706c7}\label{a00631_af38e735a66e1d2b946addbda2c0706c7} 
+Hyperlink {\bfseries link\+To\+Login}
+\item 
+\Hypertarget{a00631_a9129f7f43f0fc7f50647ef9b59858642}\label{a00631_a9129f7f43f0fc7f50647ef9b59858642} 
+Button {\bfseries btn\+Exit}
+\item 
+\Hypertarget{a00631_a108f20b1f76e3e1fa6c9afbd6230e335}\label{a00631_a108f20b1f76e3e1fa6c9afbd6230e335} 
+Button {\bfseries btn\+Confirm}
+\item 
+\Hypertarget{a00631_a9795976b1f540000b8b38d6347d2023f}\label{a00631_a9795976b1f540000b8b38d6347d2023f} 
+\mbox{\hyperlink{a00627}{Login\+Manager}} {\bfseries login\+Manager}
+\item 
+\Hypertarget{a00631_ad1e44e6eadf63b4a42195bdb484d8c0f}\label{a00631_ad1e44e6eadf63b4a42195bdb484d8c0f} 
+\mbox{\hyperlink{a00639}{Signup\+Manager}} {\bfseries signup\+Manager}
+\item 
+\Hypertarget{a00631_af9ccf9e958879f1e6330f874f016b7bb}\label{a00631_af9ccf9e958879f1e6330f874f016b7bb} 
+final Boolean\+Property {\bfseries is\+Processing} = new Simple\+Boolean\+Property(false)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+FXML Controller class per la gestione del Login (condiviso tra Client e Server). 
+
+\label{doc-func-members}
+\Hypertarget{a00631_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00631_a271e23017d7230bbd95e263f28e7edab}\index{gruppo05.gtwshared.controller.LoginViewController@{gruppo05.gtwshared.controller.LoginViewController}!resetLoginButton@{resetLoginButton}}
+\index{resetLoginButton@{resetLoginButton}!gruppo05.gtwshared.controller.LoginViewController@{gruppo05.gtwshared.controller.LoginViewController}}
+\doxysubsubsection{\texorpdfstring{resetLoginButton()}{resetLoginButton()}}
+{\footnotesize\ttfamily \label{a00631_a271e23017d7230bbd95e263f28e7edab} 
+void gruppo05.\+gtwshared.\+controller.\+Login\+View\+Controller.\+reset\+Login\+Button (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+Sblocca l\textquotesingle{}interfaccia grafica riabilitando i controlli (in caso di errore o problemi di rete). 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/controller/Login\+View\+Controller.\+java\end{DoxyCompactItemize}

@@ -1,0 +1,208 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Message}
+\hypertarget{a00683}{}\label{a00683}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+
+
+Classe base astratta per tutti i payload scambiati in rete tra server e client.  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+networking.\+Network\+Message\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=11.506849cm]{a00683}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Composti}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{a00715}{Answer\+Submission}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: L\textquotesingle{}utente fa un tentativo o invia lo scadere del timeout. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00735}{Client\+Disconnect}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Avviso pulito (graceful shutdown) di disconnessione o logout. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00719}{Game\+Result}}
+\begin{DoxyCompactList}\small\item\em Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Fine ufficiale dei giochi, decreto di vittoria/sconfitta. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00711}{Game\+Start}}
+\begin{DoxyCompactList}\small\item\em Comando (Server -\/\texorpdfstring{$>$}{>} Client)\+: Trasferimento del payload generato alla grafica (Scambio Scene). \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00739}{History\+Request}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Ping di richiesta dei dati SQL completi dell\textquotesingle{}utente loggato. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00743}{History\+Response}}
+\begin{DoxyCompactList}\small\item\em Risposta Data-\/\+Heavy (Server -\/\texorpdfstring{$>$}{>} Client)\+: Pacchetto contenente il database riassuntivo del player. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00687}{Login\+Request}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Chiede l\textquotesingle{}autorizzazione di accesso al sistema. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00691}{Login\+Response}}
+\begin{DoxyCompactList}\small\item\em Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Riposta con esito della validazione credenziali. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00723}{Opponent\+Answered}}
+\begin{DoxyCompactList}\small\item\em Segnale "{}\+Ghost"{} (Server -\/\texorpdfstring{$>$}{>} Client)\+: Avviso in real-\/time che l\textquotesingle{}avversario ha risposto. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00731}{Opponent\+Disconnected}}
+\begin{DoxyCompactList}\small\item\em Segnale d\textquotesingle{}errore (Server -\/\texorpdfstring{$>$}{>} Client)\+: Arresto della partita a causa di crollo della controparte. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00703}{Play\+Request}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: L\textquotesingle{}utente si mette in coda definendo una difficoltà. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00707}{Play\+Response}}
+\begin{DoxyCompactList}\small\item\em Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Aggiornamento real-\/time dello stato in lobby. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00695}{Register\+Request}}
+\begin{DoxyCompactList}\small\item\em Comando (Client -\/\texorpdfstring{$>$}{>} Server)\+: Inviazione dei dati per creare un nuovo profilo. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00699}{Register\+Response}}
+\begin{DoxyCompactList}\small\item\em Notifica (Server -\/\texorpdfstring{$>$}{>} Client)\+: Feedback sull\textquotesingle{}operazione di iscrizione SQL. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00747}{Text\+Message}}
+\begin{DoxyCompactList}\small\item\em Tool interno\+: Consente il transito di comandi diretti da terminale o popup generici e disaccoppiati. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00727}{Wrong\+Answer}}
+\begin{DoxyCompactList}\small\item\em Segnale (Server -\/\texorpdfstring{$>$}{>} Client)\+: Il tentativo di risposta inviato dal Client è errato. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_a8deb505fc607f2cd821f0e42ae2e5061}{get\+Type}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il tipo discriminante del messaggio. \end{DoxyCompactList}\item 
+Local\+Date\+Time \mbox{\hyperlink{a00683_abe9887af469319aec23b6c8fcf5a3206}{get\+Timestamp}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il momento di generazione. \end{DoxyCompactList}\item 
+abstract \mbox{\hyperlink{a00647}{Callback\+DTO}} \mbox{\hyperlink{a00683_a5e1fdf66c76c4b202a2325096271edec}{to\+DTO}} ()
+\begin{DoxyCompactList}\small\item\em Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00683_a0f4fccf839305a8e172dcdb40ad38137}{to\+String}} ()
+\begin{DoxyCompactList}\small\item\em Ritorna una traccia descrittiva per debug e logging di rete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri protetti}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e}{Network\+Message}} (\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_aae9d1a7d43240d769f8abe4e1114f9dc}{type}})
+\begin{DoxyCompactList}\small\item\em Costruttore interno per la base del messaggio. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00683_aae9d1a7d43240d769f8abe4e1114f9dc}\label{a00683_aae9d1a7d43240d769f8abe4e1114f9dc} 
+final \mbox{\hyperlink{a00663}{Message\+Type}} {\bfseries type}
+\begin{DoxyCompactList}\small\item\em Valore enumerato identificativo usato in ricezione per smistare rapidamente la logica. \end{DoxyCompactList}\item 
+\Hypertarget{a00683_a6cb2c9e0b379e4c6baa4f7e244d2b37b}\label{a00683_a6cb2c9e0b379e4c6baa4f7e244d2b37b} 
+final Local\+Date\+Time {\bfseries timestamp}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}istante esatto di emissione fisica o logica del messaggio. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00683_add022de76a2dcabaef82db51240a7b48}\label{a00683_add022de76a2dcabaef82db51240a7b48} 
+static final long {\bfseries serial\+Version\+UID} = 1L
+\begin{DoxyCompactList}\small\item\em Versione di serializzazione di base dell\textquotesingle{}architettura. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe base astratta per tutti i payload scambiati in rete tra server e client. 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Stabilisce il contratto fondamentale del protocollo di rete del progetto. Ogni pacchetto serializzabile viaggiante sui socket deve estendere questa classe. Assicura l\textquotesingle{}autoconsapevolezza temporale (timestamp) e l\textquotesingle{}interoperabilità verso la GUI tramite la conversione in {\ttfamily \doxylink{a00647}{Callback\+DTO}}.
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+{\bfseries{FLUSSO DI COMUNICAZIONE CLIENT-\/\+SERVER\+:}}
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Autenticazione\+:}} Il client invia una {\ttfamily \doxylink{a00687}{Login\+Request}}. Il server controlla i dati nel DB e risponde con {\ttfamily \doxylink{a00691}{Login\+Response}}, specificando anche se l\textquotesingle{}utente ha privilegi di amministratore. 
+\item {\bfseries{Registrazione\+:}} Se l\textquotesingle{}utente non ha un account, invia una {\ttfamily \doxylink{a00695}{Register\+Request}}. Il server inserisce i dati e risponde con {\ttfamily \doxylink{a00699}{Register\+Response}}.
+
+
+\item {\bfseries{Richiesta Partita\+:}} L\textquotesingle{}utente loggato invia una {\ttfamily \doxylink{a00703}{Play\+Request}} per cercare un avversario. Il server risponde con {\ttfamily \doxylink{a00707}{Play\+Response}}, indicando se la partita inizia subito (MATCH\+\_\+\+FOUND) o se deve aspettare (WAITING). 
+\item {\bfseries{Inizio Partita\+:}} Appena ci sono due giocatori, il server invia a entrambi un messaggio {\ttfamily \doxylink{a00711}{Game\+Start}} contenente la sfida cifrata, il timer e i dati dell\textquotesingle{}avversario. 
+\item {\bfseries{Fase di Gioco\+:}} 
+\begin{DoxyItemize}
+\item Il giocatore elabora la risposta e la invia con {\ttfamily \doxylink{a00715}{Answer\+Submission}}. 
+\item Se un giocatore risponde, il server avvisa l\textquotesingle{}altro in tempo reale tramite {\ttfamily \doxylink{a00723}{Opponent\+Answered}}. 
+\end{DoxyItemize}
+\item {\bfseries{Fine Partita\+:}} Il server elabora i tempi e decreta un vincitore, comunicandolo ai due client tramite il messaggio {\ttfamily \doxylink{a00719}{Game\+Result}}.
+
+
+\item {\bfseries{Storico\+:}} Dalla lobby, il client può richiedere lo storico delle proprie partite con {\ttfamily \doxylink{a00739}{History\+Request}}. Il server interroga il DB e risponde con {\ttfamily \doxylink{a00743}{History\+Response}}.
+
+
+\item {\bfseries{Disconnessione\+:}} 
+\begin{DoxyItemize}
+\item Se un client esce dal gioco regolarmente, invia {\ttfamily \doxylink{a00735}{Client\+Disconnect}}. 
+\item Se un client cade o si disconnette durante un\textquotesingle{}attesa o una partita, il server avvisa l\textquotesingle{}avversario superstite inviando {\ttfamily \doxylink{a00731}{Opponent\+Disconnected}}. 
+\end{DoxyItemize}
+\end{DoxyEnumerate}
+
+\label{doc-constructors}
+\Hypertarget{a00683_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}!NetworkMessage@{NetworkMessage}}
+\index{NetworkMessage@{NetworkMessage}!gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+\doxysubsubsection{\texorpdfstring{NetworkMessage()}{NetworkMessage()}}
+{\footnotesize\ttfamily \label{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e} 
+gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Network\+Message (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00663}{Message\+Type}}}]{type}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Costruttore interno per la base del messaggio. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em type} & Il tipo di messaggio ereditato. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00683_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00683_abe9887af469319aec23b6c8fcf5a3206}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}!getTimestamp@{getTimestamp}}
+\index{getTimestamp@{getTimestamp}!gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+\doxysubsubsection{\texorpdfstring{getTimestamp()}{getTimestamp()}}
+{\footnotesize\ttfamily \label{a00683_abe9887af469319aec23b6c8fcf5a3206} 
+Local\+Date\+Time gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+get\+Timestamp (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il momento di generazione. 
+
+\begin{DoxyReturn}{Restituisce}
+Local\+Date\+Time nativo. 
+\end{DoxyReturn}
+\Hypertarget{a00683_a8deb505fc607f2cd821f0e42ae2e5061}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}!getType@{getType}}
+\index{getType@{getType}!gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+\doxysubsubsection{\texorpdfstring{getType()}{getType()}}
+{\footnotesize\ttfamily \label{a00683_a8deb505fc607f2cd821f0e42ae2e5061} 
+\mbox{\hyperlink{a00663}{Message\+Type}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+get\+Type (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il tipo discriminante del messaggio. 
+
+\begin{DoxyReturn}{Restituisce}
+Enum \doxylink{a00663}{Message\+Type} associato. 
+\end{DoxyReturn}
+\Hypertarget{a00683_a5e1fdf66c76c4b202a2325096271edec}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}!toDTO@{toDTO}}
+\index{toDTO@{toDTO}!gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+\doxysubsubsection{\texorpdfstring{toDTO()}{toDTO()}}
+{\footnotesize\ttfamily \label{a00683_a5e1fdf66c76c4b202a2325096271edec} 
+abstract \mbox{\hyperlink{a00647}{Callback\+DTO}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+to\+DTO (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [abstract]}}
+
+
+
+Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. 
+
+\begin{DoxyReturn}{Restituisce}
+Il \doxylink{a00647}{Callback\+DTO} compilato a dovere con i dati della sottoclasse invocatrice. 
+\end{DoxyReturn}
+
+
+Reimplementata in \mbox{\hyperlink{a00715_a74367b19e76025710296154aa3780126}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Answer\+Submission}}, \mbox{\hyperlink{a00735_a40fd81459d778e05045af788b1fba11b}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Client\+Disconnect}}, \mbox{\hyperlink{a00719_a4b05b35aaaf7c0e93c96ce32d0dbbde8}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Result}}, \mbox{\hyperlink{a00711_a150c9c9b91a2b3599d8068c5b327d58f}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start}}, \mbox{\hyperlink{a00739_abe75eab77d1b4a203732e6c6583cadc7}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+History\+Request}}, \mbox{\hyperlink{a00743_a6a79103140d95e8c2720c0aad30c4759}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+History\+Response}}, \mbox{\hyperlink{a00687_ae9c3e7beb553eee3b0c003f4a93c6a16}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Login\+Request}}, \mbox{\hyperlink{a00691_a1b83075f8ae79697982275f62ddb09a1}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Login\+Response}}, \mbox{\hyperlink{a00723_acaf0a19a20e33509539dd06d037c11bb}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Opponent\+Answered}}, \mbox{\hyperlink{a00731_a045d218704027a3c778b9f1a7f964065}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Opponent\+Disconnected}}, \mbox{\hyperlink{a00703_ac64fedf26d8d1cc1d848ec9d107d3c52}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Play\+Request}}, \mbox{\hyperlink{a00707_ab254316e5c554b50717a5b2044afd024}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Play\+Response}}, \mbox{\hyperlink{a00695_a20ec6058e0f2bcd3ed3a8f2bd3dae10c}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Request}}, \mbox{\hyperlink{a00699_a252e4558546202cf152623eb7f4b70af}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Register\+Response}}, \mbox{\hyperlink{a00747_a003c2ca0cd317afadcdbd5efbd7a3d60}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Text\+Message}}, e \mbox{\hyperlink{a00727_a929c0a072d4e5c6dd31e4377c94a5bea}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Wrong\+Answer}}.
+
+\Hypertarget{a00683_a0f4fccf839305a8e172dcdb40ad38137}\index{gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}!toString@{toString}}
+\index{toString@{toString}!gruppo05.gtwshared.networking.NetworkMessage@{gruppo05.gtwshared.networking.NetworkMessage}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily \label{a00683_a0f4fccf839305a8e172dcdb40ad38137} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+to\+String (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Ritorna una traccia descrittiva per debug e logging di rete. 
+
+\begin{DoxyReturn}{Restituisce}
+Formato stringa Class\+Name\mbox{[}TYPE @ Time\mbox{]}. 
+\end{DoxyReturn}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Message.\+java\end{DoxyCompactItemize}

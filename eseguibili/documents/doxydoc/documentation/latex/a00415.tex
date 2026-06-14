@@ -1,0 +1,218 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+model.\+Challenge}
+\hypertarget{a00415}{}\label{a00415}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+
+
+Rappresenta una sfida (\doxylink{a00415}{Challenge}) all\textquotesingle{}interno del sistema, definita da una parola segreta, una difficoltà e una sorgente.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00415_a6e06555fb80840835812261e720ea81e}{Challenge}} (int \mbox{\hyperlink{a00415_a8495dd244562d56882de11e703255a6c}{code}}, Date \mbox{\hyperlink{a00415_a8b801c827201724966f302a1be20ddbb}{date}}, \mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00415_adc4695daac48a30c3ab1c7199901da09}{difficulty}}, String \mbox{\hyperlink{a00415_a098332e62ab8c7b7fb2b5fbd712e554b}{word}}, int \mbox{\hyperlink{a00415_aca64f3e6bb6fd6552598b2c19cef1b71}{source}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per creare un oggetto \doxylink{a00415}{Challenge} con un codice identificativo esplicito. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00415_a1c1822e1dc639bc1ec5c322abfc5e057}{Challenge}} (Date \mbox{\hyperlink{a00415_a8b801c827201724966f302a1be20ddbb}{date}}, \mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00415_adc4695daac48a30c3ab1c7199901da09}{difficulty}}, String \mbox{\hyperlink{a00415_a098332e62ab8c7b7fb2b5fbd712e554b}{word}}, int \mbox{\hyperlink{a00415_aca64f3e6bb6fd6552598b2c19cef1b71}{source}})
+\begin{DoxyCompactList}\small\item\em Costruttore secondario che genera automaticamente un codice identificativo casuale per la sfida. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00415_aa74cb11e9da70f8ef5682e8f9bdc0429}{get\+Code}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il codice identificativo univoco della sfida. \end{DoxyCompactList}\item 
+Date \mbox{\hyperlink{a00415_af7dfc51cbff0f9ae5df4c8b9cef73131}{get\+Date}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la data della sfida. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00415_a52479aefd8bcf39b15ccd0ac569dc80d}{get\+Difficulty}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la difficoltà della sfida. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00415_a206a95efbe02bf57cee54b3943de4147}{get\+Word}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la parola segreta della sfida. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00415_a6dd61043ff1ef3c25ac5872ef7522b8a}{get\+Source}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce l\textquotesingle{}identificativo della sorgente della parola. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00415_aa5c711f9f35b21caf9356785d34c1dd2}{hash\+Code}} ()
+\begin{DoxyCompactList}\small\item\em Calcola l\textquotesingle{}hash code della sfida basandosi sul codice identificativo univoco. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00415_af7dae3b2646213ebc074ee45f4abc3f4}{equals}} (Object obj)
+\begin{DoxyCompactList}\small\item\em Confronta questa sfida con l\textquotesingle{}oggetto specificato per verificarne l\textquotesingle{}uguaglianza. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00415_a8495dd244562d56882de11e703255a6c}\label{a00415_a8495dd244562d56882de11e703255a6c} 
+final int {\bfseries code}
+\begin{DoxyCompactList}\small\item\em Il codice numerico univoco della sfida, utilizzato come chiave primaria. \end{DoxyCompactList}\item 
+\Hypertarget{a00415_a8b801c827201724966f302a1be20ddbb}\label{a00415_a8b801c827201724966f302a1be20ddbb} 
+final Date {\bfseries date}
+\begin{DoxyCompactList}\small\item\em La data in cui viene o è stata proposta la sfida. \end{DoxyCompactList}\item 
+\Hypertarget{a00415_adc4695daac48a30c3ab1c7199901da09}\label{a00415_adc4695daac48a30c3ab1c7199901da09} 
+final \mbox{\hyperlink{a00751}{Difficulty}} {\bfseries difficulty}
+\begin{DoxyCompactList}\small\item\em Il livello di difficoltà associato alla sfida. \end{DoxyCompactList}\item 
+\Hypertarget{a00415_a098332e62ab8c7b7fb2b5fbd712e554b}\label{a00415_a098332e62ab8c7b7fb2b5fbd712e554b} 
+final String {\bfseries word}
+\begin{DoxyCompactList}\small\item\em La parola segreta oggetto della sfida. \end{DoxyCompactList}\item 
+\Hypertarget{a00415_aca64f3e6bb6fd6552598b2c19cef1b71}\label{a00415_aca64f3e6bb6fd6552598b2c19cef1b71} 
+final int {\bfseries source}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}identificativo della sorgente da cui è stata estratta la parola. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Rappresenta una sfida (\doxylink{a00415}{Challenge}) all\textquotesingle{}interno del sistema, definita da una parola segreta, una difficoltà e una sorgente. 
+
+\begin{DoxyInvariant}{Invariante}
+Tutti i campi interni dell\textquotesingle{}oggetto sono immutabili (final). 
+\end{DoxyInvariant}
+
+
+\label{doc-constructors}
+\Hypertarget{a00415_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00415_a6e06555fb80840835812261e720ea81e}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!Challenge@{Challenge}}
+\index{Challenge@{Challenge}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{Challenge()}{Challenge()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{a00415_a6e06555fb80840835812261e720ea81e} 
+gruppo05.\+gtwserver.\+model.\+Challenge.\+Challenge (\begin{DoxyParamCaption}\item[{int}]{code}{, }\item[{Date}]{date}{, }\item[{\mbox{\hyperlink{a00751}{Difficulty}}}]{difficulty}{, }\item[{String}]{word}{, }\item[{int}]{source}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore completo per creare un oggetto \doxylink{a00415}{Challenge} con un codice identificativo esplicito. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em code} & Il codice numerico univoco da assegnare alla sfida. \\
+\hline
+\mbox{\texttt{in}}  & {\em date} & La data della sfida. \\
+\hline
+\mbox{\texttt{in}}  & {\em difficulty} & Il livello di difficoltà. \\
+\hline
+\mbox{\texttt{in}}  & {\em word} & La parola segreta. \\
+\hline
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}identificativo della sorgente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondizione}
+Viene creata una nuova istanza di Challenge\+Id memorizzata nel campo id. 
+\end{DoxyPostcond}
+\Hypertarget{a00415_a1c1822e1dc639bc1ec5c322abfc5e057}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!Challenge@{Challenge}}
+\index{Challenge@{Challenge}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{Challenge()}{Challenge()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{a00415_a1c1822e1dc639bc1ec5c322abfc5e057} 
+gruppo05.\+gtwserver.\+model.\+Challenge.\+Challenge (\begin{DoxyParamCaption}\item[{Date}]{date}{, }\item[{\mbox{\hyperlink{a00751}{Difficulty}}}]{difficulty}{, }\item[{String}]{word}{, }\item[{int}]{source}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore secondario che genera automaticamente un codice identificativo casuale per la sfida. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em date} & La data della sfida. \\
+\hline
+\mbox{\texttt{in}}  & {\em difficulty} & Il livello di difficoltà. \\
+\hline
+\mbox{\texttt{in}}  & {\em word} & La parola segreta. \\
+\hline
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}identificativo della sorgente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondizione}
+La sfida viene istanziata richiamando il costruttore principale con un intero casuale compreso tra 1 e Integer.\+MAX\+\_\+\+VALUE. 
+\end{DoxyPostcond}
+
+
+\label{doc-func-members}
+\Hypertarget{a00415_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00415_af7dae3b2646213ebc074ee45f4abc3f4}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!equals@{equals}}
+\index{equals@{equals}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily \label{a00415_af7dae3b2646213ebc074ee45f4abc3f4} 
+boolean gruppo05.\+gtwserver.\+model.\+Challenge.\+equals (\begin{DoxyParamCaption}\item[{Object}]{obj}{}\end{DoxyParamCaption})}
+
+
+
+Confronta questa sfida con l\textquotesingle{}oggetto specificato per verificarne l\textquotesingle{}uguaglianza. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em obj} & L\textquotesingle{}oggetto da confrontare con la sfida corrente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+true se l\textquotesingle{}oggetto specificato è uguale a questa sfida, false altrimenti. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il risultato è true se e solo se l\textquotesingle{}oggetto passato non è null, è un\textquotesingle{}istanza di \doxylink{a00415}{Challenge} e ha lo stesso codice di questo oggetto. 
+\end{DoxyPostcond}
+\Hypertarget{a00415_aa74cb11e9da70f8ef5682e8f9bdc0429}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!getCode@{getCode}}
+\index{getCode@{getCode}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{getCode()}{getCode()}}
+{\footnotesize\ttfamily \label{a00415_aa74cb11e9da70f8ef5682e8f9bdc0429} 
+int gruppo05.\+gtwserver.\+model.\+Challenge.\+get\+Code (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il codice identificativo univoco della sfida. 
+
+\begin{DoxyReturn}{Restituisce}
+Il codice numerico della sfida. 
+\end{DoxyReturn}
+\Hypertarget{a00415_af7dfc51cbff0f9ae5df4c8b9cef73131}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!getDate@{getDate}}
+\index{getDate@{getDate}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{getDate()}{getDate()}}
+{\footnotesize\ttfamily \label{a00415_af7dfc51cbff0f9ae5df4c8b9cef73131} 
+Date gruppo05.\+gtwserver.\+model.\+Challenge.\+get\+Date (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la data della sfida. 
+
+\begin{DoxyReturn}{Restituisce}
+Un oggetto Date corrispondente alla data memorizzata. 
+\end{DoxyReturn}
+\Hypertarget{a00415_a52479aefd8bcf39b15ccd0ac569dc80d}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!getDifficulty@{getDifficulty}}
+\index{getDifficulty@{getDifficulty}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{getDifficulty()}{getDifficulty()}}
+{\footnotesize\ttfamily \label{a00415_a52479aefd8bcf39b15ccd0ac569dc80d} 
+\mbox{\hyperlink{a00751}{Difficulty}} gruppo05.\+gtwserver.\+model.\+Challenge.\+get\+Difficulty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la difficoltà della sfida. 
+
+\begin{DoxyReturn}{Restituisce}
+Il valore dell\textquotesingle{}enum \doxylink{a00751}{Difficulty} della sfida. 
+\end{DoxyReturn}
+\Hypertarget{a00415_a6dd61043ff1ef3c25ac5872ef7522b8a}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!getSource@{getSource}}
+\index{getSource@{getSource}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{getSource()}{getSource()}}
+{\footnotesize\ttfamily \label{a00415_a6dd61043ff1ef3c25ac5872ef7522b8a} 
+int gruppo05.\+gtwserver.\+model.\+Challenge.\+get\+Source (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce l\textquotesingle{}identificativo della sorgente della parola. 
+
+\begin{DoxyReturn}{Restituisce}
+Un intero che rappresenta l\textquotesingle{}id della sorgente. 
+\end{DoxyReturn}
+\Hypertarget{a00415_a206a95efbe02bf57cee54b3943de4147}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!getWord@{getWord}}
+\index{getWord@{getWord}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{getWord()}{getWord()}}
+{\footnotesize\ttfamily \label{a00415_a206a95efbe02bf57cee54b3943de4147} 
+String gruppo05.\+gtwserver.\+model.\+Challenge.\+get\+Word (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la parola segreta della sfida. 
+
+\begin{DoxyReturn}{Restituisce}
+Una stringa contenente la parola. 
+\end{DoxyReturn}
+\Hypertarget{a00415_aa5c711f9f35b21caf9356785d34c1dd2}\index{gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}!hashCode@{hashCode}}
+\index{hashCode@{hashCode}!gruppo05.gtwserver.model.Challenge@{gruppo05.gtwserver.model.Challenge}}
+\doxysubsubsection{\texorpdfstring{hashCode()}{hashCode()}}
+{\footnotesize\ttfamily \label{a00415_aa5c711f9f35b21caf9356785d34c1dd2} 
+int gruppo05.\+gtwserver.\+model.\+Challenge.\+hash\+Code (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Calcola l\textquotesingle{}hash code della sfida basandosi sul codice identificativo univoco. 
+
+\begin{DoxyReturn}{Restituisce}
+Il valore dell\textquotesingle{}hash code calcolato. 
+\end{DoxyReturn}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/model/Challenge.\+java\end{DoxyCompactItemize}

@@ -1,0 +1,135 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller}
+\hypertarget{a00307}{}\label{a00307}\index{gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}}
+
+
+Controller Java\+FX per la gestione della schermata dello storico delle partite.  
+
+
+Diagramma delle classi per gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00307}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00307_abccd8bcfb8fdba4da02c2edf41a94430}{set\+Connection}} (\mbox{\hyperlink{a00323}{Client\+Connection}} \mbox{\hyperlink{a00307_af10e398d5978f143e9600d511771ab26}{connection}})
+\begin{DoxyCompactList}\small\item\em Configura la connessione di rete del client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00307_aa6105e7c34cab3f806a41f31a40da737}{set\+Username}} (String \mbox{\hyperlink{a00307_abf6902b5c03cff43b9da0a900ea650d0}{username}})
+\begin{DoxyCompactList}\small\item\em Imposta lo username dell\textquotesingle{}utente in sessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00307_a7dc9950ba8eef3117b1b07f57d5f3073}{show\+History}} (\mbox{\hyperlink{a00647}{Callback\+DTO}} dto)
+\begin{DoxyCompactList}\small\item\em Mostra lo storico delle partite dell\textquotesingle{}utente e le relative statistiche. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00307_a10c087c48151482d2b4ad223e4832b09}{initialize}} (URL location, Resource\+Bundle resources)
+\begin{DoxyCompactList}\small\item\em Inizializza i componenti grafici e la tabella della cronologia. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00307_a4e37317ef8b34ab8d47a669317c1359a}\label{a00307_a4e37317ef8b34ab8d47a669317c1359a} 
+Label {\bfseries lbl\+Won}
+\begin{DoxyCompactList}\small\item\em Etichetta per il totale delle partite vinte. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_a8653754cc0cce720530be199abaff3f5}\label{a00307_a8653754cc0cce720530be199abaff3f5} 
+Label {\bfseries lbl\+Played}
+\begin{DoxyCompactList}\small\item\em Etichetta per il totale delle partite giocate. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_a87040227a17a9c68fd8196ba018bb0f0}\label{a00307_a87040227a17a9c68fd8196ba018bb0f0} 
+Label {\bfseries lbl\+Avg\+Time}
+\begin{DoxyCompactList}\small\item\em Etichetta per il tempo di risposta medio. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_ad73c9fe6d0196901f97dc776d773c8c3}\label{a00307_ad73c9fe6d0196901f97dc776d773c8c3} 
+Table\+View$<$ Callback\+DTO.\+Match\+Record $>$ {\bfseries tbl\+History}
+\begin{DoxyCompactList}\small\item\em Tabella che visualizza lo storico delle partite. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_ab0bc6b83d467e8b394d8b26483f9705c}\label{a00307_ab0bc6b83d467e8b394d8b26483f9705c} 
+Table\+Column$<$ Callback\+DTO.\+Match\+Record, String $>$ {\bfseries col\+Opponent}
+\begin{DoxyCompactList}\small\item\em Colonna per mostrare lo username dell\textquotesingle{}avversario. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_a38708bcf1bdbec800e46f9d47e7a3aed}\label{a00307_a38708bcf1bdbec800e46f9d47e7a3aed} 
+Table\+Column$<$ Callback\+DTO.\+Match\+Record, String $>$ {\bfseries col\+Result}
+\begin{DoxyCompactList}\small\item\em Colonna per mostrare il risultato (VITTORIA, SCONFITTA, PAREGGIO). \end{DoxyCompactList}\item 
+\Hypertarget{a00307_a5716c2ac83918620d53fbc9b7d6ca394}\label{a00307_a5716c2ac83918620d53fbc9b7d6ca394} 
+Table\+Column$<$ Callback\+DTO.\+Match\+Record, String $>$ {\bfseries col\+Date}
+\begin{DoxyCompactList}\small\item\em Colonna per mostrare la data e l\textquotesingle{}ora della partita. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_a7e92e4d69f85383b386898701ef00344}\label{a00307_a7e92e4d69f85383b386898701ef00344} 
+Table\+Column$<$ Callback\+DTO.\+Match\+Record, Integer $>$ {\bfseries col\+Time}
+\begin{DoxyCompactList}\small\item\em Colonna per mostrare il tempo di risposta per quella partita. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_abc1a37e65522b6e6efacca9a65e874cd}\label{a00307_abc1a37e65522b6e6efacca9a65e874cd} 
+Button {\bfseries btn\+Back}
+\begin{DoxyCompactList}\small\item\em Pulsante per ritornare alla lobby principale. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_af10e398d5978f143e9600d511771ab26}\label{a00307_af10e398d5978f143e9600d511771ab26} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} {\bfseries connection}
+\begin{DoxyCompactList}\small\item\em Riferimento alla connessione del client verso il server. \end{DoxyCompactList}\item 
+\Hypertarget{a00307_abf6902b5c03cff43b9da0a900ea650d0}\label{a00307_abf6902b5c03cff43b9da0a900ea650d0} 
+String {\bfseries username}
+\begin{DoxyCompactList}\small\item\em Username dell\textquotesingle{}utente corrente. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller Java\+FX per la gestione della schermata dello storico delle partite. 
+
+\label{doc-func-members}
+\Hypertarget{a00307_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00307_a10c087c48151482d2b4ad223e4832b09}\index{gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}!initialize@{initialize}}
+\index{initialize@{initialize}!gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{a00307_a10c087c48151482d2b4ad223e4832b09} 
+void gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller.\+initialize (\begin{DoxyParamCaption}\item[{URL}]{location}{, }\item[{Resource\+Bundle}]{resources}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza i componenti grafici e la tabella della cronologia. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em location} & Percorso relativo per la risoluzione dell\textquotesingle{}oggetto radice. \\
+\hline
+\mbox{\texttt{in}}  & {\em resources} & Risorse localizzate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00307_abccd8bcfb8fdba4da02c2edf41a94430}\index{gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}!setConnection@{setConnection}}
+\index{setConnection@{setConnection}!gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}}
+\doxysubsubsection{\texorpdfstring{setConnection()}{setConnection()}}
+{\footnotesize\ttfamily \label{a00307_abccd8bcfb8fdba4da02c2edf41a94430} 
+void gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller.\+set\+Connection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00323}{Client\+Connection}}}]{connection}{}\end{DoxyParamCaption})}
+
+
+
+Configura la connessione di rete del client. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em connection} & Istanza attiva di \doxylink{a00323}{Client\+Connection}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00307_aa6105e7c34cab3f806a41f31a40da737}\index{gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}!setUsername@{setUsername}}
+\index{setUsername@{setUsername}!gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}}
+\doxysubsubsection{\texorpdfstring{setUsername()}{setUsername()}}
+{\footnotesize\ttfamily \label{a00307_aa6105e7c34cab3f806a41f31a40da737} 
+void gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller.\+set\+Username (\begin{DoxyParamCaption}\item[{String}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Imposta lo username dell\textquotesingle{}utente in sessione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em username} & Nome utente corrente. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00307_a7dc9950ba8eef3117b1b07f57d5f3073}\index{gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}!showHistory@{showHistory}}
+\index{showHistory@{showHistory}!gruppo05.gtwclient.controller.HistoryViewController@{gruppo05.gtwclient.controller.HistoryViewController}}
+\doxysubsubsection{\texorpdfstring{showHistory()}{showHistory()}}
+{\footnotesize\ttfamily \label{a00307_a7dc9950ba8eef3117b1b07f57d5f3073} 
+void gruppo05.\+gtwclient.\+controller.\+History\+View\+Controller.\+show\+History (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00647}{Callback\+DTO}}}]{dto}{}\end{DoxyParamCaption})}
+
+
+
+Mostra lo storico delle partite dell\textquotesingle{}utente e le relative statistiche. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em dto} & Dati di callback contenenti le statistiche e lo storico. \\
+\hline
+\end{DoxyParams}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/controller/History\+View\+Controller.\+java\end{DoxyCompactItemize}

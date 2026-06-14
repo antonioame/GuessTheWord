@@ -1,0 +1,182 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator}
+\hypertarget{a00327}{}\label{a00327}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+
+
+Factory e Controller di rete di altissimo livello per il lato Client.  
+
+
+Diagramma delle classi per gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00327}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00327_a7937feb163e270d7ee9240394784e6c0}{set\+Game\+View\+Controller}} (\mbox{\hyperlink{a00303}{Game\+View\+Controller}} \mbox{\hyperlink{a00327_ae0beadeb80fdd8c96f79498d9566544f}{game\+View\+Controller}})
+\begin{DoxyCompactList}\small\item\em Imposta il controller della vista di gioco. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00327_aca7acb1c3f4ba6251fbd374e6b6a134d}{set\+History\+View\+Controller}} (\mbox{\hyperlink{a00307}{History\+View\+Controller}} \mbox{\hyperlink{a00327_a6d554056f1515b8cbf7724783ad4e9bc}{history\+View\+Controller}})
+\begin{DoxyCompactList}\small\item\em Imposta il controller della vista dello storico. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00327_a8c387c0da9a754d111bce596cff55ba3}{set\+Result\+View\+Controller}} (\mbox{\hyperlink{a00315}{Result\+View\+Controller}} \mbox{\hyperlink{a00327_a3d177ba0c1fb8de92e24149a27fa62e5}{result\+View\+Controller}})
+\begin{DoxyCompactList}\small\item\em Imposta il controller della vista dei risultati. \end{DoxyCompactList}\item 
+\Hypertarget{a00327_ad0033af1ed5491fe6f143102026888ef}\label{a00327_ad0033af1ed5491fe6f143102026888ef} 
+void {\bfseries set\+On\+Server\+Disconnect} (Runnable callback)
+\item 
+\mbox{\hyperlink{a00323}{Client\+Connection}} \mbox{\hyperlink{a00327_a7a5b681038820d9bd1bfd6f05ff33fd5}{create\+Connection}} ()
+\begin{DoxyCompactList}\small\item\em Inizializza la connessione verso il server leggendo i parametri di configurazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00679}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection\+Creator}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00667}{Network\+Configuration}} \mbox{\hyperlink{a00679_af8d37533cd09ca30c09eb8f7e7b12392}{read\+Configuration}} (String file\+Name)
+\begin{DoxyCompactList}\small\item\em Legge la configurazione di rete da un file esterno. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00327_ab2ce5c792f32aba5b3b65ecc5dda0ea9}{handle\+Server\+Disconnect}} ()
+\begin{DoxyCompactList}\small\item\em Gestisce la disconnessione improvvisa del server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00327_ac45b9cca801ebd4baddb28c6f911f455}{handle\+Message}} (Integer channel\+Index, Serializable msg)
+\begin{DoxyCompactList}\small\item\em Dispatcher principale per la gestione dei messaggi ricevuti dal server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00327_ad5d63e6aef2aabe88ca3793e56bf8593}\label{a00327_ad5d63e6aef2aabe88ca3793e56bf8593} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} {\bfseries connection}
+\begin{DoxyCompactList}\small\item\em Riferimento alla connessione attiva verso il server. \end{DoxyCompactList}\item 
+\Hypertarget{a00327_ae0beadeb80fdd8c96f79498d9566544f}\label{a00327_ae0beadeb80fdd8c96f79498d9566544f} 
+\mbox{\hyperlink{a00303}{Game\+View\+Controller}} {\bfseries game\+View\+Controller}
+\begin{DoxyCompactList}\small\item\em Controller per la gestione della logica di gioco. \end{DoxyCompactList}\item 
+\Hypertarget{a00327_a6d554056f1515b8cbf7724783ad4e9bc}\label{a00327_a6d554056f1515b8cbf7724783ad4e9bc} 
+\mbox{\hyperlink{a00307}{History\+View\+Controller}} {\bfseries history\+View\+Controller}
+\begin{DoxyCompactList}\small\item\em Controller per la visualizzazione dello storico partite. \end{DoxyCompactList}\item 
+\Hypertarget{a00327_a3d177ba0c1fb8de92e24149a27fa62e5}\label{a00327_a3d177ba0c1fb8de92e24149a27fa62e5} 
+\mbox{\hyperlink{a00315}{Result\+View\+Controller}} {\bfseries result\+View\+Controller}
+\begin{DoxyCompactList}\small\item\em Controller per la visualizzazione dei risultati finali. \end{DoxyCompactList}\item 
+\Hypertarget{a00327_a0d812c111baa5d53188905dc25122fdf}\label{a00327_a0d812c111baa5d53188905dc25122fdf} 
+Runnable {\bfseries on\+Server\+Disconnect} = null
+\begin{DoxyCompactList}\small\item\em Callback da eseguire in caso di disconnessione improvvisa dal server. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Factory e Controller di rete di altissimo livello per il lato Client. 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Questa classe estende {\ttfamily \doxylink{a00679}{Network\+Connection\+Creator}} per gestire l\textquotesingle{}instaurazione della connessione TCP con il server. Agisce come mediatore tra il layer di rete e l\textquotesingle{}interfaccia grafica, ricevendo i messaggi, convertendoli in DTO e aggiornando la UI in modo thread-\/safe. 
+
+\label{doc-func-members}
+\Hypertarget{a00327_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00327_a7a5b681038820d9bd1bfd6f05ff33fd5}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!createConnection@{createConnection}}
+\index{createConnection@{createConnection}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{createConnection()}{createConnection()}}
+{\footnotesize\ttfamily \label{a00327_a7a5b681038820d9bd1bfd6f05ff33fd5} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+create\+Connection (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza la connessione verso il server leggendo i parametri di configurazione. 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Legge il file "{}client.\+properties"{}, configura il socket e definisce le callback per gestire i messaggi in entrata e le interruzioni di linea.
+\begin{DoxyItemize}
+\item \begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}istanza configurata di \doxylink{a00323}{Client\+Connection}. 
+\end{DoxyReturn}
+
+\end{DoxyItemize}
+
+Reimplementa \mbox{\hyperlink{a00679_a3e2ee160c583a140b098ca614fc3df1e}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection\+Creator}}.
+
+\Hypertarget{a00327_ac45b9cca801ebd4baddb28c6f911f455}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!handleMessage@{handleMessage}}
+\index{handleMessage@{handleMessage}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{handleMessage()}{handleMessage()}}
+{\footnotesize\ttfamily \label{a00327_ac45b9cca801ebd4baddb28c6f911f455} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+handle\+Message (\begin{DoxyParamCaption}\item[{Integer}]{channel\+Index}{, }\item[{Serializable}]{msg}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Dispatcher principale per la gestione dei messaggi ricevuti dal server. 
+
+
+\begin{DoxyItemize}
+\item 
+\end{DoxyItemize}
+
+Esegue il parsing dei messaggi, li converte in {\ttfamily \doxylink{a00647}{Callback\+DTO}} e utilizza {\ttfamily \doxylink{}{Platform\#run\+Later}} per delegare l\textquotesingle{}aggiornamento grafico al thread di Java\+FX.
+\begin{DoxyItemize}
+\item 
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & Identificatore del canale di comunicazione. \\
+\hline
+\mbox{\texttt{in}}  & {\em msg} & Oggetto serializzato ricevuto dal server. \\
+\hline
+\end{DoxyParams}
+
+\end{DoxyItemize}\Hypertarget{a00327_ab2ce5c792f32aba5b3b65ecc5dda0ea9}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!handleServerDisconnect@{handleServerDisconnect}}
+\index{handleServerDisconnect@{handleServerDisconnect}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{handleServerDisconnect()}{handleServerDisconnect()}}
+{\footnotesize\ttfamily \label{a00327_ab2ce5c792f32aba5b3b65ecc5dda0ea9} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+handle\+Server\+Disconnect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Gestisce la disconnessione improvvisa del server. 
+
+Viene invocata dal thread di rete (non Thread Java\+FX). Usa {\ttfamily \doxylink{}{Platform\#run\+Later}} per mostrare un Alert bloccante sul thread UI e poi eseguire il callback configurato (navigazione per tornare alla Login\+View). \Hypertarget{a00327_a7937feb163e270d7ee9240394784e6c0}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!setGameViewController@{setGameViewController}}
+\index{setGameViewController@{setGameViewController}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{setGameViewController()}{setGameViewController()}}
+{\footnotesize\ttfamily \label{a00327_a7937feb163e270d7ee9240394784e6c0} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+set\+Game\+View\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00303}{Game\+View\+Controller}}}]{game\+View\+Controller}{}\end{DoxyParamCaption})}
+
+
+
+Imposta il controller della vista di gioco. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em game\+View\+Controller} & Il controller della Game\+View. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00327_aca7acb1c3f4ba6251fbd374e6b6a134d}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!setHistoryViewController@{setHistoryViewController}}
+\index{setHistoryViewController@{setHistoryViewController}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{setHistoryViewController()}{setHistoryViewController()}}
+{\footnotesize\ttfamily \label{a00327_aca7acb1c3f4ba6251fbd374e6b6a134d} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+set\+History\+View\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00307}{History\+View\+Controller}}}]{history\+View\+Controller}{}\end{DoxyParamCaption})}
+
+
+
+Imposta il controller della vista dello storico. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em history\+View\+Controller} & Il controller della History\+View. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00327_a8c387c0da9a754d111bce596cff55ba3}\index{gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}!setResultViewController@{setResultViewController}}
+\index{setResultViewController@{setResultViewController}!gruppo05.gtwclient.networking.ClientConnectionCreator@{gruppo05.gtwclient.networking.ClientConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{setResultViewController()}{setResultViewController()}}
+{\footnotesize\ttfamily \label{a00327_a8c387c0da9a754d111bce596cff55ba3} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection\+Creator.\+set\+Result\+View\+Controller (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00315}{Result\+View\+Controller}}}]{result\+View\+Controller}{}\end{DoxyParamCaption})}
+
+
+
+Imposta il controller della vista dei risultati. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em result\+View\+Controller} & Il controller della Result\+View. \\
+\hline
+\end{DoxyParams}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/networking/Client\+Connection\+Creator.\+java\end{DoxyCompactItemize}

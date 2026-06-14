@@ -1,0 +1,157 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+model.\+Word}
+\hypertarget{a00435}{}\label{a00435}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+
+
+Rappresenta una parola (\doxylink{a00435}{Word}) registrata nel sistema con la relativa frequenza di comparsa in una specifica sorgente.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00435_a8a88694c161ab762b94aecedfff50b6b}{Word}} (String \mbox{\hyperlink{a00435_ae921005aecd2bd17055d2b415adb352b}{token}}, int \mbox{\hyperlink{a00435_a95f18d5a9ded4a89a229061feb1e398e}{frequency}}, int \mbox{\hyperlink{a00435_a3fcfd640af7645a8793aa26f82f49438}{source}})
+\begin{DoxyCompactList}\small\item\em Costruttore per creare un nuovo oggetto \doxylink{a00435}{Word}. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00435_a75a63b5395c3932d9d2c744fe37779d4}{get\+Token}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la stringa testuale della parola. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00435_a421de437ecf1b08ee5b0710168300bd7}{get\+Frequency}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la frequenza di occorrenza della parola. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00435_a91a71f19c71f77ffb8bc9917e0a40b5a}{get\+Source}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce l\textquotesingle{}identificativo numerico della sorgente di provenienza. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00435_acf634b3f6bf0ea792c999ca6f3dfe685}{hash\+Code}} ()
+\begin{DoxyCompactList}\small\item\em Calcola l\textquotesingle{}hash code dell\textquotesingle{}oggetto \doxylink{a00435}{Word} basandosi sulla chiave primaria composta. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00435_a5b70e44a94f796d900f408a9125ff9f2}{equals}} (Object obj)
+\begin{DoxyCompactList}\small\item\em Confronta questo oggetto \doxylink{a00435}{Word} con l\textquotesingle{}oggetto specificato per verificarne l\textquotesingle{}uguaglianza. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00435_ae921005aecd2bd17055d2b415adb352b}\label{a00435_ae921005aecd2bd17055d2b415adb352b} 
+final String {\bfseries token}
+\begin{DoxyCompactList}\small\item\em La stringa testuale della parola, parte della chiave primaria composta. \end{DoxyCompactList}\item 
+\Hypertarget{a00435_a95f18d5a9ded4a89a229061feb1e398e}\label{a00435_a95f18d5a9ded4a89a229061feb1e398e} 
+final int {\bfseries frequency}
+\begin{DoxyCompactList}\small\item\em La frequenza di occorrenza della parola all\textquotesingle{}interno della propria sorgente. \end{DoxyCompactList}\item 
+\Hypertarget{a00435_a3fcfd640af7645a8793aa26f82f49438}\label{a00435_a3fcfd640af7645a8793aa26f82f49438} 
+final int {\bfseries source}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}identificativo numerico della sorgente di provenienza, parte della chiave primaria composta. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Rappresenta una parola (\doxylink{a00435}{Word}) registrata nel sistema con la relativa frequenza di comparsa in una specifica sorgente. 
+
+\begin{DoxyInvariant}{Invariante}
+Tutti i campi interni dell\textquotesingle{}oggetto, che costituiscono la chiave primaria composta (token e source) e la frequenza, sono immutabili (final). 
+\end{DoxyInvariant}
+
+
+\label{doc-constructors}
+\Hypertarget{a00435_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00435_a8a88694c161ab762b94aecedfff50b6b}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!Word@{Word}}
+\index{Word@{Word}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{Word()}{Word()}}
+{\footnotesize\ttfamily \label{a00435_a8a88694c161ab762b94aecedfff50b6b} 
+gruppo05.\+gtwserver.\+model.\+Word.\+Word (\begin{DoxyParamCaption}\item[{String}]{token}{, }\item[{int}]{frequency}{, }\item[{int}]{source}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore per creare un nuovo oggetto \doxylink{a00435}{Word}. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em token} & La stringa testuale della parola. \\
+\hline
+\mbox{\texttt{in}}  & {\em frequency} & La frequenza associata alla parola. \\
+\hline
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}identificativo numerico della sorgente di provenienza. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro token non deve essere null. 
+
+Il parametro frequency deve essere maggiore o uguale a 0. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Viene creata una nuova istanza di Word\+Id memorizzata nel rispettivo campo id. 
+\end{DoxyPostcond}
+
+
+\label{doc-func-members}
+\Hypertarget{a00435_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00435_a5b70e44a94f796d900f408a9125ff9f2}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!equals@{equals}}
+\index{equals@{equals}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{equals()}{equals()}}
+{\footnotesize\ttfamily \label{a00435_a5b70e44a94f796d900f408a9125ff9f2} 
+boolean gruppo05.\+gtwserver.\+model.\+Word.\+equals (\begin{DoxyParamCaption}\item[{Object}]{obj}{}\end{DoxyParamCaption})}
+
+
+
+Confronta questo oggetto \doxylink{a00435}{Word} con l\textquotesingle{}oggetto specificato per verificarne l\textquotesingle{}uguaglianza. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em obj} & L\textquotesingle{}oggetto da confrontare con la parola corrente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+true se l\textquotesingle{}oggetto specificato è uguale a questa parola, false altrimenti. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il risultato è true se e solo se l\textquotesingle{}oggetto passato non è null, è un\textquotesingle{}istanza di \doxylink{a00435}{Word} e presenta gli stessi valori per token e source. 
+\end{DoxyPostcond}
+\Hypertarget{a00435_a421de437ecf1b08ee5b0710168300bd7}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!getFrequency@{getFrequency}}
+\index{getFrequency@{getFrequency}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{getFrequency()}{getFrequency()}}
+{\footnotesize\ttfamily \label{a00435_a421de437ecf1b08ee5b0710168300bd7} 
+int gruppo05.\+gtwserver.\+model.\+Word.\+get\+Frequency (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la frequenza di occorrenza della parola. 
+
+\begin{DoxyReturn}{Restituisce}
+Un intero che rappresenta la frequenza memorizzata. 
+\end{DoxyReturn}
+\Hypertarget{a00435_a91a71f19c71f77ffb8bc9917e0a40b5a}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!getSource@{getSource}}
+\index{getSource@{getSource}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{getSource()}{getSource()}}
+{\footnotesize\ttfamily \label{a00435_a91a71f19c71f77ffb8bc9917e0a40b5a} 
+int gruppo05.\+gtwserver.\+model.\+Word.\+get\+Source (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce l\textquotesingle{}identificativo numerico della sorgente di provenienza. 
+
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}identificativo della sorgente. 
+\end{DoxyReturn}
+\Hypertarget{a00435_a75a63b5395c3932d9d2c744fe37779d4}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!getToken@{getToken}}
+\index{getToken@{getToken}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{getToken()}{getToken()}}
+{\footnotesize\ttfamily \label{a00435_a75a63b5395c3932d9d2c744fe37779d4} 
+String gruppo05.\+gtwserver.\+model.\+Word.\+get\+Token (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la stringa testuale della parola. 
+
+\begin{DoxyReturn}{Restituisce}
+La stringa che rappresenta la parola. 
+\end{DoxyReturn}
+\Hypertarget{a00435_acf634b3f6bf0ea792c999ca6f3dfe685}\index{gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}!hashCode@{hashCode}}
+\index{hashCode@{hashCode}!gruppo05.gtwserver.model.Word@{gruppo05.gtwserver.model.Word}}
+\doxysubsubsection{\texorpdfstring{hashCode()}{hashCode()}}
+{\footnotesize\ttfamily \label{a00435_acf634b3f6bf0ea792c999ca6f3dfe685} 
+int gruppo05.\+gtwserver.\+model.\+Word.\+hash\+Code (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Calcola l\textquotesingle{}hash code dell\textquotesingle{}oggetto \doxylink{a00435}{Word} basandosi sulla chiave primaria composta. 
+
+\begin{DoxyReturn}{Restituisce}
+Il valore dell\textquotesingle{}hash code calcolato. 
+\end{DoxyReturn}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/model/Word.\+java\end{DoxyCompactItemize}

@@ -1,0 +1,313 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest}
+\hypertarget{a00543}{}\label{a00543}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+
+
+Classe di test per la verifica del \doxylink{a00387}{DAO} concreto \doxylink{a00383}{Concrete\+Word\+DAO}.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00543_ade3dc20b26c208979dccd88aaeddc9c4}{Concrete\+Word\+DAOTest}} ()
+\begin{DoxyCompactList}\small\item\em Costruttore predefinito. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a982a638aa5fbd8c894c1c35850f94308}{set\+Up}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Configura lo stato del database prima dell\textquotesingle{}esecuzione di ogni test case. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_aa24f887c5c75857865a5cd03e43c69ea}{tear\+Down}} ()
+\begin{DoxyCompactList}\small\item\em Esegue il ripristino dell\textquotesingle{}ambiente al completamento di ogni test case. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_ad24c7acaadd364e83150cc49a772e722}{test\+Select\+By\+Id\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il recupero di una parola esistente tramite la sua chiave composta. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a0a7a7380b56617b6c3bae13d78fdfe93}{test\+Select\+By\+Id\+Not\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che la ricerca di un token non registrato restituisca un esito vuoto. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a3b3bbed2e3dac201a3c973e314ce3257}{test\+Select\+By\+Id\+Empty\+Optionals}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la stabilità di select\+By\+Id nel caso in cui le chiavi siano parziali o vuote. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_ac245f98d01c8ae8151c94e396e7495c5}{test\+Select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il recupero completo di tutte le parole disponibili nel dizionario. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a60ba966841f94cbc0716ca38dc93430a}{test\+Select\+All\+Where\+All\+Filters\+Present}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il filtraggio condizionale con tutti i parametri di ricerca impostati. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a0561a2a79af05c6978e15ebeb4e68957}{test\+Select\+All\+Where\+Only\+Token}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la query di ricerca condizionale filtrando unicamente per stringa token. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a450fd50f2adbb119ca44cf21a62ecea7}{test\+Select\+All\+Where\+No\+Filters}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il comportamento di select\+All\+Where quando non viene passato alcun criterio. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a812e29bbecc8dc005de77a166f10aad3}{test\+Insert\+Valid}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il corretto inserimento di una nuova parola valida nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a8822f8ca69fd9e534daea8cf86bc3f63}{test\+Insert\+Null}} ()
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}immunità del metodo insert in caso di argomenti nulli. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_afa408b6077cd7e03f3b7766f7641d60e}{test\+Insert\+Duplicate\+Primary\+Key}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il blocco dell\textquotesingle{}inserimento a fronte di una chiave primaria duplicata. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a01c513416c59a0f558ebeef285cc16cb}{test\+Insert\+Foreign\+Key\+Violation}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il blocco della persistenza indotto da una violazione di Foreign Key. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a2ce7d3072c1ae075d732e4c9bf386193}{test\+Insert\+All\+Valid}} ()
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}inserimento massivo di una collezione di vocaboli validi. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_af3974743bdf96507cbc822bb79c365f5}{test\+Insert\+All\+Null\+Or\+Empty}} ()
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}immunità del metodo insert\+All da strutture a collezione nulle o vuote. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_ad45aaa7cf1e0b2fadadb0c199b45b81f}{test\+Insert\+All\+With\+Rollback}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il comportamento atomico di insert\+All tramite rollback transazionale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_adc689b8a20ec60a3a0aadfec99481f96}{test\+Update\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la modifica dei campi informativi di un record preesistente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_acbad3a191ba25544ae969948f2d8ae72}{test\+Update\+Null}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la stabilità del metodo update a fronte di argomenti di modifica nulli. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a59a15a66deb33a854589ef5b866de70d}{test\+Delete\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la corretta rimozione fisica di un record parola isolato. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00543_a4784e6cfa3db08cb653e3e0df9ce9c65}{test\+Delete\+Empty\+Optionals}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che la chiamata a delete tramite parametri vuoti venga ignorata. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00543_a8eca90bfd92364bfe2fab179df446c4e}\label{a00543_a8eca90bfd92364bfe2fab179df446c4e} 
+static void {\bfseries set\+Up\+Class} ()
+\item 
+\Hypertarget{a00543_a49881a7b21dcb10327ce1015d9da07b3}\label{a00543_a49881a7b21dcb10327ce1015d9da07b3} 
+static void {\bfseries tear\+Down\+Class} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00543_a38b83db9b75c7ec764f8d36176505350}\label{a00543_a38b83db9b75c7ec764f8d36176505350} 
+final \mbox{\hyperlink{a00551}{Debug\+DB}} {\bfseries ddb}
+\begin{DoxyCompactList}\small\item\em Riferimento all\textquotesingle{}utility di debug per il popolamento diretto delle tabelle. \end{DoxyCompactList}\item 
+\Hypertarget{a00543_afe6cd437c5d2110b653d7d9ff0129fff}\label{a00543_afe6cd437c5d2110b653d7d9ff0129fff} 
+final \mbox{\hyperlink{a00407}{Word\+DAO}} {\bfseries wdao}
+\begin{DoxyCompactList}\small\item\em Il Data Access Object (\doxylink{a00387}{DAO}) sotto analisi in questa suite di test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00543_ad423be8923b0f5ba160477d43d090435}\label{a00543_ad423be8923b0f5ba160477d43d090435} 
+static final String {\bfseries DB\+\_\+\+NAME} = "{}Server\+DB"{}
+\begin{DoxyCompactList}\small\item\em Nome del file di database locale SQLite utilizzato per isolare i test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe di test per la verifica del \doxylink{a00387}{DAO} concreto \doxylink{a00383}{Concrete\+Word\+DAO}. 
+
+Utilizza lo stato controllato del database generato da \doxylink{a00551}{Debug\+DB} per convalidare il ciclo di vita e la persistenza dell\textquotesingle{}entità \doxylink{a00435}{Word}. I test si concentrano sulla precisione delle query basate su chiavi composte, sui meccanismi di filtraggio condizionale e sulla robustezza dei vincoli transazionali e referenziali. 
+
+\label{doc-constructors}
+\Hypertarget{a00543_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00543_ade3dc20b26c208979dccd88aaeddc9c4}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!ConcreteWordDAOTest@{ConcreteWordDAOTest}}
+\index{ConcreteWordDAOTest@{ConcreteWordDAOTest}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{ConcreteWordDAOTest()}{ConcreteWordDAOTest()}}
+{\footnotesize\ttfamily \label{a00543_ade3dc20b26c208979dccd88aaeddc9c4} 
+gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+Concrete\+Word\+DAOTest (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore predefinito. 
+
+Configura i supporti di base e istanzia l\textquotesingle{}implementazione del \doxylink{a00387}{DAO} per i vocaboli. 
+
+\label{doc-func-members}
+\Hypertarget{a00543_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00543_a982a638aa5fbd8c894c1c35850f94308}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!setUp@{setUp}}
+\index{setUp@{setUp}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{setUp()}{setUp()}}
+{\footnotesize\ttfamily \label{a00543_a982a638aa5fbd8c894c1c35850f94308} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Configura lo stato del database prima dell\textquotesingle{}esecuzione di ogni test case. 
+
+Inizializza lo schema relazionale delle tabelle e inserisce un set di dati controllato in modo da garantire l\textquotesingle{}indipendenza e la riproducibilità di ciascun test case.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di errori di connessione JDBC o di esecuzione delle query. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00543_aa24f887c5c75857865a5cd03e43c69ea}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!tearDown@{tearDown}}
+\index{tearDown@{tearDown}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{tearDown()}{tearDown()}}
+{\footnotesize\ttfamily \label{a00543_aa24f887c5c75857865a5cd03e43c69ea} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Esegue il ripristino dell\textquotesingle{}ambiente al completamento di ogni test case. 
+
+Rimuove il file del database SQLite locale, annullando le modifiche transitorie ed evitando la contaminazione tra test consecutivi. \Hypertarget{a00543_a4784e6cfa3db08cb653e3e0df9ce9c65}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testDeleteEmptyOptionals@{testDeleteEmptyOptionals}}
+\index{testDeleteEmptyOptionals@{testDeleteEmptyOptionals}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testDeleteEmptyOptionals()}{testDeleteEmptyOptionals()}}
+{\footnotesize\ttfamily \label{a00543_a4784e6cfa3db08cb653e3e0df9ce9c65} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Delete\+Empty\+Optionals (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che la chiamata a delete tramite parametri vuoti venga ignorata. 
+
+Sottopone degli Optional vuoti per verificare l\textquotesingle{}intervento dei blocchi di guardia a tutela della stabilità dello stato dei dati. \Hypertarget{a00543_a59a15a66deb33a854589ef5b866de70d}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testDeleteExisting@{testDeleteExisting}}
+\index{testDeleteExisting@{testDeleteExisting}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testDeleteExisting()}{testDeleteExisting()}}
+{\footnotesize\ttfamily \label{a00543_a59a15a66deb33a854589ef5b866de70d} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Delete\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la corretta rimozione fisica di un record parola isolato. 
+
+Registra preventivamente un record di test e procede alla richiesta di cancellazione sulla chiave composta dedicata, verificando la riduzione del numero complessivo delle righe. \Hypertarget{a00543_af3974743bdf96507cbc822bb79c365f5}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertAllNullOrEmpty@{testInsertAllNullOrEmpty}}
+\index{testInsertAllNullOrEmpty@{testInsertAllNullOrEmpty}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllNullOrEmpty()}{testInsertAllNullOrEmpty()}}
+{\footnotesize\ttfamily \label{a00543_af3974743bdf96507cbc822bb79c365f5} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+All\+Null\+Or\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica l\textquotesingle{}immunità del metodo insert\+All da strutture a collezione nulle o vuote. 
+
+Sottopone argomenti non validi o privi di istanze per certificare la stabilità difensiva ed escludere fluttuazioni non desiderate nel numero di righe memorizzate. \Hypertarget{a00543_a2ce7d3072c1ae075d732e4c9bf386193}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertAllValid@{testInsertAllValid}}
+\index{testInsertAllValid@{testInsertAllValid}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllValid()}{testInsertAllValid()}}
+{\footnotesize\ttfamily \label{a00543_a2ce7d3072c1ae075d732e4c9bf386193} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+All\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica l\textquotesingle{}inserimento massivo di una collezione di vocaboli validi. 
+
+Passa al metodo insert\+All una lista contenente due elementi ben strutturati, accertando che il conteggio complessivo salga di due unità e che i record siano leggibili. \Hypertarget{a00543_ad45aaa7cf1e0b2fadadb0c199b45b81f}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertAllWithRollback@{testInsertAllWithRollback}}
+\index{testInsertAllWithRollback@{testInsertAllWithRollback}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllWithRollback()}{testInsertAllWithRollback()}}
+{\footnotesize\ttfamily \label{a00543_ad45aaa7cf1e0b2fadadb0c199b45b81f} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+All\+With\+Rollback (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il comportamento atomico di insert\+All tramite rollback transazionale. 
+
+Crea un blocco in cui un elemento viola la chiave primaria (record duplicato). Il test certifica che l\textquotesingle{}intero pacchetto batch venga annullato, stornando anche l\textquotesingle{}inserimento valido. \Hypertarget{a00543_afa408b6077cd7e03f3b7766f7641d60e}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertDuplicatePrimaryKey@{testInsertDuplicatePrimaryKey}}
+\index{testInsertDuplicatePrimaryKey@{testInsertDuplicatePrimaryKey}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertDuplicatePrimaryKey()}{testInsertDuplicatePrimaryKey()}}
+{\footnotesize\ttfamily \label{a00543_afa408b6077cd7e03f3b7766f7641d60e} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+Duplicate\+Primary\+Key (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il blocco dell\textquotesingle{}inserimento a fronte di una chiave primaria duplicata. 
+
+Invia una richiesta di scrittura per una chiave composta già occupata nel sistema ("{}metallo"{}, 6), validando il rifiuto della query a salvaguardia dell\textquotesingle{}indice univoco. \Hypertarget{a00543_a01c513416c59a0f558ebeef285cc16cb}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertForeignKeyViolation@{testInsertForeignKeyViolation}}
+\index{testInsertForeignKeyViolation@{testInsertForeignKeyViolation}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertForeignKeyViolation()}{testInsertForeignKeyViolation()}}
+{\footnotesize\ttfamily \label{a00543_a01c513416c59a0f558ebeef285cc16cb} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+Foreign\+Key\+Violation (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il blocco della persistenza indotto da una violazione di Foreign Key. 
+
+Tenta l\textquotesingle{}inserimento di un vocabolo associato a un identificativo di fonte inesistente ("{}999"{}). Il test valida l\textquotesingle{}intervento dei vincoli d\textquotesingle{}integrità referenziale a protezione dei dati orfani. \Hypertarget{a00543_a8822f8ca69fd9e534daea8cf86bc3f63}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertNull@{testInsertNull}}
+\index{testInsertNull@{testInsertNull}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertNull()}{testInsertNull()}}
+{\footnotesize\ttfamily \label{a00543_a8822f8ca69fd9e534daea8cf86bc3f63} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+Null (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica l\textquotesingle{}immunità del metodo insert in caso di argomenti nulli. 
+
+Controlla che il passaggio di un riferimento null sia intercettato in sicurezza dalle guardie del \doxylink{a00387}{DAO}, lasciando inalterato il quantitativo totale di record salvati. \Hypertarget{a00543_a812e29bbecc8dc005de77a166f10aad3}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testInsertValid@{testInsertValid}}
+\index{testInsertValid@{testInsertValid}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertValid()}{testInsertValid()}}
+{\footnotesize\ttfamily \label{a00543_a812e29bbecc8dc005de77a166f10aad3} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Insert\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il corretto inserimento di una nuova parola valida nel database. 
+
+Assicura la persistenza di un record collegato a un vincolo di sorgente coerente (id = 6) e ne ispeziona la riuscita eseguendo una select\+By\+Id di riscontro. \Hypertarget{a00543_ac245f98d01c8ae8151c94e396e7495c5}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectAll@{testSelectAll}}
+\index{testSelectAll@{testSelectAll}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectAll()}{testSelectAll()}}
+{\footnotesize\ttfamily \label{a00543_ac245f98d01c8ae8151c94e396e7495c5} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+All (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il recupero completo di tutte le parole disponibili nel dizionario. 
+
+Accerta che la collezione non sia nulla, non sia vuota e si interfacci con la vista \textquotesingle{}available\+Words\textquotesingle{} escludendo i vocaboli associati a sorgenti prive di un percorso valido. \Hypertarget{a00543_a60ba966841f94cbc0716ca38dc93430a}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectAllWhereAllFiltersPresent@{testSelectAllWhereAllFiltersPresent}}
+\index{testSelectAllWhereAllFiltersPresent@{testSelectAllWhereAllFiltersPresent}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectAllWhereAllFiltersPresent()}{testSelectAllWhereAllFiltersPresent()}}
+{\footnotesize\ttfamily \label{a00543_a60ba966841f94cbc0716ca38dc93430a} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+All\+Where\+All\+Filters\+Present (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il filtraggio condizionale con tutti i parametri di ricerca impostati. 
+
+Applica restrizioni simultanee su token, frequenza e sorgente, verificando che la query dinamica restituisca esclusivamente i record adatti. \Hypertarget{a00543_a450fd50f2adbb119ca44cf21a62ecea7}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectAllWhereNoFilters@{testSelectAllWhereNoFilters}}
+\index{testSelectAllWhereNoFilters@{testSelectAllWhereNoFilters}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectAllWhereNoFilters()}{testSelectAllWhereNoFilters()}}
+{\footnotesize\ttfamily \label{a00543_a450fd50f2adbb119ca44cf21a62ecea7} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+All\+Where\+No\+Filters (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il comportamento di select\+All\+Where quando non viene passato alcun criterio. 
+
+Dimostra che il passaggio di tre Optional vuoti viene intercettato delegando l\textquotesingle{}esecuzione a select\+All() per estrarre l\textquotesingle{}intero set di parole attive. \Hypertarget{a00543_a0561a2a79af05c6978e15ebeb4e68957}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectAllWhereOnlyToken@{testSelectAllWhereOnlyToken}}
+\index{testSelectAllWhereOnlyToken@{testSelectAllWhereOnlyToken}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectAllWhereOnlyToken()}{testSelectAllWhereOnlyToken()}}
+{\footnotesize\ttfamily \label{a00543_a0561a2a79af05c6978e15ebeb4e68957} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+All\+Where\+Only\+Token (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la query di ricerca condizionale filtrando unicamente per stringa token. 
+
+Omette i parametri di frequenza e id sorgente per convalidare il corretto isolamento e la composizione flessibile dei criteri all\textquotesingle{}interno della stringa SQL. \Hypertarget{a00543_a3b3bbed2e3dac201a3c973e314ce3257}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectByIdEmptyOptionals@{testSelectByIdEmptyOptionals}}
+\index{testSelectByIdEmptyOptionals@{testSelectByIdEmptyOptionals}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdEmptyOptionals()}{testSelectByIdEmptyOptionals()}}
+{\footnotesize\ttfamily \label{a00543_a3b3bbed2e3dac201a3c973e314ce3257} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+By\+Id\+Empty\+Optionals (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la stabilità di select\+By\+Id nel caso in cui le chiavi siano parziali o vuote. 
+
+Sottopone diverse combinazioni in cui almeno uno dei due parametri di ricerca è omesso, convalidando il comportamento di guardia protetto del metodo. \Hypertarget{a00543_ad24c7acaadd364e83150cc49a772e722}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectByIdExisting@{testSelectByIdExisting}}
+\index{testSelectByIdExisting@{testSelectByIdExisting}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdExisting()}{testSelectByIdExisting()}}
+{\footnotesize\ttfamily \label{a00543_ad24c7acaadd364e83150cc49a772e722} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+By\+Id\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il recupero di una parola esistente tramite la sua chiave composta. 
+
+Passa una coppia valida di attributi primaria ("{}metallo"{}, sorgente 6) constatando il corretto mapping dei campi informativi associati al record. \Hypertarget{a00543_a0a7a7380b56617b6c3bae13d78fdfe93}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testSelectByIdNotExisting@{testSelectByIdNotExisting}}
+\index{testSelectByIdNotExisting@{testSelectByIdNotExisting}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdNotExisting()}{testSelectByIdNotExisting()}}
+{\footnotesize\ttfamily \label{a00543_a0a7a7380b56617b6c3bae13d78fdfe93} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Select\+By\+Id\+Not\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che la ricerca di un token non registrato restituisca un esito vuoto. 
+
+Fornisce una stringa non memorizzata ("{}parola\+Inesistente"{}), verificando che il metodo select\+By\+Id segnali l\textquotesingle{}assenza restituendo un Optional vuoto anziché scatenare eccezioni. \Hypertarget{a00543_adc689b8a20ec60a3a0aadfec99481f96}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testUpdateExisting@{testUpdateExisting}}
+\index{testUpdateExisting@{testUpdateExisting}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testUpdateExisting()}{testUpdateExisting()}}
+{\footnotesize\ttfamily \label{a00543_adc689b8a20ec60a3a0aadfec99481f96} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Update\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la modifica dei campi informativi di un record preesistente. 
+
+Aggiorna il valore di frequenza associato alla chiave primaria composta "{}metallo"{}-\/6, interrogando nuovamente il database per appurarne la corretta sovrascrittura. \Hypertarget{a00543_acbad3a191ba25544ae969948f2d8ae72}\index{gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}!testUpdateNull@{testUpdateNull}}
+\index{testUpdateNull@{testUpdateNull}!gruppo05.gtwserver.db.ConcreteWordDAOTest@{gruppo05.gtwserver.db.ConcreteWordDAOTest}}
+\doxysubsubsection{\texorpdfstring{testUpdateNull()}{testUpdateNull()}}
+{\footnotesize\ttfamily \label{a00543_acbad3a191ba25544ae969948f2d8ae72} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Word\+DAOTest.\+test\+Update\+Null (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la stabilità del metodo update a fronte di argomenti di modifica nulli. 
+
+Controlla che il passaggio di un riferimento nullo sia gestito a monte, scongiurando l\textquotesingle{}insorgenza di crash o fallimenti imprevisti dell\textquotesingle{}applicazione a runtime. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/db/Concrete\+Word\+DAOTest.\+java\end{DoxyCompactItemize}

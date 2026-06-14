@@ -13,14 +13,17 @@ public enum MessageType {
      * @brief Client -> Server: richiesta di login (username + password).
      */
     LOGIN_REQUEST,
+    
     /**
      * @brief Server -> Client: esito del login (successo/fallimento + errore).
      */
     LOGIN_RESPONSE,
+    
     /**
      * @brief Client -> Server: richiesta di registrazione (username + password).
      */
     REGISTER_REQUEST,
+    
     /**
      * @brief Server -> Client: esito della registrazione (successo/fallimento + errore).
      */
@@ -31,6 +34,7 @@ public enum MessageType {
      * @brief Client -> Server: l'utente loggato richiede di avviare una partita.
      */
     PLAY_REQUEST,
+    
     /**
      * @brief Server -> Client: esito della richiesta di gioco (avversario trovato o in attesa).
      */
@@ -41,6 +45,7 @@ public enum MessageType {
      * @brief Server -> Client: la sfida inizia (testo cifrato, timer, ecc.).
      */
     GAME_START,
+    
     /**
      * @brief Client -> Server: risposta dell'utente.
      */
@@ -49,10 +54,12 @@ public enum MessageType {
      * @brief Server -> Client: esito della partita (vincitore, parola corretta, ecc.).
      */
     GAME_RESULT,
+    
     /**
      * @brief Server -> Client: l'avversario ha inviato una risposta.
      */
     OPPONENT_ANSWERED,
+    
     /**
      * @brief Server -> Client: il tentativo è errato.
      */
@@ -63,6 +70,7 @@ public enum MessageType {
      * @brief Server -> Client: l'avversario si è disconnesso.
      */
     OPPONENT_DISCONNECTED,
+    
     /**
      * @brief Client -> Server: il client si disconnette volontariamente.
      */
@@ -73,6 +81,7 @@ public enum MessageType {
      * @brief Client -> Server: richiesta dello storico partite del proprio utente.
      */
     HISTORY_REQUEST,
+    
     /**
      * @brief Server -> Client: risposta con dati dello storico.
      */

@@ -80,7 +80,7 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      * @details È opzionale perché il server è in grado di essere attivo e online in background anche
      *          senza che la dashboard UI sia stata avviata o che l'amministratore abbia 
      *          effettuato l'accesso. Viene impostata dalla dashboard dopo il login per
-     *          aggiornare il contatore dei client connessi con meccanismo event-driven. TODO
+     *          aggiornare il contatore dei client connessi con meccanismo event-driven.
      */
     private Consumer<Integer> uiDisconnectCallback = null;
 
@@ -342,7 +342,6 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     Challenge ch = activeGames.get(channelIndex);
                     
                     if (ch != null) {
-                        // TODO la riga sotto funziona correttamente perché sono previsti esattamente 2 giocatori
                         int opponentChannel = (channelIndex == 0) ? 1 : 0;
                         
                         boolean isTimeout = dto.getProposedWord() == null || dto.getProposedWord().trim().isEmpty();

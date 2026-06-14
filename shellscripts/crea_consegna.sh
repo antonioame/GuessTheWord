@@ -25,6 +25,13 @@ if /usr/libexec/java_home -v 1.8 >/dev/null 2>&1; then
     export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 fi
 
+# Verifica presenza di Maven
+if ! command -v mvn >/dev/null 2>&1; then
+    echo "Errore: Maven (mvn) non trovato nel sistema."
+    echo "Installa Maven (es. brew install maven) prima di procedere."
+    exit 1
+fi
+
 mvn clean package -DskipTests
 # mvn clean install
 

@@ -20,7 +20,6 @@ import java.util.function.Consumer;
  * socket e la determinazione del numero di canali è delegata alle classi figlie tramite 
  * i metodi astratti {@link #createSocket()} e {@link #expectedChannels()}.
  * 
- * @version 1.0
  */
 public abstract class NetworkConnection {
     

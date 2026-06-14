@@ -16,7 +16,6 @@ import gruppo05.gtwshared.utility.Difficulty;
  * oggetti immutabili (read-only) le cui variabili vengono inizializzate solo se strettamente 
  * necessarie in base al {@link MessageType} ricevuto, prevenendo stati inconsistenti nella UI.
  * 
- * @version 1.0
  */
 public class CallbackDTO {
     

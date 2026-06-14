@@ -25,7 +25,6 @@ import gruppo05.gtwshared.controller.SignupViewController;
  * * @details Questa classe estende {@link NetworkConnectionCreator} per gestire l'instaurazione 
  * della connessione TCP con il server. Agisce come mediatore tra il layer di rete e l'interfaccia 
  * grafica, ricevendo i messaggi, convertendoli in DTO e aggiornando la UI in modo thread-safe.
- * @version 1.0
  */
 public class ClientConnectionCreator extends NetworkConnectionCreator {
 

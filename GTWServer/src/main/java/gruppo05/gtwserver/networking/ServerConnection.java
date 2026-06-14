@@ -16,7 +16,6 @@ import gruppo05.gtwshared.networking.NetworkConnection;
  * {@link ServerSocket} condiviso. Gestisce il ciclo di vita delle connessioni
  * in attesa dei due giocatori necessari per avviare una partita.
  * 
- * @version 1.0
  */
 public class ServerConnection extends NetworkConnection {
 

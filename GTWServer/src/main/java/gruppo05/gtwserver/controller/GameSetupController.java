@@ -2,8 +2,6 @@ package gruppo05.gtwserver.controller;
 
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 
 import gruppo05.gtwserver.db.SourceDAO;
 import gruppo05.gtwserver.db.ConcreteSourceDAO; 
@@ -18,7 +16,9 @@ import java.util.function.Consumer;
  * @details Gestisce la preparazione logica della partita: seleziona la difficoltà finale, 
  * calcola il tempo a disposizione ed estrae i dati di gioco dal database. Riceve l'istanza 
  * globale di BasicSourceManager e la utilizza per interrogare i preset già configurati in App.java.
- * @version 1.0
+ * Il flusso di generazione è interamente asincrono e non bloccante: il risultato
+ * (o l'errore) viene propagato esclusivamente tramite le callback {@code onSuccess} e {@code onError}
+ * fornite dal chiamante.
  */
 public class GameSetupController {
 
@@ -59,15 +59,19 @@ public class GameSetupController {
     }
 
     /**
-     * @brief Genera e imposta i dati fondamentali per la partita.
+     * @brief Genera e imposta i dati fondamentali per la partita in modo asincrono e non bloccante.
      * @details Seleziona casualmente la difficoltà tra quelle proposte dai due giocatori,
-     * imposta il timer corrispondente, preleva una Source casuale dal DB e genera il
-     * contenuto di gioco tramite il manager globale.
-     * 
+     * imposta il timer corrispondente, preleva una Source casuale dal DB e avvia la
+     * generazione del contenuto di gioco tramite il manager globale.
+     * Il metodo ritorna immediatamente al chiamante: il risultato viene notificato
+     * esclusivamente attraverso le callback fornite, eseguite nel thread del manager.
+     *
      * @param p1Difficulty Difficoltà proposta dal Giocatore 1.
      * @param p2Difficulty Difficoltà proposta dal Giocatore 2.
+     * @param onSuccess Callback invocata con il controller già popolato al completamento con successo.
+     * @param onError   Callback invocata con un messaggio di errore descrittivo in caso di fallimento.
      */
-    public void generateMatchData(Difficulty p1Difficulty, Difficulty p2Difficulty, Consumer<String> onError) {
+    public void generateMatchData(Difficulty p1Difficulty, Difficulty p2Difficulty, Consumer<GameSetupController> onSuccess, Consumer<String> onError) {
         Random random = new Random();
 
         // 1. Scelta della difficoltà: con probabilità del 50% vince la scelta del P1, altrimenti quella del P2
@@ -103,11 +107,7 @@ public class GameSetupController {
                 // Memorizza l'ID della sorgente selezionata per statistiche/controlli futuri
                 this.sourceId = selectedSource.getId();
 
-                // 6. Generazione sincrona della domanda tramite il manager
-                // Usiamo un CountDownLatch per attendere il completamento della callback asincrona
-                // prima di restituire il controllo al chiamante.
-                CountDownLatch latch = new CountDownLatch(1);
-
+                // 6. Avvio asincrono della generazione della domanda tramite il manager
                 System.out.println("Inizio generazione domanda");
                 this.sourceManager.generateQuestion(
                         selectedSource,
@@ -120,7 +120,10 @@ public class GameSetupController {
                             this.targetWord = question.getAnswer(); // Salva la soluzione reale
                             System.out.println(cipheredText);
                             System.out.println(targetWord);
-                            latch.countDown(); // Sblocca il thread chiamante
+                            
+                            if (onSuccess != null) {
+                                onSuccess.accept(this);
+                            }
                         },
 
                         // Callback di Errore: viene eseguita in caso di problemi interni al manager
@@ -132,18 +135,8 @@ public class GameSetupController {
                             if (onError != null) {
                                 onError.accept("Errore nella generazione della domanda di gioco.");
                             }
-                            latch.countDown(); // Sblocca il thread chiamante anche in caso di errore
                         }
                 );
-
-                // Attende massimo 15 secondi per il completamento della generazione della domanda
-                boolean completed = latch.await(15, TimeUnit.SECONDS);
-                if (!completed) {
-                    System.err.println("[GameSetupController] Timeout nella generazione della domanda.");
-                    if (onError != null) {
-                        onError.accept("Timeout nella generazione della domanda di gioco.");
-                    }
-                }
                 
             } else {
                 // Gestione del caso in cui non ci siano fonti nel database

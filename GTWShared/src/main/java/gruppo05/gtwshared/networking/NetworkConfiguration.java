@@ -6,7 +6,6 @@ package gruppo05.gtwshared.networking;
  * @details Questa classe memorizza l'indirizzo IP e la porta necessari per instaurare
  * una connessione verso il server o per configurare un socket di ascolto.
  * 
- * @version 1.0
  */
 public class NetworkConfiguration {
 

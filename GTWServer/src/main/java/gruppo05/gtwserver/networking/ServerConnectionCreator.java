@@ -2,6 +2,7 @@ package gruppo05.gtwserver.networking;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import java.util.ArrayList;
@@ -30,7 +31,6 @@ import javafx.event.EventType;
  * messaggi in arrivo. Gestisce in modo thread-safe l'autenticazione, la coda di matchmaking, 
  * l'avvio delle partite e l'aggiornamento delle statistiche persistenti tramite DAO.
  * 
- * @version 1.0
  */
 public class ServerConnectionCreator extends NetworkConnectionCreator {
 
@@ -287,51 +287,50 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             // Passaggio del sourceManager globale al GameSetupController
                             GameSetupController setupController = new GameSetupController(this.sourceManager);
 
-                            // Flag per tracciare se si verifica un errore durante la generazione
-                            boolean[] setupFailed = {false};
+                            Difficulty p1Diff = waitingDifficulty;
+                            Difficulty p2Diff = requestedDifficulty;
 
-                            // Passaggio della callback di errore al GameSetupController
-                            setupController.generateMatchData(waitingDifficulty, requestedDifficulty, (errorMessage) -> {
-                                setupFailed[0] = true; // Segnala che la generazione è fallita
-                                try {
-                                    String errorPayload = "ERROR_REDIRECT:" + errorMessage;
-                                    NetworkMessage errorMsg = new NetworkMessage.TextMessage(errorPayload);
-
-                                    // Invia il messaggio di errore per far tornare i client alla lobby
-                                    connection.sendTo(p1Channel, errorMsg);
-                                    connection.sendTo(p2Channel, errorMsg);
-                                } catch (IOException e) {
-                                    System.err.println("Errore nell'invio del messaggio di fallimento ai client: " + e.getMessage());
-                                }
-                            });
-
-                            // Se c'è stato un errore, interrompe l'avvio della partita e resettiamo la coda
-                            if (setupFailed[0]) {
-                                System.err.println("Generazione partita fallita. Matchmaking annullato.");
-                                waitingChannel = null;
-                                waitingDifficulty = null;
-                                break; // Esce dallo switch, fermando l'avvio del match
-                            }
-
-                            // Nessun errore: crea la sfida e prosegue
-                            Challenge newChallenge = new Challenge(
-                                new java.sql.Date(System.currentTimeMillis()), 
-                                setupController.getMatchDifficulty(), 
-                                setupController.getTargetWord(), 
-                                setupController.getSourceId()
-                            );
-
-                            // Registra la sfida per entrambi i giocatori
-                            activeGames.put(p1Channel, newChallenge);
-                            activeGames.put(p2Channel, newChallenge);
-
-                            // Invia i dati di avvio partita ai due client
-                            connection.sendTo(p1Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 0, p2User, setupController.getMatchDifficulty()));
-                            connection.sendTo(p2Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 1, p1User, setupController.getMatchDifficulty()));
-
-                            // Resetta la coda
+                            // Resetta la coda in anticipo per evitare race conditions, mentre si attende il manager in modo asincrono
                             waitingChannel = null;
                             waitingDifficulty = null;
+
+                            // Passaggio della callback di successo e di errore al GameSetupController
+                            setupController.generateMatchData(p1Diff, p2Diff, 
+                                (controller) -> {
+                                    // Nessun errore: crea la sfida e prosegue
+                                    Challenge newChallenge = new Challenge(
+                                        new Date(System.currentTimeMillis()), 
+                                        controller.getMatchDifficulty(), 
+                                        controller.getTargetWord(), 
+                                        controller.getSourceId()
+                                    );
+
+                                    // Registra la sfida per entrambi i giocatori
+                                    activeGames.put(p1Channel, newChallenge);
+                                    activeGames.put(p2Channel, newChallenge);
+
+                                    // Invia i dati di avvio partita ai due client
+                                    try {
+                                        connection.sendTo(p1Channel, new NetworkMessage.GameStart(controller.getCipheredText(), controller.getTimer(), 0, p2User, controller.getMatchDifficulty()));
+                                        connection.sendTo(p2Channel, new NetworkMessage.GameStart(controller.getCipheredText(), controller.getTimer(), 1, p1User, controller.getMatchDifficulty()));
+                                    } catch (IOException e) {
+                                        System.err.println("Errore nell'invio del messaggio di GameStart: " + e.getMessage());
+                                    }
+                                },
+                                (errorMessage) -> {
+                                    System.err.println("Generazione partita fallita. Matchmaking annullato.");
+                                    try {
+                                        String errorPayload = "ERROR_REDIRECT:" + errorMessage;
+                                        NetworkMessage errorMsg = new NetworkMessage.TextMessage(errorPayload);
+
+                                        // Invia il messaggio di errore per far tornare i client alla lobby
+                                        connection.sendTo(p1Channel, errorMsg);
+                                        connection.sendTo(p2Channel, errorMsg);
+                                    } catch (IOException e) {
+                                        System.err.println("Errore nell'invio del messaggio di fallimento ai client: " + e.getMessage());
+                                    }
+                                }
+                            );
                         }
                     }
                     break;

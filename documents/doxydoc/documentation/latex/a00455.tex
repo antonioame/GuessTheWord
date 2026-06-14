@@ -1,0 +1,188 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder}
+\hypertarget{a00455}{}\label{a00455}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+
+
+\doxylink{a00455}{Builder} per la creazione guidata e validata di istanze di \doxylink{a00451}{Preset\+Config}.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00455_a921efa179d8fa328d26dd23a80b420c4}{Builder}} ()
+\begin{DoxyCompactList}\small\item\em Costruttore del \doxylink{a00455}{Builder} con valori di default validi. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00455}{Builder}} \mbox{\hyperlink{a00455_aa9ec1b0139959adbb3b752f6abd8cb0f}{with\+Number\+Of\+Periods}} (int periods)
+\begin{DoxyCompactList}\small\item\em Imposta il numero di periodi. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00455}{Builder}} \mbox{\hyperlink{a00455_a828918eca6eca0c1a64e171d670d935c}{with\+Maximum\+Word\+Frequency}} (int frequency)
+\begin{DoxyCompactList}\small\item\em Imposta la massima frequenza delle parole. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00455}{Builder}} \mbox{\hyperlink{a00455_a1556cbbd955d51ad949508e1f11bf8d8}{with\+Maximum\+Similar\+Word\+In\+Question\+Text}} (int similar\+Words)
+\begin{DoxyCompactList}\small\item\em Imposta il numero massimo di parole simili nel testo della domanda. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00455}{Builder}} \mbox{\hyperlink{a00455_afbad82f1d4798ba36e5c88fd9efe889b}{with\+Shifting\+Offset}} (int offset)
+\begin{DoxyCompactList}\small\item\em Imposta l\textquotesingle{}offset di shifting per la cifratura. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00451}{Preset\+Config}} \mbox{\hyperlink{a00455_a4876ae6d6ca227bb6c5b1fa4e61d4ff4}{build}} ()
+\begin{DoxyCompactList}\small\item\em Costruisce un\textquotesingle{}istanza immutabile di \doxylink{a00451}{Preset\+Config}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00455_ac693620e3a59c221b9c24248d5f6115b}\label{a00455_ac693620e3a59c221b9c24248d5f6115b} 
+int {\bfseries number\+Of\+Periods} = 1
+\item 
+\Hypertarget{a00455_aba50714be3ab9776e9af4ff5ba8222ac}\label{a00455_aba50714be3ab9776e9af4ff5ba8222ac} 
+int {\bfseries maximum\+Word\+Frequency} = 100
+\item 
+\Hypertarget{a00455_ad6e4245f7ef103f33fabf0b20089e877}\label{a00455_ad6e4245f7ef103f33fabf0b20089e877} 
+int {\bfseries maximum\+Similar\+Word\+In\+Question\+Text} = 5
+\item 
+\Hypertarget{a00455_aed45ba74977cefc374b96de89ffaa0ea}\label{a00455_aed45ba74977cefc374b96de89ffaa0ea} 
+int {\bfseries shifting\+Offset} = 3
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+\doxylink{a00455}{Builder} per la creazione guidata e validata di istanze di \doxylink{a00451}{Preset\+Config}. 
+
+\begin{DoxyInvariant}{Invariante}
+I valori impostati devono rispettare i vincoli di integrità prima della chiamata a \doxylink{a00455_a4876ae6d6ca227bb6c5b1fa4e61d4ff4}{build()}. 
+\end{DoxyInvariant}
+
+
+\label{doc-constructors}
+\Hypertarget{a00455_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00455_a921efa179d8fa328d26dd23a80b420c4}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!Builder@{Builder}}
+\index{Builder@{Builder}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{Builder()}{Builder()}}
+{\footnotesize\ttfamily \label{a00455_a921efa179d8fa328d26dd23a80b420c4} 
+gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+Builder (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore del \doxylink{a00455}{Builder} con valori di default validi. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Il \doxylink{a00455}{Builder} viene inizializzato con valori predefiniti coerenti con le invarianti. 
+\end{DoxyPostcond}
+
+
+\label{doc-func-members}
+\Hypertarget{a00455_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00455_a4876ae6d6ca227bb6c5b1fa4e61d4ff4}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!build@{build}}
+\index{build@{build}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{build()}{build()}}
+{\footnotesize\ttfamily \label{a00455_a4876ae6d6ca227bb6c5b1fa4e61d4ff4} 
+\mbox{\hyperlink{a00451}{Preset\+Config}} gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+build (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruisce un\textquotesingle{}istanza immutabile di \doxylink{a00451}{Preset\+Config}. 
+
+\begin{DoxyReturn}{Restituisce}
+Un oggetto \doxylink{a00451}{Preset\+Config} propriamente configurato. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Lo stato corrente del builder deve soddisfare tutte le invarianti della classe \doxylink{a00451}{Preset\+Config}. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Viene restituita una nuova istanza di \doxylink{a00451}{Preset\+Config} immutabile. 
+\end{DoxyPostcond}
+\Hypertarget{a00455_a1556cbbd955d51ad949508e1f11bf8d8}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!withMaximumSimilarWordInQuestionText@{withMaximumSimilarWordInQuestionText}}
+\index{withMaximumSimilarWordInQuestionText@{withMaximumSimilarWordInQuestionText}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{withMaximumSimilarWordInQuestionText()}{withMaximumSimilarWordInQuestionText()}}
+{\footnotesize\ttfamily \label{a00455_a1556cbbd955d51ad949508e1f11bf8d8} 
+\mbox{\hyperlink{a00455}{Builder}} gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+with\+Maximum\+Similar\+Word\+In\+Question\+Text (\begin{DoxyParamCaption}\item[{int}]{similar\+Words}{}\end{DoxyParamCaption})}
+
+
+
+Imposta il numero massimo di parole simili nel testo della domanda. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em similar\+Words} & Il numero massimo di parole simili. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Il builder stesso per consentire il chaining dei metodi. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il valore di similar\+Words deve essere maggiore o uguale a zero. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il campo maximum\+Similar\+Word\+In\+Question\+Text viene aggiornato con il valore fornito. 
+\end{DoxyPostcond}
+\Hypertarget{a00455_a828918eca6eca0c1a64e171d670d935c}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!withMaximumWordFrequency@{withMaximumWordFrequency}}
+\index{withMaximumWordFrequency@{withMaximumWordFrequency}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{withMaximumWordFrequency()}{withMaximumWordFrequency()}}
+{\footnotesize\ttfamily \label{a00455_a828918eca6eca0c1a64e171d670d935c} 
+\mbox{\hyperlink{a00455}{Builder}} gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+with\+Maximum\+Word\+Frequency (\begin{DoxyParamCaption}\item[{int}]{frequency}{}\end{DoxyParamCaption})}
+
+
+
+Imposta la massima frequenza delle parole. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em frequency} & La massima frequenza consentita. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Il builder stesso per consentire il chaining dei metodi. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il valore di frequency deve essere maggiore di zero. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il campo maximum\+Word\+Frequency viene aggiornato con il valore fornito. 
+\end{DoxyPostcond}
+\Hypertarget{a00455_aa9ec1b0139959adbb3b752f6abd8cb0f}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!withNumberOfPeriods@{withNumberOfPeriods}}
+\index{withNumberOfPeriods@{withNumberOfPeriods}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{withNumberOfPeriods()}{withNumberOfPeriods()}}
+{\footnotesize\ttfamily \label{a00455_aa9ec1b0139959adbb3b752f6abd8cb0f} 
+\mbox{\hyperlink{a00455}{Builder}} gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+with\+Number\+Of\+Periods (\begin{DoxyParamCaption}\item[{int}]{periods}{}\end{DoxyParamCaption})}
+
+
+
+Imposta il numero di periodi. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em periods} & Il numero di periodi da configurare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Il builder stesso per consentire il chaining dei metodi. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il valore di periods deve essere maggiore di zero. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il campo number\+Of\+Periods viene aggiornato con il valore fornito. 
+\end{DoxyPostcond}
+\Hypertarget{a00455_afbad82f1d4798ba36e5c88fd9efe889b}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}!withShiftingOffset@{withShiftingOffset}}
+\index{withShiftingOffset@{withShiftingOffset}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfig.Builder}}
+\doxysubsubsection{\texorpdfstring{withShiftingOffset()}{withShiftingOffset()}}
+{\footnotesize\ttfamily \label{a00455_afbad82f1d4798ba36e5c88fd9efe889b} 
+\mbox{\hyperlink{a00455}{Builder}} gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config.\+Builder.\+with\+Shifting\+Offset (\begin{DoxyParamCaption}\item[{int}]{offset}{}\end{DoxyParamCaption})}
+
+
+
+Imposta l\textquotesingle{}offset di shifting per la cifratura. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em offset} & L\textquotesingle{}offset di shifting. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Il builder stesso per consentire il chaining dei metodi. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il valore di offset deve essere maggiore o uguale a zero. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il campo shifting\+Offset viene aggiornato con il valore fornito. 
+\end{DoxyPostcond}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/sourcemanager/api/config/Preset\+Config.\+java\end{DoxyCompactItemize}

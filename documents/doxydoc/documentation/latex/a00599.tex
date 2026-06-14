@@ -1,0 +1,77 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Question\+Generator\+Test.\+Stub\+Word\+Extractor}
+\hypertarget{a00599}{}\label{a00599}\index{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor@{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor}}
+
+
+Stub manuale di \doxylink{a00503}{Word\+Extractor} per simulare il comportamento di estrazione.  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Question\+Generator\+Test.\+Stub\+Word\+Extractor\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.931034cm]{a00599}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00599_acdf97096e0555a60827c874e8823a028}\label{a00599_acdf97096e0555a60827c874e8823a028} 
+void {\bfseries set\+Fixed\+Word} (String word)
+\item 
+String \mbox{\hyperlink{a00599_a82f95196afb7dc253fa6200113887d09}{extract\+Word}} (String text, Map$<$ String, Integer $>$ word\+Frequencies, \mbox{\hyperlink{a00451}{Preset\+Config}} config)
+\begin{DoxyCompactList}\small\item\em Estrae una parola chiave valida dal testo fornito tramite approccio iterativo e tollerante ai fallimenti. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00503}{gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Word\+Extractor}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00503_aea1a20bd878b5001125bfbee7d71b32a}{Word\+Extractor}} (Bi\+Predicate$<$ String, String $>$ \mbox{\hyperlink{a00503_a8592c772dcd71a799df52f4150965649}{similarity\+Function}}, Bi\+Predicate$<$ Integer, Integer $>$ \mbox{\hyperlink{a00503_a9cc764bf73923e9f2ba9a1caf3545670}{fallback\+Word\+Criterion}}, Set$<$ String $>$ \mbox{\hyperlink{a00503_aea929c80872946decf308c451ea972b6}{stop\+Words}}, Random \mbox{\hyperlink{a00503_a5718249ab5ec5204a51092ffde9ca5e9}{random}}, String \mbox{\hyperlink{a00503_a79989e53c69f488e1654f40f4e1c7078}{sanitization\+Regex}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per l\textquotesingle{}inizializzazione del \doxylink{a00503}{Word\+Extractor}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00599_a06f03af3bf905e184f7202329462b663}\label{a00599_a06f03af3bf905e184f7202329462b663} 
+String {\bfseries fixed\+Word} = "{}chiave"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Stub manuale di \doxylink{a00503}{Word\+Extractor} per simulare il comportamento di estrazione. 
+
+\label{doc-func-members}
+\Hypertarget{a00599_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00599_a82f95196afb7dc253fa6200113887d09}\index{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor@{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor}!extractWord@{extractWord}}
+\index{extractWord@{extractWord}!gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor@{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest.StubWordExtractor}}
+\doxysubsubsection{\texorpdfstring{extractWord()}{extractWord()}}
+{\footnotesize\ttfamily \label{a00599_a82f95196afb7dc253fa6200113887d09} 
+String gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Question\+Generator\+Test.\+Stub\+Word\+Extractor.\+extract\+Word (\begin{DoxyParamCaption}\item[{String}]{text}{, }\item[{Map$<$ String, Integer $>$}]{word\+Frequencies}{, }\item[{\mbox{\hyperlink{a00451}{Preset\+Config}}}]{config}{}\end{DoxyParamCaption})}
+
+
+
+Estrae una parola chiave valida dal testo fornito tramite approccio iterativo e tollerante ai fallimenti. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em text} & Il testo dal quale estrarre la parola chiave (composto da parole e punti). \\
+\hline
+\mbox{\texttt{in}}  & {\em word\+Frequencies} & La mappa contenente la frequenza globale di ciascuna parola nella sorgente. \\
+\hline
+\mbox{\texttt{in}}  & {\em config} & La configurazione del preset contenente le soglie e i limiti correnti. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+La parola estratta idonea alla generazione della domanda. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il testo di input, la mappa delle frequenze e la configurazione del preset non devono essere nulli. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+La parola restituita rispetta tutti i vincoli di difficoltà o, in caso di esaurimento delle opzioni, rappresenta il miglior compromesso (fallback). 
+\end{DoxyPostcond}
+
+
+Reimplementa \mbox{\hyperlink{a00503_a86955a26acfb220a25476efc1d577426}{gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Word\+Extractor}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/sourcemanager/internal/generation/Question\+Generator\+Test.\+java\end{DoxyCompactItemize}

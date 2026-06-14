@@ -1,0 +1,91 @@
+\doxysection{Riferimenti per l\textquotesingle{}interfaccia gruppo05.\+gtwserver.\+db.\+Challenge\+DAO}
+\hypertarget{a00359}{}\label{a00359}\index{gruppo05.gtwserver.db.ChallengeDAO@{gruppo05.gtwserver.db.ChallengeDAO}}
+
+
+Sottointerfaccia \doxylink{a00387}{DAO} per la gestione della persistenza delle sfide (\doxylink{a00415}{Challenge}).  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+db.\+Challenge\+DAO\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00359}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+Optional$<$ \mbox{\hyperlink{a00415}{Challenge}} $>$ \mbox{\hyperlink{a00359_aec738ecd61b7e09650a6f416b453d163}{select\+By\+Id}} (Optional$<$ Integer $>$ code)
+\begin{DoxyCompactList}\small\item\em Recupera una sfida tramite il suo codice identificativo univoco. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00359_a0c5fc045fb2546159c54a68b7da834fc}{delete}} (Optional$<$ Integer $>$ code)
+\begin{DoxyCompactList}\small\item\em Cancella una sfida dal database tramite il suo codice identificativo univoco. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00387}{gruppo05.\+gtwserver.\+db.\+DAO$<$ Challenge $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ T $>$ \mbox{\hyperlink{a00387_a922452d0b8559d0497965e19b770f276}{select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Recupera tutte le istanze dell\textquotesingle{}entità memorizzate nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a82e78482068f525f83500c09a3169a88}{insert}} (T model)
+\begin{DoxyCompactList}\small\item\em Inserisce una nuova istanza dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a3457919ad8921d48f2ccd1f696e21b87}{insert\+All}} (List$<$ T $>$ model\+List)
+\begin{DoxyCompactList}\small\item\em Inserisce una lista di istanze dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a59161f50026305a7accaeb029f75fa01}{update}} (T model)
+\begin{DoxyCompactList}\small\item\em Aggiorna i dati di un\textquotesingle{}istanza esistente all\textquotesingle{}interno del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Sottointerfaccia \doxylink{a00387}{DAO} per la gestione della persistenza delle sfide (\doxylink{a00415}{Challenge}). 
+
+\label{doc-func-members}
+\Hypertarget{a00359_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00359_a0c5fc045fb2546159c54a68b7da834fc}\index{gruppo05.gtwserver.db.ChallengeDAO@{gruppo05.gtwserver.db.ChallengeDAO}!delete@{delete}}
+\index{delete@{delete}!gruppo05.gtwserver.db.ChallengeDAO@{gruppo05.gtwserver.db.ChallengeDAO}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}}
+{\footnotesize\ttfamily \label{a00359_a0c5fc045fb2546159c54a68b7da834fc} 
+void gruppo05.\+gtwserver.\+db.\+Challenge\+DAO.\+delete (\begin{DoxyParamCaption}\item[{Optional$<$ Integer $>$}]{code}{}\end{DoxyParamCaption})}
+
+
+
+Cancella una sfida dal database tramite il suo codice identificativo univoco. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em code} & Un Optional contenente il codice numerico della sfida da rimuovere. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondizione}
+Se l\textquotesingle{}Optional contiene un codice esistente, il record della sfida viene rimosso dal database. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00367_a5ae85ff7674e642653a161d512364010}{gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAO}}.
+
+\Hypertarget{a00359_aec738ecd61b7e09650a6f416b453d163}\index{gruppo05.gtwserver.db.ChallengeDAO@{gruppo05.gtwserver.db.ChallengeDAO}!selectById@{selectById}}
+\index{selectById@{selectById}!gruppo05.gtwserver.db.ChallengeDAO@{gruppo05.gtwserver.db.ChallengeDAO}}
+\doxysubsubsection{\texorpdfstring{selectById()}{selectById()}}
+{\footnotesize\ttfamily \label{a00359_aec738ecd61b7e09650a6f416b453d163} 
+Optional$<$ \mbox{\hyperlink{a00415}{Challenge}} $>$ gruppo05.\+gtwserver.\+db.\+Challenge\+DAO.\+select\+By\+Id (\begin{DoxyParamCaption}\item[{Optional$<$ Integer $>$}]{code}{}\end{DoxyParamCaption})}
+
+
+
+Recupera una sfida tramite il suo codice identificativo univoco. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em code} & Un Optional contenente il codice numerico della sfida da cercare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Un Optional contenente la sfida trovata, oppure un Optional vuoto. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il valore restituito non è null. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00367_a819044e89b5b14726940399356f5db30}{gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAO}}.
+
+
+
+La documentazione per questa interfaccia è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/db/Challenge\+DAO.\+java\end{DoxyCompactItemize}

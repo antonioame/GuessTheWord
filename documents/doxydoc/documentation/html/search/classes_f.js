@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['scenenavigator_0',['SceneNavigator',['../a00635.html',1,'gruppo05::gtwshared::controller']]],
+  ['securityutils_1',['SecurityUtils',['../a00759.html',1,'gruppo05::gtwshared::utility']]],
+  ['securityutilstest_2',['SecurityUtilsTest',['../a00763.html',1,'gruppo05::gtwshared::utility']]],
+  ['serverconnection_3',['ServerConnection',['../a00439.html',1,'gruppo05::gtwserver::networking']]],
+  ['serverconnectioncreator_4',['ServerConnectionCreator',['../a00443.html',1,'gruppo05::gtwserver::networking']]],
+  ['serverloginmanager_5',['ServerLoginManager',['../a00347.html',1,'gruppo05::gtwserver::controller']]],
+  ['serverloginmanagertest_6',['ServerLoginManagerTest',['../a00515.html',1,'gruppo05::gtwserver::controller']]],
+  ['serversignupmanager_7',['ServerSignupManager',['../a00351.html',1,'gruppo05::gtwserver::controller']]],
+  ['signupmanager_8',['SignupManager',['../a00639.html',1,'gruppo05::gtwshared::controller']]],
+  ['signupviewcontroller_9',['SignupViewController',['../a00643.html',1,'gruppo05::gtwshared::controller']]],
+  ['source_10',['Source',['../a00431.html',1,'gruppo05::gtwserver::model']]],
+  ['sourceanalyzer_11',['SourceAnalyzer',['../a00495.html',1,'gruppo05::gtwserver::sourcemanager::internal::analysis']]],
+  ['sourcedao_12',['SourceDAO',['../a00403.html',1,'gruppo05::gtwserver::db']]],
+  ['sourcemanager_13',['SourceManager',['../a00467.html',1,'gruppo05::gtwserver::sourcemanager::api']]],
+  ['sourcemanagerconfig_14',['SourceManagerConfig',['../a00459.html',1,'gruppo05::gtwserver::sourcemanager::api::config']]],
+  ['sourcemanagerconfigtest_15',['SourceManagerConfigTest',['../a00571.html',1,'gruppo05::gtwserver::sourcemanager::api::config']]],
+  ['sourcemanagerinitializer_16',['SourceManagerInitializer',['../a00335.html',1,'gruppo05::gtwserver::config']]],
+  ['sourcemanagerintegrationtest_17',['SourceManagerIntegrationTest',['../a00575.html',1,'gruppo05::gtwserver::sourcemanager::api']]],
+  ['sourcenotfoundexception_18',['SourceNotFoundException',['../a00483.html',1,'gruppo05::gtwserver::sourcemanager::exception']]],
+  ['status_19',['Status',['../a00655.html',1,'gruppo05::gtwshared::dto::CallbackDTO']]],
+  ['stopwordsloadexception_20',['StopWordsLoadException',['../a00487.html',1,'gruppo05::gtwserver::sourcemanager::exception']]],
+  ['storageexception_21',['StorageException',['../a00491.html',1,'gruppo05::gtwserver::sourcemanager::exception']]],
+  ['stubwordextractor_22',['StubWordExtractor',['../a00599.html',1,'gruppo05::gtwserver::sourcemanager::internal::generation::QuestionGeneratorTest']]]
+];

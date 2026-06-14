@@ -1,0 +1,210 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test}
+\hypertarget{a00547}{}\label{a00547}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+
+
+Classe di test per la verifica delle funzionalità di \doxylink{a00391}{Database\+Manager}.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00547_a6b4c2ea9eae36555403e4cc0c3d16eb7}{Database\+Manager\+Test}} ()
+\begin{DoxyCompactList}\small\item\em Costruttore predefinito. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_ae401e0edd25e7d2970198197fdf416cf}{set\+Up}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Configura l\textquotesingle{}ambiente prima dell\textquotesingle{}esecuzione di ciascun metodo di test. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a6ecd6385a9ae451c2da546de2b06da2b}{tear\+Down}} ()
+\begin{DoxyCompactList}\small\item\em Pulisce l\textquotesingle{}ambiente al termine di ciascun metodo di test. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a14115f8290c0c020dbfa5113d3e7df74}{test\+Get\+Connection}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}ottenimento di una connessione valida verso il database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_ae633c83054d1329068a9782ccf193321}{test\+Init\+DBCreate\+Tables}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}effettiva creazione delle tabelle di sistema all\textquotesingle{}avvio dell\textquotesingle{}applicazione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a80c4d43bd1ddd8da6b4c6786b724a084}{test\+Init\+DBCreate\+Views}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}effettiva creazione delle viste all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a34b87c3584883b5206282a18ef49650f}{test\+Init\+DBTrigger\+On\+Game}} ()  throws SQLException, Exception 
+\begin{DoxyCompactList}\small\item\em Test del trigger \textquotesingle{}increment\+Totals\+In\+Player\textquotesingle{} per l\textquotesingle{}aggiornamento incrementale delle statistiche. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a736e7aa11a5009a1d9b5e7fa6330eac0}{test\+Init\+DBTrigger\+On\+Source\+Not\+Used}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Test del comportamento standard dei vincoli referenziali su una sorgente non utilizzata. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00547_a6e97be6e90cc0444a3d7d85acd133b1a}{test\+Init\+DBTrigger\+On\+Source\+Used}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Test del trigger \textquotesingle{}delete\+Only\+Unreferenced\+Words\textquotesingle{} su una sorgente utilizzata in delle sfide. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00547_aaab858983c245597f3394e5380b84545}\label{a00547_aaab858983c245597f3394e5380b84545} 
+static void {\bfseries set\+Up\+Class} ()
+\item 
+\Hypertarget{a00547_a423af0bf36405271dcef735bdd4125b5}\label{a00547_a423af0bf36405271dcef735bdd4125b5} 
+static void {\bfseries tear\+Down\+Class} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00547_a514c347a060fb80ce6494f283476b732}\label{a00547_a514c347a060fb80ce6494f283476b732} 
+final \mbox{\hyperlink{a00551}{Debug\+DB}} {\bfseries ddb}
+\begin{DoxyCompactList}\small\item\em Riferimento alla classe di utility per il popolamento diretto del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00547_afc108e3510e6fbf52bace14e405d0deb}\label{a00547_afc108e3510e6fbf52bace14e405d0deb} 
+static final String {\bfseries DB\+\_\+\+NAME} = "{}Server\+DB"{}
+\begin{DoxyCompactList}\small\item\em Nome del file di database locale SQLite utilizzato per i test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe di test per la verifica delle funzionalità di \doxylink{a00391}{Database\+Manager}. 
+
+Verifica la corretta creazione delle tabelle, delle viste, l\textquotesingle{}integrità dei vincoli e l\textquotesingle{}attivazione dei relativi trigger custom definiti per il database SQLite del server. 
+
+\label{doc-constructors}
+\Hypertarget{a00547_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00547_a6b4c2ea9eae36555403e4cc0c3d16eb7}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!DatabaseManagerTest@{DatabaseManagerTest}}
+\index{DatabaseManagerTest@{DatabaseManagerTest}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{DatabaseManagerTest()}{DatabaseManagerTest()}}
+{\footnotesize\ttfamily \label{a00547_a6b4c2ea9eae36555403e4cc0c3d16eb7} 
+gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+Database\+Manager\+Test (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore predefinito. 
+
+Inizializza l\textquotesingle{}istanza dell\textquotesingle{}utility \doxylink{a00551}{Debug\+DB} per il popolamento del database. 
+
+\label{doc-func-members}
+\Hypertarget{a00547_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00547_ae401e0edd25e7d2970198197fdf416cf}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!setUp@{setUp}}
+\index{setUp@{setUp}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{setUp()}{setUp()}}
+{\footnotesize\ttfamily \label{a00547_ae401e0edd25e7d2970198197fdf416cf} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Configura l\textquotesingle{}ambiente prima dell\textquotesingle{}esecuzione di ciascun metodo di test. 
+
+Ricrea la struttura delle tabelle e inserisce il dataset deterministico di debug bypassando i \doxylink{a00387}{DAO} per garantire uno stato noto del database.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di errore durante la scrittura o l\textquotesingle{}inizializzazione sul database. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_a6ecd6385a9ae451c2da546de2b06da2b}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!tearDown@{tearDown}}
+\index{tearDown@{tearDown}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{tearDown()}{tearDown()}}
+{\footnotesize\ttfamily \label{a00547_a6ecd6385a9ae451c2da546de2b06da2b} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Pulisce l\textquotesingle{}ambiente al termine di ciascun metodo di test. 
+
+Rimuove fisicamente il file del database locale per garantire il completo isolamento ed evitare l\textquotesingle{}interferenza di residui di dati tra i vari test consecutivi. \Hypertarget{a00547_a14115f8290c0c020dbfa5113d3e7df74}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testGetConnection@{testGetConnection}}
+\index{testGetConnection@{testGetConnection}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testGetConnection()}{testGetConnection()}}
+{\footnotesize\ttfamily \label{a00547_a14115f8290c0c020dbfa5113d3e7df74} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Get\+Connection (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Verifica l\textquotesingle{}ottenimento di una connessione valida verso il database. 
+
+Controlla che l\textquotesingle{}oggetto Connection non sia null e che risulti effettivamente aperto prima della chiusura del costrutto try-\/with-\/resources.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di anomalie nella connessione JDBC. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_ae633c83054d1329068a9782ccf193321}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testInitDBCreateTables@{testInitDBCreateTables}}
+\index{testInitDBCreateTables@{testInitDBCreateTables}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testInitDBCreateTables()}{testInitDBCreateTables()}}
+{\footnotesize\ttfamily \label{a00547_ae633c83054d1329068a9782ccf193321} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Init\+DBCreate\+Tables (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Verifica l\textquotesingle{}effettiva creazione delle tabelle di sistema all\textquotesingle{}avvio dell\textquotesingle{}applicazione. 
+
+Ispeziona i metadati del database tramite il driver JDBC per assicurarsi che tutte le tabelle principali (\textquotesingle{}admin\textquotesingle{}, \textquotesingle{}player\textquotesingle{}, \textquotesingle{}game\textquotesingle{}, \textquotesingle{}challenge\textquotesingle{}, \textquotesingle{}word\textquotesingle{}, \textquotesingle{}source\textquotesingle{}) siano registrate correttamente.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di fallimento nell\textquotesingle{}interrogazione dei metadati SQL. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_a80c4d43bd1ddd8da6b4c6786b724a084}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testInitDBCreateViews@{testInitDBCreateViews}}
+\index{testInitDBCreateViews@{testInitDBCreateViews}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testInitDBCreateViews()}{testInitDBCreateViews()}}
+{\footnotesize\ttfamily \label{a00547_a80c4d43bd1ddd8da6b4c6786b724a084} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Init\+DBCreate\+Views (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Verifica l\textquotesingle{}effettiva creazione delle viste all\textquotesingle{}interno del database. 
+
+Ispeziona i metadati SQL per accertare che la vista \textquotesingle{}available\+Words\textquotesingle{} sia configurata e rilevabile nel sistema come oggetto di tipo VIEW.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di errore durante la lettura dei metadati del database. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_a34b87c3584883b5206282a18ef49650f}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testInitDBTriggerOnGame@{testInitDBTriggerOnGame}}
+\index{testInitDBTriggerOnGame@{testInitDBTriggerOnGame}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testInitDBTriggerOnGame()}{testInitDBTriggerOnGame()}}
+{\footnotesize\ttfamily \label{a00547_a34b87c3584883b5206282a18ef49650f} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Init\+DBTrigger\+On\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException, Exception}
+
+
+
+Test del trigger \textquotesingle{}increment\+Totals\+In\+Player\textquotesingle{} per l\textquotesingle{}aggiornamento incrementale delle statistiche. 
+
+Inserisce una nuova sfida e simula il completamento di due partite da parte di giocatori differenti (Franco\+Neri e Alex\+Giallo). Successivamente rilegge i dati aggregati dei giocatori per verificare che il trigger di INSERT sulla tabella \textquotesingle{}game\textquotesingle{} abbia correttamente ricalcolato i totali di tempo giocato, partite giocate e vinte a partire dai rispettivi valori preesistenti.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di fallimento nelle operazioni SQL. \\
+\hline
+{\em Exception} & Se la query di controllo restituisce un record imprevisto. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_a736e7aa11a5009a1d9b5e7fa6330eac0}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testInitDBTriggerOnSourceNotUsed@{testInitDBTriggerOnSourceNotUsed}}
+\index{testInitDBTriggerOnSourceNotUsed@{testInitDBTriggerOnSourceNotUsed}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testInitDBTriggerOnSourceNotUsed()}{testInitDBTriggerOnSourceNotUsed()}}
+{\footnotesize\ttfamily \label{a00547_a736e7aa11a5009a1d9b5e7fa6330eac0} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Init\+DBTrigger\+On\+Source\+Not\+Used (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Test del comportamento standard dei vincoli referenziali su una sorgente non utilizzata. 
+
+Prova ad eliminare la sorgente con id = 7 (che nel dataset iniziale non è referenziata da alcuna sfida). Trattandosi di un record libero da legami attivi con la tabella \textquotesingle{}challenge\textquotesingle{}, il trigger \textquotesingle{}delete\+Only\+Unreferenced\+Words\textquotesingle{} non intercetta la query a monte, permettendo la rimozione del record da \textquotesingle{}source\textquotesingle{} e, di riflesso, l\textquotesingle{}eliminazione a cascata (\textquotesingle{}ON DELETE CASCADE\textquotesingle{}) di tutte le parole ad essa associate nella tabella \textquotesingle{}word\textquotesingle{}.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di errore durante l\textquotesingle{}esecuzione del comando SQL. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00547_a6e97be6e90cc0444a3d7d85acd133b1a}\index{gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}!testInitDBTriggerOnSourceUsed@{testInitDBTriggerOnSourceUsed}}
+\index{testInitDBTriggerOnSourceUsed@{testInitDBTriggerOnSourceUsed}!gruppo05.gtwserver.db.DatabaseManagerTest@{gruppo05.gtwserver.db.DatabaseManagerTest}}
+\doxysubsubsection{\texorpdfstring{testInitDBTriggerOnSourceUsed()}{testInitDBTriggerOnSourceUsed()}}
+{\footnotesize\ttfamily \label{a00547_a6e97be6e90cc0444a3d7d85acd133b1a} 
+void gruppo05.\+gtwserver.\+db.\+Database\+Manager\+Test.\+test\+Init\+DBTrigger\+On\+Source\+Used (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Test del trigger \textquotesingle{}delete\+Only\+Unreferenced\+Words\textquotesingle{} su una sorgente utilizzata in delle sfide. 
+
+Esegue una richiesta di rimozione per la sorgente con id = 6, la quale è legata a sfide attive (tramite le parole \textquotesingle{}amicizia\textquotesingle{} e \textquotesingle{}amore\textquotesingle{}). Il test certifica che l\textquotesingle{}attivazione del trigger BEFORE DELETE impedisce la cancellazione del record principale da \textquotesingle{}source\textquotesingle{} (mediante un comando RAISE(\+IGNORE)), impostando al contempo il campo \textquotesingle{}path\textquotesingle{} a NULL, e pulendo dalla tabella \textquotesingle{}word\textquotesingle{} solo le parole appartenenti alla medesima sorgente che non figurano in alcuna sfida attiva (\textquotesingle{}metallo\textquotesingle{}, \textquotesingle{}creatività\textquotesingle{}, \textquotesingle{}farfalla\textquotesingle{}, \textquotesingle{}ricerca\textquotesingle{}).
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di anomalie nella transazione o nell\textquotesingle{}esecuzione SQL. \\
+\hline
+\end{DoxyExceptions}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/db/Database\+Manager\+Test.\+java\end{DoxyCompactItemize}

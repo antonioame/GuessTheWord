@@ -1,0 +1,277 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest}
+\hypertarget{a00527}{}\label{a00527}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+
+
+Classe di test per la verifica del \doxylink{a00387}{DAO} concreto \doxylink{a00367}{Concrete\+Challenge\+DAO}.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00527_ac0986933b99b65df3781b866743eda2a}{Concrete\+Challenge\+DAOTest}} ()
+\begin{DoxyCompactList}\small\item\em Costruttore predefinito. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a681177fc5651ffc173783651d1f927f5}{set\+Up}} ()  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Configura l\textquotesingle{}ambiente prima dell\textquotesingle{}esecuzione di ogni singolo test case. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a309d9ec6203719e1dc4107c037b267db}{tear\+Down}} ()
+\begin{DoxyCompactList}\small\item\em Esegue la pulizia del database al termine di ogni singolo test case. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a54945f07ba01ddff3d5ddfe60f363392}{test\+Select\+By\+Id\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il recupero di una sfida esistente tramite il suo codice identificativo. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_ad3a4a6076004cd480cf97450f0a94d31}{test\+Select\+By\+Id\+Not\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che la ricerca di un codice non registrato restituisca un esito vuoto. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a576b1f2ee84784b5d33c7e5a48be3edf}{test\+Select\+By\+Id\+Empty\+Optional}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il comportamento defensivo di select\+By\+Id con un parametro vuoto. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a84a0b703dfc9d0f5e5e28e1d9139d185}{test\+Select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il recupero massivo di tutte le sfide registrate. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_ac4c61bc011eb4f5ac1ff762ccba401af}{test\+Insert\+Valid}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il corretto inserimento di una nuova sfida valida nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_acd594bf08e99e3938746462d3f9383a7}{test\+Insert\+Null}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la stabilità del metodo insert a fronte di un inserimento null. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_ae9d2fad24fde2d27c30837c7236db405}{test\+Insert\+Invalid\+Foreign\+Key}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il blocco dell\textquotesingle{}inserimento in caso di violazione della Foreign Key. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a37421501d9818d9f6d51f28ad58fe9b8}{test\+Insert\+All\+Valid}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la persistenza di massa di una lista di sfide valide. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a1601d751a54914e177cdb76f9baad3aa}{test\+Insert\+All\+Null\+Or\+Empty}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}invio di liste vuote o nulle non alteri lo stato del sistema. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_aebd1acb05c19f54add889067d3836fcf}{test\+Insert\+All\+With\+Rollback}} ()
+\begin{DoxyCompactList}\small\item\em Verifica il comportamento atomico della transazione con rollback parziale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a7a10dc13095fe765d1434ef3c74dc317}{test\+Update\+Existing}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la corretta modifica dei campi di una sfida preesistente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_abc4c6518ff349ffb76d8887dda25af2e}{test\+Update\+Null}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la gestione difensiva del metodo update in caso di input nullo. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_ae9f8b790d8603adc5dccdb1e9406594b}{test\+Delete\+No\+References}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la cancellazione di una sfida non referenziata da record figli. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_a5378846b3237de30be8979f4f66601f6}{test\+Delete\+With\+References}} ()
+\begin{DoxyCompactList}\small\item\em Verifica l\textquotesingle{}intervento del vincolo ON DELETE RESTRICT su sfide referenziate. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00527_afaea4a2feab463860af58c8c76fc8c32}{test\+Delete\+Empty\+Optional}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}invio di un Optional di rimozione vuoto non provochi modifiche. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00527_ae007194838f2a672f6934eb0d54d6d2a}\label{a00527_ae007194838f2a672f6934eb0d54d6d2a} 
+static void {\bfseries set\+Up\+Class} ()
+\item 
+\Hypertarget{a00527_aa5a802ac12c856152bfef2695c67ab59}\label{a00527_aa5a802ac12c856152bfef2695c67ab59} 
+static void {\bfseries tear\+Down\+Class} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00527_aec14d8342d6a585f7f982ec22ed233f9}\label{a00527_aec14d8342d6a585f7f982ec22ed233f9} 
+final \mbox{\hyperlink{a00551}{Debug\+DB}} {\bfseries ddb}
+\begin{DoxyCompactList}\small\item\em Riferimento all\textquotesingle{}utility di debug per il popolamento diretto delle tabelle. \end{DoxyCompactList}\item 
+\Hypertarget{a00527_a31f8132d0bceb4fcf266a995b9f463da}\label{a00527_a31f8132d0bceb4fcf266a995b9f463da} 
+final \mbox{\hyperlink{a00359}{Challenge\+DAO}} {\bfseries cdao}
+\begin{DoxyCompactList}\small\item\em Il Data Access Object (\doxylink{a00387}{DAO}) sotto analisi in questa suite di test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00527_a63622f1e4c5557b49aa74900ff57d0db}\label{a00527_a63622f1e4c5557b49aa74900ff57d0db} 
+static final String {\bfseries DB\+\_\+\+NAME} = "{}Server\+DB"{}
+\begin{DoxyCompactList}\small\item\em Nome del file di database locale SQLite utilizzato per isolare i test. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe di test per la verifica del \doxylink{a00387}{DAO} concreto \doxylink{a00367}{Concrete\+Challenge\+DAO}. 
+
+Sfrutta il dataset deterministico fornito da \doxylink{a00551}{Debug\+DB} per testare la correttezza delle operazioni CRUD sull\textquotesingle{}entità \doxylink{a00415}{Challenge}, ponendo particolare enfasi sulla verifica dei vincoli di integrità referenziale (Foreign Key ed effetti ON DELETE). 
+
+\label{doc-constructors}
+\Hypertarget{a00527_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00527_ac0986933b99b65df3781b866743eda2a}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!ConcreteChallengeDAOTest@{ConcreteChallengeDAOTest}}
+\index{ConcreteChallengeDAOTest@{ConcreteChallengeDAOTest}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{ConcreteChallengeDAOTest()}{ConcreteChallengeDAOTest()}}
+{\footnotesize\ttfamily \label{a00527_ac0986933b99b65df3781b866743eda2a} 
+gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+Concrete\+Challenge\+DAOTest (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore predefinito. 
+
+Inizializza l\textquotesingle{}istanza dell\textquotesingle{}utility di debug e l\textquotesingle{}implementazione del \doxylink{a00387}{DAO} per le sfide. 
+
+\label{doc-func-members}
+\Hypertarget{a00527_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00527_a681177fc5651ffc173783651d1f927f5}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!setUp@{setUp}}
+\index{setUp@{setUp}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{setUp()}{setUp()}}
+{\footnotesize\ttfamily \label{a00527_a681177fc5651ffc173783651d1f927f5} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+set\+Up (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws SQLException}
+
+
+
+Configura l\textquotesingle{}ambiente prima dell\textquotesingle{}esecuzione di ogni singolo test case. 
+
+Inizializza la struttura del database e inserisce i dati di debug tramite query dirette per garantire uno stato noto ed evitare dipendenze esterne.
+
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em SQLException} & In caso di anomalie nella transazione SQL o nella connessione JDBC. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00527_a309d9ec6203719e1dc4107c037b267db}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!tearDown@{tearDown}}
+\index{tearDown@{tearDown}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{tearDown()}{tearDown()}}
+{\footnotesize\ttfamily \label{a00527_a309d9ec6203719e1dc4107c037b267db} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+tear\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Esegue la pulizia del database al termine di ogni singolo test case. 
+
+Rimuove il file del database SQLite locale per assicurare il completo isolamento tra i test consecutivi ed evitare la persistenza di dati sporchi. \Hypertarget{a00527_afaea4a2feab463860af58c8c76fc8c32}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testDeleteEmptyOptional@{testDeleteEmptyOptional}}
+\index{testDeleteEmptyOptional@{testDeleteEmptyOptional}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testDeleteEmptyOptional()}{testDeleteEmptyOptional()}}
+{\footnotesize\ttfamily \label{a00527_afaea4a2feab463860af58c8c76fc8c32} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Delete\+Empty\+Optional (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}invio di un Optional di rimozione vuoto non provochi modifiche. 
+
+Sottopone al metodo delete un Optional.\+empty(), validando la stabilità del sistema e la totale assenza di fluttuazioni nel numero di record presenti. \Hypertarget{a00527_ae9f8b790d8603adc5dccdb1e9406594b}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testDeleteNoReferences@{testDeleteNoReferences}}
+\index{testDeleteNoReferences@{testDeleteNoReferences}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testDeleteNoReferences()}{testDeleteNoReferences()}}
+{\footnotesize\ttfamily \label{a00527_ae9f8b790d8603adc5dccdb1e9406594b} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Delete\+No\+References (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la cancellazione di una sfida non referenziata da record figli. 
+
+Inserisce una nuova sfida fittizia (id = 40) priva di storici di gioco associati, procedendo alla sua rimozione immediata per verificare il corretto decremento dei record. \Hypertarget{a00527_a5378846b3237de30be8979f4f66601f6}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testDeleteWithReferences@{testDeleteWithReferences}}
+\index{testDeleteWithReferences@{testDeleteWithReferences}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testDeleteWithReferences()}{testDeleteWithReferences()}}
+{\footnotesize\ttfamily \label{a00527_a5378846b3237de30be8979f4f66601f6} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Delete\+With\+References (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica l\textquotesingle{}intervento del vincolo ON DELETE RESTRICT su sfide referenziate. 
+
+Tenta la rimozione della sfida 1 (la quale possiede partite storiche collegate all\textquotesingle{}interno della tabella \textquotesingle{}game\textquotesingle{}). Il test accerta che l\textquotesingle{}eliminazione venga bloccata dal DBMS e che il record rimanga integro nel DB. \Hypertarget{a00527_a1601d751a54914e177cdb76f9baad3aa}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertAllNullOrEmpty@{testInsertAllNullOrEmpty}}
+\index{testInsertAllNullOrEmpty@{testInsertAllNullOrEmpty}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllNullOrEmpty()}{testInsertAllNullOrEmpty()}}
+{\footnotesize\ttfamily \label{a00527_a1601d751a54914e177cdb76f9baad3aa} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+All\+Null\+Or\+Empty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}invio di liste vuote o nulle non alteri lo stato del sistema. 
+
+Certifica l\textquotesingle{}immunità del metodo insert\+All da eccezioni di tipo Null\+Pointer\+Exception o esecuzioni SQL vuote superflue. \Hypertarget{a00527_a37421501d9818d9f6d51f28ad58fe9b8}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertAllValid@{testInsertAllValid}}
+\index{testInsertAllValid@{testInsertAllValid}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllValid()}{testInsertAllValid()}}
+{\footnotesize\ttfamily \label{a00527_a37421501d9818d9f6d51f28ad58fe9b8} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+All\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la persistenza di massa di una lista di sfide valide. 
+
+Passa al metodo insert\+All una collezione con due sfide ben formate, accertando che la dimensione totale passi da 5 a 7 elementi e che entrambi i record siano recuperabili. \Hypertarget{a00527_aebd1acb05c19f54add889067d3836fcf}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertAllWithRollback@{testInsertAllWithRollback}}
+\index{testInsertAllWithRollback@{testInsertAllWithRollback}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertAllWithRollback()}{testInsertAllWithRollback()}}
+{\footnotesize\ttfamily \label{a00527_aebd1acb05c19f54add889067d3836fcf} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+All\+With\+Rollback (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il comportamento atomico della transazione con rollback parziale. 
+
+Compone una lista contenente una sfida valida e una non valida (violazione FK sulla sorgente 99). Il test verifica che l\textquotesingle{}intera transazione fallisca, ripristinando il database allo stato iniziale senza salvare nemmeno l\textquotesingle{}elemento parzialmente corretto. \Hypertarget{a00527_ae9d2fad24fde2d27c30837c7236db405}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertInvalidForeignKey@{testInsertInvalidForeignKey}}
+\index{testInsertInvalidForeignKey@{testInsertInvalidForeignKey}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertInvalidForeignKey()}{testInsertInvalidForeignKey()}}
+{\footnotesize\ttfamily \label{a00527_ae9d2fad24fde2d27c30837c7236db405} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+Invalid\+Foreign\+Key (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il blocco dell\textquotesingle{}inserimento in caso di violazione della Foreign Key. 
+
+Tenta l\textquotesingle{}inserimento di una sfida con una parola non censita all\textquotesingle{}interno della tabella del dizionario. Il test certifica che il vincolo d\textquotesingle{}integrità referenziale blocchi l\textquotesingle{}operazione mantenendo la consistenza. \Hypertarget{a00527_acd594bf08e99e3938746462d3f9383a7}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertNull@{testInsertNull}}
+\index{testInsertNull@{testInsertNull}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertNull()}{testInsertNull()}}
+{\footnotesize\ttfamily \label{a00527_acd594bf08e99e3938746462d3f9383a7} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+Null (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la stabilità del metodo insert a fronte di un inserimento null. 
+
+Controlla che il passaggio di un riferimento nullo venga intercettato dalla guardia interna del \doxylink{a00387}{DAO}, senza alterare il conteggio complessivo dei record presenti. \Hypertarget{a00527_ac4c61bc011eb4f5ac1ff762ccba401af}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testInsertValid@{testInsertValid}}
+\index{testInsertValid@{testInsertValid}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testInsertValid()}{testInsertValid()}}
+{\footnotesize\ttfamily \label{a00527_ac4c61bc011eb4f5ac1ff762ccba401af} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Insert\+Valid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il corretto inserimento di una nuova sfida valida nel database. 
+
+Assicura la persistenza di un oggetto \doxylink{a00415}{Challenge} associato a una combinazione coerente di parola e sorgente ("{}metallo"{}, 6) già esistente nella tabella \textquotesingle{}word\textquotesingle{}. \Hypertarget{a00527_a84a0b703dfc9d0f5e5e28e1d9139d185}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testSelectAll@{testSelectAll}}
+\index{testSelectAll@{testSelectAll}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectAll()}{testSelectAll()}}
+{\footnotesize\ttfamily \label{a00527_a84a0b703dfc9d0f5e5e28e1d9139d185} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Select\+All (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il recupero massivo di tutte le sfide registrate. 
+
+Ispeziona la dimensione della collezione restituita, certificando che sia non nulla e che corrisponda esattamente alle 5 sfide introdotte dallo stato iniziale di debug. \Hypertarget{a00527_a576b1f2ee84784b5d33c7e5a48be3edf}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testSelectByIdEmptyOptional@{testSelectByIdEmptyOptional}}
+\index{testSelectByIdEmptyOptional@{testSelectByIdEmptyOptional}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdEmptyOptional()}{testSelectByIdEmptyOptional()}}
+{\footnotesize\ttfamily \label{a00527_a576b1f2ee84784b5d33c7e5a48be3edf} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Select\+By\+Id\+Empty\+Optional (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il comportamento defensivo di select\+By\+Id con un parametro vuoto. 
+
+Garantisce la stabilità del metodo restituendo un Optional vuoto nel caso in cui l\textquotesingle{}argomento in ingresso sia un Optional.\+empty(). \Hypertarget{a00527_a54945f07ba01ddff3d5ddfe60f363392}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testSelectByIdExisting@{testSelectByIdExisting}}
+\index{testSelectByIdExisting@{testSelectByIdExisting}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdExisting()}{testSelectByIdExisting()}}
+{\footnotesize\ttfamily \label{a00527_a54945f07ba01ddff3d5ddfe60f363392} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Select\+By\+Id\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica il recupero di una sfida esistente tramite il suo codice identificativo. 
+
+Controlla che l\textquotesingle{}Optional restituito dal \doxylink{a00387}{DAO} contenga l\textquotesingle{}oggetto richiesto e che tutti i relativi attributi (parola, sorgente, difficoltà) corrispondano al record 1. \Hypertarget{a00527_ad3a4a6076004cd480cf97450f0a94d31}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testSelectByIdNotExisting@{testSelectByIdNotExisting}}
+\index{testSelectByIdNotExisting@{testSelectByIdNotExisting}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testSelectByIdNotExisting()}{testSelectByIdNotExisting()}}
+{\footnotesize\ttfamily \label{a00527_ad3a4a6076004cd480cf97450f0a94d31} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Select\+By\+Id\+Not\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che la ricerca di un codice non registrato restituisca un esito vuoto. 
+
+Passa un ID non esistente nel dataset iniziale ("{}999"{}) accertando che il metodo gestisca correttamente l\textquotesingle{}assenza restituendo un Optional vuoto senza lanciare eccezioni. \Hypertarget{a00527_a7a10dc13095fe765d1434ef3c74dc317}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testUpdateExisting@{testUpdateExisting}}
+\index{testUpdateExisting@{testUpdateExisting}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testUpdateExisting()}{testUpdateExisting()}}
+{\footnotesize\ttfamily \label{a00527_a7a10dc13095fe765d1434ef3c74dc317} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Update\+Existing (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la corretta modifica dei campi di una sfida preesistente. 
+
+Aggiorna i campi di data e difficoltà per la sfida con id = 1 e riesegue una lettura per sincerarsi della corretta sovrascrittura delle informazioni sul database. \Hypertarget{a00527_abc4c6518ff349ffb76d8887dda25af2e}\index{gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}!testUpdateNull@{testUpdateNull}}
+\index{testUpdateNull@{testUpdateNull}!gruppo05.gtwserver.db.ConcreteChallengeDAOTest@{gruppo05.gtwserver.db.ConcreteChallengeDAOTest}}
+\doxysubsubsection{\texorpdfstring{testUpdateNull()}{testUpdateNull()}}
+{\footnotesize\ttfamily \label{a00527_abc4c6518ff349ffb76d8887dda25af2e} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Challenge\+DAOTest.\+test\+Update\+Null (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la gestione difensiva del metodo update in caso di input nullo. 
+
+Assicura che la chiamata al metodo passando un riferimento null non provochi crash dell\textquotesingle{}applicazione e venga intercettata silenziosamente a monte delle query SQL. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/db/Concrete\+Challenge\+DAOTest.\+java\end{DoxyCompactItemize}

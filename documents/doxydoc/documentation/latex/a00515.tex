@@ -1,0 +1,85 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test}
+\hypertarget{a00515}{}\label{a00515}\index{gruppo05.gtwserver.controller.ServerLoginManagerTest@{gruppo05.gtwserver.controller.ServerLoginManagerTest}}
+
+
+Test unitari per {\ttfamily \doxylink{a00347}{Server\+Login\+Manager}}.  
+
+
+\doxysubsubsection*{Composti}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{a00519}{Testable\+Server\+Login\+Manager}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00515_afc45f9bb02b6ed3d127473935600f2e5}\label{a00515_afc45f9bb02b6ed3d127473935600f2e5} 
+void {\bfseries set\+Up} ()
+\begin{DoxyCompactList}\small\item\em Inizializza il database SQLite e inserisce un admin di test prima di ogni caso. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_a0982fe0068df00671c4311ee2b40d3cf}\label{a00515_a0982fe0068df00671c4311ee2b40d3cf} 
+void {\bfseries tear\+Down} ()
+\begin{DoxyCompactList}\small\item\em Cancella il file del database SQLite dopo ogni caso per garantire l\textquotesingle{}isolamento tra i test. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_a73348b98bad7c3ab9b237e6372140186}\label{a00515_a73348b98bad7c3ab9b237e6372140186} 
+void {\bfseries test\+Validate\+Info\+\_\+\+Credenzali\+Corrette\+\_\+\+Callback\+Invocato} ()
+\begin{DoxyCompactList}\small\item\em Verifica che il callback di successo venga invocato con credenziali corrette. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_ae9867f37e7ba4ef5da50e8aa15a54d05}\label{a00515_ae9867f37e7ba4ef5da50e8aa15a54d05} 
+void {\bfseries test\+Validate\+Info\+\_\+\+Username\+Inesistente\+\_\+\+Callback\+Non\+Invocato} ()
+\begin{DoxyCompactList}\small\item\em Verifica che il callback NON venga invocato quando lo username non è presente nel database. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_ac60d5915a7a5af9c2ed173f95727bc9f}\label{a00515_ac60d5915a7a5af9c2ed173f95727bc9f} 
+void {\bfseries test\+Validate\+Info\+\_\+\+Password\+Errata\+\_\+\+Callback\+Non\+Invocato} ()
+\begin{DoxyCompactList}\small\item\em Verifica che il callback NON venga invocato quando la password fornita non è corretta. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_accc74439b39357828d9f94b1478d2d3e}\label{a00515_accc74439b39357828d9f94b1478d2d3e} 
+void {\bfseries test\+Validate\+Info\+\_\+\+Senza\+Callback\+\_\+\+Nessuna\+Null\+Pointer\+Exception} ()
+\begin{DoxyCompactList}\small\item\em Verifica che {\ttfamily \doxylink{}{Server\+Login\+Manager\#validate\+Info(\+String, String)}} non sollevi eccezioni quando il callback non è impostato. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_ae493a7148f197a433ccb6d0324c41b37}\label{a00515_ae493a7148f197a433ccb6d0324c41b37} 
+void {\bfseries test\+Set\+On\+Success\+Callback\+\_\+\+Callback\+Memorizzato\+EInvocato} ()
+\begin{DoxyCompactList}\small\item\em Verifica che {\ttfamily \doxylink{}{Server\+Login\+Manager\#set\+On\+Success\+Callback(\+Runnable)}} memorizzi correttamente il Runnable e che questo venga eseguito in caso di login con credenziali valide. \end{DoxyCompactList}\item 
+\Hypertarget{a00515_af4b9039ed50722992fd66093c5a99029}\label{a00515_af4b9039ed50722992fd66093c5a99029} 
+void {\bfseries test\+Validate\+Info\+\_\+\+Username\+Null\+\_\+\+Callback\+Non\+Invocato} ()
+\begin{DoxyCompactList}\small\item\em Verifica che con username null non vengano lanciate eccezioni e il callback non venga invocato. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00519}{Testable\+Server\+Login\+Manager}} \mbox{\hyperlink{a00515_a5eafcafe5b64e5ecfbeaf8cdbea779ae}{login\+Manager}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+static final String \mbox{\hyperlink{a00515_abb300748590534b157aa13dd05cf824d}{DB\+\_\+\+NAME}} = "{}Server\+DB"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Test unitari per {\ttfamily \doxylink{a00347}{Server\+Login\+Manager}}. 
+
+Poiché {\ttfamily \doxylink{}{Server\+Login\+Manager\#validate\+Info(\+String, String)}} interagisce con componenti Java\+FX non disponibili, si utilizza una Testable Subclass, che sovrascrive i metodi di notifica UI, isolando la logica di business e rendendola verificabile in modo deterministico e senza dipendenze grafiche.
+
+I test coprono i seguenti scenari\+: 
+\begin{DoxyItemize}
+\item Credenziali corrette =\texorpdfstring{$>$}{>} callback di successo invocato 
+\item Username inesistente =\texorpdfstring{$>$}{>} callback NON invocato, errore notificato 
+\item Password errata =\texorpdfstring{$>$}{>} callback NON invocato, errore notificato 
+\item Callback non impostato =\texorpdfstring{$>$}{>} nessuna Null\+Pointer\+Exception 
+\item Username null =\texorpdfstring{$>$}{>} callback NON invocato 
+\end{DoxyItemize}
+
+\label{doc-variable-members}
+\Hypertarget{a00515_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00515_abb300748590534b157aa13dd05cf824d}\index{gruppo05.gtwserver.controller.ServerLoginManagerTest@{gruppo05.gtwserver.controller.ServerLoginManagerTest}!DB\_NAME@{DB\_NAME}}
+\index{DB\_NAME@{DB\_NAME}!gruppo05.gtwserver.controller.ServerLoginManagerTest@{gruppo05.gtwserver.controller.ServerLoginManagerTest}}
+\doxysubsubsection{\texorpdfstring{DB\_NAME}{DB\_NAME}}
+{\footnotesize\ttfamily \label{a00515_abb300748590534b157aa13dd05cf824d} 
+final String gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test.\+DB\+\_\+\+NAME = "{}Server\+DB"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Nome del file del database SQLite utilizzato durante i test. \Hypertarget{a00515_a5eafcafe5b64e5ecfbeaf8cdbea779ae}\index{gruppo05.gtwserver.controller.ServerLoginManagerTest@{gruppo05.gtwserver.controller.ServerLoginManagerTest}!loginManager@{loginManager}}
+\index{loginManager@{loginManager}!gruppo05.gtwserver.controller.ServerLoginManagerTest@{gruppo05.gtwserver.controller.ServerLoginManagerTest}}
+\doxysubsubsection{\texorpdfstring{loginManager}{loginManager}}
+{\footnotesize\ttfamily \label{a00515_a5eafcafe5b64e5ecfbeaf8cdbea779ae} 
+\mbox{\hyperlink{a00519}{Testable\+Server\+Login\+Manager}} gruppo05.\+gtwserver.\+controller.\+Server\+Login\+Manager\+Test.\+login\+Manager\hspace{0.3cm}{\ttfamily [private]}}
+
+Istanza del manager under test, ricreata da capo prima di ogni caso di test. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/controller/Server\+Login\+Manager\+Test.\+java\end{DoxyCompactItemize}

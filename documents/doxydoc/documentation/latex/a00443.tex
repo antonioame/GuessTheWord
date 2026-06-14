@@ -1,0 +1,255 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator}
+\hypertarget{a00443}{}\label{a00443}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+
+
+Controller di alto livello per la gestione della logica di rete lato Server.  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00443}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00443_a53ecba02a45a40b5be4bf74e9a14e08b}{Server\+Connection\+Creator}} (\mbox{\hyperlink{a00467}{Source\+Manager}} \mbox{\hyperlink{a00443_a4b7abd6416a12c2aa338d074868811ea}{source\+Manager}})
+\begin{DoxyCompactList}\small\item\em Costruttore con dipendenza per il \doxylink{a00467}{Source\+Manager}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00439}{Server\+Connection}} \mbox{\hyperlink{a00443_acf9462bbc9d2344f6459c34bdaae0df2}{create\+Connection}} ()
+\begin{DoxyCompactList}\small\item\em Costruisce e avvia il server leggendo la configurazione locale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00443_a04eb2a04b3b225f39d7355f4b70d8be1}{set\+Ui\+Disconnect\+Callback}} (Consumer$<$ Integer $>$ callback)
+\begin{DoxyCompactList}\small\item\em Registra la callback della UI per gli eventi di disconnessione client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00443_a6e79f2ec58f7f74bdac445a71e7a01de}{set\+On\+Database\+Update\+Callback}} (Runnable callback)
+\begin{DoxyCompactList}\small\item\em Registra la callback della UI per gli aggiornamenti del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00679}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection\+Creator}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00667}{Network\+Configuration}} \mbox{\hyperlink{a00679_af8d37533cd09ca30c09eb8f7e7b12392}{read\+Configuration}} (String file\+Name)
+\begin{DoxyCompactList}\small\item\em Legge la configurazione di rete da un file esterno. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00443_ae45e87f35908e4d91621bc05590b0668}{handle\+Disconnect}} (Integer channel\+Index)
+\begin{DoxyCompactList}\small\item\em Pulizia dello stato dell\textquotesingle{}utente e della partita in caso di disconnessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00443_aebab36288081845b2f1fb0d6f2cff12e}{handle\+Message}} (Integer channel\+Index, Serializable msg)
+\begin{DoxyCompactList}\small\item\em Logica principale di smistamento (dispatcher) dei messaggi ricevuti. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00439}{Server\+Connection}} \mbox{\hyperlink{a00443_a6a455a6a310eddfd0f34fd8ecb28564a}{connection}}
+\begin{DoxyCompactList}\small\item\em Riferimento diretto all\textquotesingle{}infrastruttura di rete. \end{DoxyCompactList}\item 
+final Map$<$ Integer, String $>$ \mbox{\hyperlink{a00443_a2c080952cbf15320aae64006270cdc61}{logged\+Users}} = new Concurrent\+Hash\+Map$<$$>$()
+\begin{DoxyCompactList}\small\item\em Registro in memoria degli utenti attualmente autenticati. \end{DoxyCompactList}\item 
+final Map$<$ Integer, \mbox{\hyperlink{a00415}{Challenge}} $>$ \mbox{\hyperlink{a00443_a150df026d52faa50a835de35c66a3b7e}{active\+Games}} = new Concurrent\+Hash\+Map$<$$>$()
+\begin{DoxyCompactList}\small\item\em Mappa che associa l\textquotesingle{}indice del canale di connessione alla sfida (\doxylink{a00415}{Challenge}) attualmente in corso. \end{DoxyCompactList}\item 
+Integer \mbox{\hyperlink{a00443_a82a22480d573fa2cf8f5f0b9fb717a9d}{waiting\+Channel}} = null
+\begin{DoxyCompactList}\small\item\em Indice del canale del giocatore in attesa di un avversario. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00443_aba61f01eab1797925e4a41345f2d60a1}{waiting\+Difficulty}} = null
+\begin{DoxyCompactList}\small\item\em Livello di difficoltà selezionato dal giocatore in attesa di matchmaking. \end{DoxyCompactList}\item 
+final Object \mbox{\hyperlink{a00443_a23c86a4fb76802d2b64bdda1928e1018}{match\+Lock}} = new Object()
+\begin{DoxyCompactList}\small\item\em Mutex (Lock) utilizzato per sincronizzare la sezione critica del matchmaking. \end{DoxyCompactList}\item 
+Consumer$<$ Integer $>$ \mbox{\hyperlink{a00443_a2e1b710b5e2711b6976929a979a6de56}{ui\+Disconnect\+Callback}} = null
+\begin{DoxyCompactList}\small\item\em Callback opzionale notificata dalla UI quando un canale TCP si chiude. \end{DoxyCompactList}\item 
+\Hypertarget{a00443_ab1341bb82d0e43e183be55e7b53523b1}\label{a00443_ab1341bb82d0e43e183be55e7b53523b1} 
+Runnable {\bfseries ui\+Database\+Update\+Callback} = null
+\begin{DoxyCompactList}\small\item\em Callback opzionale notificata dalla UI quando ci sono cambiamenti al database (ad esempio fine partita o nuovo utente registrato). \end{DoxyCompactList}\item 
+\Hypertarget{a00443_a4b7abd6416a12c2aa338d074868811ea}\label{a00443_a4b7abd6416a12c2aa338d074868811ea} 
+final \mbox{\hyperlink{a00467}{Source\+Manager}} {\bfseries source\+Manager}
+\begin{DoxyCompactList}\small\item\em Riferimento al \doxylink{a00467}{Source\+Manager} globale iniettato da App.\+java. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller di alto livello per la gestione della logica di rete lato Server. 
+
+Questa classe agisce da "{}cervello"{} per il server. Implementa il pattern Factory per la creazione della connessione TCP e funge da Dispatcher (smistatore) per tutti i messaggi in arrivo. Gestisce in modo thread-\/safe l\textquotesingle{}autenticazione, la coda di matchmaking, l\textquotesingle{}avvio delle partite e l\textquotesingle{}aggiornamento delle statistiche persistenti tramite \doxylink{a00387}{DAO}. 
+
+\label{doc-constructors}
+\Hypertarget{a00443_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00443_a53ecba02a45a40b5be4bf74e9a14e08b}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!ServerConnectionCreator@{ServerConnectionCreator}}
+\index{ServerConnectionCreator@{ServerConnectionCreator}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{ServerConnectionCreator()}{ServerConnectionCreator()}}
+{\footnotesize\ttfamily \label{a00443_a53ecba02a45a40b5be4bf74e9a14e08b} 
+gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+Server\+Connection\+Creator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00467}{Source\+Manager}}}]{source\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore con dipendenza per il \doxylink{a00467}{Source\+Manager}. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em source\+Manager} & L\textquotesingle{}istanza globale unica per la generazione di domande. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00443_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00443_acf9462bbc9d2344f6459c34bdaae0df2}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!createConnection@{createConnection}}
+\index{createConnection@{createConnection}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{createConnection()}{createConnection()}}
+{\footnotesize\ttfamily \label{a00443_acf9462bbc9d2344f6459c34bdaae0df2} 
+\mbox{\hyperlink{a00439}{Server\+Connection}} gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+create\+Connection (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Costruisce e avvia il server leggendo la configurazione locale. 
+
+Legge il file "{}server.\+properties"{} per ottenere la porta di ascolto, istanzia il Server\+Socket e inietta le lambda expression per intercettare i messaggi e le disconnessioni. \begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}oggetto \doxylink{a00439}{Server\+Connection} inizializzato e in ascolto. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em Runtime\+Exception} & In caso di porta già in uso o altri errori irreversibili di I/O. \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplementa \mbox{\hyperlink{a00679_a3e2ee160c583a140b098ca614fc3df1e}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection\+Creator}}.
+
+\Hypertarget{a00443_ae45e87f35908e4d91621bc05590b0668}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!handleDisconnect@{handleDisconnect}}
+\index{handleDisconnect@{handleDisconnect}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{handleDisconnect()}{handleDisconnect()}}
+{\footnotesize\ttfamily \label{a00443_ae45e87f35908e4d91621bc05590b0668} 
+void gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+handle\+Disconnect (\begin{DoxyParamCaption}\item[{Integer}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Pulizia dello stato dell\textquotesingle{}utente e della partita in caso di disconnessione. 
+
+Oltre alle operazioni di pulizia interne, notifica la callback UI (se registrata) per aggiornare il contatore dei client connessi. 
+\begin{DoxyParams}{Parametri}
+{\em channel\+Index} & L\textquotesingle{}indice del canale che si è disconnesso. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00443_aebab36288081845b2f1fb0d6f2cff12e}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!handleMessage@{handleMessage}}
+\index{handleMessage@{handleMessage}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{handleMessage()}{handleMessage()}}
+{\footnotesize\ttfamily \label{a00443_aebab36288081845b2f1fb0d6f2cff12e} 
+void gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+handle\+Message (\begin{DoxyParamCaption}\item[{Integer}]{channel\+Index}{, }\item[{Serializable}]{msg}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Logica principale di smistamento (dispatcher) dei messaggi ricevuti. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em channel\+Index} & Canale di provenienza del messaggio. \\
+\hline
+{\em msg} & Oggetto serializzato ricevuto. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00443_a6e79f2ec58f7f74bdac445a71e7a01de}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!setOnDatabaseUpdateCallback@{setOnDatabaseUpdateCallback}}
+\index{setOnDatabaseUpdateCallback@{setOnDatabaseUpdateCallback}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{setOnDatabaseUpdateCallback()}{setOnDatabaseUpdateCallback()}}
+{\footnotesize\ttfamily \label{a00443_a6e79f2ec58f7f74bdac445a71e7a01de} 
+void gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+set\+On\+Database\+Update\+Callback (\begin{DoxyParamCaption}\item[{Runnable}]{callback}{}\end{DoxyParamCaption})}
+
+
+
+Registra la callback della UI per gli aggiornamenti del database. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em callback} & Funzione da invocare ad ogni modifica dei dati utente o partite. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00443_a04eb2a04b3b225f39d7355f4b70d8be1}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!setUiDisconnectCallback@{setUiDisconnectCallback}}
+\index{setUiDisconnectCallback@{setUiDisconnectCallback}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{setUiDisconnectCallback()}{setUiDisconnectCallback()}}
+{\footnotesize\ttfamily \label{a00443_a04eb2a04b3b225f39d7355f4b70d8be1} 
+void gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+set\+Ui\+Disconnect\+Callback (\begin{DoxyParamCaption}\item[{Consumer$<$ Integer $>$}]{callback}{}\end{DoxyParamCaption})}
+
+
+
+Registra la callback della UI per gli eventi di disconnessione client. 
+
+Viene chiamata dalla dashboard dopo il login per ricevere notifiche puntuali sugli eventi di disconnessione (meccanismo event-\/driven).
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em callback} & La funzione da invocare all\textquotesingle{}atto di ogni disconnessione. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-variable-members}
+\Hypertarget{a00443_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00443_a150df026d52faa50a835de35c66a3b7e}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!activeGames@{activeGames}}
+\index{activeGames@{activeGames}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{activeGames}{activeGames}}
+{\footnotesize\ttfamily \label{a00443_a150df026d52faa50a835de35c66a3b7e} 
+final Map$<$Integer, \mbox{\hyperlink{a00415}{Challenge}}$>$ gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+active\+Games = new Concurrent\+Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mappa che associa l\textquotesingle{}indice del canale di connessione alla sfida (\doxylink{a00415}{Challenge}) attualmente in corso. 
+
+Utilizza una {\ttfamily \doxylink{}{Concurrent\+Hash\+Map}} per garantire la thread-\/safety durante la gestione concorrente di multiple partite attive. \Hypertarget{a00443_a6a455a6a310eddfd0f34fd8ecb28564a}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!connection@{connection}}
+\index{connection@{connection}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{connection}{connection}}
+{\footnotesize\ttfamily \label{a00443_a6a455a6a310eddfd0f34fd8ecb28564a} 
+\mbox{\hyperlink{a00439}{Server\+Connection}} gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+connection\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Riferimento diretto all\textquotesingle{}infrastruttura di rete. 
+
+Utilizzato per inviare messaggi di risposta (unicast) o notifiche di gioco (broadcast). \Hypertarget{a00443_a2c080952cbf15320aae64006270cdc61}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!loggedUsers@{loggedUsers}}
+\index{loggedUsers@{loggedUsers}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{loggedUsers}{loggedUsers}}
+{\footnotesize\ttfamily \label{a00443_a2c080952cbf15320aae64006270cdc61} 
+final Map$<$Integer, String$>$ gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+logged\+Users = new Concurrent\+Hash\+Map$<$$>$()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Registro in memoria degli utenti attualmente autenticati. 
+
+È una Concurrent\+Hash\+Map per garantire la thread-\/safety, dato che più thread di rete (uno per client) potrebbero accedervi simultaneamente. Associa l\textquotesingle{}ID del canale (chiave) allo username (valore). \Hypertarget{a00443_a23c86a4fb76802d2b64bdda1928e1018}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!matchLock@{matchLock}}
+\index{matchLock@{matchLock}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{matchLock}{matchLock}}
+{\footnotesize\ttfamily \label{a00443_a23c86a4fb76802d2b64bdda1928e1018} 
+final Object gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+match\+Lock = new Object()\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mutex (Lock) utilizzato per sincronizzare la sezione critica del matchmaking. 
+
+Previene la "{}race condition"{} in cui due giocatori inviano PLAY\+\_\+\+REQUEST nell\textquotesingle{}esatto millisecondo, garantendo che la coppia venga formata in modo atomico e sicuro. \Hypertarget{a00443_a2e1b710b5e2711b6976929a979a6de56}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!uiDisconnectCallback@{uiDisconnectCallback}}
+\index{uiDisconnectCallback@{uiDisconnectCallback}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{uiDisconnectCallback}{uiDisconnectCallback}}
+{\footnotesize\ttfamily \label{a00443_a2e1b710b5e2711b6976929a979a6de56} 
+Consumer$<$Integer$>$ gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+ui\+Disconnect\+Callback = null\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Callback opzionale notificata dalla UI quando un canale TCP si chiude. 
+
+È opzionale perché il server è in grado di essere attivo e online in background anche senza che la dashboard UI sia stata avviata o che l\textquotesingle{}amministratore abbia effettuato l\textquotesingle{}accesso. Viene impostata dalla dashboard dopo il login per aggiornare il contatore dei client connessi con meccanismo event-\/driven. TODO \Hypertarget{a00443_a82a22480d573fa2cf8f5f0b9fb717a9d}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!waitingChannel@{waitingChannel}}
+\index{waitingChannel@{waitingChannel}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{waitingChannel}{waitingChannel}}
+{\footnotesize\ttfamily \label{a00443_a82a22480d573fa2cf8f5f0b9fb717a9d} 
+Integer gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+waiting\+Channel = null\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Indice del canale del giocatore in attesa di un avversario. 
+
+Viene impostato a null se non ci sono giocatori in attesa nel sistema. \Hypertarget{a00443_aba61f01eab1797925e4a41345f2d60a1}\index{gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}!waitingDifficulty@{waitingDifficulty}}
+\index{waitingDifficulty@{waitingDifficulty}!gruppo05.gtwserver.networking.ServerConnectionCreator@{gruppo05.gtwserver.networking.ServerConnectionCreator}}
+\doxysubsubsection{\texorpdfstring{waitingDifficulty}{waitingDifficulty}}
+{\footnotesize\ttfamily \label{a00443_aba61f01eab1797925e4a41345f2d60a1} 
+\mbox{\hyperlink{a00751}{Difficulty}} gruppo05.\+gtwserver.\+networking.\+Server\+Connection\+Creator.\+waiting\+Difficulty = null\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Livello di difficoltà selezionato dal giocatore in attesa di matchmaking. 
+
+Definisce il vincolo di difficoltà che l\textquotesingle{}avversario dovrà soddisfare per l\textquotesingle{}accoppiamento. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/networking/Server\+Connection\+Creator.\+java\end{DoxyCompactItemize}

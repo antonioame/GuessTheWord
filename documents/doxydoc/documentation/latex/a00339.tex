@@ -1,0 +1,149 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller}
+\hypertarget{a00339}{}\label{a00339}\index{gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}}
+Diagramma delle classi per gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00339}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00339_ad16b0e2ec8b6c35643198c463e646537}{set\+Connection}} (\mbox{\hyperlink{a00439}{Server\+Connection}} connection, \mbox{\hyperlink{a00443}{Server\+Connection\+Creator}} connection\+Creator)
+\begin{DoxyCompactList}\small\item\em Configura la connessione di rete e registra le callback evento per aggiornare il contatore dei client connessi (con meccanismo event-\/driven). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00339_ab2b909a053f3f4af9309821708363d25}{set\+Source\+Manager}} (\mbox{\hyperlink{a00467}{Source\+Manager}} source\+Manager)
+\begin{DoxyCompactList}\small\item\em Configura il gestore delle sorgenti documentali per l\textquotesingle{}analisi dei testi. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00339_a40f3b44aa1bbacf874829db1d2c347bc}{update\+Connected\+Clients}} (int count)
+\begin{DoxyCompactList}\small\item\em Aggiorna graficamente il numero di client attualmente connessi al server. \end{DoxyCompactList}\item 
+\Hypertarget{a00339_a47d0afd0220444141589b779f1dc9b6c}\label{a00339_a47d0afd0220444141589b779f1dc9b6c} 
+void {\bfseries refresh\+Players\+Table} ()
+\begin{DoxyCompactList}\small\item\em Ricarica la tabella dei giocatori dal database e aggiorna l\textquotesingle{}interfaccia. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00339_af549b1a6906297b8dda4937ed123ff2f}{initialize}} (URL location, Resource\+Bundle resources)
+\begin{DoxyCompactList}\small\item\em Inizializza i componenti grafici del controller, configurando la tabella dei giocatori e i valori di default. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00339_ac930329c21fe8d9b503a48d17de7d4a4}\label{a00339_ac930329c21fe8d9b503a48d17de7d4a4} 
+Label {\bfseries lbl\+Status}
+\item 
+\Hypertarget{a00339_a0e0338cbfec40718277ad98d1457df87}\label{a00339_a0e0338cbfec40718277ad98d1457df87} 
+Label {\bfseries lbl\+Connected\+Clients}
+\item 
+\Hypertarget{a00339_a444a39c360e4237a163d54aa382e93cd}\label{a00339_a444a39c360e4237a163d54aa382e93cd} 
+List\+View$<$ String $>$ {\bfseries lst\+Sources}
+\item 
+\Hypertarget{a00339_afe41d6fb964e2b61ecd8451cbe5d4915}\label{a00339_afe41d6fb964e2b61ecd8451cbe5d4915} 
+Button {\bfseries btn\+Add\+Source}
+\item 
+\Hypertarget{a00339_a5d1034bb6b06b31b376a6341ce1d7996}\label{a00339_a5d1034bb6b06b31b376a6341ce1d7996} 
+Button {\bfseries btn\+Remove\+Source}
+\item 
+\Hypertarget{a00339_a059dce12ad9628d870a1787be0bb6632}\label{a00339_a059dce12ad9628d870a1787be0bb6632} 
+Progress\+Bar {\bfseries progress\+Analysis}
+\item 
+\Hypertarget{a00339_a5bd2d25a2f6d6d09e3210e2c05081eef}\label{a00339_a5bd2d25a2f6d6d09e3210e2c05081eef} 
+Label {\bfseries lbl\+Analysis\+Status}
+\item 
+\Hypertarget{a00339_a855b7799875fcd65d7bfa0cfd449195e}\label{a00339_a855b7799875fcd65d7bfa0cfd449195e} 
+Table\+View$<$ \mbox{\hyperlink{a00423}{Player}} $>$ {\bfseries tbl\+Players}
+\item 
+\Hypertarget{a00339_aa2cf1da261a4f8578d324ea6654e0f6c}\label{a00339_aa2cf1da261a4f8578d324ea6654e0f6c} 
+Table\+Column$<$ \mbox{\hyperlink{a00423}{Player}}, String $>$ {\bfseries col\+Username}
+\item 
+\Hypertarget{a00339_a0392065414c0b9c51eedd4ca84f3c386}\label{a00339_a0392065414c0b9c51eedd4ca84f3c386} 
+Table\+Column$<$ \mbox{\hyperlink{a00423}{Player}}, Integer $>$ {\bfseries col\+Wins}
+\item 
+\Hypertarget{a00339_a31f0e05d1731fd24037df532f8a3c2e4}\label{a00339_a31f0e05d1731fd24037df532f8a3c2e4} 
+Table\+Column$<$ \mbox{\hyperlink{a00423}{Player}}, Integer $>$ {\bfseries col\+Played}
+\item 
+\Hypertarget{a00339_a267b91177275e41f41db117ec31f9613}\label{a00339_a267b91177275e41f41db117ec31f9613} 
+\mbox{\hyperlink{a00439}{Server\+Connection}} {\bfseries connection}
+\item 
+\Hypertarget{a00339_a09afe5331f765d5184ce15399e8d4f3e}\label{a00339_a09afe5331f765d5184ce15399e8d4f3e} 
+\mbox{\hyperlink{a00467}{Source\+Manager}} {\bfseries source\+Manager}
+\item 
+\Hypertarget{a00339_aec1da613f19d32fcd6101b9647f31f8e}\label{a00339_aec1da613f19d32fcd6101b9647f31f8e} 
+final List$<$ \mbox{\hyperlink{a00431}{Source}} $>$ {\bfseries loaded\+Sources} = new Array\+List$<$$>$()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller Java\+FX per il pannello di controllo dell\textquotesingle{}amministratore lato Server (Server \doxylink{a00411}{Admin} Dashboard). Gestisce l\textquotesingle{}interfaccia grafica per il caricamento e la rimozione delle sorgenti dei documenti, l\textquotesingle{}avanzamento dell\textquotesingle{}analisi delle parole e la visualizzazione della classifica dei giocatori. 
+
+\label{doc-func-members}
+\Hypertarget{a00339_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00339_af549b1a6906297b8dda4937ed123ff2f}\index{gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}!initialize@{initialize}}
+\index{initialize@{initialize}!gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{a00339_af549b1a6906297b8dda4937ed123ff2f} 
+void gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller.\+initialize (\begin{DoxyParamCaption}\item[{URL}]{location}{, }\item[{Resource\+Bundle}]{resources}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza i componenti grafici del controller, configurando la tabella dei giocatori e i valori di default. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em location} & Percorso relativo per la risoluzione dell\textquotesingle{}oggetto root. \\
+\hline
+\mbox{\texttt{in}}  & {\em resources} & Risorse localizzate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00339_ad16b0e2ec8b6c35643198c463e646537}\index{gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}!setConnection@{setConnection}}
+\index{setConnection@{setConnection}!gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}}
+\doxysubsubsection{\texorpdfstring{setConnection()}{setConnection()}}
+{\footnotesize\ttfamily \label{a00339_ad16b0e2ec8b6c35643198c463e646537} 
+void gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller.\+set\+Connection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00439}{Server\+Connection}}}]{connection}{, }\item[{\mbox{\hyperlink{a00443}{Server\+Connection\+Creator}}}]{connection\+Creator}{}\end{DoxyParamCaption})}
+
+
+
+Configura la connessione di rete e registra le callback evento per aggiornare il contatore dei client connessi (con meccanismo event-\/driven). 
+
+Alla chiamata\+: 
+\begin{DoxyEnumerate}
+\item Legge subito il numero di canali già attivi (client connessi prima del login). 
+\item Registra {\ttfamily set\+On\+Client\+Connected} su {\ttfamily \doxylink{a00439}{Server\+Connection}} per ricevere notifiche sulle nuove connessioni TCP. 
+\item Registra {\ttfamily set\+Ui\+Disconnect\+Callback} su {\ttfamily \doxylink{a00443}{Server\+Connection\+Creator}} per ricevere notifiche sulle disconnessioni. 
+\end{DoxyEnumerate}
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em connection} & Istanza attiva di \doxylink{a00439}{Server\+Connection}. \\
+\hline
+\mbox{\texttt{in}}  & {\em connection\+Creator} & Istanza del creator che gestisce la logica di disconnessione. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00339_ab2b909a053f3f4af9309821708363d25}\index{gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}!setSourceManager@{setSourceManager}}
+\index{setSourceManager@{setSourceManager}!gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}}
+\doxysubsubsection{\texorpdfstring{setSourceManager()}{setSourceManager()}}
+{\footnotesize\ttfamily \label{a00339_ab2b909a053f3f4af9309821708363d25} 
+void gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller.\+set\+Source\+Manager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00467}{Source\+Manager}}}]{source\+Manager}{}\end{DoxyParamCaption})}
+
+
+
+Configura il gestore delle sorgenti documentali per l\textquotesingle{}analisi dei testi. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source\+Manager} & Istanza del gestore delle sorgenti. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00339_a40f3b44aa1bbacf874829db1d2c347bc}\index{gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}!updateConnectedClients@{updateConnectedClients}}
+\index{updateConnectedClients@{updateConnectedClients}!gruppo05.gtwserver.controller.AdminDashboardViewController@{gruppo05.gtwserver.controller.AdminDashboardViewController}}
+\doxysubsubsection{\texorpdfstring{updateConnectedClients()}{updateConnectedClients()}}
+{\footnotesize\ttfamily \label{a00339_a40f3b44aa1bbacf874829db1d2c347bc} 
+void gruppo05.\+gtwserver.\+controller.\+Admin\+Dashboard\+View\+Controller.\+update\+Connected\+Clients (\begin{DoxyParamCaption}\item[{int}]{count}{}\end{DoxyParamCaption})}
+
+
+
+Aggiorna graficamente il numero di client attualmente connessi al server. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em count} & Numero di client connessi. \\
+\hline
+\end{DoxyParams}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/controller/Admin\+Dashboard\+View\+Controller.\+java\end{DoxyCompactItemize}

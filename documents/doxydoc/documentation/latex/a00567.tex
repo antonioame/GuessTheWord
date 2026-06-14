@@ -1,0 +1,113 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test}
+\hypertarget{a00567}{}\label{a00567}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+
+
+Classe di test JUnit5 per verificare la corretta implementazione di \doxylink{a00451}{Preset\+Config} e del suo Builder.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00567_ab60b28c6bb407e25dee20051805a0b50}{test\+Default\+Builder\+Values}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che il costruttore di default del Builder configuri correttamente i valori predefiniti. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00567_aebb9b21542649690aec7782af0ce16d4}{test\+Custom\+Valid\+Values}} ()
+\begin{DoxyCompactList}\small\item\em Verifica la corretta configurazione di valori personalizzati e validi tramite il Builder. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00567_a5cfff4a46c22930c7386b528c3d9a211}{test\+Invalid\+Number\+Of\+Periods}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}impostazione di un numero di periodi non valido sollevi un\textquotesingle{}eccezione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00567_a532e655434b723cb5c78e73f8d120039}{test\+Invalid\+Maximum\+Word\+Frequency}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}impostazione di una frequenza massima di parole non valida sollevi un\textquotesingle{}eccezione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00567_aff32523057598ff1f0ec7d3705234679}{test\+Invalid\+Maximum\+Similar\+Word\+In\+Question\+Text}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}impostazione di un numero massimo di parole simili negativo sollevi un\textquotesingle{}eccezione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00567_ab7f2a956ae69d20667cf64e3a937ea3d}{test\+Invalid\+Shifting\+Offset}} ()
+\begin{DoxyCompactList}\small\item\em Verifica che l\textquotesingle{}impostazione di un offset di shifting negativo sollevi un\textquotesingle{}eccezione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe di test JUnit5 per verificare la corretta implementazione di \doxylink{a00451}{Preset\+Config} e del suo Builder. 
+
+\label{doc-func-members}
+\Hypertarget{a00567_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00567_aebb9b21542649690aec7782af0ce16d4}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testCustomValidValues@{testCustomValidValues}}
+\index{testCustomValidValues@{testCustomValidValues}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testCustomValidValues()}{testCustomValidValues()}}
+{\footnotesize\ttfamily \label{a00567_aebb9b21542649690aec7782af0ce16d4} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Custom\+Valid\+Values (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica la corretta configurazione di valori personalizzati e validi tramite il Builder. 
+
+\begin{DoxyPostcond}{Postcondizione}
+L\textquotesingle{}oggetto \doxylink{a00451}{Preset\+Config} creato deve contenere esattamente i valori forniti tramite i metodi del Builder. 
+\end{DoxyPostcond}
+\Hypertarget{a00567_ab60b28c6bb407e25dee20051805a0b50}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testDefaultBuilderValues@{testDefaultBuilderValues}}
+\index{testDefaultBuilderValues@{testDefaultBuilderValues}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testDefaultBuilderValues()}{testDefaultBuilderValues()}}
+{\footnotesize\ttfamily \label{a00567_ab60b28c6bb407e25dee20051805a0b50} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Default\+Builder\+Values (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che il costruttore di default del Builder configuri correttamente i valori predefiniti. 
+
+\begin{DoxyPostcond}{Postcondizione}
+I valori di default devono corrispondere a quelli attesi e soddisfare le invarianti. 
+\end{DoxyPostcond}
+\Hypertarget{a00567_aff32523057598ff1f0ec7d3705234679}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testInvalidMaximumSimilarWordInQuestionText@{testInvalidMaximumSimilarWordInQuestionText}}
+\index{testInvalidMaximumSimilarWordInQuestionText@{testInvalidMaximumSimilarWordInQuestionText}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testInvalidMaximumSimilarWordInQuestionText()}{testInvalidMaximumSimilarWordInQuestionText()}}
+{\footnotesize\ttfamily \label{a00567_aff32523057598ff1f0ec7d3705234679} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Invalid\+Maximum\+Similar\+Word\+In\+Question\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}impostazione di un numero massimo di parole simili negativo sollevi un\textquotesingle{}eccezione. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Viene lanciata un\textquotesingle{}eccezione di tipo Illegal\+Argument\+Exception per valori negativi. 
+\end{DoxyPostcond}
+\Hypertarget{a00567_a532e655434b723cb5c78e73f8d120039}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testInvalidMaximumWordFrequency@{testInvalidMaximumWordFrequency}}
+\index{testInvalidMaximumWordFrequency@{testInvalidMaximumWordFrequency}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testInvalidMaximumWordFrequency()}{testInvalidMaximumWordFrequency()}}
+{\footnotesize\ttfamily \label{a00567_a532e655434b723cb5c78e73f8d120039} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Invalid\+Maximum\+Word\+Frequency (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}impostazione di una frequenza massima di parole non valida sollevi un\textquotesingle{}eccezione. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Viene lanciata un\textquotesingle{}eccezione di tipo Illegal\+Argument\+Exception per valori minori o uguali a zero. 
+\end{DoxyPostcond}
+\Hypertarget{a00567_a5cfff4a46c22930c7386b528c3d9a211}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testInvalidNumberOfPeriods@{testInvalidNumberOfPeriods}}
+\index{testInvalidNumberOfPeriods@{testInvalidNumberOfPeriods}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testInvalidNumberOfPeriods()}{testInvalidNumberOfPeriods()}}
+{\footnotesize\ttfamily \label{a00567_a5cfff4a46c22930c7386b528c3d9a211} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Invalid\+Number\+Of\+Periods (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}impostazione di un numero di periodi non valido sollevi un\textquotesingle{}eccezione. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Viene lanciata un\textquotesingle{}eccezione di tipo Illegal\+Argument\+Exception per valori minori o uguali a zero. 
+\end{DoxyPostcond}
+\Hypertarget{a00567_ab7f2a956ae69d20667cf64e3a937ea3d}\index{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}!testInvalidShiftingOffset@{testInvalidShiftingOffset}}
+\index{testInvalidShiftingOffset@{testInvalidShiftingOffset}!gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest@{gruppo05.gtwserver.sourcemanager.api.config.PresetConfigTest}}
+\doxysubsubsection{\texorpdfstring{testInvalidShiftingOffset()}{testInvalidShiftingOffset()}}
+{\footnotesize\ttfamily \label{a00567_ab7f2a956ae69d20667cf64e3a937ea3d} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+api.\+config.\+Preset\+Config\+Test.\+test\+Invalid\+Shifting\+Offset (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Verifica che l\textquotesingle{}impostazione di un offset di shifting negativo sollevi un\textquotesingle{}eccezione. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Viene lanciata un\textquotesingle{}eccezione di tipo Illegal\+Argument\+Exception per valori negativi. 
+\end{DoxyPostcond}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/sourcemanager/api/config/Preset\+Config\+Test.\+java\end{DoxyCompactItemize}

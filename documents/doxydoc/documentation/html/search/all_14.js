@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['waiting_0',['WAITING',['../a00655.html#a7c5352472ab053a7081af8698d5cec85',1,'gruppo05::gtwshared::dto::CallbackDTO::Status']]],
+  ['waitingchannel_1',['waitingChannel',['../a00443.html#a82a22480d573fa2cf8f5f0b9fb717a9d',1,'gruppo05::gtwserver::networking::ServerConnectionCreator']]],
+  ['waitingdifficulty_2',['waitingDifficulty',['../a00443.html#aba61f01eab1797925e4a41345f2d60a1',1,'gruppo05::gtwserver::networking::ServerConnectionCreator']]],
+  ['waitingviewcontroller_3',['WaitingViewController',['../a00319.html',1,'gruppo05::gtwclient::controller']]],
+  ['wdao_4',['wdao',['../a00543.html#afe6cd437c5d2110b653d7d9ff0129fff',1,'gruppo05::gtwserver::db::ConcreteWordDAOTest']]],
+  ['winnerresponsetime_5',['winnerResponseTime',['../a00719.html#a225938af71eb8670faf81b943aa886da',1,'gruppo05::gtwshared::networking::NetworkMessage::GameResult']]],
+  ['winnerusername_6',['winnerUsername',['../a00719.html#a1d84619924f1947abc7f96a3bf0b524f',1,'gruppo05::gtwshared::networking::NetworkMessage::GameResult']]],
+  ['withcustomstopwords_7',['withCustomStopWords',['../a00463.html#a56ee52948931deb69d44a4c88b94a04b',1,'gruppo05::gtwserver::sourcemanager::api::config::SourceManagerConfig::Builder']]],
+  ['withmaximumsimilarwordinquestiontext_8',['withMaximumSimilarWordInQuestionText',['../a00455.html#a1556cbbd955d51ad949508e1f11bf8d8',1,'gruppo05::gtwserver::sourcemanager::api::config::PresetConfig::Builder']]],
+  ['withmaximumwordfrequency_9',['withMaximumWordFrequency',['../a00455.html#a828918eca6eca0c1a64e171d670d935c',1,'gruppo05::gtwserver::sourcemanager::api::config::PresetConfig::Builder']]],
+  ['withnumberofperiods_10',['withNumberOfPeriods',['../a00455.html#aa9ec1b0139959adbb3b752f6abd8cb0f',1,'gruppo05::gtwserver::sourcemanager::api::config::PresetConfig::Builder']]],
+  ['withshiftingoffset_11',['withShiftingOffset',['../a00455.html#afbad82f1d4798ba36e5c88fd9efe889b',1,'gruppo05::gtwserver::sourcemanager::api::config::PresetConfig::Builder']]],
+  ['word_12',['Word',['../a00435.html',1,'gruppo05.gtwserver.model.Word'],['../a00435.html#a8a88694c161ab762b94aecedfff50b6b',1,'gruppo05.gtwserver.model.Word.Word()']]],
+  ['word_13',['word',['../a00415.html#a098332e62ab8c7b7fb2b5fbd712e554b',1,'gruppo05::gtwserver::model::Challenge']]],
+  ['worddao_14',['WordDAO',['../a00407.html',1,'gruppo05::gtwserver::db']]],
+  ['worddao_15',['wordDao',['../a00459.html#a2c648f1bfdf7a0b0f049de9c606be4bb',1,'gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig.wordDao'],['../a00463.html#aafa0df0d4bd73f7d7fb092f9f7677be5',1,'gruppo05.gtwserver.sourcemanager.api.config.SourceManagerConfig.Builder.wordDao'],['../a00507.html#a954bd2cce613b94a84f5ab94e728e0b0',1,'gruppo05.gtwserver.sourcemanager.internal.io.IOManager.wordDao']]],
+  ['wordextractor_16',['WordExtractor',['../a00503.html',1,'gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor'],['../a00503.html#aea1a20bd878b5001125bfbee7d71b32a',1,'gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractor.WordExtractor()']]],
+  ['wordextractor_17',['wordExtractor',['../a00499.html#a02d03371257ddd4d72cf9c102cbea2c8',1,'gruppo05::gtwserver::sourcemanager::internal::generation::QuestionGenerator']]],
+  ['wordextractortest_18',['WordExtractorTest',['../a00603.html',1,'gruppo05::gtwserver::sourcemanager::internal::generation']]],
+  ['wordid_19',['WordId',['../a00619.html',1,'gruppo05::gtwserver::sourcemanager::internal::io::IOManagerTest::FakeWordDAO']]],
+  ['writesource_20',['writeSource',['../a00507.html#a5c7a15a15bef2830a63e3f578cb6966a',1,'gruppo05::gtwserver::sourcemanager::internal::io::IOManager']]],
+  ['writesourcemapfrequency_21',['writeSourceMapFrequency',['../a00507.html#ae57984749ce7be070ed041b135f07b1e',1,'gruppo05::gtwserver::sourcemanager::internal::io::IOManager']]],
+  ['wrong_5fanswer_22',['WRONG_ANSWER',['../a00663.html#a40fc1ae0accbf5839e4a9fbced7972b4',1,'gruppo05::gtwshared::networking::MessageType']]],
+  ['wronganswer_23',['WrongAnswer',['../a00727.html',1,'gruppo05.gtwshared.networking.NetworkMessage.WrongAnswer'],['../a00727.html#a80c032a3ffb5a425c369dce43dc8197b',1,'gruppo05.gtwshared.networking.NetworkMessage.WrongAnswer.WrongAnswer()']]]
+];

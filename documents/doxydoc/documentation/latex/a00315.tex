@@ -1,0 +1,118 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller}
+\hypertarget{a00315}{}\label{a00315}\index{gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}}
+Diagramma delle classi per gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00315}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00315_a58414e961c0e7ff4a3c86011c4eb7796}{set\+Connection}} (\mbox{\hyperlink{a00323}{Client\+Connection}} connection)
+\begin{DoxyCompactList}\small\item\em Configura la connessione di rete del client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00315_a1da4107f5892584596278baffd3edec4}{set\+Username}} (String username)
+\begin{DoxyCompactList}\small\item\em Imposta lo username dell\textquotesingle{}utente in sessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00315_a8c8a7e4975bed0911a89e8af973100cf}{show\+Result}} (\mbox{\hyperlink{a00647}{Callback\+DTO}} dto)
+\begin{DoxyCompactList}\small\item\em Mostra i risultati finali della sfida. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00315_a053775029326a3784f5e5b2c5c55f2bc}{initialize}} (URL location, Resource\+Bundle resources)
+\begin{DoxyCompactList}\small\item\em Inizializza i componenti grafici del controller dei risultati. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00315_a80fd32b19bd422d60cb847b074b016a2}\label{a00315_a80fd32b19bd422d60cb847b074b016a2} 
+Label {\bfseries lbl\+Result}
+\item 
+\Hypertarget{a00315_ab78add98ff90ff6be4492080ae53b82b}\label{a00315_ab78add98ff90ff6be4492080ae53b82b} 
+Label {\bfseries lbl\+Correct\+Word}
+\item 
+\Hypertarget{a00315_a9ef72647228a8cfc62256cfcdef02bdc}\label{a00315_a9ef72647228a8cfc62256cfcdef02bdc} 
+Label {\bfseries lbl\+Winner}
+\item 
+\Hypertarget{a00315_a590744e3ccfad7ba17393f73dfbb2955}\label{a00315_a590744e3ccfad7ba17393f73dfbb2955} 
+Label {\bfseries lbl\+Response\+Time}
+\item 
+\Hypertarget{a00315_a2571e140ada2c2961c69791ca9f6f75a}\label{a00315_a2571e140ada2c2961c69791ca9f6f75a} 
+Button {\bfseries btn\+Back\+To\+Lobby}
+\item 
+\Hypertarget{a00315_a53e3ed8a7069cffcde30edbdee3b73ae}\label{a00315_a53e3ed8a7069cffcde30edbdee3b73ae} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} {\bfseries connection}
+\item 
+\Hypertarget{a00315_ae8d1cce646ec2088bb93f698793d7265}\label{a00315_ae8d1cce646ec2088bb93f698793d7265} 
+String {\bfseries username}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller Java\+FX per la gestione della schermata dei risultati di gioco. 
+
+\label{doc-func-members}
+\Hypertarget{a00315_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00315_a053775029326a3784f5e5b2c5c55f2bc}\index{gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}!initialize@{initialize}}
+\index{initialize@{initialize}!gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{a00315_a053775029326a3784f5e5b2c5c55f2bc} 
+void gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller.\+initialize (\begin{DoxyParamCaption}\item[{URL}]{location}{, }\item[{Resource\+Bundle}]{resources}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza i componenti grafici del controller dei risultati. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em location} & Percorso relativo per la risoluzione dell\textquotesingle{}oggetto radice. \\
+\hline
+\mbox{\texttt{in}}  & {\em resources} & Risorse localizzate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00315_a58414e961c0e7ff4a3c86011c4eb7796}\index{gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}!setConnection@{setConnection}}
+\index{setConnection@{setConnection}!gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}}
+\doxysubsubsection{\texorpdfstring{setConnection()}{setConnection()}}
+{\footnotesize\ttfamily \label{a00315_a58414e961c0e7ff4a3c86011c4eb7796} 
+void gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller.\+set\+Connection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00323}{Client\+Connection}}}]{connection}{}\end{DoxyParamCaption})}
+
+
+
+Configura la connessione di rete del client. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em connection} & Istanza attiva di \doxylink{a00323}{Client\+Connection}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00315_a1da4107f5892584596278baffd3edec4}\index{gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}!setUsername@{setUsername}}
+\index{setUsername@{setUsername}!gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}}
+\doxysubsubsection{\texorpdfstring{setUsername()}{setUsername()}}
+{\footnotesize\ttfamily \label{a00315_a1da4107f5892584596278baffd3edec4} 
+void gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller.\+set\+Username (\begin{DoxyParamCaption}\item[{String}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Imposta lo username dell\textquotesingle{}utente in sessione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em username} & Nome utente corrente. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00315_a8c8a7e4975bed0911a89e8af973100cf}\index{gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}!showResult@{showResult}}
+\index{showResult@{showResult}!gruppo05.gtwclient.controller.ResultViewController@{gruppo05.gtwclient.controller.ResultViewController}}
+\doxysubsubsection{\texorpdfstring{showResult()}{showResult()}}
+{\footnotesize\ttfamily \label{a00315_a8c8a7e4975bed0911a89e8af973100cf} 
+void gruppo05.\+gtwclient.\+controller.\+Result\+View\+Controller.\+show\+Result (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00647}{Callback\+DTO}}}]{dto}{}\end{DoxyParamCaption})}
+
+
+
+Mostra i risultati finali della sfida. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em dto} & Dati di callback contenenti i risultati della partita. \\
+\hline
+\end{DoxyParams}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/controller/Result\+View\+Controller.\+java\end{DoxyCompactItemize}

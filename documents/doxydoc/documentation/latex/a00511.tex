@@ -1,0 +1,165 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity}
+\hypertarget{a00511}{}\label{a00511}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+
+
+Predicato di similarità tra due parole basato sul confronto delle distribuzioni di frequenza dei caratteri (tramite cosine similarity).  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.777778cm]{a00511}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{a00511_a766848b9d72864de7043a68ca93ad70c}{test}} (String word1, String word2)
+\begin{DoxyCompactList}\small\item\em Valuta se le due parole fornite sono sufficientemente simili, secondo la metrica di cosine similarity applicata ai vettori di frequenza dei caratteri. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+int\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{a00511_a4cc4779ea4eabe624590ca6490efbbb3}{build\+Letter\+Frequency\+Vector}} (String word)
+\begin{DoxyCompactList}\small\item\em Costruisce il vettore di frequenza dei caratteri per una singola parola. \end{DoxyCompactList}\item 
+double \mbox{\hyperlink{a00511_a654a3826fda5ace2a82f3cdff647918f}{compute\+Cosine\+Similarity}} (int\mbox{[}$\,$\mbox{]} freq1, int\mbox{[}$\,$\mbox{]} freq2)
+\begin{DoxyCompactList}\small\item\em Calcola il cosine similarity tra due vettori di frequenza dei caratteri. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+static final double \mbox{\hyperlink{a00511_a7b10056e51d9777a1bf3099af5f4f132}{SIMILARITY\+\_\+\+THRESHOLD}} = 0.\+80
+\begin{DoxyCompactList}\small\item\em Soglia minima di cosine similarity affinché due parole siano considerate simili. \end{DoxyCompactList}\item 
+\Hypertarget{a00511_a3fec378ba7271f809d2a0835d508047e}\label{a00511_a3fec378ba7271f809d2a0835d508047e} 
+static final int {\bfseries ALPHABET\+\_\+\+SIZE} = 26
+\begin{DoxyCompactList}\small\item\em Numero di lettere dell\textquotesingle{}alfabeto latino. Dimensione fissa del vettore rappresentante le frequenze. \end{DoxyCompactList}\item 
+static final int \mbox{\hyperlink{a00511_a53cd184e11f2e4f74c721eb2d4b34221}{ASCII\+\_\+\+LOWERCASE\+\_\+\+OFFSET}} = 97
+\begin{DoxyCompactList}\small\item\em Valore ASCII del carattere \textquotesingle{}a\textquotesingle{} minuscolo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Predicato di similarità tra due parole basato sul confronto delle distribuzioni di frequenza dei caratteri (tramite cosine similarity). 
+
+L\textquotesingle{}algoritmo opera in 3 fasi per ogni coppia di parole\+: 
+\begin{DoxyEnumerate}
+\item Per ciascuna parola viene costruito un vettore di 26 locazioni, rappresentante le frequenze (valori interi) dei 26 caratteri dell\textquotesingle{}alfabeto. 
+\item I due vettori vengono confrontati calcolando il {\itshape cosine similarity}\+: $ sim = \frac{A \cdot B}{|A| \times |B|} $, dove $ A \cdot B $ è il prodotto scalare delle frequenze dei caratteri e $ |A| $, $ |B| $ sono le norme euclidee dei due vettori. 
+\item Il metodo {\ttfamily \doxylink{a00511_a766848b9d72864de7043a68ca93ad70c}{test(\+String, String)}} restituisce {\ttfamily true} se il valore calcolato supera o eguaglia la soglia {\ttfamily \doxylink{a00511_a7b10056e51d9777a1bf3099af5f4f132}{SIMILARITY\+\_\+\+THRESHOLD}}, costante hardcoded. 
+\end{DoxyEnumerate}
+
+Questa soluzione è particolarmente efficace per individuare parole che differiscono solo per prefisso o suffisso (es. "{}giocatore"{} / "{}giocatori"{}), in quanto condividono quasi tutti i caratteri con frequenze simili.
+
+\begin{DoxyInvariant}{Invariante}
+{\ttfamily \doxylink{a00511_a7b10056e51d9777a1bf3099af5f4f132}{SIMILARITY\+\_\+\+THRESHOLD}} deve essere compreso nell\textquotesingle{}intervallo \mbox{[}0.\+0, 1.\+0\mbox{]}.
+\end{DoxyInvariant}
+\texorpdfstring{$<$}{<}String, String\texorpdfstring{$>$}{>} 
+
+\label{doc-func-members}
+\Hypertarget{a00511_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00511_a4cc4779ea4eabe624590ca6490efbbb3}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}!buildLetterFrequencyVector@{buildLetterFrequencyVector}}
+\index{buildLetterFrequencyVector@{buildLetterFrequencyVector}!gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+\doxysubsubsection{\texorpdfstring{buildLetterFrequencyVector()}{buildLetterFrequencyVector()}}
+{\footnotesize\ttfamily \label{a00511_a4cc4779ea4eabe624590ca6490efbbb3} 
+int\mbox{[}$\,$\mbox{]} gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity.\+build\+Letter\+Frequency\+Vector (\begin{DoxyParamCaption}\item[{String}]{word}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Costruisce il vettore di frequenza dei caratteri per una singola parola. 
+
+Il vettore ha dimensione fissa {\ttfamily \doxylink{a00511_a3fec378ba7271f809d2a0835d508047e}{ALPHABET\+\_\+\+SIZE}}. La locazione {\ttfamily i} contiene il numero di occorrenze della lettera corrispondente all\textquotesingle{}i-\/esima lettera dell\textquotesingle{}alfabeto (\textquotesingle{}a\textquotesingle{}=0, \textquotesingle{}b\textquotesingle{}=1, …, \textquotesingle{}z\textquotesingle{}=25). L\textquotesingle{}indice è calcolato come {\ttfamily (int) c -\/ ASCII\+\_\+\+LOWERCASE\+\_\+\+OFFSET}. I caratteri il cui indice risultante è fuori dall\textquotesingle{}intervallo \mbox{[}0, 25\mbox{]} (es. lettere accentate, simboli) vengono silenziosamente ignorati.
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em word} & Parola (già normalizzata in minuscolo) da cui costruire il vettore. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Vettore {\ttfamily int\mbox{[}26\mbox{]}} rappresentante le frequenze dei caratteri.
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il parametro word non deve essere null. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il vettore restituito non è mai null; se word è vuota tutti gli elementi sono 0. 
+\end{DoxyPostcond}
+\Hypertarget{a00511_a654a3826fda5ace2a82f3cdff647918f}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}!computeCosineSimilarity@{computeCosineSimilarity}}
+\index{computeCosineSimilarity@{computeCosineSimilarity}!gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+\doxysubsubsection{\texorpdfstring{computeCosineSimilarity()}{computeCosineSimilarity()}}
+{\footnotesize\ttfamily \label{a00511_a654a3826fda5ace2a82f3cdff647918f} 
+double gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity.\+compute\+Cosine\+Similarity (\begin{DoxyParamCaption}\item[{int\mbox{[}$\,$\mbox{]}}]{freq1}{, }\item[{int\mbox{[}$\,$\mbox{]}}]{freq2}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Calcola il cosine similarity tra due vettori di frequenza dei caratteri. 
+
+Il cosine similarity è definito come\+:   \[         sim(A, B) = \frac{A \cdot B}{||A|| \times ||B||}
+\] dove $ A \cdot B $ è il prodotto scalare (somma dei prodotti elemento per elemento) e $ ||\cdot|| $ è la norma euclidea del vettore. Il risultato è compreso in \mbox{[}0.\+0, 1.\+0\mbox{]}\+: 1.\+0 indica vettori identici, 0.\+0 indica nessuna lettera in comune.
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em freq1} & Vettore di frequenza della prima parola (dimensione {\ttfamily \doxylink{a00511_a3fec378ba7271f809d2a0835d508047e}{ALPHABET\+\_\+\+SIZE}}). \\
+\hline
+\mbox{\texttt{in}}  & {\em freq2} & Vettore di frequenza della seconda parola (dimensione {\ttfamily \doxylink{a00511_a3fec378ba7271f809d2a0835d508047e}{ALPHABET\+\_\+\+SIZE}}). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Valore in \mbox{[}0.\+0, 1.\+0\mbox{]} rappresentante il cosine similarity tra i due vettori.
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Entrambi i parametri non devono essere null e devono avere lunghezza {\ttfamily \doxylink{a00511_a3fec378ba7271f809d2a0835d508047e}{ALPHABET\+\_\+\+SIZE}}. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Se almeno uno dei due vettori ha norma zero (parola vuota o solo caratteri ignorati), viene restituito 0.\+0. 
+\end{DoxyPostcond}
+\Hypertarget{a00511_a766848b9d72864de7043a68ca93ad70c}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}!test@{test}}
+\index{test@{test}!gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+\doxysubsubsection{\texorpdfstring{test()}{test()}}
+{\footnotesize\ttfamily \label{a00511_a766848b9d72864de7043a68ca93ad70c} 
+boolean gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity.\+test (\begin{DoxyParamCaption}\item[{String}]{word1}{, }\item[{String}]{word2}{}\end{DoxyParamCaption})}
+
+
+
+Valuta se le due parole fornite sono sufficientemente simili, secondo la metrica di cosine similarity applicata ai vettori di frequenza dei caratteri. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em word1} & Prima parola da confrontare. \\
+\hline
+\mbox{\texttt{in}}  & {\em word2} & Seconda parola da confrontare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+{\ttfamily true} se il cosine similarity tra i due vettori di frequenza è maggiore o uguale a {\ttfamily \doxylink{a00511_a7b10056e51d9777a1bf3099af5f4f132}{SIMILARITY\+\_\+\+THRESHOLD}} (costante hardcoded), {\ttfamily false} altrimenti.
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+I parametri word1 e word2 non devono essere null. 
+\end{DoxyPrecond}
+
+
+\label{doc-variable-members}
+\Hypertarget{a00511_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00511_a53cd184e11f2e4f74c721eb2d4b34221}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}!ASCII\_LOWERCASE\_OFFSET@{ASCII\_LOWERCASE\_OFFSET}}
+\index{ASCII\_LOWERCASE\_OFFSET@{ASCII\_LOWERCASE\_OFFSET}!gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+\doxysubsubsection{\texorpdfstring{ASCII\_LOWERCASE\_OFFSET}{ASCII\_LOWERCASE\_OFFSET}}
+{\footnotesize\ttfamily \label{a00511_a53cd184e11f2e4f74c721eb2d4b34221} 
+final int gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity.\+ASCII\+\_\+\+LOWERCASE\+\_\+\+OFFSET = 97\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Valore ASCII del carattere \textquotesingle{}a\textquotesingle{} minuscolo. 
+
+Usato come offset per convertire la rappresentazione intera di un carattere nell\textquotesingle{}indice corrispondente del vettore di frequenza (0 = \textquotesingle{}a\textquotesingle{}, 1 = \textquotesingle{}b\textquotesingle{}, ..., 25 = \textquotesingle{}z\textquotesingle{}). \Hypertarget{a00511_a7b10056e51d9777a1bf3099af5f4f132}\index{gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}!SIMILARITY\_THRESHOLD@{SIMILARITY\_THRESHOLD}}
+\index{SIMILARITY\_THRESHOLD@{SIMILARITY\_THRESHOLD}!gruppo05.gtwserver.utility.LetterFrequencySimilarity@{gruppo05.gtwserver.utility.LetterFrequencySimilarity}}
+\doxysubsubsection{\texorpdfstring{SIMILARITY\_THRESHOLD}{SIMILARITY\_THRESHOLD}}
+{\footnotesize\ttfamily \label{a00511_a7b10056e51d9777a1bf3099af5f4f132} 
+final double gruppo05.\+gtwserver.\+utility.\+Letter\+Frequency\+Similarity.\+SIMILARITY\+\_\+\+THRESHOLD = 0.\+80\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Soglia minima di cosine similarity affinché due parole siano considerate simili. 
+
+Abbassare questa soglia rende il predicato più permissivo (cattura anche parole meno correlate); alzarla lo rende più severo. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/utility/Letter\+Frequency\+Similarity.\+java\end{DoxyCompactItemize}

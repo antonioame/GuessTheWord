@@ -1,0 +1,138 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record}
+\hypertarget{a00651}{}\label{a00651}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+
+
+Rappresenta in modo compatto un singolo record cronologico di una partita conclusa nello storico.  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00651}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00651_a83aba81b66e9f9b21cc78a7751a1c497}{Match\+Record}} (String \mbox{\hyperlink{a00651_a4b4311b4f2398fab5defba067a16bf73}{opponent}}, \mbox{\hyperlink{a00755}{Result}} \mbox{\hyperlink{a00651_ad2c12e253929f72862293a61649f7558}{result}}, Local\+Date\+Time \mbox{\hyperlink{a00651_aa2bde52e55c451bf9931671d20d9cebc}{date}}, int \mbox{\hyperlink{a00651_a2aec4e45cf9108600da4753986ff66d7}{response\+Time}})
+\begin{DoxyCompactList}\small\item\em Costruisce un nuovo record immodificabile per lo storico partite. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00651_ab67b99d55b6fb071b56e6dd170bd386e}{get\+Opponent}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce lo username dell\textquotesingle{}avversario. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00755}{Result}} \mbox{\hyperlink{a00651_af1d9a41b0fcb6fbe9db73e0c473b13f5}{get\+Result}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce l\textquotesingle{}esito della partita. \end{DoxyCompactList}\item 
+Local\+Date\+Time \mbox{\hyperlink{a00651_a2a2dc2f7c0216be439403f700d64920f}{get\+Date}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la data della registrazione del match. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00651_a5f1e7c002d8a1d707082673ebd15ed89}{get\+Response\+Time}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il tempo di risposta. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00651_a4b4311b4f2398fab5defba067a16bf73}\label{a00651_a4b4311b4f2398fab5defba067a16bf73} 
+final String {\bfseries opponent}
+\begin{DoxyCompactList}\small\item\em Username dell\textquotesingle{}avversario sfidato in questa specifica partita. \end{DoxyCompactList}\item 
+\Hypertarget{a00651_ad2c12e253929f72862293a61649f7558}\label{a00651_ad2c12e253929f72862293a61649f7558} 
+final \mbox{\hyperlink{a00755}{Result}} {\bfseries result}
+\begin{DoxyCompactList}\small\item\em L\textquotesingle{}esito finale riportato dal giocatore che richiede lo storico. \end{DoxyCompactList}\item 
+\Hypertarget{a00651_aa2bde52e55c451bf9931671d20d9cebc}\label{a00651_aa2bde52e55c451bf9931671d20d9cebc} 
+final Local\+Date\+Time {\bfseries date}
+\begin{DoxyCompactList}\small\item\em Timestamp esatto del momento in cui la partita è stata disputata o registrata. \end{DoxyCompactList}\item 
+\Hypertarget{a00651_a2aec4e45cf9108600da4753986ff66d7}\label{a00651_a2aec4e45cf9108600da4753986ff66d7} 
+final int {\bfseries response\+Time}
+\begin{DoxyCompactList}\small\item\em Tempo di risposta personale del giocatore nella sfida, espresso in millisecondi. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00651_a6ed41926650b33104dd3a01bd31927ac}\label{a00651_a6ed41926650b33104dd3a01bd31927ac} 
+static final long {\bfseries serial\+Version\+UID} = 1L
+\begin{DoxyCompactList}\small\item\em Versione di serializzazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Rappresenta in modo compatto un singolo record cronologico di una partita conclusa nello storico. 
+
+\label{doc-constructors}
+\Hypertarget{a00651_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00651_a83aba81b66e9f9b21cc78a7751a1c497}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}!MatchRecord@{MatchRecord}}
+\index{MatchRecord@{MatchRecord}!gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+\doxysubsubsection{\texorpdfstring{MatchRecord()}{MatchRecord()}}
+{\footnotesize\ttfamily \label{a00651_a83aba81b66e9f9b21cc78a7751a1c497} 
+gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record.\+Match\+Record (\begin{DoxyParamCaption}\item[{String}]{opponent}{, }\item[{\mbox{\hyperlink{a00755}{Result}}}]{result}{, }\item[{Local\+Date\+Time}]{date}{, }\item[{int}]{response\+Time}{}\end{DoxyParamCaption})}
+
+
+
+Costruisce un nuovo record immodificabile per lo storico partite. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em opponent} & Username dell\textquotesingle{}avversario. \\
+\hline
+{\em result} & Esito finale (es. WIN, LOSE). \\
+\hline
+{\em date} & Data e ora esatta in cui si è svolta la partita. \\
+\hline
+{\em response\+Time} & Tempo impiegato dal giocatore. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00651_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00651_a2a2dc2f7c0216be439403f700d64920f}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}!getDate@{getDate}}
+\index{getDate@{getDate}!gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+\doxysubsubsection{\texorpdfstring{getDate()}{getDate()}}
+{\footnotesize\ttfamily \label{a00651_a2a2dc2f7c0216be439403f700d64920f} 
+Local\+Date\+Time gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record.\+get\+Date (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la data della registrazione del match. 
+
+\begin{DoxyReturn}{Restituisce}
+Oggetto Local\+Date\+Time relativo al match. 
+\end{DoxyReturn}
+\Hypertarget{a00651_ab67b99d55b6fb071b56e6dd170bd386e}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}!getOpponent@{getOpponent}}
+\index{getOpponent@{getOpponent}!gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+\doxysubsubsection{\texorpdfstring{getOpponent()}{getOpponent()}}
+{\footnotesize\ttfamily \label{a00651_ab67b99d55b6fb071b56e6dd170bd386e} 
+String gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record.\+get\+Opponent (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce lo username dell\textquotesingle{}avversario. 
+
+\begin{DoxyReturn}{Restituisce}
+Una stringa contenente il nome dell\textquotesingle{}avversario. 
+\end{DoxyReturn}
+\Hypertarget{a00651_a5f1e7c002d8a1d707082673ebd15ed89}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}!getResponseTime@{getResponseTime}}
+\index{getResponseTime@{getResponseTime}!gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+\doxysubsubsection{\texorpdfstring{getResponseTime()}{getResponseTime()}}
+{\footnotesize\ttfamily \label{a00651_a5f1e7c002d8a1d707082673ebd15ed89} 
+int gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record.\+get\+Response\+Time (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce il tempo di risposta. 
+
+\begin{DoxyReturn}{Restituisce}
+I millisecondi impiegati nella partita. 
+\end{DoxyReturn}
+\Hypertarget{a00651_af1d9a41b0fcb6fbe9db73e0c473b13f5}\index{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}!getResult@{getResult}}
+\index{getResult@{getResult}!gruppo05.gtwshared.dto.CallbackDTO.MatchRecord@{gruppo05.gtwshared.dto.CallbackDTO.MatchRecord}}
+\doxysubsubsection{\texorpdfstring{getResult()}{getResult()}}
+{\footnotesize\ttfamily \label{a00651_af1d9a41b0fcb6fbe9db73e0c473b13f5} 
+\mbox{\hyperlink{a00755}{Result}} gruppo05.\+gtwshared.\+dto.\+Callback\+DTO.\+Match\+Record.\+get\+Result (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce l\textquotesingle{}esito della partita. 
+
+\begin{DoxyReturn}{Restituisce}
+Il valore enumerato \doxylink{a00755}{Result} (WIN, LOSE, ecc.). 
+\end{DoxyReturn}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/dto/Callback\+DTO.\+java\end{DoxyCompactItemize}

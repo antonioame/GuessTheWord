@@ -1,0 +1,192 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start}
+\hypertarget{a00711}{}\label{a00711}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+
+
+Comando (Server -\/\texorpdfstring{$>$}{>} Client)\+: Trasferimento del payload generato alla grafica (Scambio Scene).  
+
+
+Diagramma delle classi per gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00711}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00711_aa7d677baa093e1c889ee4582b6f36d10}{Game\+Start}} (String \mbox{\hyperlink{a00711_a9b18a33a268bc916a6caf17968065a90}{ciphered\+Text}}, int \mbox{\hyperlink{a00711_aca4edba07b4000555b1595fe3e6c62c4}{timer}}, int \mbox{\hyperlink{a00711_aaff8e32c674149b5eb22f0f66edcf16e}{player\+Index}}, String \mbox{\hyperlink{a00711_aabb45dc225d11cc9d38cffbfda404d82}{opponent\+Username}}, \mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00711_a4d53791ea8ee4e448fc161c6231f6d46}{difficulty}})
+\begin{DoxyCompactList}\small\item\em Costruisce il pacchetto di lancio contenente l\textquotesingle{}arena di sfida generata al volo. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00711_a6049c0c80f23ad6e24d7b0c4a47142b4}{get\+Ciphered\+Text}} ()
+\begin{DoxyCompactList}\small\item\em Fornisce il testo mascherato/cifrato. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00711_afed1e13bd3630e945e041d13316cdbc8}{get\+Timer}} ()
+\begin{DoxyCompactList}\small\item\em Fornisce il valore originario di partenza del Timer. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00711_a1234b1e16d73b6aff953975f2d503fef}{get\+Player\+Index}} ()
+\begin{DoxyCompactList}\small\item\em Indica l\textquotesingle{}assegnazione dello slot visivo. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00711_a19d202a462a12aa07567fb4f86bbe6e8}{get\+Opponent\+Username}} ()
+\begin{DoxyCompactList}\small\item\em Indica chi c\textquotesingle{}è dall\textquotesingle{}altra parte della sessione virtuale. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00751}{Difficulty}} \mbox{\hyperlink{a00711_a88d8f86c765306dff83f7b98831dd958}{get\+Difficulty}} ()
+\begin{DoxyCompactList}\small\item\em Indica la difficoltà della partita. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} \mbox{\hyperlink{a00711_a150c9c9b91a2b3599d8068c5b327d58f}{to\+DTO}} ()
+\begin{DoxyCompactList}\small\item\em Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_a8deb505fc607f2cd821f0e42ae2e5061}{get\+Type}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il tipo discriminante del messaggio. \end{DoxyCompactList}\item 
+Local\+Date\+Time \mbox{\hyperlink{a00683_abe9887af469319aec23b6c8fcf5a3206}{get\+Timestamp}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il momento di generazione. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00683_a0f4fccf839305a8e172dcdb40ad38137}{to\+String}} ()
+\begin{DoxyCompactList}\small\item\em Ritorna una traccia descrittiva per debug e logging di rete. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00711_a9b18a33a268bc916a6caf17968065a90}\label{a00711_a9b18a33a268bc916a6caf17968065a90} 
+final String {\bfseries ciphered\+Text}
+\begin{DoxyCompactList}\small\item\em Testo estratto dal documento. \end{DoxyCompactList}\item 
+\Hypertarget{a00711_aca4edba07b4000555b1595fe3e6c62c4}\label{a00711_aca4edba07b4000555b1595fe3e6c62c4} 
+final int {\bfseries timer}
+\begin{DoxyCompactList}\small\item\em Durata del timer in secondi. \end{DoxyCompactList}\item 
+\Hypertarget{a00711_aaff8e32c674149b5eb22f0f66edcf16e}\label{a00711_aaff8e32c674149b5eb22f0f66edcf16e} 
+final int {\bfseries player\+Index}
+\begin{DoxyCompactList}\small\item\em Indice del client ricevente (0 o 1). \end{DoxyCompactList}\item 
+\Hypertarget{a00711_aabb45dc225d11cc9d38cffbfda404d82}\label{a00711_aabb45dc225d11cc9d38cffbfda404d82} 
+final String {\bfseries opponent\+Username}
+\begin{DoxyCompactList}\small\item\em Username dell\textquotesingle{}avversario. \end{DoxyCompactList}\item 
+\Hypertarget{a00711_a4d53791ea8ee4e448fc161c6231f6d46}\label{a00711_a4d53791ea8ee4e448fc161c6231f6d46} 
+final \mbox{\hyperlink{a00751}{Difficulty}} {\bfseries difficulty}
+\begin{DoxyCompactList}\small\item\em Difficoltà della partita. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00711_a964522b5e3b04752be2a9506ebef8e8e}\label{a00711_a964522b5e3b04752be2a9506ebef8e8e} 
+static final long {\bfseries serial\+Version\+UID} = 8L
+\begin{DoxyCompactList}\small\item\em Versione di serializzazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Altri membri ereditati}
+\doxysubsection*{Membri protetti ereditati da \mbox{\hyperlink{a00683}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00683_aacc6b9cbdd9bb12bc5aad5f55745799e}{Network\+Message}} (\mbox{\hyperlink{a00663}{Message\+Type}} \mbox{\hyperlink{a00683_aae9d1a7d43240d769f8abe4e1114f9dc}{type}})
+\begin{DoxyCompactList}\small\item\em Costruttore interno per la base del messaggio. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Comando (Server -\/\texorpdfstring{$>$}{>} Client)\+: Trasferimento del payload generato alla grafica (Scambio Scene). 
+
+\label{doc-constructors}
+\Hypertarget{a00711_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00711_aa7d677baa093e1c889ee4582b6f36d10}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!GameStart@{GameStart}}
+\index{GameStart@{GameStart}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{GameStart()}{GameStart()}}
+{\footnotesize\ttfamily \label{a00711_aa7d677baa093e1c889ee4582b6f36d10} 
+\mbox{\hyperlink{a00711}{gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+Game\+Start}} (\begin{DoxyParamCaption}\item[{String}]{ciphered\+Text}{, }\item[{int}]{timer}{, }\item[{int}]{player\+Index}{, }\item[{String}]{opponent\+Username}{, }\item[{\mbox{\hyperlink{a00751}{Difficulty}}}]{difficulty}{}\end{DoxyParamCaption})}
+
+
+
+Costruisce il pacchetto di lancio contenente l\textquotesingle{}arena di sfida generata al volo. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em ciphered\+Text} & Lo stralcio testuale criptato prodotto dal Question\+Generator. \\
+\hline
+{\em timer} & Tempo totale per la risoluzione assegnato in base alla difficoltà. \\
+\hline
+{\em player\+Index} & Indice di posizione del client in locale (0 per sx, 1 per dx nel layout). \\
+\hline
+{\em opponent\+Username} & Identità dell\textquotesingle{}avversario frontale. \\
+\hline
+{\em difficulty} & Difficoltà effettiva della partita. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00711_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00711_a6049c0c80f23ad6e24d7b0c4a47142b4}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!getCipheredText@{getCipheredText}}
+\index{getCipheredText@{getCipheredText}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{getCipheredText()}{getCipheredText()}}
+{\footnotesize\ttfamily \label{a00711_a6049c0c80f23ad6e24d7b0c4a47142b4} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+get\+Ciphered\+Text (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Fornisce il testo mascherato/cifrato. 
+
+\begin{DoxyReturn}{Restituisce}
+La stringa completa dell\textquotesingle{}indovinello. 
+\end{DoxyReturn}
+\Hypertarget{a00711_a88d8f86c765306dff83f7b98831dd958}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!getDifficulty@{getDifficulty}}
+\index{getDifficulty@{getDifficulty}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{getDifficulty()}{getDifficulty()}}
+{\footnotesize\ttfamily \label{a00711_a88d8f86c765306dff83f7b98831dd958} 
+\mbox{\hyperlink{a00751}{Difficulty}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+get\+Difficulty (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Indica la difficoltà della partita. 
+
+\begin{DoxyReturn}{Restituisce}
+Livello di difficoltà. 
+\end{DoxyReturn}
+\Hypertarget{a00711_a19d202a462a12aa07567fb4f86bbe6e8}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!getOpponentUsername@{getOpponentUsername}}
+\index{getOpponentUsername@{getOpponentUsername}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{getOpponentUsername()}{getOpponentUsername()}}
+{\footnotesize\ttfamily \label{a00711_a19d202a462a12aa07567fb4f86bbe6e8} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+get\+Opponent\+Username (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Indica chi c\textquotesingle{}è dall\textquotesingle{}altra parte della sessione virtuale. 
+
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}username avversario. 
+\end{DoxyReturn}
+\Hypertarget{a00711_a1234b1e16d73b6aff953975f2d503fef}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!getPlayerIndex@{getPlayerIndex}}
+\index{getPlayerIndex@{getPlayerIndex}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{getPlayerIndex()}{getPlayerIndex()}}
+{\footnotesize\ttfamily \label{a00711_a1234b1e16d73b6aff953975f2d503fef} 
+int gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+get\+Player\+Index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Indica l\textquotesingle{}assegnazione dello slot visivo. 
+
+\begin{DoxyReturn}{Restituisce}
+Un intero, utile al frontend. 
+\end{DoxyReturn}
+\Hypertarget{a00711_afed1e13bd3630e945e041d13316cdbc8}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!getTimer@{getTimer}}
+\index{getTimer@{getTimer}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{getTimer()}{getTimer()}}
+{\footnotesize\ttfamily \label{a00711_afed1e13bd3630e945e041d13316cdbc8} 
+int gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+get\+Timer (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Fornisce il valore originario di partenza del Timer. 
+
+\begin{DoxyReturn}{Restituisce}
+Valore intero (secondi). 
+\end{DoxyReturn}
+\Hypertarget{a00711_a150c9c9b91a2b3599d8068c5b327d58f}\index{gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}!toDTO@{toDTO}}
+\index{toDTO@{toDTO}!gruppo05.gtwshared.networking.NetworkMessage.GameStart@{gruppo05.gtwshared.networking.NetworkMessage.GameStart}}
+\doxysubsubsection{\texorpdfstring{toDTO()}{toDTO()}}
+{\footnotesize\ttfamily \label{a00711_a150c9c9b91a2b3599d8068c5b327d58f} 
+\mbox{\hyperlink{a00647}{Callback\+DTO}} gruppo05.\+gtwshared.\+networking.\+Network\+Message.\+Game\+Start.\+to\+DTO (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Metodo polimorfico che impone alle sottoclassi di auto-\/tradursi in DTO. 
+
+\begin{DoxyReturn}{Restituisce}
+Il \doxylink{a00647}{Callback\+DTO} compilato a dovere con i dati della sottoclasse invocatrice. 
+\end{DoxyReturn}
+
+
+Reimplementa \mbox{\hyperlink{a00683_a5e1fdf66c76c4b202a2325096271edec}{gruppo05.\+gtwshared.\+networking.\+Network\+Message}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Message.\+java\end{DoxyCompactItemize}

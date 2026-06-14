@@ -1,0 +1,104 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager\+Test.\+Fake\+Source\+DAO}
+\hypertarget{a00611}{}\label{a00611}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO@{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO}}
+Diagramma delle classi per gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager\+Test.\+Fake\+Source\+DAO\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00611}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+Optional$<$ \mbox{\hyperlink{a00431}{Source}} $>$ \mbox{\hyperlink{a00611_a632f2dd2e3b74e96dbb1c70f907d3434}{select\+By\+Id}} (Optional$<$ Integer $>$ id)
+\begin{DoxyCompactList}\small\item\em Recupera una sorgente tramite il suo identificativo numerico univoco. \end{DoxyCompactList}\item 
+\Hypertarget{a00611_adb567f1c0e99da3c71d8a79da5e371dd}\label{a00611_adb567f1c0e99da3c71d8a79da5e371dd} 
+List$<$ \mbox{\hyperlink{a00431}{Source}} $>$ {\bfseries select\+All} ()
+\item 
+\Hypertarget{a00611_aa07242d784f2f0c29dc183a8d429e7ca}\label{a00611_aa07242d784f2f0c29dc183a8d429e7ca} 
+void {\bfseries insert} (\mbox{\hyperlink{a00431}{Source}} item)
+\item 
+\Hypertarget{a00611_a52bdca54adcd617f6e855f2cec6503ae}\label{a00611_a52bdca54adcd617f6e855f2cec6503ae} 
+void {\bfseries insert\+All} (List$<$ \mbox{\hyperlink{a00431}{Source}} $>$ items)
+\item 
+\Hypertarget{a00611_a3e3aedbb8d917eae8a421edd0403e966}\label{a00611_a3e3aedbb8d917eae8a421edd0403e966} 
+void {\bfseries update} (\mbox{\hyperlink{a00431}{Source}} model)
+\item 
+void \mbox{\hyperlink{a00611_a51d9046ae1455d21e8336fb081ed9242}{delete}} (Optional$<$ Integer $>$ id)
+\begin{DoxyCompactList}\small\item\em Cancella una sorgente dal database tramite il suo identificativo numerico univoco. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00387}{gruppo05.\+gtwserver.\+db.\+DAO$<$ Source $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ T $>$ \mbox{\hyperlink{a00387_a922452d0b8559d0497965e19b770f276}{select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Recupera tutte le istanze dell\textquotesingle{}entità memorizzate nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a82e78482068f525f83500c09a3169a88}{insert}} (T model)
+\begin{DoxyCompactList}\small\item\em Inserisce una nuova istanza dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a3457919ad8921d48f2ccd1f696e21b87}{insert\+All}} (List$<$ T $>$ model\+List)
+\begin{DoxyCompactList}\small\item\em Inserisce una lista di istanze dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a59161f50026305a7accaeb029f75fa01}{update}} (T model)
+\begin{DoxyCompactList}\small\item\em Aggiorna i dati di un\textquotesingle{}istanza esistente all\textquotesingle{}interno del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00611_af96c8d9ddcdc6d1d7f9ff1470985beb5}\label{a00611_af96c8d9ddcdc6d1d7f9ff1470985beb5} 
+final Map$<$ Integer, \mbox{\hyperlink{a00431}{Source}} $>$ {\bfseries database} = new Hash\+Map$<$$>$()
+\item 
+\Hypertarget{a00611_a550886b91ba69723220f5a793a2afa13}\label{a00611_a550886b91ba69723220f5a793a2afa13} 
+boolean {\bfseries should\+Fail\+On\+Insert} = false
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{a00611_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00611_a51d9046ae1455d21e8336fb081ed9242}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO@{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO}!delete@{delete}}
+\index{delete@{delete}!gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO@{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}}
+{\footnotesize\ttfamily \label{a00611_a51d9046ae1455d21e8336fb081ed9242} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager\+Test.\+Fake\+Source\+DAO.\+delete (\begin{DoxyParamCaption}\item[{Optional$<$ Integer $>$}]{id}{}\end{DoxyParamCaption})}
+
+
+
+Cancella una sorgente dal database tramite il suo identificativo numerico univoco. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em id} & Un Optional contenente l\textquotesingle{}id numerico della sorgente da rimuovere. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondizione}
+Se l\textquotesingle{}Optional contiene un id esistente, il record della sorgente viene rimosso dal database. 
+\end{DoxyPostcond}
+
+
+Implementa \mbox{\hyperlink{a00403_aed14df310ee439d74e41956526c60986}{gruppo05.\+gtwserver.\+db.\+Source\+DAO}}.
+
+\Hypertarget{a00611_a632f2dd2e3b74e96dbb1c70f907d3434}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO@{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO}!selectById@{selectById}}
+\index{selectById@{selectById}!gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO@{gruppo05.gtwserver.sourcemanager.internal.io.IOManagerTest.FakeSourceDAO}}
+\doxysubsubsection{\texorpdfstring{selectById()}{selectById()}}
+{\footnotesize\ttfamily \label{a00611_a632f2dd2e3b74e96dbb1c70f907d3434} 
+Optional$<$ \mbox{\hyperlink{a00431}{Source}} $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager\+Test.\+Fake\+Source\+DAO.\+select\+By\+Id (\begin{DoxyParamCaption}\item[{Optional$<$ Integer $>$}]{id}{}\end{DoxyParamCaption})}
+
+
+
+Recupera una sorgente tramite il suo identificativo numerico univoco. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em id} & Un Optional contenente l\textquotesingle{}id numerico della sorgente da cercare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Un Optional contenente la sorgente trovata, oppure un Optional vuoto. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il valore restituito non è null. 
+\end{DoxyPostcond}
+
+
+Implementa \mbox{\hyperlink{a00403_aac91e9206830af0a1e4860d657b30926}{gruppo05.\+gtwserver.\+db.\+Source\+DAO}}.
+
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/sourcemanager/internal/io/IOManager\+Test.\+java\end{DoxyCompactItemize}

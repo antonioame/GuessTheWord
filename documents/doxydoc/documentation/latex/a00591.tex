@@ -1,0 +1,58 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Question\+Generator\+Test}
+\hypertarget{a00591}{}\label{a00591}\index{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest@{gruppo05.gtwserver.sourcemanager.internal.generation.QuestionGeneratorTest}}
+
+
+Suite di test unitari JUnit 5 per la classe \doxylink{a00499}{Question\+Generator}.  
+
+
+\doxysubsubsection*{Composti}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{a00595}{Controlled\+Random}}
+\begin{DoxyCompactList}\small\item\em Estensione mock manuale di Random per forzare i risultati desiderati nel test. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{a00599}{Stub\+Word\+Extractor}}
+\begin{DoxyCompactList}\small\item\em Stub manuale di \doxylink{a00503}{Word\+Extractor} per simulare il comportamento di estrazione. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00591_af27710e3cd01d325767884ae32704293}\label{a00591_af27710e3cd01d325767884ae32704293} 
+void {\bfseries set\+Up} ()
+\item 
+\Hypertarget{a00591_aaab9b3413e963c9013d959b778ec04d4}\label{a00591_aaab9b3413e963c9013d959b778ec04d4} 
+void {\bfseries test\+Generate\+Question\+Success} ()  throws \mbox{\hyperlink{a00479}{Question\+Generation\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Verifica il successo della generazione della domanda con corretta estrazione e cifratura. \end{DoxyCompactList}\item 
+\Hypertarget{a00591_a2335d57d44b9dabaeb17e8389146cc3b}\label{a00591_a2335d57d44b9dabaeb17e8389146cc3b} 
+void {\bfseries test\+Generate\+Question\+With\+Empty\+Source} ()
+\begin{DoxyCompactList}\small\item\em Verifica il corretto lancio dell\textquotesingle{}eccezione in caso di stream sorgente vuoto. \end{DoxyCompactList}\item 
+\Hypertarget{a00591_af9640726ef15520c73cc1d48f88b681c}\label{a00591_af9640726ef15520c73cc1d48f88b681c} 
+void {\bfseries test\+Generate\+Question\+Case\+Sensitive\+Encryption} ()  throws \mbox{\hyperlink{a00479}{Question\+Generation\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Verifica che la cifratura rispetti la sensibilità alle maiuscole/minuscole (Case Sensitive). \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00591_a8494bf1dcbee920608c8c742eb38811d}\label{a00591_a8494bf1dcbee920608c8c742eb38811d} 
+\mbox{\hyperlink{a00499}{Question\+Generator}} {\bfseries question\+Generator}
+\item 
+\Hypertarget{a00591_a793b959e0e303f1fd85cfdf01c9220a7}\label{a00591_a793b959e0e303f1fd85cfdf01c9220a7} 
+\mbox{\hyperlink{a00599}{Stub\+Word\+Extractor}} {\bfseries stub\+Word\+Extractor}
+\item 
+\Hypertarget{a00591_aed24e2d15a3db6140336b56f9a8b688b}\label{a00591_aed24e2d15a3db6140336b56f9a8b688b} 
+\mbox{\hyperlink{a00595}{Controlled\+Random}} {\bfseries controlled\+Random}
+\item 
+\Hypertarget{a00591_a7c119ecaaefb73f7b5365d6bb8f7929c}\label{a00591_a7c119ecaaefb73f7b5365d6bb8f7929c} 
+Map$<$ String, Integer $>$ {\bfseries dummy\+Frequencies}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00591_a49e540da2fda4f22b792f7870c721883}\label{a00591_a49e540da2fda4f22b792f7870c721883} 
+static final String {\bfseries TEST\+\_\+\+REGEX} = "{}\mbox{[}\texorpdfstring{$^\wedge$}{\string^}a-\/zA-\/Z0-\/9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ\mbox{]}"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Suite di test unitari JUnit 5 per la classe \doxylink{a00499}{Question\+Generator}. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/sourcemanager/internal/generation/Question\+Generator\+Test.\+java\end{DoxyCompactItemize}

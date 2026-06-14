@@ -1,0 +1,95 @@
+\doxysection{Riferimenti per l\textquotesingle{}interfaccia gruppo05.\+gtwserver.\+db.\+Game\+DAO}
+\hypertarget{a00395}{}\label{a00395}\index{gruppo05.gtwserver.db.GameDAO@{gruppo05.gtwserver.db.GameDAO}}
+
+
+Sottointerfaccia \doxylink{a00387}{DAO} per la gestione della persistenza delle partite (\doxylink{a00419}{Game}).  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+db.\+Game\+DAO\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00395}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+Optional$<$ \mbox{\hyperlink{a00419}{Game}} $>$ \mbox{\hyperlink{a00395_a2b8a79a6d8bc8afb5352acda3682f3da}{select\+By\+Id}} (Optional$<$ String $>$ player, Optional$<$ Integer $>$ challenge)
+\begin{DoxyCompactList}\small\item\em Recupera una partita tramite la sua chiave primaria composta. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00395_ae9cdf96b5b2c470ad9b5a2bfc5e01460}{delete}} (Optional$<$ String $>$ player, Optional$<$ Integer $>$ challenges)
+\begin{DoxyCompactList}\small\item\em Cancella una partita dal database tramite la sua chiave primaria composta. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00387}{gruppo05.\+gtwserver.\+db.\+DAO$<$ Game $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ T $>$ \mbox{\hyperlink{a00387_a922452d0b8559d0497965e19b770f276}{select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Recupera tutte le istanze dell\textquotesingle{}entità memorizzate nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a82e78482068f525f83500c09a3169a88}{insert}} (T model)
+\begin{DoxyCompactList}\small\item\em Inserisce una nuova istanza dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a3457919ad8921d48f2ccd1f696e21b87}{insert\+All}} (List$<$ T $>$ model\+List)
+\begin{DoxyCompactList}\small\item\em Inserisce una lista di istanze dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a59161f50026305a7accaeb029f75fa01}{update}} (T model)
+\begin{DoxyCompactList}\small\item\em Aggiorna i dati di un\textquotesingle{}istanza esistente all\textquotesingle{}interno del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Sottointerfaccia \doxylink{a00387}{DAO} per la gestione della persistenza delle partite (\doxylink{a00419}{Game}). 
+
+\label{doc-func-members}
+\Hypertarget{a00395_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00395_ae9cdf96b5b2c470ad9b5a2bfc5e01460}\index{gruppo05.gtwserver.db.GameDAO@{gruppo05.gtwserver.db.GameDAO}!delete@{delete}}
+\index{delete@{delete}!gruppo05.gtwserver.db.GameDAO@{gruppo05.gtwserver.db.GameDAO}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}}
+{\footnotesize\ttfamily \label{a00395_ae9cdf96b5b2c470ad9b5a2bfc5e01460} 
+void gruppo05.\+gtwserver.\+db.\+Game\+DAO.\+delete (\begin{DoxyParamCaption}\item[{Optional$<$ String $>$}]{player}{, }\item[{Optional$<$ Integer $>$}]{challenges}{}\end{DoxyParamCaption})}
+
+
+
+Cancella una partita dal database tramite la sua chiave primaria composta. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em player} & Un Optional contenente lo username del giocatore. \\
+\hline
+\mbox{\texttt{in}}  & {\em challenges} & Un Optional contenente il codice numerico della sfida. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPostcond}{Postcondizione}
+Se entrambi gli Optional contengono valori validi ed esistenti, il record della partita viene rimosso dal database. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00371_ad0e38e7e46784484625af26486564f34}{gruppo05.\+gtwserver.\+db.\+Concrete\+Game\+DAO}}.
+
+\Hypertarget{a00395_a2b8a79a6d8bc8afb5352acda3682f3da}\index{gruppo05.gtwserver.db.GameDAO@{gruppo05.gtwserver.db.GameDAO}!selectById@{selectById}}
+\index{selectById@{selectById}!gruppo05.gtwserver.db.GameDAO@{gruppo05.gtwserver.db.GameDAO}}
+\doxysubsubsection{\texorpdfstring{selectById()}{selectById()}}
+{\footnotesize\ttfamily \label{a00395_a2b8a79a6d8bc8afb5352acda3682f3da} 
+Optional$<$ \mbox{\hyperlink{a00419}{Game}} $>$ gruppo05.\+gtwserver.\+db.\+Game\+DAO.\+select\+By\+Id (\begin{DoxyParamCaption}\item[{Optional$<$ String $>$}]{player}{, }\item[{Optional$<$ Integer $>$}]{challenge}{}\end{DoxyParamCaption})}
+
+
+
+Recupera una partita tramite la sua chiave primaria composta. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em player} & Un Optional contenente lo username del giocatore. \\
+\hline
+\mbox{\texttt{in}}  & {\em challenge} & Un Optional contenente il codice numerico della sfida. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Un Optional contenente la partita trovata, oppure un Optional vuoto. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il valore restituito non è null. 
+\end{DoxyPostcond}
+
+
+Implementato in \mbox{\hyperlink{a00371_a0620d135adbc8aea1bb6b25f66903c73}{gruppo05.\+gtwserver.\+db.\+Concrete\+Game\+DAO}}.
+
+
+
+La documentazione per questa interfaccia è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/db/Game\+DAO.\+java\end{DoxyCompactItemize}

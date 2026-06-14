@@ -1,0 +1,107 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller}
+\hypertarget{a00319}{}\label{a00319}\index{gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}}
+Diagramma delle classi per gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00319}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00319_abe2903b82ad541446e3eb64dfa4a2568}{set\+Connection}} (\mbox{\hyperlink{a00323}{Client\+Connection}} connection)
+\begin{DoxyCompactList}\small\item\em Configura la connessione di rete del client. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00319_a9a94a4c9b3bd969175f9c1039cbad537}{set\+Username}} (String username)
+\begin{DoxyCompactList}\small\item\em Imposta lo username dell\textquotesingle{}utente in sessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00319_a4cdcb539bacdc3fd6babb20194ebb643}{initialize}} (URL location, Resource\+Bundle resources)
+\begin{DoxyCompactList}\small\item\em Inizializza il controller della schermata di attesa. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00319_a112a228b23af01fec36453bfcecd0956}{show\+Match\+Found}} ()
+\begin{DoxyCompactList}\small\item\em Aggiorna la UI per mostrare che l\textquotesingle{}avversario è stato trovato. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00319_af4718deee3420e15dceca36fc2f19812}\label{a00319_af4718deee3420e15dceca36fc2f19812} 
+Label {\bfseries lbl\+Status}
+\item 
+\Hypertarget{a00319_a73cdda1bf6525175fa25e0e65caffabe}\label{a00319_a73cdda1bf6525175fa25e0e65caffabe} 
+Progress\+Indicator {\bfseries progress\+Indicator}
+\item 
+\Hypertarget{a00319_a7ca4133c8d6327cfa4a281f8bfdeaec4}\label{a00319_a7ca4133c8d6327cfa4a281f8bfdeaec4} 
+Button {\bfseries btn\+Cancel}
+\item 
+\Hypertarget{a00319_aa82e0f0d133838beffdb0374cc11b9e2}\label{a00319_aa82e0f0d133838beffdb0374cc11b9e2} 
+\mbox{\hyperlink{a00323}{Client\+Connection}} {\bfseries connection}
+\item 
+\Hypertarget{a00319_a188876035b9bb715aca54753a7f74e9b}\label{a00319_a188876035b9bb715aca54753a7f74e9b} 
+String {\bfseries username}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Controller Java\+FX per la gestione della schermata di attesa e del matchmaking. 
+
+\label{doc-func-members}
+\Hypertarget{a00319_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00319_a4cdcb539bacdc3fd6babb20194ebb643}\index{gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}!initialize@{initialize}}
+\index{initialize@{initialize}!gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}}
+\doxysubsubsection{\texorpdfstring{initialize()}{initialize()}}
+{\footnotesize\ttfamily \label{a00319_a4cdcb539bacdc3fd6babb20194ebb643} 
+void gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller.\+initialize (\begin{DoxyParamCaption}\item[{URL}]{location}{, }\item[{Resource\+Bundle}]{resources}{}\end{DoxyParamCaption})}
+
+
+
+Inizializza il controller della schermata di attesa. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em location} & Percorso relativo per la risoluzione dell\textquotesingle{}oggetto radice. \\
+\hline
+\mbox{\texttt{in}}  & {\em resources} & Risorse localizzate. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00319_abe2903b82ad541446e3eb64dfa4a2568}\index{gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}!setConnection@{setConnection}}
+\index{setConnection@{setConnection}!gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}}
+\doxysubsubsection{\texorpdfstring{setConnection()}{setConnection()}}
+{\footnotesize\ttfamily \label{a00319_abe2903b82ad541446e3eb64dfa4a2568} 
+void gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller.\+set\+Connection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00323}{Client\+Connection}}}]{connection}{}\end{DoxyParamCaption})}
+
+
+
+Configura la connessione di rete del client. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em connection} & Istanza attiva di \doxylink{a00323}{Client\+Connection}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00319_a9a94a4c9b3bd969175f9c1039cbad537}\index{gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}!setUsername@{setUsername}}
+\index{setUsername@{setUsername}!gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}}
+\doxysubsubsection{\texorpdfstring{setUsername()}{setUsername()}}
+{\footnotesize\ttfamily \label{a00319_a9a94a4c9b3bd969175f9c1039cbad537} 
+void gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller.\+set\+Username (\begin{DoxyParamCaption}\item[{String}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Imposta lo username dell\textquotesingle{}utente in sessione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em username} & Nome utente corrente. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00319_a112a228b23af01fec36453bfcecd0956}\index{gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}!showMatchFound@{showMatchFound}}
+\index{showMatchFound@{showMatchFound}!gruppo05.gtwclient.controller.WaitingViewController@{gruppo05.gtwclient.controller.WaitingViewController}}
+\doxysubsubsection{\texorpdfstring{showMatchFound()}{showMatchFound()}}
+{\footnotesize\ttfamily \label{a00319_a112a228b23af01fec36453bfcecd0956} 
+void gruppo05.\+gtwclient.\+controller.\+Waiting\+View\+Controller.\+show\+Match\+Found (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Aggiorna la UI per mostrare che l\textquotesingle{}avversario è stato trovato. 
+
+Viene chiamato da \doxylink{a00327}{Client\+Connection\+Creator} quando arriva MATCH\+\_\+\+FOUND. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/controller/Waiting\+View\+Controller.\+java\end{DoxyCompactItemize}

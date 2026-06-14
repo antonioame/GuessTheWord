@@ -1,0 +1,294 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager}
+\hypertarget{a00507}{}\label{a00507}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+
+
+Componente per la gestione delle operazioni di Input/\+Output del sistema.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00507_a0000f6e7ae6b784a4b19c5923f7c5dea}{IOManager}} (\mbox{\hyperlink{a00403}{Source\+DAO}} \mbox{\hyperlink{a00507_ab13370ea6e2e0241bfdd7597def07cc9}{source\+Dao}}, \mbox{\hyperlink{a00407}{Word\+DAO}} \mbox{\hyperlink{a00507_a954bd2cce613b94a84f5ab94e728e0b0}{word\+Dao}}, String \mbox{\hyperlink{a00507_a03c767d3ff97a13150fa180769522686}{sanitization\+Regex}})
+\begin{DoxyCompactList}\small\item\em Costruttore del gestore di IO dell\textquotesingle{}applicazione. \end{DoxyCompactList}\item 
+Stream$<$ String $>$ \mbox{\hyperlink{a00507_a42976f81313c14e02bd38ee5f79ba9f7}{read\+Raw\+Lines}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Legge il contenuto grezzo (raw) del file sorgente per preservarne l\textquotesingle{}estetica. Utilizzato dal generatore di domande per mantenere intatta la formattazione, la punteggiatura e le maiuscole originali dell\textquotesingle{}autore. \end{DoxyCompactList}\item 
+Stream$<$ String $>$ \mbox{\hyperlink{a00507_a2420e8336e5e021edf8c2954b1601ad5}{read\+Source\+Words}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Legge il file sorgente estraendone un flusso di sole parole pure. Utilizzato esclusivamente dall\textquotesingle{}analizzatore per il calcolo statistico delle frequenze, elimina completamente qualsiasi segno di interpunzione. \end{DoxyCompactList}\item 
+Map$<$ String, Integer $>$ \mbox{\hyperlink{a00507_a5df926378c5760fc9909f390da23f8c3}{read\+Source\+Map\+Frequency}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00471}{Frequency\+Map\+Not\+Found\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Recupera dal database la mappa delle frequenze delle parole relative ad un determinato sorgente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00507_a5c7a15a15bef2830a63e3f578cb6966a}{write\+Source}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00491}{Storage\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Effettua il salvataggio persistente di un\textquotesingle{}entità \doxylink{a00431}{Source} nel database. \end{DoxyCompactList}\item 
+long \mbox{\hyperlink{a00507_ad1918452a1d399b977a922becc13a5ea}{get\+Estimated\+Word\+Count}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Stima il numero di parole contenute nel file sorgente in base alla sua dimensione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00507_ae57984749ce7be070ed041b135f07b1e}{write\+Source\+Map\+Frequency}} (\mbox{\hyperlink{a00431}{Source}} source, Map$<$ String, Integer $>$ frequencies)  throws \mbox{\hyperlink{a00491}{Storage\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Memorizza massivamente le frequenze calcolate per le parole di un determinato sorgente. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00507_a398e3dd0790227b9ce9169d9fa409d02}{delete\+Source}} (\mbox{\hyperlink{a00431}{Source}} source)  throws \mbox{\hyperlink{a00491}{Storage\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Cancella in maniera definitiva un sorgente e tutte le sue parole collegate dal sistema. \end{DoxyCompactList}\item 
+Set$<$ String $>$ \mbox{\hyperlink{a00507_a38ee6955a33584998125708f3cc5fc5f}{read\+Default\+Stop\+Words}} ()  throws \mbox{\hyperlink{a00487}{Stop\+Words\+Load\+Exception}} 
+\begin{DoxyCompactList}\small\item\em Carica l\textquotesingle{}insieme delle parole vuote (stop-\/words) di default da un file di configurazione predefinito. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+Stream$<$ String $>$ \mbox{\hyperlink{a00507_a6294def2215a6113f43efd32020031a5}{extract\+Words\+From\+Line}} (String line)
+\begin{DoxyCompactList}\small\item\em Esegue una tokenizzazione pura su una riga di testo, estraendo solo parole valide. Poiché l\textquotesingle{}estetica è gestita altrove, elimina apostrofi e punteggiatura trasformandoli in spazi. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00507_ab13370ea6e2e0241bfdd7597def07cc9}\label{a00507_ab13370ea6e2e0241bfdd7597def07cc9} 
+final \mbox{\hyperlink{a00403}{Source\+DAO}} {\bfseries source\+Dao}
+\begin{DoxyCompactList}\small\item\em Oggetto DAO per l\textquotesingle{}accesso e la persistenza delle entità \doxylink{a00431}{Source}. \end{DoxyCompactList}\item 
+\Hypertarget{a00507_a954bd2cce613b94a84f5ab94e728e0b0}\label{a00507_a954bd2cce613b94a84f5ab94e728e0b0} 
+final \mbox{\hyperlink{a00407}{Word\+DAO}} {\bfseries word\+Dao}
+\begin{DoxyCompactList}\small\item\em Oggetto DAO per l\textquotesingle{}accesso e la persistenza delle entità \doxylink{a00435}{Word}. \end{DoxyCompactList}\item 
+\Hypertarget{a00507_a03c767d3ff97a13150fa180769522686}\label{a00507_a03c767d3ff97a13150fa180769522686} 
+final String {\bfseries sanitization\+Regex}
+\begin{DoxyCompactList}\small\item\em Regola di sanificazione globale del modulo testuale iniettata dall\textquotesingle{}orchestratore. Definisce l\textquotesingle{}espressione regolare utilizzata per rimuovere la punteggiatura e mantenere coerente la scomposizione delle parole con le fasi successive (es. estrazione e cifratura). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Componente per la gestione delle operazioni di Input/\+Output del sistema. 
+
+\begin{DoxyInvariant}{Invariante}
+Il database access object per i sorgenti (source\+Dao) non deve essere nullo. 
+
+Il database access object per le parole (word\+Dao) non deve essere nullo. 
+\end{DoxyInvariant}
+
+
+\label{doc-constructors}
+\Hypertarget{a00507_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00507_a0000f6e7ae6b784a4b19c5923f7c5dea}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!IOManager@{IOManager}}
+\index{IOManager@{IOManager}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{IOManager()}{IOManager()}}
+{\footnotesize\ttfamily \label{a00507_a0000f6e7ae6b784a4b19c5923f7c5dea} 
+gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+IOManager (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00403}{Source\+DAO}}}]{source\+Dao}{, }\item[{\mbox{\hyperlink{a00407}{Word\+DAO}}}]{word\+Dao}{, }\item[{String}]{sanitization\+Regex}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore del gestore di IO dell\textquotesingle{}applicazione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source\+Dao} & Oggetto DAO per la persistenza dei sorgenti. \\
+\hline
+\mbox{\texttt{in}}  & {\em word\+Dao} & Oggetto DAO per la persistenza delle parole. \\
+\hline
+\mbox{\texttt{in}}  & {\em sanitization\+Regex} & L\textquotesingle{}espressione regolare per pulire il testo da caratteri non validi. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Tutti i parametri di input devono essere diversi da null. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+L\textquotesingle{}istanza di \doxylink{a00507}{IOManager} viene creata con i relativi DAO correttamente configurati. 
+\end{DoxyPostcond}
+
+
+\label{doc-func-members}
+\Hypertarget{a00507_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00507_a398e3dd0790227b9ce9169d9fa409d02}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!deleteSource@{deleteSource}}
+\index{deleteSource@{deleteSource}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{deleteSource()}{deleteSource()}}
+{\footnotesize\ttfamily \label{a00507_a398e3dd0790227b9ce9169d9fa409d02} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+delete\+Source (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00491}{Storage\+Exception}}}
+
+
+
+Cancella in maniera definitiva un sorgente e tutte le sue parole collegate dal sistema. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & Il sorgente da rimuovere completamente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Il sorgente da eliminare non deve essere nullo. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Vengono eliminate prima tutte le parole figlie associate tramite word\+Dao e successivamente l\textquotesingle{}entità \doxylink{a00431}{Source} tramite source\+Dao. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_a6294def2215a6113f43efd32020031a5}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!extractWordsFromLine@{extractWordsFromLine}}
+\index{extractWordsFromLine@{extractWordsFromLine}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{extractWordsFromLine()}{extractWordsFromLine()}}
+{\footnotesize\ttfamily \label{a00507_a6294def2215a6113f43efd32020031a5} 
+Stream$<$ String $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+extract\+Words\+From\+Line (\begin{DoxyParamCaption}\item[{String}]{line}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Esegue una tokenizzazione pura su una riga di testo, estraendo solo parole valide. Poiché l\textquotesingle{}estetica è gestita altrove, elimina apostrofi e punteggiatura trasformandoli in spazi. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em line} & La riga testuale da pulire. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Uno Stream contenente i singoli token puliti. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Parole composte per elisione (es. "{}dell\textquotesingle{}animo"{}) vengono divise in due token puri ("{}dell"{}, "{}animo"{}). 
+\end{DoxyPostcond}
+\Hypertarget{a00507_ad1918452a1d399b977a922becc13a5ea}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!getEstimatedWordCount@{getEstimatedWordCount}}
+\index{getEstimatedWordCount@{getEstimatedWordCount}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{getEstimatedWordCount()}{getEstimatedWordCount()}}
+{\footnotesize\ttfamily \label{a00507_ad1918452a1d399b977a922becc13a5ea} 
+long gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+get\+Estimated\+Word\+Count (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}}}
+
+
+
+Stima il numero di parole contenute nel file sorgente in base alla sua dimensione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Il numero stimato di token (parole). 
+\end{DoxyReturn}
+\Hypertarget{a00507_a38ee6955a33584998125708f3cc5fc5f}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!readDefaultStopWords@{readDefaultStopWords}}
+\index{readDefaultStopWords@{readDefaultStopWords}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{readDefaultStopWords()}{readDefaultStopWords()}}
+{\footnotesize\ttfamily \label{a00507_a38ee6955a33584998125708f3cc5fc5f} 
+Set$<$ String $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+read\+Default\+Stop\+Words (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00487}{Stop\+Words\+Load\+Exception}}}
+
+
+
+Carica l\textquotesingle{}insieme delle parole vuote (stop-\/words) di default da un file di configurazione predefinito. 
+
+\begin{DoxyReturn}{Restituisce}
+Un Set immutabile o precompilato contenente le stop-\/words unificate. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il file o la risorsa delle stop-\/words posizionata a livello di sistema deve risultare accessibile. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Viene ritornato un insieme contenente le parole di stop estratte e isolate riga per riga senza spazi bianchi. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_a42976f81313c14e02bd38ee5f79ba9f7}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!readRawLines@{readRawLines}}
+\index{readRawLines@{readRawLines}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{readRawLines()}{readRawLines()}}
+{\footnotesize\ttfamily \label{a00507_a42976f81313c14e02bd38ee5f79ba9f7} 
+Stream$<$ String $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+read\+Raw\+Lines (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}}}
+
+
+
+Legge il contenuto grezzo (raw) del file sorgente per preservarne l\textquotesingle{}estetica. Utilizzato dal generatore di domande per mantenere intatta la formattazione, la punteggiatura e le maiuscole originali dell\textquotesingle{}autore. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente testuale da cui leggere. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Uno Stream di stringhe, dove ogni elemento rappresenta una riga intatta del file originale. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em \doxylink{a00483}{Source\+Not\+Found\+Exception}} & Se il file non esiste, è inaccessibile o il percorso non è valido. \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyPostcond}{Postcondizione}
+Lo stream restituito deve essere chiuso dal chiamante (es. tramite try-\/with-\/resources) per liberare il file lock. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_a5df926378c5760fc9909f390da23f8c3}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!readSourceMapFrequency@{readSourceMapFrequency}}
+\index{readSourceMapFrequency@{readSourceMapFrequency}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{readSourceMapFrequency()}{readSourceMapFrequency()}}
+{\footnotesize\ttfamily \label{a00507_a5df926378c5760fc9909f390da23f8c3} 
+Map$<$ String, Integer $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+read\+Source\+Map\+Frequency (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00471}{Frequency\+Map\+Not\+Found\+Exception}}}
+
+
+
+Recupera dal database la mappa delle frequenze delle parole relative ad un determinato sorgente. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente di cui si vogliono ottenere le frequenze memorizzate. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Una mappa avente come chiave il token della parola e come valore la sua frequenza interna. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il sorgente passato in input non deve essere null. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+La mappa ritornata rispecchia fedelmente lo stato memorizzato nel word\+Dao per l\textquotesingle{}id del sorgente fornito. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_a2420e8336e5e021edf8c2954b1601ad5}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!readSourceWords@{readSourceWords}}
+\index{readSourceWords@{readSourceWords}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{readSourceWords()}{readSourceWords()}}
+{\footnotesize\ttfamily \label{a00507_a2420e8336e5e021edf8c2954b1601ad5} 
+Stream$<$ String $>$ gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+read\+Source\+Words (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00483}{Source\+Not\+Found\+Exception}}}
+
+
+
+Legge il file sorgente estraendone un flusso di sole parole pure. Utilizzato esclusivamente dall\textquotesingle{}analizzatore per il calcolo statistico delle frequenze, elimina completamente qualsiasi segno di interpunzione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente testuale da elaborare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+Uno Stream di token rappresentanti le singole parole, privi di punteggiatura. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em \doxylink{a00483}{Source\+Not\+Found\+Exception}} & Se il file non esiste o il percorso non è valido. \\
+\hline
+\end{DoxyExceptions}
+\begin{DoxyPostcond}{Postcondizione}
+Lo stream restituito non contiene stringhe vuote o segni di punteggiatura isolati. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_a5c7a15a15bef2830a63e3f578cb6966a}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!writeSource@{writeSource}}
+\index{writeSource@{writeSource}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{writeSource()}{writeSource()}}
+{\footnotesize\ttfamily \label{a00507_a5c7a15a15bef2830a63e3f578cb6966a} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+write\+Source (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00491}{Storage\+Exception}}}
+
+
+
+Effettua il salvataggio persistente di un\textquotesingle{}entità \doxylink{a00431}{Source} nel database. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente da registrare all\textquotesingle{}interno del sistema. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+L\textquotesingle{}oggetto sorgente non deve essere nullo. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Il sorgente viene inserito in modo sicuro all\textquotesingle{}interno della base dati sfruttando il DAO dedicato. 
+\end{DoxyPostcond}
+\Hypertarget{a00507_ae57984749ce7be070ed041b135f07b1e}\index{gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}!writeSourceMapFrequency@{writeSourceMapFrequency}}
+\index{writeSourceMapFrequency@{writeSourceMapFrequency}!gruppo05.gtwserver.sourcemanager.internal.io.IOManager@{gruppo05.gtwserver.sourcemanager.internal.io.IOManager}}
+\doxysubsubsection{\texorpdfstring{writeSourceMapFrequency()}{writeSourceMapFrequency()}}
+{\footnotesize\ttfamily \label{a00507_ae57984749ce7be070ed041b135f07b1e} 
+void gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+io.\+IOManager.\+write\+Source\+Map\+Frequency (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00431}{Source}}}]{source}{, }\item[{Map$<$ String, Integer $>$}]{frequencies}{}\end{DoxyParamCaption}) throws \mbox{\hyperlink{a00491}{Storage\+Exception}}}
+
+
+
+Memorizza massivamente le frequenze calcolate per le parole di un determinato sorgente. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em source} & L\textquotesingle{}oggetto sorgente a cui agganciare le frequenze delle parole. \\
+\hline
+\mbox{\texttt{in}}  & {\em frequencies} & Mappa contenente i token e il rispettivo numero di occorrenze rilevato. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyPrecond}{Precondizione}
+Sia il sorgente sia la mappa delle frequenze non devono essere nulli. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+Tutti gli elementi inseriti nella mappa vengono convertiti in entità \doxylink{a00435}{Word} e storicizzati tramite word\+Dao. 
+\end{DoxyPostcond}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/sourcemanager/internal/io/IOManager.\+java\end{DoxyCompactItemize}

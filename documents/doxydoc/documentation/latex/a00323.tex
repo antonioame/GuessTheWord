@@ -1,0 +1,259 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwclient.\+networking.\+Client\+Connection}
+\hypertarget{a00323}{}\label{a00323}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+
+
+Implementazione lato client della connessione di rete.  
+
+
+Diagramma delle classi per gruppo05.\+gtwclient.\+networking.\+Client\+Connection\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{a00323}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00323_a09e58fbc3e7b3137691fb245e41a65c3}{Client\+Connection}} (String \mbox{\hyperlink{a00323_a176c2ef6968da44a69ce180c416c5719}{server\+Ip}}, int \mbox{\hyperlink{a00323_a66b82c4078021bfd75ac21aceb4f5132}{server\+Port}}, Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}}, Consumer$<$ Integer $>$ \mbox{\hyperlink{a00671_a55d9bdc060c18e51aa40077069cc23a7}{on\+Disconnect}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per inizializzare il modulo di rete del client. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00323_a5e282e5ebd8c9b2981db01f6b729dda0}{Client\+Connection}} (String \mbox{\hyperlink{a00323_a176c2ef6968da44a69ce180c416c5719}{server\+Ip}}, int \mbox{\hyperlink{a00323_a66b82c4078021bfd75ac21aceb4f5132}{server\+Port}}, Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}})
+\begin{DoxyCompactList}\small\item\em Costruttore semplificato sprovvisto di listener per la disconnessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00323_a038389b929c0c90f478668230c1c3fa6}{send}} (Serializable data)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Inoltra un oggetto serializzato verso il server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00323_a8e5c2d8287515e1aa5f271d0600c51dc}{disconnect}} ()  throws IOException 
+\begin{DoxyCompactList}\small\item\em Arresta e distrugge volontariamente il collegamento con il server. \end{DoxyCompactList}\item 
+\Hypertarget{a00323_ade839602f8bbf880ad473af2c260c1c7}\label{a00323_ade839602f8bbf880ad473af2c260c1c7} 
+String {\bfseries get\+Username} ()
+\item 
+\Hypertarget{a00323_a649e99674de0ad2f95b6182af47efe67}\label{a00323_a649e99674de0ad2f95b6182af47efe67} 
+void {\bfseries set\+Username} (String username)
+\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00671}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection}}}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{a00671_ab19fe620951c2f066390c88cb31114f2}{connect}} ()
+\begin{DoxyCompactList}\small\item\em Avvia asincronamente la fase di setup di tutti i canali richiesti. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_aa1ec2213c014192ed26439c6357a9a65}{send\+To}} (int channel\+Index, Serializable data)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Invia un oggetto serializzato verso uno specifico canale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a6d9da908552048f422ca1fd8406f7067}{broadcast}} (Serializable data)
+\begin{DoxyCompactList}\small\item\em Invia lo stesso oggetto a tutti i canali correntemente attivi (Broadcast). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_ae01fc7880c363b794e0c9df587665647}{broadcast\+Except}} (int excluded\+Index, Serializable data)
+\begin{DoxyCompactList}\small\item\em Invia un messaggio a tutti i canali attivi ad eccezione di uno specifico (Multicast filtrato). \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a16396f5bfcf3a64e8a9ea7472b714e3b}{disconnect\+Channel}} (int channel\+Index)  throws IOException 
+\begin{DoxyCompactList}\small\item\em Chiude forzatamente il socket e il flusso di rete associati a un canale. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a21e090e1f64d99e2d022b0f734b5d022}{disconnect\+All}} ()
+\begin{DoxyCompactList}\small\item\em Itera su tutti i canali attivi chiudendone i rispettivi socket. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00671_afc1a0f0150a19b6355730260e5697759}{get\+Active\+Channel\+Count}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce il conteggio in tempo reale dei thread di rete attivi e validi. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00671_a98a516726913130bde2d8915b0dbcdf6}{are\+All\+Channels\+Ready}} ()
+\begin{DoxyCompactList}\small\item\em Controlla se la rete è pronta all\textquotesingle{}uso secondo i requisiti della sottoclasse. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri protetti}
+\begin{DoxyCompactItemize}
+\item 
+Socket \mbox{\hyperlink{a00323_ae029159734489c884d13c9d57bd74cb2}{create\+Socket}} ()  throws IOException 
+\begin{DoxyCompactList}\small\item\em Instanzia e avvia attivamente una connessione TCP verso il server. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00323_a1ce486996299817a6b8c2e0bec3ec28c}{expected\+Channels}} ()
+\begin{DoxyCompactList}\small\item\em Indica il numero di canali di rete che questa classe deve inizializzare. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00323_aa34bb8783e59d19ef14832e0e5d2d59c}{on\+Reconnected}} (int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Metodo invocato SOLO se la connessione viene ristabilita dopo almeno un tentativo fallito. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri protetti ereditati da \mbox{\hyperlink{a00671}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00671_a9ec14843abece34e49b69535051f9e01}{Network\+Connection}} (Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}}, Consumer$<$ Integer $>$ \mbox{\hyperlink{a00671_a55d9bdc060c18e51aa40077069cc23a7}{on\+Disconnect}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per istanziare una connessione di rete. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00671_a8f09f0bdc8efe12a65ccdb02c5225c3f}{Network\+Connection}} (Bi\+Consumer$<$ Integer, Serializable $>$ \mbox{\hyperlink{a00671_ae5a70b23f4d3f2cce107a043a2f0c2e0}{on\+Receive}})
+\begin{DoxyCompactList}\small\item\em Costruttore semplificato senza la gestione degli eventi di disconnessione. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00671_a6cebdc384b33ff45d40d869c0e0477ca}{on\+Channel\+Ready}} (Socket socket, int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Metodo eseguito subito dopo la creazione fisica della socket. \end{DoxyCompactList}\item 
+final void \mbox{\hyperlink{a00671_aeaed7958ff05d15ac9af749c6f4d5ee7}{start\+Channel}} (Socket socket, int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Istituisce, registra in memoria e avvia il thread di ascolto persistente per un canale. \end{DoxyCompactList}\item 
+boolean \mbox{\hyperlink{a00671_a8994c9fd1bc21969951021419e9a56f0}{is\+Channel\+Active}} (int channel\+Index)
+\begin{DoxyCompactList}\small\item\em Verifica se un determinato indice di canale è attualmente occupato da un thread attivo. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+final String \mbox{\hyperlink{a00323_a176c2ef6968da44a69ce180c416c5719}{server\+Ip}}
+\begin{DoxyCompactList}\small\item\em Indirizzo IP o hostname del server a cui connettersi. \end{DoxyCompactList}\item 
+final int \mbox{\hyperlink{a00323_a66b82c4078021bfd75ac21aceb4f5132}{server\+Port}}
+\begin{DoxyCompactList}\small\item\em Porta TCP esposta dal server. \end{DoxyCompactList}\item 
+\Hypertarget{a00323_a8af57140879c7d410049227f394d012f}\label{a00323_a8af57140879c7d410049227f394d012f} 
+String {\bfseries username}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Implementazione lato client della connessione di rete. 
+
+Specializza {\ttfamily \doxylink{a00671_a9ec14843abece34e49b69535051f9e01}{Network\+Connection}} fornendo la logica per instaurare e gestire un singolo canale di comunicazione bidirezionale verso il server di gioco. Nasconde la complessità della gestione multi-\/canale del padre, fissando implicitamente tutte le comunicazioni sull\textquotesingle{}indice di canale 0. 
+
+\label{doc-constructors}
+\Hypertarget{a00323_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00323_a09e58fbc3e7b3137691fb245e41a65c3}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!ClientConnection@{ClientConnection}}
+\index{ClientConnection@{ClientConnection}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{ClientConnection()}{ClientConnection()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{a00323_a09e58fbc3e7b3137691fb245e41a65c3} 
+gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+Client\+Connection (\begin{DoxyParamCaption}\item[{String}]{server\+Ip}{, }\item[{int}]{server\+Port}{, }\item[{Bi\+Consumer$<$ Integer, Serializable $>$}]{on\+Receive}{, }\item[{Consumer$<$ Integer $>$}]{on\+Disconnect}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore completo per inizializzare il modulo di rete del client. 
+
+Prepara i parametri di connessione e le callback, ma non avvia immediatamente la comunicazione. Per connettersi fisicamente è necessario invocare il metodo ereditato {\ttfamily \doxylink{a00671_ab19fe620951c2f066390c88cb31114f2}{connect()}}. 
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em server\+Ip} & L\textquotesingle{}indirizzo IP del server. \\
+\hline
+\mbox{\texttt{in}}  & {\em server\+Port} & La porta del server. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Receive} & Callback invocata dinamicamente ad ogni pacchetto ricevuto. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Disconnect} & Callback di emergenza/pulizia invocata in caso di caduta della connessione. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00323_a5e282e5ebd8c9b2981db01f6b729dda0}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!ClientConnection@{ClientConnection}}
+\index{ClientConnection@{ClientConnection}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{ClientConnection()}{ClientConnection()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{a00323_a5e282e5ebd8c9b2981db01f6b729dda0} 
+gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+Client\+Connection (\begin{DoxyParamCaption}\item[{String}]{server\+Ip}{, }\item[{int}]{server\+Port}{, }\item[{Bi\+Consumer$<$ Integer, Serializable $>$}]{on\+Receive}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore semplificato sprovvisto di listener per la disconnessione. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em server\+Ip} & L\textquotesingle{}indirizzo IP del server. \\
+\hline
+\mbox{\texttt{in}}  & {\em server\+Port} & La porta del server. \\
+\hline
+\mbox{\texttt{in}}  & {\em on\+Receive} & Callback per la gestione dei messaggi in ingresso. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00323_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00323_ae029159734489c884d13c9d57bd74cb2}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!createSocket@{createSocket}}
+\index{createSocket@{createSocket}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{createSocket()}{createSocket()}}
+{\footnotesize\ttfamily \label{a00323_ae029159734489c884d13c9d57bd74cb2} 
+Socket gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+create\+Socket (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws IOException\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Instanzia e avvia attivamente una connessione TCP verso il server. 
+
+Questo metodo viene invocato automaticamente in modo asincrono dal thread di setup di {\ttfamily \doxylink{a00671_ab19fe620951c2f066390c88cb31114f2}{Network\+Connection\#connect()}}. A differenza del server che attende passivamente, il client lancia un handshake di rete esplicito. \begin{DoxyReturn}{Restituisce}
+Una {\ttfamily \doxylink{}{Socket}} validata, aperta e collegata al server. 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se il server risulta offline, irraggiungibile, o la connessione viene rifiutata. \\
+\hline
+\end{DoxyExceptions}
+
+
+Reimplementa \mbox{\hyperlink{a00671_a0a0d24ebc3c0a4e49ccf7ed627f7cb83}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection}}.
+
+\Hypertarget{a00323_a8e5c2d8287515e1aa5f271d0600c51dc}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily \label{a00323_a8e5c2d8287515e1aa5f271d0600c51dc} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+disconnect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) throws IOException}
+
+
+
+Arresta e distrugge volontariamente il collegamento con il server. 
+
+Chiude in modo pulito il canale associato all\textquotesingle{}indice 0, causando l\textquotesingle{}attivazione a catena della callback di disconnessione su entrambi gli endpoint. 
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se si manifestano problemi a livello I/O durante la chiusura fisica dei socket. \\
+\hline
+\end{DoxyExceptions}
+\Hypertarget{a00323_a1ce486996299817a6b8c2e0bec3ec28c}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!expectedChannels@{expectedChannels}}
+\index{expectedChannels@{expectedChannels}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{expectedChannels()}{expectedChannels()}}
+{\footnotesize\ttfamily \label{a00323_a1ce486996299817a6b8c2e0bec3ec28c} 
+int gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+expected\+Channels (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Indica il numero di canali di rete che questa classe deve inizializzare. 
+
+Poiché un client comunica esclusivamente in un rapporto 1-\/a-\/1 con il server di gioco (e mai P2P con gli altri client), il valore atteso è costantemente 1. \begin{DoxyReturn}{Restituisce}
+Il valore intero fisso 1. 
+\end{DoxyReturn}
+
+
+Reimplementa \mbox{\hyperlink{a00671_a8235ce4b4c52628ede970c5ff727096d}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection}}.
+
+\Hypertarget{a00323_aa34bb8783e59d19ef14832e0e5d2d59c}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!onReconnected@{onReconnected}}
+\index{onReconnected@{onReconnected}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{onReconnected()}{onReconnected()}}
+{\footnotesize\ttfamily \label{a00323_aa34bb8783e59d19ef14832e0e5d2d59c} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+on\+Reconnected (\begin{DoxyParamCaption}\item[{int}]{channel\+Index}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Metodo invocato SOLO se la connessione viene ristabilita dopo almeno un tentativo fallito. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em channel\+Index} & L\textquotesingle{}identificativo numerico del canale. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplementa \mbox{\hyperlink{a00671_affd43cb1b8890caa95e558ebfdd3c7d8}{gruppo05.\+gtwshared.\+networking.\+Network\+Connection}}.
+
+\Hypertarget{a00323_a038389b929c0c90f478668230c1c3fa6}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!send@{send}}
+\index{send@{send}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{send()}{send()}}
+{\footnotesize\ttfamily \label{a00323_a038389b929c0c90f478668230c1c3fa6} 
+void gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+send (\begin{DoxyParamCaption}\item[{Serializable}]{data}{}\end{DoxyParamCaption}) throws IOException}
+
+
+
+Inoltra un oggetto serializzato verso il server. 
+
+Funge da wrapper di comodità sul metodo ereditato {\ttfamily \doxylink{a00671_aa1ec2213c014192ed26439c6357a9a65}{Network\+Connection\#send\+To}}, eliminando l\textquotesingle{}obbligo di passare l\textquotesingle{}indice di canale (che per il client è sempre e solo 0). 
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in}}  & {\em data} & L\textquotesingle{}oggetto di trasporto (di norma una sottoclasse di \doxylink{a00683}{Network\+Message}). \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Eccezioni}
+{\em IOException} & Se lo stream di rete non è pronto, è collassato o la scrittura fallisce. \\
+\hline
+\end{DoxyExceptions}
+
+
+\label{doc-variable-members}
+\Hypertarget{a00323_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00323_a176c2ef6968da44a69ce180c416c5719}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!serverIp@{serverIp}}
+\index{serverIp@{serverIp}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{serverIp}{serverIp}}
+{\footnotesize\ttfamily \label{a00323_a176c2ef6968da44a69ce180c416c5719} 
+final String gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+server\+Ip\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Indirizzo IP o hostname del server a cui connettersi. 
+
+Può essere un indirizzo IPv4 locale, remoto o il classico "{}localhost"{}. \Hypertarget{a00323_a66b82c4078021bfd75ac21aceb4f5132}\index{gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}!serverPort@{serverPort}}
+\index{serverPort@{serverPort}!gruppo05.gtwclient.networking.ClientConnection@{gruppo05.gtwclient.networking.ClientConnection}}
+\doxysubsubsection{\texorpdfstring{serverPort}{serverPort}}
+{\footnotesize\ttfamily \label{a00323_a66b82c4078021bfd75ac21aceb4f5132} 
+final int gruppo05.\+gtwclient.\+networking.\+Client\+Connection.\+server\+Port\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Porta TCP esposta dal server. 
+
+Deve corrispondere esattamente alla porta su cui l\textquotesingle{}istanza di Server\+Connection è in ascolto. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWClient/src/main/java/gruppo05/gtwclient/networking/Client\+Connection.\+java\end{DoxyCompactItemize}

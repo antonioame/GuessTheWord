@@ -1,0 +1,57 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+sourcemanager.\+internal.\+generation.\+Word\+Extractor\+Test}
+\hypertarget{a00603}{}\label{a00603}\index{gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractorTest@{gruppo05.gtwserver.sourcemanager.internal.generation.WordExtractorTest}}
+
+
+Classe di test JUnit 5 dedicata alla verifica dell\textquotesingle{}algoritmo iterativo di \doxylink{a00503}{Word\+Extractor}.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00603_ac89a9829a7c7bbf46997698689298d43}\label{a00603_ac89a9829a7c7bbf46997698689298d43} 
+void {\bfseries set\+Up} ()
+\item 
+\Hypertarget{a00603_a49d946ea2b390fbea1281649b3b4e7fa}\label{a00603_a49d946ea2b390fbea1281649b3b4e7fa} 
+void {\bfseries test\+Extract\+Word\+Finds\+Good\+Word\+Directly} ()  throws \mbox{\hyperlink{a00479}{Question\+Generation\+Exception}} 
+\item 
+\Hypertarget{a00603_a49fc0f0361b48a1fbd268c052118ce86}\label{a00603_a49fc0f0361b48a1fbd268c052118ce86} 
+void {\bfseries test\+Extract\+Word\+Discards\+Bad\+Word\+And\+Finds\+Good\+One} ()  throws \mbox{\hyperlink{a00479}{Question\+Generation\+Exception}} 
+\item 
+\Hypertarget{a00603_a243beaffc30d8a7ad3e2eec9738ab86f}\label{a00603_a243beaffc30d8a7ad3e2eec9738ab86f} 
+void {\bfseries test\+Extract\+Word\+Exhausts\+Text\+And\+Returns\+Fallback} ()  throws \mbox{\hyperlink{a00479}{Question\+Generation\+Exception}} 
+\item 
+\Hypertarget{a00603_a088526b6cb87e3c9cee34f3056c3c5e5}\label{a00603_a088526b6cb87e3c9cee34f3056c3c5e5} 
+void {\bfseries test\+Extract\+Word\+Throws\+Exception\+When\+No\+Words\+Available\+At\+All} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00603_ad7746633a982c759d8d518f211f24dc3}\label{a00603_ad7746633a982c759d8d518f211f24dc3} 
+\mbox{\hyperlink{a00503}{Word\+Extractor}} {\bfseries extractor}
+\item 
+\Hypertarget{a00603_a479a58b3851bc3fc3da41d4b673677d3}\label{a00603_a479a58b3851bc3fc3da41d4b673677d3} 
+Set$<$ String $>$ {\bfseries stop\+Words}
+\item 
+\Hypertarget{a00603_a3c8cf7b1aeeb4358f41c512dbaecc19b}\label{a00603_a3c8cf7b1aeeb4358f41c512dbaecc19b} 
+Map$<$ String, Integer $>$ {\bfseries word\+Frequencies}
+\item 
+\Hypertarget{a00603_ac1a8d937f70e478d44eff11f98c93ee0}\label{a00603_ac1a8d937f70e478d44eff11f98c93ee0} 
+\mbox{\hyperlink{a00451}{Preset\+Config}} {\bfseries dummy\+Config}
+\item 
+\Hypertarget{a00603_ae157d15474d61bbe4b0aad6665a55ff5}\label{a00603_ae157d15474d61bbe4b0aad6665a55ff5} 
+Random {\bfseries fixed\+Random}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati statici}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{a00603_a2f8124c6f00036064d225f6677b147d8}\label{a00603_a2f8124c6f00036064d225f6677b147d8} 
+static final String {\bfseries TEST\+\_\+\+REGEX} = "{}\mbox{[}\texorpdfstring{$^\wedge$}{\string^}a-\/zA-\/Z0-\/9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ\mbox{]}"{}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Classe di test JUnit 5 dedicata alla verifica dell\textquotesingle{}algoritmo iterativo di \doxylink{a00503}{Word\+Extractor}. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/test/java/gruppo05/gtwserver/sourcemanager/internal/generation/Word\+Extractor\+Test.\+java\end{DoxyCompactItemize}

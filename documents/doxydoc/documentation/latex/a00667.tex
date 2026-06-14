@@ -1,0 +1,120 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwshared.\+networking.\+Network\+Configuration}
+\hypertarget{a00667}{}\label{a00667}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+
+
+Contenitore immutabile per i parametri di configurazione della rete.  
+
+
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00667_a847df4b4388582b7de9c0b62bdabbbe0}{Network\+Configuration}} (String \mbox{\hyperlink{a00667_af9c5d8628a1adabf9a8cd75969cef7ad}{ip}}, int \mbox{\hyperlink{a00667_ae3911d65f970f39dea8cef094a3239c5}{port}})
+\begin{DoxyCompactList}\small\item\em Costruttore completo per inizializzare IP e porta. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{a00667_a3d73718cb043b8ab733807254791fb11}{Network\+Configuration}} (int \mbox{\hyperlink{a00667_ae3911d65f970f39dea8cef094a3239c5}{port}})
+\begin{DoxyCompactList}\small\item\em Costruttore semplificato per la configurazione del solo ascolto locale. \end{DoxyCompactList}\item 
+String \mbox{\hyperlink{a00667_a1c8201e74400b13834ec44e70622f99d}{get\+Ip}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce l\textquotesingle{}indirizzo IP configurato. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{a00667_a16f08fe8765aaaca903f656a890962d3}{get\+Port}} ()
+\begin{DoxyCompactList}\small\item\em Restituisce la porta configurata. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Attributi privati}
+\begin{DoxyCompactItemize}
+\item 
+final String \mbox{\hyperlink{a00667_af9c5d8628a1adabf9a8cd75969cef7ad}{ip}}
+\item 
+final int \mbox{\hyperlink{a00667_ae3911d65f970f39dea8cef094a3239c5}{port}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Contenitore immutabile per i parametri di configurazione della rete. 
+
+Questa classe memorizza l\textquotesingle{}indirizzo IP e la porta necessari per instaurare una connessione verso il server o per configurare un socket di ascolto. 
+
+\label{doc-constructors}
+\Hypertarget{a00667_doc-constructors}
+\doxysubsection{Documentazione dei costruttori e dei distruttori}
+\Hypertarget{a00667_a847df4b4388582b7de9c0b62bdabbbe0}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!NetworkConfiguration@{NetworkConfiguration}}
+\index{NetworkConfiguration@{NetworkConfiguration}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{NetworkConfiguration()}{NetworkConfiguration()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{a00667_a847df4b4388582b7de9c0b62bdabbbe0} 
+gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+Network\+Configuration (\begin{DoxyParamCaption}\item[{String}]{ip}{, }\item[{int}]{port}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore completo per inizializzare IP e porta. 
+
+
+\begin{DoxyParams}{Parametri}
+{\em ip} & L\textquotesingle{}indirizzo IP del destinatario. \\
+\hline
+{\em port} & La porta di comunicazione. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{a00667_a3d73718cb043b8ab733807254791fb11}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!NetworkConfiguration@{NetworkConfiguration}}
+\index{NetworkConfiguration@{NetworkConfiguration}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{NetworkConfiguration()}{NetworkConfiguration()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{a00667_a3d73718cb043b8ab733807254791fb11} 
+gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+Network\+Configuration (\begin{DoxyParamCaption}\item[{int}]{port}{}\end{DoxyParamCaption})}
+
+
+
+Costruttore semplificato per la configurazione del solo ascolto locale. 
+
+Utile quando l\textquotesingle{}indirizzo IP non è necessario (es. nel lato Server). 
+\begin{DoxyParams}{Parametri}
+{\em port} & La porta di ascolto. \\
+\hline
+\end{DoxyParams}
+
+
+\label{doc-func-members}
+\Hypertarget{a00667_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00667_a1c8201e74400b13834ec44e70622f99d}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!getIp@{getIp}}
+\index{getIp@{getIp}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{getIp()}{getIp()}}
+{\footnotesize\ttfamily \label{a00667_a1c8201e74400b13834ec44e70622f99d} 
+String gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+get\+Ip (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce l\textquotesingle{}indirizzo IP configurato. 
+
+\begin{DoxyReturn}{Restituisce}
+Stringa contenente l\textquotesingle{}IP, oppure null se non impostato. 
+\end{DoxyReturn}
+\Hypertarget{a00667_a16f08fe8765aaaca903f656a890962d3}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!getPort@{getPort}}
+\index{getPort@{getPort}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{getPort()}{getPort()}}
+{\footnotesize\ttfamily \label{a00667_a16f08fe8765aaaca903f656a890962d3} 
+int gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+get\+Port (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Restituisce la porta configurata. 
+
+\begin{DoxyReturn}{Restituisce}
+Intero rappresentante la porta di rete. 
+\end{DoxyReturn}
+
+
+\label{doc-variable-members}
+\Hypertarget{a00667_doc-variable-members}
+\doxysubsection{Documentazione dei membri dato}
+\Hypertarget{a00667_af9c5d8628a1adabf9a8cd75969cef7ad}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!ip@{ip}}
+\index{ip@{ip}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{ip}{ip}}
+{\footnotesize\ttfamily \label{a00667_af9c5d8628a1adabf9a8cd75969cef7ad} 
+final String gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+ip\hspace{0.3cm}{\ttfamily [private]}}
+
+Indirizzo IP del server (es. "{}127.\+0.\+0.\+1"{}). \Hypertarget{a00667_ae3911d65f970f39dea8cef094a3239c5}\index{gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}!port@{port}}
+\index{port@{port}!gruppo05.gtwshared.networking.NetworkConfiguration@{gruppo05.gtwshared.networking.NetworkConfiguration}}
+\doxysubsubsection{\texorpdfstring{port}{port}}
+{\footnotesize\ttfamily \label{a00667_ae3911d65f970f39dea8cef094a3239c5} 
+final int gruppo05.\+gtwshared.\+networking.\+Network\+Configuration.\+port\hspace{0.3cm}{\ttfamily [private]}}
+
+Numero di porta utilizzata per la comunicazione di rete. 
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWShared/src/main/java/gruppo05/gtwshared/networking/Network\+Configuration.\+java\end{DoxyCompactItemize}

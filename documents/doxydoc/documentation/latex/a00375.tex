@@ -1,0 +1,174 @@
+\doxysection{Riferimenti per la classe gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO}
+\hypertarget{a00375}{}\label{a00375}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+
+
+Implementazione dell\textquotesingle{}interfaccia \doxylink{a00399}{Player\+DAO} per la gestione della persistenza degli oggetti \doxylink{a00423}{Player}.  
+
+
+Diagramma delle classi per gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{a00375}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Membri pubblici}
+\begin{DoxyCompactItemize}
+\item 
+Optional$<$ \mbox{\hyperlink{a00423}{Player}} $>$ \mbox{\hyperlink{a00375_af2dfac338891e10f9f3c597a74fed4fc}{select\+By\+Id}} (Optional$<$ String $>$ username)
+\begin{DoxyCompactList}\small\item\em Recupera un giocatore tramite il suo username. \end{DoxyCompactList}\item 
+List$<$ \mbox{\hyperlink{a00423}{Player}} $>$ \mbox{\hyperlink{a00375_a9ec61b858d1d9ef422c6b09746ae1700}{select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Recupera tutte le istanze di giocatori memorizzate nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00375_a9feacba83a6d9e95c97867d101a815c0}{insert}} (\mbox{\hyperlink{a00423}{Player}} model)
+\begin{DoxyCompactList}\small\item\em Inserisce un nuovo giocatore all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00375_aea4b62e86cb04b6f37e4ca826c95ffd0}{insert\+All}} (List$<$ \mbox{\hyperlink{a00423}{Player}} $>$ model\+List)
+\begin{DoxyCompactList}\small\item\em Inserisce una lista di giocatori all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00375_a06d568981c27b5c16d0392a4a9f5ba42}{update}} (\mbox{\hyperlink{a00423}{Player}} model)
+\begin{DoxyCompactList}\small\item\em Aggiorna le credenziali di un giocatore esistente all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00375_a7ce9251ed231bc822972aec20c2a384a}{delete}} (Optional$<$ String $>$ username)
+\begin{DoxyCompactList}\small\item\em Cancella un giocatore dal database tramite il suo username. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Membri pubblici ereditati da \mbox{\hyperlink{a00387}{gruppo05.\+gtwserver.\+db.\+DAO$<$ Player $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+List$<$ T $>$ \mbox{\hyperlink{a00387_a922452d0b8559d0497965e19b770f276}{select\+All}} ()
+\begin{DoxyCompactList}\small\item\em Recupera tutte le istanze dell\textquotesingle{}entità memorizzate nel database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a82e78482068f525f83500c09a3169a88}{insert}} (T model)
+\begin{DoxyCompactList}\small\item\em Inserisce una nuova istanza dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a3457919ad8921d48f2ccd1f696e21b87}{insert\+All}} (List$<$ T $>$ model\+List)
+\begin{DoxyCompactList}\small\item\em Inserisce una lista di istanze dell\textquotesingle{}entità all\textquotesingle{}interno del database. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{a00387_a59161f50026305a7accaeb029f75fa01}{update}} (T model)
+\begin{DoxyCompactList}\small\item\em Aggiorna i dati di un\textquotesingle{}istanza esistente all\textquotesingle{}interno del database. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Membri privati}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{a00423}{Player}} \mbox{\hyperlink{a00375_a313f8177394a8f45be1dcc1ba962d2da}{map\+Player}} (Result\+Set rs)  throws SQLException 
+\begin{DoxyCompactList}\small\item\em Converte una riga del Result\+Set del DB in un oggetto \doxylink{a00423}{Player}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrizione dettagliata}
+Implementazione dell\textquotesingle{}interfaccia \doxylink{a00399}{Player\+DAO} per la gestione della persistenza degli oggetti \doxylink{a00423}{Player}. 
+
+\begin{DoxyInvariant}{Invariante}
+La classe gestisce oggetti di tipo \doxylink{a00423}{Player} identificati dallo username di tipo String. 
+\end{DoxyInvariant}
+
+
+\label{doc-func-members}
+\Hypertarget{a00375_doc-func-members}
+\doxysubsection{Documentazione delle funzioni membro}
+\Hypertarget{a00375_a7ce9251ed231bc822972aec20c2a384a}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!delete@{delete}}
+\index{delete@{delete}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{delete()}{delete()}}
+{\footnotesize\ttfamily \label{a00375_a7ce9251ed231bc822972aec20c2a384a} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+delete (\begin{DoxyParamCaption}\item[{Optional$<$ String $>$}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Cancella un giocatore dal database tramite il suo username. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Se l\textquotesingle{}Optional è vuoto, l\textquotesingle{}operazione termina senza apportare modifiche. 
+\end{DoxyPostcond}
+
+
+Implementa \mbox{\hyperlink{a00399_a608b9ff18cb8e6e2abf324300ccf259d}{gruppo05.\+gtwserver.\+db.\+Player\+DAO}}.
+
+\Hypertarget{a00375_a9feacba83a6d9e95c97867d101a815c0}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!insert@{insert}}
+\index{insert@{insert}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{a00375_a9feacba83a6d9e95c97867d101a815c0} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+insert (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00423}{Player}}}]{model}{}\end{DoxyParamCaption})}
+
+
+
+Inserisce un nuovo giocatore all\textquotesingle{}interno del database. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Se il parametro model è null, l\textquotesingle{}operazione termina senza modificare il database. I campi relativi alle statistiche cumulative (total\+Played\+Time, total\+Games\+Won, total\+Games\+Played) vengono inizializzati a 0 dal database come valore di default. 
+\end{DoxyPostcond}
+\Hypertarget{a00375_aea4b62e86cb04b6f37e4ca826c95ffd0}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!insertAll@{insertAll}}
+\index{insertAll@{insertAll}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{insertAll()}{insertAll()}}
+{\footnotesize\ttfamily \label{a00375_aea4b62e86cb04b6f37e4ca826c95ffd0} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+insert\+All (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{a00423}{Player}} $>$}]{model\+List}{}\end{DoxyParamCaption})}
+
+
+
+Inserisce una lista di giocatori all\textquotesingle{}interno del database. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Se la lista è null o vuota, l\textquotesingle{}operazione termina senza modificare il database. In caso di errore durante il batch, viene eseguito il rollback dell\textquotesingle{}intera transazione. Per ogni record inserito con successo, le statistiche cumulative partono dal valore predefinito 0. 
+\end{DoxyPostcond}
+\Hypertarget{a00375_a313f8177394a8f45be1dcc1ba962d2da}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!mapPlayer@{mapPlayer}}
+\index{mapPlayer@{mapPlayer}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{mapPlayer()}{mapPlayer()}}
+{\footnotesize\ttfamily \label{a00375_a313f8177394a8f45be1dcc1ba962d2da} 
+\mbox{\hyperlink{a00423}{Player}} gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+map\+Player (\begin{DoxyParamCaption}\item[{Result\+Set}]{rs}{}\end{DoxyParamCaption}) throws SQLException\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Converte una riga del Result\+Set del DB in un oggetto \doxylink{a00423}{Player}. 
+
+
+\begin{DoxyParams}[1]{Parametri}
+\mbox{\texttt{in,out}}  & {\em rs} & Il set dei risultati SQL posizionato sulla riga corrente da mappare. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Restituisce}
+L\textquotesingle{}oggetto \doxylink{a00423}{Player} istanziato e popolato con i dati estratti dal Result\+Set. 
+\end{DoxyReturn}
+\begin{DoxyPrecond}{Precondizione}
+Il Result\+Set non deve essere null e deve essere posizionato su una riga valida. 
+\end{DoxyPrecond}
+\begin{DoxyPostcond}{Postcondizione}
+L\textquotesingle{}oggetto \doxylink{a00423}{Player} restituito non è null. 
+\end{DoxyPostcond}
+\Hypertarget{a00375_a9ec61b858d1d9ef422c6b09746ae1700}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!selectAll@{selectAll}}
+\index{selectAll@{selectAll}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{selectAll()}{selectAll()}}
+{\footnotesize\ttfamily \label{a00375_a9ec61b858d1d9ef422c6b09746ae1700} 
+List$<$ \mbox{\hyperlink{a00423}{Player}} $>$ gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+select\+All (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Recupera tutte le istanze di giocatori memorizzate nel database. 
+
+Recupera tutte le istanze dell\textquotesingle{}entità memorizzate nel database.   
+
+\begin{DoxyReturn}{Restituisce}
+Una lista contenente tutti gli oggetti di tipo T trovati nel sistema. Se non sono presenti record, restituisce una lista vuota. 
+\end{DoxyReturn}
+\begin{DoxyPostcond}{Postcondizione}
+Il valore restituito non è null.    
+\end{DoxyPostcond}
+\Hypertarget{a00375_af2dfac338891e10f9f3c597a74fed4fc}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!selectById@{selectById}}
+\index{selectById@{selectById}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{selectById()}{selectById()}}
+{\footnotesize\ttfamily \label{a00375_af2dfac338891e10f9f3c597a74fed4fc} 
+Optional$<$ \mbox{\hyperlink{a00423}{Player}} $>$ gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+select\+By\+Id (\begin{DoxyParamCaption}\item[{Optional$<$ String $>$}]{username}{}\end{DoxyParamCaption})}
+
+
+
+Recupera un giocatore tramite il suo username. 
+
+
+
+Implementa \mbox{\hyperlink{a00399_a27be59c13361564d0facb8d61d8e1e0f}{gruppo05.\+gtwserver.\+db.\+Player\+DAO}}.
+
+\Hypertarget{a00375_a06d568981c27b5c16d0392a4a9f5ba42}\index{gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}!update@{update}}
+\index{update@{update}!gruppo05.gtwserver.db.ConcretePlayerDAO@{gruppo05.gtwserver.db.ConcretePlayerDAO}}
+\doxysubsubsection{\texorpdfstring{update()}{update()}}
+{\footnotesize\ttfamily \label{a00375_a06d568981c27b5c16d0392a4a9f5ba42} 
+void gruppo05.\+gtwserver.\+db.\+Concrete\+Player\+DAO.\+update (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{a00423}{Player}}}]{model}{}\end{DoxyParamCaption})}
+
+
+
+Aggiorna le credenziali di un giocatore esistente all\textquotesingle{}interno del database. 
+
+\begin{DoxyPostcond}{Postcondizione}
+Se il parametro model è null, l\textquotesingle{}operazione termina senza modificare il database. I campi delle statistiche cumulative non vengono alterati direttamente da questa query, in quanto la loro consistenza e il loro incremento sono delegati ai trigger interni del database all\textquotesingle{}inserimento delle partite. 
+\end{DoxyPostcond}
+
+
+La documentazione per questa classe è stata generata a partire dal seguente file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/anto/\+PJA-\/\+Playground/4-\/\+Progetto/repo/\+Guess\+The\+Word/\+GTWServer/src/main/java/gruppo05/gtwserver/db/Concrete\+Player\+DAO.\+java\end{DoxyCompactItemize}

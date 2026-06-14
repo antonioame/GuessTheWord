@@ -88,6 +88,9 @@ public class AdminDashboardViewController implements Initializable {
         connectionCreator.setUiDisconnectCallback(
             index -> updateConnectedClients(connection.getActiveChannelCount())
         );
+
+        // FASE 4) Callback event-driven per modifiche al database
+        connectionCreator.setOnDatabaseUpdateCallback(this::refreshPlayersTable);
     }
 
     /**
@@ -104,6 +107,21 @@ public class AdminDashboardViewController implements Initializable {
      */
     public void updateConnectedClients(int count) {
         Platform.runLater(() -> lblConnectedClients.setText("Client connessi: " + count));
+    }
+
+    /**
+     * @brief Ricarica la tabella dei giocatori dal database e aggiorna l'interfaccia.
+     */
+    public void refreshPlayersTable() {
+        try {
+            List<Player> players = new ConcretePlayerDAO().selectAll();
+            Platform.runLater(() -> {
+                tblPlayers.setItems(FXCollections.observableArrayList(players));
+                tblPlayers.refresh();
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -202,12 +220,7 @@ public class AdminDashboardViewController implements Initializable {
         colWins.setCellValueFactory(new PropertyValueFactory<>("totalGamesWon"));
         colPlayed.setCellValueFactory(new PropertyValueFactory<>("totalGamesPlayed"));
 
-        try {
-            List<Player> players = new ConcretePlayerDAO().selectAll();
-            tblPlayers.setItems(FXCollections.observableArrayList(players));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        refreshPlayersTable();
 
         try {
             List<Source> sources = new ConcreteSourceDAO().selectAll();

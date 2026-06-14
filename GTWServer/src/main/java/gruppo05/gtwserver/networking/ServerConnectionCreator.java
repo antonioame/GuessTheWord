@@ -82,6 +82,12 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      *          aggiornare il contatore dei client connessi con meccanismo event-driven. TODO
      */
     private Consumer<Integer> uiDisconnectCallback = null;
+
+    /**
+     * @brief Callback opzionale notificata dalla UI quando ci sono cambiamenti al database
+     *        (ad esempio fine partita o nuovo utente registrato).
+     */
+    private Runnable uiDatabaseUpdateCallback = null;
     
     /** @brief Riferimento al SourceManager globale iniettato da App.java  */
     private final SourceManager sourceManager;
@@ -153,6 +159,14 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
      */
     public void setUiDisconnectCallback(Consumer<Integer> callback) {
         this.uiDisconnectCallback = callback;
+    }
+
+    /**
+     * @brief Registra la callback della UI per gli aggiornamenti del database.
+     * @param callback Funzione da invocare ad ogni modifica dei dati utente o partite.
+     */
+    public void setOnDatabaseUpdateCallback(Runnable callback) {
+        this.uiDatabaseUpdateCallback = callback;
     }
 
     /**
@@ -237,6 +251,9 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                         signupDao.insert(new Player(dto.getUsername(), dto.getPassword(), 0, 0, 0));
 
                         connection.sendTo(channelIndex, NetworkMessage.RegisterResponse.registerSuccess());
+                        if (uiDatabaseUpdateCallback != null) {
+                            uiDatabaseUpdateCallback.run();
+                        }
                     }
                     break;
 
@@ -351,6 +368,10 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             GameDAO gameDao = new ConcreteGameDAO();
                             gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
                             gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
+                            
+                            if (uiDatabaseUpdateCallback != null) {
+                                uiDatabaseUpdateCallback.run();
+                            }
                         } else if (isTimeout) {
                             activeGames.remove(channelIndex);
                             activeGames.remove(opponentChannel);
@@ -367,6 +388,10 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             GameDAO gameDao = new ConcreteGameDAO();
                             gameDao.insert(new Game(currentUsername, ch.getCode(), resultForSender, dto.getResponseTime()));
                             gameDao.insert(new Game(opponentUsername, ch.getCode(), resultForOpponent, dto.getResponseTime()));
+                            
+                            if (uiDatabaseUpdateCallback != null) {
+                                uiDatabaseUpdateCallback.run();
+                            }
                         } else {
                             // Tentativo errato
                             connection.sendTo(channelIndex, new NetworkMessage.WrongAnswer());

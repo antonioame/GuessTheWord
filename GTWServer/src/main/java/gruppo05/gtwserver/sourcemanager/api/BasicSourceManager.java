@@ -37,6 +37,31 @@ public class BasicSourceManager implements SourceManager, AutoCloseable {
     private final IOManager ioManager;
     private final QuestionGenerator questionGenerator;
     private final SourceAnalyzer sourceAnalyzer;
+    
+    /*
+     * =====================================================================================
+     * NOTA ARCHITETTURALE: GESTIONE DELL'ASINCRONIA E RESPONSABILITÀ DEL CHIAMANTE
+     * =====================================================================================
+     * Sebbene la traccia del progetto suggerisca di "prediligere" l'uso di Task e Service 
+     * di JavaFX, si è scelto deliberatamente di NON utilizzarli all'interno di questo 
+     * specifico componente (SourceManager), optando invece per l'ExecutorService standard.
+     * 
+     * Architetturalmente, sia l'approccio sincrono (che lascia l'onere dell'asincronia 
+     * al chiamante tramite Service) sia l'approccio asincrono interno sono validi. 
+     * La scelta dipende da "quali responsabilità si vogliono delegare al chiamante".
+     * Questo modulo è stato concepito fin dall'inizio come un'API di Dominio indipendente, 
+     * e la gestione interna dell'asincronia è stata scelta per tre motivi fondamentali:
+     *      1. API "Safe-by-Default": Esponendo un'API nativamente asincrona basata su callback,
+     *      si toglie al programmatore client (il Controller UI) il rischio di commettere 
+     *      errori e bloccare il thread principale. L'uso corretto è garantito by design.
+     *      2. Incapsulamento delle Risorse Hardware: Il SourceManager esegue accessi intensivi 
+     *      al file system (Java NIO). Mantenendo un proprio thread pool, il Dominio auto-regola 
+     *      il carico di I/O. Se si delegasse l'asincronia all'interfaccia, il Controller 
+     *      potrebbe generare dozzine di Task simultanei, causando colli di bottiglia al disco.
+     *      3. Clean Architecture: Mantenendo il Model svincolato da `javafx.concurrent.*`, 
+     *      l'API rimane riutilizzabile in qualsiasi contesto.
+     * =====================================================================================
+     */
     private final ExecutorService executor;
     private final Map<String, PresetConfig> presets;
     private static final String MODULE_SANITIZATION_REGEX = "[^a-zA-Z0-9àèìòùáéíóúÀÈÌÒÙÁÉÍÓÚ]";

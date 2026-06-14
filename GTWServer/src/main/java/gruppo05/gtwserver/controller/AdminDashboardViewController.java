@@ -27,36 +27,63 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per il pannello di controllo dell'amministratore lato Server (Server Admin Dashboard).
- * Gestisce l'interfaccia grafica per il caricamento e la rimozione delle sorgenti dei documenti,
- * l'avanzamento dell'analisi delle parole e la visualizzazione della classifica dei giocatori.
+ * @brief Controller JavaFX per il pannello di controllo dell'amministratore lato Server (Server Admin Dashboard).
+ *
+ * @details Gestisce l'interfaccia grafica per il caricamento e la rimozione delle sorgenti dei documenti,
+ *          l'avanzamento dell'analisi delle parole e la visualizzazione della classifica dei giocatori.
  */
 public class AdminDashboardViewController implements Initializable {
+    /** @brief Etichetta per mostrare lo stato del server. */
     @FXML
     private Label lblStatus;
+    
+    /** @brief Etichetta per mostrare il numero di client connessi. */
     @FXML
     private Label lblConnectedClients;
+    
+    /** @brief Lista visibile delle sorgenti testuali. */
     @FXML
     private ListView<String> lstSources;
+    
+    /** @brief Pulsante per aggiungere una nuova sorgente. */
     @FXML
     private Button btnAddSource;
+    
+    /** @brief Pulsante per rimuovere la sorgente selezionata. */
     @FXML
     private Button btnRemoveSource;
+    
+    /** @brief Barra di progresso per le operazioni in background. */
     @FXML
     private ProgressBar progressAnalysis;
+    
+    /** @brief Etichetta per fornire feedback sullo stato dell'analisi. */
     @FXML
     private Label lblAnalysisStatus;
+    
+    /** @brief Tabella per visualizzare i giocatori registrati. */
     @FXML
     private TableView<Player> tblPlayers;
+    
+    /** @brief Colonna della tabella per lo username. */
     @FXML
     private TableColumn<Player, String> colUsername;
+    
+    /** @brief Colonna della tabella per le partite vinte. */
     @FXML
     private TableColumn<Player, Integer> colWins;
+    
+    /** @brief Colonna della tabella per le partite giocate. */
     @FXML
     private TableColumn<Player, Integer> colPlayed;
 
+    /** @brief Riferimento alla connessione del server. */
     private ServerConnection connection;
+    
+    /** @brief Gestore delle sorgenti di documenti analizzati. */
     private SourceManager sourceManager;
+    
+    /** @brief Elenco delle sorgenti di documenti, correntemente caricate in memoria. */
     private final List<Source> loadedSources = new ArrayList<>();
 
     /**

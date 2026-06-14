@@ -20,28 +20,50 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per la gestione della schermata di gioco.
+ * @brief Controller JavaFX per la gestione della schermata di gioco.
  */
 public class GameViewController implements Initializable {
+    /** @brief Etichetta per mostrare il nome dell'avversario sfidato. */
     @FXML
     private Label lblOpponent;
+    
+    /** @brief Area di testo riservata alla domanda. */
     @FXML
     private TextArea txaCipheredText;
+    
+    /** @brief Campo di testo in cui l'utente inserisce la parola. */
     @FXML
     private TextField txfAnswer;
+    
+    /** @brief Pulsante di sottomissione della risposta, abilitato solo con testo presente. */
     @FXML
     private Button btnSubmit;
+    
+    /** @brief Etichetta indicante il tempo residuo (countdown). */
     @FXML
     private Label lblTimer;
+    
+    /** @brief Etichetta di stato. */
     @FXML
     private Label lblStatus;
+    
+    /** @brief Etichetta decorativa che segnala la difficoltà della domanda corrente. */
     @FXML
     private Label lblDifficulty;
 
+    /** @brief Riferimento alla connessione di rete con il server. */
     private ClientConnection connection;
+    
+    /** @brief Nome dell'utente attualmente loggato. */
     private String username;
+    
+    /** @brief Timestamp di inizio turno, per calcolare il tempo di risposta. */
     private long startTime;
+    
+    /** @brief Oggetto di animazione JavaFX per gestire il countdown. */
     private Timeline timeline;
+    
+    /** @brief Flag che indica se il giocatore può attivamente inviare input. */
     private boolean gameActive = false;
 
     /**

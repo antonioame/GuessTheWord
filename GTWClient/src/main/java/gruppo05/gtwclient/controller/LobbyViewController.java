@@ -17,29 +17,47 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per la gestione della schermata principale della Lobby.
- * Gestisce i re-indirizzamenti e i comandi principali dell'utente, come
- * l'avvio della partita (matchmaking), la consultazione dello storico ed il logout.
+ * @brief Controller JavaFX per la gestione della schermata principale della Lobby.
+ * 
+ * @details Gestisce i re-indirizzamenti e i comandi principali dell'utente, come
+ *          l'avvio della partita (matchmaking), la consultazione dello storico ed il logout.
  */
 public class LobbyViewController implements Initializable {
+    /** @brief Etichetta per mostrare il messaggio di benvenuto. */
     @FXML
     private Label lblWelcome;
+    
+    /** @brief Pulsante per avviare il matchmaking. */
     @FXML
     private Button btnPlay;
+    
+    /** @brief Pulsante per accedere allo storico partite. */
     @FXML
     private Button btnHistory;
+    
+    /** @brief Pulsante per uscire dall'applicazione. */
     @FXML
     private Button btnExit;
+    
+    /** @brief Pulsante di selezione per la difficoltà facile. */
     @FXML
     private ToggleButton btnEasy;
+    
+    /** @brief Pulsante di selezione per la difficoltà normale. */
     @FXML
     private ToggleButton btnNormal;
+    
+    /** @brief Pulsante di selezione per la difficoltà difficile. */
     @FXML
     private ToggleButton btnHard;
 
+    /** @brief Gruppo di pulsanti per la selezione esclusiva della difficoltà. */
     private ToggleGroup difficultyGroup;
 
+    /** @brief Connessione di rete del client verso il server. */
     private ClientConnection connection;    
+    
+    /** @brief Username dell'utente loggato. */
     private String username;
 
     /**
@@ -77,6 +95,10 @@ public class LobbyViewController implements Initializable {
         }
     }
 
+    /**
+     * @brief Recupera la difficoltà attualmente selezionata dall'utente.
+     * @return Difficoltà scelta (EASY, NORMAL, o HARD). Se nulla è selezionato, restituisce NORMAL come fallback.
+     */
     private Difficulty getSelectedDifficulty() {
         if (difficultyGroup == null) return Difficulty.NORMAL;
         Toggle selected = difficultyGroup.getSelectedToggle();

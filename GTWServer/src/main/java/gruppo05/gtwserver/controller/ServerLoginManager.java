@@ -13,43 +13,50 @@ import javafx.scene.control.Alert;
 /**
  * Gestore dell'autenticazione lato Server (Amministratore).
  * Implementa l'interfaccia LoginManager per validare le credenziali dell'amministratore
- * tramite accesso al database locale (AdminDAO) ed eseguire un callback in caso di successo.
+ * tramite accesso al database locale (AdminDAO) ed eseguire un callback in caso di successo o fallimento.
  */
 public class ServerLoginManager implements LoginManager {
 
     private Runnable onSuccessCallback;
+    private Runnable onFailureCallback;
 
-    /**
-     * @brief Imposta il callback da eseguire in caso di autenticazione riuscita.
-     * @param[in] r Callback (Runnable) di successo.
-     */
+    @Override
     public void setOnSuccessCallback(Runnable r) {
         this.onSuccessCallback = r;
     }
 
-    /**
-     * @brief Valida le credenziali dell'utente amministratore interrogando il database locale.
-     * Mostra un messaggio di errore in caso di fallimento o esegue il callback in caso di successo.
-     * @param[in] username Nome utente inserito.
-     * @param[in] password Password inserita.
-     */
+    @Override
+    public void setOnFailureCallback(Runnable r) {
+        this.onFailureCallback = r;
+    }
+
     @Override
     public void validateInfo(String username, String password) {
         AdminDAO dao = new ConcreteAdminDAO();
         
         Optional<Admin> o = dao.selectById(Optional.of(username));
         
-        if(!o.isPresent()) {
+        if (!o.isPresent()) {
             System.err.println("[Login Error] Utente non trovato: " + username);
+            
+            if (onFailureCallback != null) {
+                Platform.runLater(onFailureCallback);
+            }
+            
             Alert alert = new Alert(Alert.AlertType.ERROR, "L'utente non è registrato");
             alert.showAndWait();
             return;
         } 
         
         String hashedPassword = SecurityUtils.hashPassword(password);
-        if(!o.get().getPassword().equals(hashedPassword)) {
+        if (!o.get().getPassword().equals(hashedPassword)) {
             System.err.println("[Login Error] Password errata per utente: " + username);
-            Alert alert = new Alert(Alert.AlertType.ERROR, "Password non corretta");
+            
+            if (onFailureCallback != null) {
+                Platform.runLater(onFailureCallback);
+            }
+            
+            Alert alert = new Alert(Alert.AlertType.ERROR, "Password errata");
             alert.showAndWait();
             return;
         }
@@ -58,5 +65,4 @@ public class ServerLoginManager implements LoginManager {
             Platform.runLater(onSuccessCallback);
         }
     }
-    
 }

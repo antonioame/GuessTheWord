@@ -29,22 +29,23 @@ import gruppo05.gtwshared.controller.SignupViewController;
  */
 public class ClientConnectionCreator extends NetworkConnectionCreator {
 
-    /** Riferimento alla connessione attiva verso il server. */
+    /** @brief Riferimento alla connessione attiva verso il server. */
     private ClientConnection connection;
 
-    /** Controller per la gestione della logica di gioco. */
+    /** @brief Controller per la gestione della logica di gioco. */
     private GameViewController gameViewController;
     
-    /** Controller per la visualizzazione dello storico partite. */
+    /** @brief Controller per la visualizzazione dello storico partite. */
     private HistoryViewController historyViewController;
     
-    /** Controller per la visualizzazione dei risultati finali. */
+    /** @brief Controller per la visualizzazione dei risultati finali. */
     private ResultViewController resultViewController;
     
+    /** @brief Callback da eseguire in caso di disconnessione improvvisa dal server. */
     private Runnable onServerDisconnect = null;
 
     /**
-     * Imposta il controller della vista di gioco.
+     * @brief Imposta il controller della vista di gioco.
      * @param gameViewController Il controller della GameView.
      */
     public void setGameViewController(GameViewController gameViewController) {
@@ -52,7 +53,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     }
 
     /**
-     * Imposta il controller della vista dello storico.
+     * @brief Imposta il controller della vista dello storico.
      * @param historyViewController Il controller della HistoryView.
      */
     public void setHistoryViewController(HistoryViewController historyViewController) {
@@ -60,13 +61,14 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
     }
 
     /**
-     * Imposta il controller della vista dei risultati.
+     * @brief Imposta il controller della vista dei risultati.
      * @param resultViewController Il controller della ResultView.
      */
     public void setResultViewController(ResultViewController resultViewController) {
         this.resultViewController = resultViewController;
     }
 
+    
     public void setOnServerDisconnect(Runnable callback) {
         this.onServerDisconnect = callback;
     }
@@ -153,11 +155,14 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                         Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg);
                         alert.showAndWait();
                         
-                        // SBLOCCO IL PULSANTE DI LOGIN!
-                        if (LoginViewController.instance != null) {
-                            LoginViewController.instance.resetLoginButton();
-                            
                         System.out.println("Login fallito: " + errorMsg);
+                        // Ricarica la scena in modo pulito tramite SceneNavigator per resettare i campi e sbloccare la UI
+                        try {
+                            LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
+                            loginCtrl.setLoginManager(new ClientLoginManager(connection));
+                            loginCtrl.setSignupManager(new ClientSignupManager(connection));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                     break;
@@ -176,22 +181,27 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                             e.printStackTrace();
                         }
                     } else {
+                        // Messaggio di errore
                         String errorMsg = (dto.getMessage() != null && !dto.getMessage().isEmpty()) 
                                 ? dto.getMessage() 
                                 : "La registrazione non è andata a buon fine";
                         Alert alert = new Alert(Alert.AlertType.ERROR, errorMsg);
                         alert.showAndWait();
                         
-                        // SBLOCCO IL PULSANTE DI REGISTRAZIONE!
-                        if (SignupViewController.instance != null) {
-                            SignupViewController.instance.resetSignupButton();
-                            
                         System.out.println("Registrazione fallita: " + errorMsg);
+                        // Ricarichiama la scena in modo pulito tramite SceneNavigator
+                        try {
+                            SignupViewController signupCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/SignupView.fxml");
+                            signupCtrl.setLoginManager(new ClientLoginManager(connection));
+                            signupCtrl.setSignupManager(new ClientSignupManager(connection));
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                     break;
                 
                 case PLAY_RESPONSE:
+                    // Giocatore trovato
                     if (dto.getStatus() == CallbackDTO.Status.MATCH_FOUND) {
                         System.out.println("Avversario trovato! Preparazione partita.");
                         try {
@@ -238,6 +248,7 @@ public class ClientConnectionCreator extends NetworkConnectionCreator {
                     break;
                 
                 case WRONG_ANSWER:
+                    // Messaggio di tentativo fallito
                     System.out.println("Tentativo errato!");
                     if (gameViewController != null) {
                         gameViewController.showWrongAnswer();

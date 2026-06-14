@@ -1,5 +1,6 @@
 package gruppo05.gtwshared.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,7 +24,11 @@ public class CallbackDTO {
      * @class MatchRecord
      * @brief Rappresenta in modo compatto un singolo record cronologico di una partita conclusa nello storico.
      */
-    public static class MatchRecord {
+    public static class MatchRecord implements Serializable {
+        /**
+         * @brief Versione di serializzazione.
+         */
+        private static final long serialVersionUID = 1L;
         
         /** @brief Username dell'avversario sfidato in questa specifica partita. */
         private final String opponent;

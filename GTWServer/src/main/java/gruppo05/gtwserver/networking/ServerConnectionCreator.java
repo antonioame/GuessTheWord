@@ -414,10 +414,12 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                     break;
 
                 case TEXT_MESSAGE:
+                    // Ricezione di un messaggio generico
                     System.out.println("Messaggio di sistema dal client " + channelIndex + ": " + dto.getMessage());
                     break;
 
                 default:
+                    // Ricezione di un messaggio non riconoscito
                     System.out.println("Tipo messaggio non gestito: " + dto.getEventType());
             }
         } catch (IOException e) {

@@ -687,7 +687,7 @@ public abstract class NetworkMessage implements Serializable {
 
     /**
      * @class OpponentAnswered
-     * @brief Segnale "Ghost" (Server -> Client): Sottile avviso in real-time che incrementa la pressione del gameplay.
+     * @brief Segnale "Ghost" (Server -> Client): Avviso in real-time che l'avversario ha risposto.
      */
     public static class OpponentAnswered extends NetworkMessage {
         private static final long serialVersionUID = 11L;
@@ -710,8 +710,14 @@ public abstract class NetworkMessage implements Serializable {
      * @brief Segnale (Server -> Client): Il tentativo di risposta inviato dal Client è errato.
      */
     public static class WrongAnswer extends NetworkMessage {
-        private static final long serialVersionUID = 16L;
+        /**
+         * @brief Versione di serializzazione.
+         */
+        private static final long serialVersionUID = 12L;
 
+        /** 
+         * @brief Inizializza l'avviso di fallimento del tentativo.
+         */
         public WrongAnswer() { 
             super(MessageType.WRONG_ANSWER); 
         }
@@ -732,7 +738,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 12L;
+        private static final long serialVersionUID = 13L;
 
         /**
          * @brief Inizializza l'avviso di fallimento TCP dell'avversario.
@@ -755,7 +761,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 13L;
+        private static final long serialVersionUID = 14L;
 
         /**
          * @brief Inizializza la richiesta volontaria di distruzione del socket lato server.
@@ -780,7 +786,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 14L;
+        private static final long serialVersionUID = 15L;
 
         /**
          * @brief Inizializza una richiesta priva di argomenti (il server lo ricava dal socket in sessione).
@@ -803,7 +809,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 15L;
+        private static final long serialVersionUID = 16L;
         
         /**
          * @brief Lista recod delle partite.
@@ -907,7 +913,7 @@ public abstract class NetworkMessage implements Serializable {
         /**
          * @brief Versione di serializzazione.
          */
-        private static final long serialVersionUID = 16L;
+        private static final long serialVersionUID = 17L;
         /**
          * @brief Testo del messaggio.
          */

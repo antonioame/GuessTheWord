@@ -2,7 +2,6 @@ package gruppo05.gtwclient.controller;
 
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwshared.controller.LoginManager;
-import gruppo05.gtwshared.controller.LoginViewController;
 import gruppo05.gtwshared.networking.NetworkMessage;
 import gruppo05.gtwshared.utility.SecurityUtils;
 import java.io.IOException;
@@ -12,11 +11,23 @@ import javafx.scene.control.Alert;
 public class ClientLoginManager implements LoginManager {
 
     private final ClientConnection conn;
+    private Runnable onFailureCallback;
+    private Runnable onSuccessCallback;
 
     public ClientLoginManager(ClientConnection conn) {
         this.conn = conn;
     }
     
+    @Override
+    public void setOnFailureCallback(Runnable r) {
+        this.onFailureCallback = r;
+    }
+
+    @Override
+    public void setOnSuccessCallback(Runnable r) {
+        this.onSuccessCallback = r;
+    }
+
     @Override
     public void validateInfo(String username, String password) {
         String hashedPassword = SecurityUtils.hashPassword(password);
@@ -31,11 +42,10 @@ public class ClientLoginManager implements LoginManager {
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.WARNING, "Attendi che la connessione venga stabilita in background prima di effettuare il login.");
                 alert.setHeaderText("Server non raggiungibile");
-                alert.show(); // Usiamo show() per non bloccare il thread
+                alert.show(); 
                 
-                // Sblocca la UI usando l'istanza statica
-                if (LoginViewController.instance != null) {
-                    LoginViewController.instance.resetLoginButton();
+                if (onFailureCallback != null) {
+                    onFailureCallback.run();
                 }
             });
             
@@ -46,8 +56,8 @@ public class ClientLoginManager implements LoginManager {
                 alert.setHeaderText("Errore di rete");
                 alert.showAndWait();
                 
-                if (LoginViewController.instance != null) {
-                    LoginViewController.instance.resetLoginButton();
+                if (onFailureCallback != null) {
+                    onFailureCallback.run();
                 }
             });
         }

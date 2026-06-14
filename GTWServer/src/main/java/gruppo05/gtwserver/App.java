@@ -54,12 +54,11 @@ public class App extends Application {
         // Inizializza il Singleton una sola volta all'avvio
         SourceManagerInitializer.init(sourceDao, wordDao);
         
-        // Recupera l'istanza configurata (cast a BasicSourceManager se il connectionCreator richiede l'implementazione concreta)
+        // Recupera l'istanza configurata
         globalSourceManager = SourceManagerInitializer.getInstance();
         
-        // ---------------------------------------------------------
         // 2. AVVIO DEL SERVER DI RETE
-        // ---------------------------------------------------------
+        
         // Crea la connessione di rete e avvia il server in ascolto
         connectionCreator = new ServerConnectionCreator(globalSourceManager);
         connection = connectionCreator.createConnection();
@@ -68,19 +67,6 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/gruppo05/gtwshared/controller/LoginView.fxml"));
         Parent root = loader.load();
         LoginViewController ctrl = loader.getController();
-        
-        // --- FIX DEFINITIVO PER IL TASTO CONFERMA (LOGIN) ---
-        // Svincoliamo il bottone e forziamo lo sblocco se l'admin corregge i dati dopo un errore
-        ctrl.getTxfPswd().textProperty().addListener((obs, oldVal, newVal) -> {
-            ctrl.getBtnConfirm().disableProperty().unbind();
-            ctrl.getBtnConfirm().setDisable(false);
-        });
-        
-        ctrl.getTxfUsername().textProperty().addListener((obs, oldVal, newVal) -> {
-            ctrl.getBtnConfirm().disableProperty().unbind();
-            ctrl.getBtnConfirm().setDisable(false);
-        });
-        // ----------------------------------------------------
         
         // Gestione Login Admin
         ServerLoginManager loginMgr = new ServerLoginManager();
@@ -114,12 +100,6 @@ public class App extends Application {
                 Parent loginRoot = loginLoader.load();
                 LoginViewController loginCtrl = loginLoader.getController();
                 
-                // --- APPLICAZIONE STESSO FIX ANCHE ALLA LOGIN DOPO SIGNUP ---
-                loginCtrl.getTxfPswd().textProperty().addListener((obs, oldVal, newVal) -> {
-                    loginCtrl.getBtnConfirm().disableProperty().unbind();
-                    loginCtrl.getBtnConfirm().setDisable(false);
-                });
-                
                 loginCtrl.setLoginManager(loginMgr);
                 loginCtrl.setSignupManager(signupMgr);   
                 
@@ -131,9 +111,7 @@ public class App extends Application {
         });
         ctrl.setSignupManager(signupMgr);
         
-        // ---------------------------------------------------------
         // 3. AUTO-AGGIUNTA SORGENTI DI DEFAULT (NON BLOCCANTE E SICURA)
-        // ---------------------------------------------------------
         Thread autoAddSourcesThread = new Thread(() -> {
             String[] defaultFiles = {"example_text_1.txt", "example_text_2.txt"};
             try {
@@ -143,12 +121,11 @@ public class App extends Application {
                     try {
                         Path path = null;
                         Path[] possiblePaths = {
-                            Paths.get("data", fileName),                                        // 1. Quando avviato da eseguibili/ (per simulare comportamento del revisore)
-                            Paths.get("src", "main", "resources", fileName),            // 2. Quando avviato dall'IDE (in GTWServer/)
-                            Paths.get("GTWServer", "src", "main", "resources", fileName)// 3. Quando avviato dalla root del progetto
+                            Paths.get("data", fileName),                                        
+                            Paths.get("src", "main", "resources", fileName),            
+                            Paths.get("GTWServer", "src", "main", "resources", fileName)
                         };
                         
-                        // Cerca il file sul filesystem
                         for (Path p : possiblePaths) {
                             if (Files.exists(p)) {
                                 path = p.toAbsolutePath();
@@ -156,7 +133,6 @@ public class App extends Application {
                             }
                         }
                         
-                        // Se non lo trova sul filesystem, prova con il resource URL (solo fuori dal JAR)
                         if (path == null) {
                             URL resourceUrl = App.class.getResource("/" + fileName);
                             if (resourceUrl != null && !resourceUrl.getProtocol().equals("jar")) {

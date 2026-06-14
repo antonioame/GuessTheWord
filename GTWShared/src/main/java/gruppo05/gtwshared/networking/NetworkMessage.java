@@ -491,18 +491,25 @@ public abstract class NetworkMessage implements Serializable {
         private final String opponentUsername;
 
         /**
+         * @brief Difficoltà della partita.
+         */
+        private final Difficulty difficulty;
+
+        /**
          * @brief Costruisce il pacchetto di lancio contenente l'arena di sfida generata al volo.
          * @param cipheredText     Lo stralcio testuale criptato prodotto dal QuestionGenerator.
          * @param timer            Tempo totale per la risoluzione assegnato in base alla difficoltà.
          * @param playerIndex      Indice di posizione del client in locale (0 per sx, 1 per dx nel layout).
          * @param opponentUsername Identità dell'avversario frontale.
+         * @param difficulty       Difficoltà effettiva della partita.
          */
-        public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername) {
+        public GameStart(String cipheredText, int timer, int playerIndex, String opponentUsername, Difficulty difficulty) {
             super(MessageType.GAME_START);
             this.cipheredText = cipheredText;
             this.timer = timer;
             this.playerIndex = playerIndex;
             this.opponentUsername = opponentUsername;
+            this.difficulty = difficulty;
         }
 
         /**
@@ -537,10 +544,19 @@ public abstract class NetworkMessage implements Serializable {
             return opponentUsername; 
         }
 
+        /**
+         * @brief Indica la difficoltà della partita.
+         * @return Livello di difficoltà.
+         */
+        public Difficulty getDifficulty() {
+            return difficulty;
+        }
+
         @Override
         public CallbackDTO toDTO() {
             return new CallbackDTO.Builder(getType())
                     .gameStartData(cipheredText, timer, playerIndex, opponentUsername)
+                    .difficulty(difficulty)
                     .build();
         }
     }

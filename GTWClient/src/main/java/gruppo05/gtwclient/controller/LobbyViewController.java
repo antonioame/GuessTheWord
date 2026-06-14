@@ -9,6 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Toggle;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,6 +30,14 @@ public class LobbyViewController implements Initializable {
     private Button btnHistory;
     @FXML
     private Button btnExit;
+    @FXML
+    private ToggleButton btnEasy;
+    @FXML
+    private ToggleButton btnNormal;
+    @FXML
+    private ToggleButton btnHard;
+
+    private ToggleGroup difficultyGroup;
 
     private ClientConnection connection;    
     private String username;
@@ -58,11 +69,20 @@ public class LobbyViewController implements Initializable {
     void onPlay(ActionEvent event) {
         try {
             if (connection != null) {
-                connection.send(new NetworkMessage.PlayRequest(Difficulty.NORMAL));
+                Difficulty selectedDifficulty = getSelectedDifficulty();
+                connection.send(new NetworkMessage.PlayRequest(selectedDifficulty));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Difficulty getSelectedDifficulty() {
+        if (difficultyGroup == null) return Difficulty.NORMAL;
+        Toggle selected = difficultyGroup.getSelectedToggle();
+        if (selected == btnEasy)   return Difficulty.EASY;
+        if (selected == btnHard)   return Difficulty.HARD;
+        return Difficulty.NORMAL;
     }
 
     /**
@@ -109,5 +129,20 @@ public class LobbyViewController implements Initializable {
         if (username != null) {
             lblWelcome.setText("Benvenuto, " + username + "!");
         }
+
+        difficultyGroup = new ToggleGroup();
+        if (btnEasy != null) btnEasy.setToggleGroup(difficultyGroup);
+        if (btnNormal != null) {
+            btnNormal.setToggleGroup(difficultyGroup);
+            btnNormal.setSelected(true);
+        }
+        if (btnHard != null) btnHard.setToggleGroup(difficultyGroup);
+
+        difficultyGroup.selectedToggleProperty().addListener((obs, oldToggle, newToggle) -> {
+            if (newToggle == null && oldToggle != null) {
+                // Previene che non sia selezionato alcun Toggle
+                oldToggle.setSelected(true);
+            }
+        });
     }
 }

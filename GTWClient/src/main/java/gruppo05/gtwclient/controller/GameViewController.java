@@ -3,6 +3,7 @@ package gruppo05.gtwclient.controller;
 import gruppo05.gtwclient.networking.ClientConnection;
 import gruppo05.gtwshared.dto.CallbackDTO;
 import gruppo05.gtwshared.networking.NetworkMessage;
+import gruppo05.gtwshared.utility.Difficulty;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -34,6 +35,8 @@ public class GameViewController implements Initializable {
     private Label lblTimer;
     @FXML
     private Label lblStatus;
+    @FXML
+    private Label lblDifficulty;
 
     private ClientConnection connection;
     private String username;
@@ -70,6 +73,18 @@ public class GameViewController implements Initializable {
         txfAnswer.setDisable(false);
         btnSubmit.setDisable(true); // Disabilitato fino a quando viene inserito del testo
         
+        Difficulty diff = dto.getDifficulty();
+        if (diff != null && lblDifficulty != null) {
+            lblDifficulty.setText(diff.name());
+            String color;
+            switch (diff) {
+                case EASY: color = "#27ae60"; break;
+                case HARD: color = "#c0392b"; break;
+                default: color = "#e67e22"; break;
+            }
+            lblDifficulty.setStyle(lblDifficulty.getStyle() + "; -fx-background-color: " + color + ";");
+        }
+
         this.gameActive = true;
         this.startTime = System.currentTimeMillis();
         

@@ -326,8 +326,8 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                             activeGames.put(p2Channel, newChallenge);
 
                             // Invia i dati di avvio partita ai due client
-                            connection.sendTo(p1Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 0, p2User));
-                            connection.sendTo(p2Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 1, p1User));
+                            connection.sendTo(p1Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 0, p2User, setupController.getMatchDifficulty()));
+                            connection.sendTo(p2Channel, new NetworkMessage.GameStart(setupController.getCipheredText(), setupController.getTimer(), 1, p1User, setupController.getMatchDifficulty()));
 
                             // Resetta la coda
                             waitingChannel = null;

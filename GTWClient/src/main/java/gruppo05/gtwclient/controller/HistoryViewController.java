@@ -21,29 +21,49 @@ import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per la gestione della schermata dello storico delle partite.
+ * @brief Controller JavaFX per la gestione della schermata dello storico delle partite.
  */
 public class HistoryViewController implements Initializable {
+    /** @brief Etichetta per il totale delle partite vinte. */
     @FXML
     private Label lblWon;
+    
+    /** @brief Etichetta per il totale delle partite giocate. */
     @FXML
     private Label lblPlayed;
+    
+    /** @brief Etichetta per il tempo di risposta medio. */
     @FXML
     private Label lblAvgTime;
+    
+    /** @brief Tabella che visualizza lo storico delle partite. */
     @FXML
     private TableView<CallbackDTO.MatchRecord> tblHistory;
+    
+    /** @brief Colonna per mostrare lo username dell'avversario. */
     @FXML
     private TableColumn<CallbackDTO.MatchRecord, String> colOpponent;
+    
+    /** @brief Colonna per mostrare il risultato (VITTORIA, SCONFITTA, PAREGGIO). */
     @FXML
     private TableColumn<CallbackDTO.MatchRecord, String> colResult;
+    
+    /** @brief Colonna per mostrare la data e l'ora della partita. */
     @FXML
     private TableColumn<CallbackDTO.MatchRecord, String> colDate;
+    
+    /** @brief Colonna per mostrare il tempo di risposta per quella partita. */
     @FXML
     private TableColumn<CallbackDTO.MatchRecord, Integer> colTime;
+    
+    /** @brief Pulsante per ritornare alla lobby principale. */
     @FXML
     private Button btnBack;
 
+    /** @brief Riferimento alla connessione del client verso il server. */
     private ClientConnection connection;
+    
+    /** @brief Username dell'utente corrente. */
     private String username;
 
     /**

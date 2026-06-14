@@ -13,21 +13,33 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per la gestione della schermata dei risultati di gioco.
+ * @brief Controller JavaFX per la gestione della schermata dei risultati di gioco.
  */
 public class ResultViewController implements Initializable {
+    /** @brief Etichetta che mostra l'esito della partita. */
     @FXML
     private Label lblResult;
+    
+    /** @brief Etichetta che rivela la soluzione. */
     @FXML
     private Label lblCorrectWord;
+    
+    /** @brief Etichetta che indica lo username del vincitore. */
     @FXML
     private Label lblWinner;
+    
+    /** @brief Etichetta che mostra il tempo di risposta. */
     @FXML
     private Label lblResponseTime;
+    
+    /** @brief Pulsante per chiudere i risultati e tornare alla lobby. */
     @FXML
     private Button btnBackToLobby;
 
+    /** @brief Connessione attiva del client. */
     private ClientConnection connection;
+    
+    /** @brief Username del giocatore corrente. */
     private String username;
 
     /**

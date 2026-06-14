@@ -14,17 +14,25 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * Controller JavaFX per la gestione della schermata di attesa e del matchmaking.
+ * @brief Controller JavaFX per la gestione della schermata di attesa e del matchmaking.
  */
 public class WaitingViewController implements Initializable {
+    /** @brief Etichetta che mostra lo stato corrente del matchmaking. */
     @FXML
     private Label lblStatus;
+    
+    /** @brief Indicatore di caricamento attivo durante l'attesa del matchmaking. */
     @FXML
     private ProgressIndicator progressIndicator;
+    
+    /** @brief Pulsante per annullare il matchmaking e tornare alla lobby. */
     @FXML
     private Button btnCancel;
 
+    /** @brief Riferimento alla connessione verso il server. */
     private ClientConnection connection;
+    
+    /** @brief Identificativo dell'utente. */
     private String username;
 
     /**

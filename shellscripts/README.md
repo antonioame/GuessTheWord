@@ -13,6 +13,7 @@ Tutti gli script garantiscono l'utilizzo corretto di **Java 8 (JDK 1.8)**.
 **Utilizzo:**
 - `./run.sh build` : Compila e installa tutti i moduli del progetto.
 - `./run.sh test` : Esegue la suite di test.
+- `./run.sh clean` : Esegue la pulizia del progetto (`mvn clean`).
 - `./run.sh server` : Avvia un'istanza del Server nel terminale corrente.
 - `./run.sh client` : Avvia un'istanza del Client nel terminale corrente.
 - `./run.sh start` (o semplicemente `./run.sh`) : Avvia l'infrastruttura completa per i test manuali (1 Server in background, 1 Client in background e 1 Client in primo piano).

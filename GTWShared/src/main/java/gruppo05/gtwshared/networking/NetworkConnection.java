@@ -121,6 +121,7 @@ public abstract class NetworkConnection {
 
                     } catch (IOException ex) {
                         hasFailed = true; // Imposta il flag a true al primo fallimento
+                        connected = false;
                         System.err.println("[NetworkConnection] Canale offline. Ritento in 5s...");
 
                         try {

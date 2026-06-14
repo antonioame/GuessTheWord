@@ -1,6 +1,9 @@
 package gruppo05.gtwserver.db;
 
+import gruppo05.gtwserver.model.Admin;
+import gruppo05.gtwserver.model.Player;
 import gruppo05.gtwshared.utility.Result;
+import gruppo05.gtwshared.utility.SecurityUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -25,7 +28,6 @@ public class DatabaseManager {
      * @brief Username predefinito per l'autenticazione al database.
      */
     private static final String USERNAME = "root";
-    
     /**
      * @brief Password predefinita per l'autenticazione al database.
      */
@@ -198,5 +200,15 @@ public class DatabaseManager {
             // Debug: da cambiare
             ex.printStackTrace();            
         }
+    }
+    
+    
+    public static void initDebugUsersDB() {
+        AdminDAO adao = new ConcreteAdminDAO();
+        PlayerDAO pdao = new ConcretePlayerDAO();
+        
+        adao.insert(new Admin("s1", SecurityUtils.hashPassword("s1")));
+        pdao.insert(new Player("p1", SecurityUtils.hashPassword("p1"), 0, 0, 0));
+        pdao.insert(new Player("p2", SecurityUtils.hashPassword("p2"), 0, 0, 0));
     }
 }

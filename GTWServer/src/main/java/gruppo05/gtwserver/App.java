@@ -48,6 +48,8 @@ public class App extends Application {
         
         // Inizializza il database SQLite (crea schema e tabelle se il file del database non esiste)
         DatabaseManager.initDB();
+        // Inserisci gli utenti di debug
+        DatabaseManager.initDebugUsersDB();
         
         // Inizializzazione sorgenti e server di rete
         SourceDAO sourceDao = new ConcreteSourceDAO();

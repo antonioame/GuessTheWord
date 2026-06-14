@@ -47,12 +47,21 @@ public class App extends Application {
         // Registra il callback di disconnessione improvvisa del server:
         creator.setOnServerDisconnect(() -> {
             try {
+                // 1. Ritenta la connessione (creando un nuovo socket)
+                try {
+                    System.out.println("Tentativo di riconnessione al server...");
+                    connection = creator.createConnection(); 
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                // 2. Ricarica la vista di Login
                 LoginViewController loginCtrl = SceneNavigator.navigateAndGetController("/gruppo05/gtwshared/controller/LoginView.fxml");
-                
-                // RIPRISTINATI I COSTRUTTORI ORIGINALI A 1 PARAMETRO
+
+                // 3. Inietta la NUOVA connessione, non quella vecchia
                 loginCtrl.setLoginManager(new ClientLoginManager(connection));
                 loginCtrl.setSignupManager(new ClientSignupManager(connection));
-                
+
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -4,20 +4,20 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox fx:id="outerContainer" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: linear-gradient(to bottom right, #2c3e50, #1a252f); -fx-padding: 20;" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwserver.controller.AdminDashboardViewController">
+<VBox fx:id="outerContainer" styleClass="root-container" stylesheets="@AdminDashboard.css" spacing="20.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwserver.controller.AdminDashboardViewController">
    <children>
       <!-- Barra di Stato sull'Header -->
-      <HBox alignment="CENTER_LEFT" prefHeight="60.0" style="-fx-background-color: rgba(255, 255, 255, 0.1); -fx-background-radius: 10; -fx-padding: 10 20;">
+      <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="header-box">
          <children>
             <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-fill: #ffffff;" text="Pannello di Controllo Server" />
-                  <Label fx:id="lblStatus" style="-fx-font-size: 13; -fx-text-fill: #bdc3c7;" text="In ascolto sulla porta: --" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title-text" text="Pannello di Controllo Server" />
+                  <Label fx:id="lblStatus" styleClass="status-label" text="In ascolto sulla porta: --" />
                </children>
             </VBox>
             <VBox alignment="CENTER_RIGHT">
                <children>
-                  <Label fx:id="lblConnectedClients" style="-fx-font-size: 15; -fx-font-weight: bold; -fx-text-fill: #2ecc71;" text="Client connessi: 0" />
+                  <Label fx:id="lblConnectedClients" styleClass="connected-label" text="Client connessi: 0" />
                </children>
             </VBox>
          </children>
@@ -27,15 +27,15 @@
       <HBox spacing="20.0" VBox.vgrow="ALWAYS">
          <children>
             <!-- Lato Sinistro: Gestore delle Fonti Testuali -->
-            <VBox spacing="10.0" style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS" prefWidth="345.0" minWidth="250.0">
+            <VBox spacing="10.0" styleClass="panel-box" HBox.hgrow="ALWAYS" minWidth="250.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-fill: #ffffff;" text="Sorgenti Documenti" />
-                  <ListView fx:id="lstSources" style="-fx-background-radius: 6; -fx-control-inner-background: #34495e; -fx-text-fill: white;" VBox.vgrow="ALWAYS" />
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="panel-title" text="Sorgenti Documenti" />
+                  <ListView fx:id="lstSources" styleClass="styled-list-view" VBox.vgrow="ALWAYS" />
                   
                   <HBox spacing="10.0">
                      <children>
-                        <Button fx:id="btnAddSource" mnemonicParsing="false" onAction="#onAddSource" style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Aggiungi TXT" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                        <Button fx:id="btnRemoveSource" mnemonicParsing="false" onAction="#onRemoveSource" style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand;" text="Rimuovi" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                        <Button fx:id="btnAddSource" mnemonicParsing="false" onAction="#onAddSource" styleClass="btn-add" text="Aggiungi TXT" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                        <Button fx:id="btnRemoveSource" mnemonicParsing="false" onAction="#onRemoveSource" styleClass="btn-remove" text="Rimuovi" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                      </children>
                   </HBox>
                   
@@ -43,7 +43,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT">
                            <children>
-                              <Label fx:id="lblAnalysisStatus" style="-fx-font-size: 12; -fx-text-fill: #bdc3c7;" text="Stato analisi: Pronto" />
+                              <Label fx:id="lblAnalysisStatus" styleClass="status-label" text="Stato analisi: Pronto" />
                            </children>
                         </HBox>
                         <ProgressBar fx:id="progressAnalysis" progress="0.0" style="-fx-accent: #2ecc71;" maxWidth="Infinity" />
@@ -53,10 +53,10 @@
             </VBox>
             
             <!-- Lato Destro: Leaderboard / Giocatori -->
-            <VBox spacing="10.0" style="-fx-background-color: rgba(255, 255, 255, 0.05); -fx-background-radius: 10; -fx-padding: 15;" HBox.hgrow="ALWAYS" prefWidth="345.0" minWidth="250.0">
+            <VBox spacing="10.0" styleClass="panel-box" HBox.hgrow="ALWAYS" minWidth="250.0">
                <children>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-fill: #ffffff;" text="Giocatori e Classifica" />
-                  <TableView fx:id="tblPlayers" style="-fx-background-radius: 6; -fx-control-inner-background: #34495e;" VBox.vgrow="ALWAYS">
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="panel-title" text="Giocatori e Classifica" />
+                  <TableView fx:id="tblPlayers" styleClass="styled-table-view" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn fx:id="colUsername" prefWidth="135.0" text="Username" />
                       <TableColumn fx:id="colWins" prefWidth="90.0" text="Vittorie" />

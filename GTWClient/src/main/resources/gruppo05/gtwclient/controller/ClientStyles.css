@@ -1,0 +1,267 @@
+.outer-container {
+    -fx-background-color: linear-gradient(to bottom right, #ffffff, #f5f7fa);
+}
+
+.title-text {
+    -fx-font-size: 36;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+}
+
+.subtitle-text {
+    -fx-font-size: 16;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+.btn-primary {
+    -fx-background-color: #2ecc71;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.btn-primary:hover {
+    -fx-background-color: #27ae60;
+}
+
+.btn-info {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.btn-info:hover {
+    -fx-background-color: #2980b9;
+}
+
+.btn-danger {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: white;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.btn-danger:hover {
+    -fx-background-color: #c0392b;
+}
+
+.btn-cancel {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-cancel:hover {
+    -fx-background-color: #7f8c8d;
+}
+
+.btn-back {
+    -fx-background-color: #95a5a6;
+    -fx-text-fill: white;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+
+.btn-back:hover {
+    -fx-background-color: #7f8c8d;
+}
+
+/* GameView */
+.game-opponent {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.game-status {
+    -fx-font-size: 12;
+    -fx-text-fill: #7f8c8d;
+}
+
+.timer-label {
+    -fx-font-size: 11;
+    -fx-text-fill: #95a5a6;
+    -fx-font-weight: bold;
+}
+
+.timer-value {
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e74c3c;
+}
+
+.section-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #34495e;
+    -fx-font-weight: bold;
+}
+
+.ciphered-text {
+    -fx-font-family: 'Courier New', monospace;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-control-inner-background: #edf2f7;
+    -fx-text-fill: #2c3e50;
+    -fx-background-radius: 6;
+}
+
+.answer-field {
+    -fx-font-size: 14;
+    -fx-background-radius: 6;
+}
+
+/* WaitingView */
+.waiting-title {
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+}
+
+.waiting-progress {
+    -fx-progress-color: #3498db;
+}
+
+.waiting-status {
+    -fx-font-size: 16;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+/* HistoryView */
+.history-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-fill: #2c3e50;
+}
+
+.stats-container {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.02), 5, 0, 0, 2);
+}
+
+.stat-label-played {
+    -fx-font-size: 11;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: bold;
+}
+
+.stat-value-played {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.stat-label-won {
+    -fx-font-size: 11;
+    -fx-text-fill: #2ecc71;
+    -fx-font-weight: bold;
+}
+
+.stat-value-won {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2ecc71;
+}
+
+.stat-label-time {
+    -fx-font-size: 11;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: bold;
+}
+
+.stat-value-time {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3498db;
+}
+
+.history-table {
+    -fx-background-radius: 6;
+}
+
+/* ResultView */
+.result-title {
+    -fx-font-size: 32;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.result-details {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 8, 0, 0, 4);
+}
+
+.result-word {
+    -fx-font-size: 15;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+.result-winner {
+    -fx-font-size: 14;
+    -fx-text-fill: #34495e;
+}
+
+.result-time {
+    -fx-font-size: 14;
+    -fx-text-fill: #7f8c8d;
+}
+
+.btn-result-lobby {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.btn-result-lobby:hover {
+    -fx-background-color: #2980b9;
+}
+
+/* LobbyView */
+.difficulty-label {
+    -fx-font-size: 14;
+    -fx-text-fill: #34495e;
+    -fx-font-weight: bold;
+}
+
+.btn-toggle {
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-toggle:selected {
+    -fx-background-color: #3498db;
+    -fx-text-fill: white;
+}
+
+/* GameView - difficulty badge */
+.difficulty-badge {
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-radius: 4;
+    -fx-padding: 2 6 2 6;
+}

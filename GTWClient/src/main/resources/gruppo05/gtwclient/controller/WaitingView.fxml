@@ -4,18 +4,18 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<Pane fx:id="outerContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="450.0" style="-fx-background-color: linear-gradient(to bottom right, #ffffff, #f5f7fa);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwclient.controller.WaitingViewController">
+<StackPane fx:id="outerContainer" prefHeight="450.0" prefWidth="450.0" stylesheets="@ClientStyles.css" styleClass="outer-container" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gruppo05.gtwclient.controller.WaitingViewController">
    <children>
-      <VBox alignment="CENTER" layoutX="50.0" layoutY="60.0" prefHeight="330.0" prefWidth="350.0" spacing="30.0">
+      <VBox alignment="CENTER" maxWidth="350.0" maxHeight="330.0" spacing="30.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-size: 28; -fx-font-weight: bold; -fx-fill: #2c3e50;" text="Matchmaking" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="waiting-title" text="Matchmaking" />
             
-            <ProgressIndicator fx:id="progressIndicator" prefHeight="80.0" prefWidth="80.0" style="-fx-progress-color: #3498db;" />
+            <ProgressIndicator fx:id="progressIndicator" prefHeight="80.0" prefWidth="80.0" styleClass="waiting-progress" />
             
-            <Label fx:id="lblStatus" style="-fx-font-size: 16; -fx-text-fill: #7f8c8d; -fx-font-weight: bold;" text="In attesa di un avversario..." />
+            <Label fx:id="lblStatus" styleClass="waiting-status" text="In attesa di un avversario..." />
             
-            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="40.0" prefWidth="180.0" style="-fx-background-color: #95a5a6; -fx-text-fill: white; -fx-font-size: 14; -fx-font-weight: bold; -fx-background-radius: 8; -fx-cursor: hand;" text="Annulla" />
+            <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#onCancel" prefHeight="40.0" prefWidth="180.0" styleClass="btn-cancel" text="Annulla" />
          </children>
       </VBox>
    </children>
-</Pane>
+</StackPane>

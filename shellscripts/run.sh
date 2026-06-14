@@ -33,6 +33,12 @@ test_project() {
     mvn test
 }
 
+clean_project() {
+    echo "Pulizia del progetto (Maven clean)..."
+    cd "$PROJECT_ROOT"
+    mvn clean
+}
+
 run_server() {
     echo "Avvio del Server..."
     cd "$PROJECT_ROOT/GTWServer"
@@ -88,6 +94,7 @@ show_help() {
     echo "Opzioni disponibili:"
     echo "  build   - Esegue 'mvn clean install' dalla root per compilare e installare tutti i moduli."
     echo "  test    - Esegue 'mvn test' dalla root per eseguire tutti i test del progetto."
+    echo "  clean   - Esegue 'mvn clean' dalla root per pulire il progetto."
     echo "  server  - Avvia solo il Server in questa finestra."
     echo "  client  - Avvia solo il Client in questa finestra."
     echo "  start   - Avvia il Server e un Client in background, e un secondo Client in questa finestra (Scelta consigliata)."
@@ -105,6 +112,9 @@ case "$COMMAND" in
         ;;
     test)
         test_project
+        ;;
+    clean)
+        clean_project
         ;;
     server)
         run_server

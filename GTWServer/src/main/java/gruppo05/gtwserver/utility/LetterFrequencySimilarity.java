@@ -12,8 +12,8 @@ import java.util.stream.IntStream;
  *            <li>Per ciascuna parola viene costruito un vettore di 26 locazioni,
  *                rappresentante le frequenze (valori interi) dei 26 caratteri dell'alfabeto.</li>
  *            <li>I due vettori vengono confrontati calcolando il <em>cosine similarity</em>:
- *                {@code sim = (A · B) / (|A| * |B|)}, dove {@code A · B} è il prodotto scalare
- *                delle frequenze dei caratteri e {@code |A|}, {@code |B|} sono le norme
+ *                \f$ sim = \frac{A \cdot B}{|A| \times |B|} \f$, dove \f$ A \cdot B \f$ è il prodotto scalare
+ *                delle frequenze dei caratteri e \f$ |A| \f$, \f$ |B| \f$ sono le norme
  *                euclidee dei due vettori.</li>
  *            <li>Il metodo {@link #test(String, String)} restituisce {@code true} se il valore
  *                calcolato supera o eguaglia la soglia {@link #SIMILARITY_THRESHOLD}, costante hardcoded.</li>
@@ -108,11 +108,11 @@ public class LetterFrequencySimilarity implements BiPredicate<String, String> {
     /**
      * @brief   Calcola il cosine similarity tra due vettori di frequenza dei caratteri.
      * @details Il cosine similarity è definito come:
-     *          <pre>
-     *          sim(A, B) = (A · B) / (||A|| * ||B||)
-     *          </pre>
-     *          dove {@code A · B} è il prodotto scalare (somma dei prodotti elemento per
-     *          elemento) e {@code ||·||} è la norma euclidea del vettore.
+     *          \f[
+     *          sim(A, B) = \frac{A \cdot B}{||A|| \times ||B||}
+     *          \f]
+     *          dove \f$ A \cdot B \f$ è il prodotto scalare (somma dei prodotti elemento per
+     *          elemento) e \f$ ||\cdot|| \f$ è la norma euclidea del vettore.
      *          Il risultato è compreso in [0.0, 1.0]:
      *          1.0 indica vettori identici, 0.0 indica nessuna lettera in comune.
      *

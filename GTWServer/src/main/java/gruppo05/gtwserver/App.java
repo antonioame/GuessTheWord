@@ -18,6 +18,8 @@ import gruppo05.gtwshared.controller.LoginViewController;
 import gruppo05.gtwshared.controller.SignupViewController;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -112,62 +114,71 @@ public class App extends Application {
         ctrl.setSignupManager(signupMgr);
         
         // 3. AUTO-AGGIUNTA SORGENTI DI DEFAULT (NON BLOCCANTE E SICURA)
-        Thread autoAddSourcesThread = new Thread(() -> {
-            String[] defaultFiles = {"example_text_1.txt", "example_text_2.txt"};
-            try {
-                List<Source> existingSources = sourceDao.selectAll();
-                
-                for (String fileName : defaultFiles) {
-                    try {
-                        Path path = null;
-                        Path[] possiblePaths = {
-                            Paths.get("data", fileName),                                        
-                            Paths.get("src", "main", "resources", fileName),            
-                            Paths.get("GTWServer", "src", "main", "resources", fileName)
-                        };
+        Service<Void> autoAddSourcesService = new Service<Void>() {
+            @Override
+            protected Task<Void> createTask() {
+                return new Task<Void>() {
+                    @Override
+                    protected Void call() throws Exception {
+                        String[] defaultFiles = {"example_text_1.txt", "example_text_2.txt"};
+                        List<Source> existingSources = sourceDao.selectAll();
                         
-                        for (Path p : possiblePaths) {
-                            if (Files.exists(p)) {
-                                path = p.toAbsolutePath();
-                                break;
+                        for (String fileName : defaultFiles) {
+                            try {
+                                Path path = null;
+                                Path[] possiblePaths = {
+                                    Paths.get("data", fileName),                                        
+                                    Paths.get("src", "main", "resources", fileName),            
+                                    Paths.get("GTWServer", "src", "main", "resources", fileName)
+                                };
+                                
+                                for (Path p : possiblePaths) {
+                                    if (Files.exists(p)) {
+                                        path = p.toAbsolutePath();
+                                        break;
+                                    }
+                                }
+                                
+                                if (path == null) {
+                                    URL resourceUrl = App.class.getResource("/" + fileName);
+                                    if (resourceUrl != null && !resourceUrl.getProtocol().equals("jar")) {
+                                        path = Paths.get(resourceUrl.toURI());
+                                    }
+                                }
+                                
+                                if (path != null && Files.exists(path)) {
+                                    final Path finalPath = path.toAbsolutePath();
+                                    boolean alreadyExists = existingSources.stream()
+                                            .anyMatch(s -> s.getPath() != null && s.getPath().toAbsolutePath().equals(finalPath));
+                                            
+                                    if (!alreadyExists) {
+                                        Source source = new Source(finalPath);
+                                        globalSourceManager.addSource(source, () -> {
+                                            System.out.println("[INFO] Sorgente di default aggiunta con successo: " + fileName);
+                                        }, (e) -> {
+                                            System.err.println("[WARN] Errore nell'aggiunta della sorgente di default " + fileName + ": " + e.getMessage());
+                                        });
+                                    } else {
+                                        System.out.println("[INFO] Sorgente di default già presente nel sistema: " + fileName);
+                                    }
+                                } else {
+                                    System.out.println("[WARN] File di default non trovato (ignorato in modo sicuro): " + fileName);
+                                }
+                            } catch (Exception e) {
+                                System.err.println("[WARN] Impossibile caricare il file di default " + fileName + " in modo sicuro: " + e.getMessage());
                             }
                         }
-                        
-                        if (path == null) {
-                            URL resourceUrl = App.class.getResource("/" + fileName);
-                            if (resourceUrl != null && !resourceUrl.getProtocol().equals("jar")) {
-                                path = Paths.get(resourceUrl.toURI());
-                            }
-                        }
-                        
-                        if (path != null && Files.exists(path)) {
-                            final Path finalPath = path.toAbsolutePath();
-                            boolean alreadyExists = existingSources.stream()
-                                    .anyMatch(s -> s.getPath() != null && s.getPath().toAbsolutePath().equals(finalPath));
-                                    
-                            if (!alreadyExists) {
-                                Source source = new Source(finalPath);
-                                globalSourceManager.addSource(source, () -> {
-                                    System.out.println("[INFO] Sorgente di default aggiunta con successo: " + fileName);
-                                }, (e) -> {
-                                    System.err.println("[WARN] Errore nell'aggiunta della sorgente di default " + fileName + ": " + e.getMessage());
-                                });
-                            } else {
-                                System.out.println("[INFO] Sorgente di default già presente nel sistema: " + fileName);
-                            }
-                        } else {
-                            System.out.println("[WARN] File di default non trovato (ignorato in modo sicuro): " + fileName);
-                        }
-                    } catch (Exception e) {
-                        System.err.println("[WARN] Impossibile caricare il file di default " + fileName + " in modo sicuro: " + e.getMessage());
+                        return null;
                     }
-                }
-            } catch (Exception mainException) {
-                System.err.println("[WARN] Errore generale nell'auto-aggiunta delle sorgenti: " + mainException.getMessage());
+                };
             }
+        };
+
+        autoAddSourcesService.setOnFailed(e -> {
+            System.err.println("[WARN] Errore generale nell'auto-aggiunta delle sorgenti: " + autoAddSourcesService.getException().getMessage());
         });
-        autoAddSourcesThread.setDaemon(true);
-        autoAddSourcesThread.start();
+
+        autoAddSourcesService.start();
         
         stage.setScene(new Scene(root));
         stage.setOnCloseRequest(event -> {

@@ -58,7 +58,7 @@ public class ResultViewController implements Initializable {
         
         if (dto.getWinnerUsername() != null && !dto.getWinnerUsername().isEmpty()) {
             lblWinner.setText("Vincitore: " + dto.getWinnerUsername());
-            lblResponseTime.setText("Tempo di risposta: " + dto.getResponseTime() + " ms");
+            lblResponseTime.setText(String.format("Tempo di risposta: %.2f s", dto.getResponseTime() / 1000.0));
         } else {
             lblWinner.setText("Pareggio!");
             lblResponseTime.setText("Nessun vincitore");

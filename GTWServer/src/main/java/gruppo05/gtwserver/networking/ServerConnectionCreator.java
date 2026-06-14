@@ -21,6 +21,7 @@ import gruppo05.gtwserver.db.*;
 import gruppo05.gtwserver.model.*;
 import gruppo05.gtwserver.controller.GameSetupController;
 import gruppo05.gtwserver.sourcemanager.api.SourceManager;
+import java.util.stream.Collectors;
 import javafx.event.EventType;
 
 /**
@@ -416,9 +417,17 @@ public class ServerConnectionCreator extends NetworkConnectionCreator {
                         // Filtra solo le partite dell'utente corrente
                         for (Game g : allGames) {
                             if (g.getPlayer().equals(currentUsername)) {
+                                // Devi recuperare l'username dell'avversario contro cui ha giocato il giocatore
+                                List<Game> currentMatch = gameDao.selectAllWhere(Optional.empty(), Optional.of(g.getChallenge()), Optional.empty(), Optional.empty());
+
+                                String opponentUsername = null;
+                                for(Game tmp : currentMatch) {
+                                    if(!tmp.getPlayer().equals(currentUsername)) opponentUsername = tmp.getPlayer();
+                                }
                                 // Mappo i dati del database nel Record DTO per alleggerire il transito in rete
+                                
                                 records.add(new CallbackDTO.MatchRecord(
-                                        String.valueOf(g.getChallenge()), 
+                                        String.valueOf(opponentUsername), 
                                         g.getResult(),
                                         LocalDateTime.now(), 
                                         g.getResponseTime()

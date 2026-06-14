@@ -100,6 +100,55 @@ public class ConcreteGameDAO implements GameDAO {
     }
 
     /**
+     * @brief Recupera tutte le istanze di partite che corrispondono ai criteri passati per parametro.
+     * @copydoc GameDAO#selectAllWhere(Optional, Optional, Optional, Optional)
+     */
+    @Override
+    public List<Game> selectAllWhere(Optional<String> player, Optional<Integer> challenge, Optional<Result> result, Optional<Integer> responseTime) {
+        if(!player.isPresent() && !challenge.isPresent() && !result.isPresent() && !responseTime.isPresent()) return selectAll();
+        
+        List<Game> resultList = new ArrayList<>();
+        
+        StringBuffer query = new StringBuffer("Select * FROM game WHERE ");
+        
+        List<String> conditions = new ArrayList<>();
+        
+        if(player.isPresent()) conditions.add("player = ?");
+        if(challenge.isPresent()) conditions.add("challenge = ?");
+        if(result.isPresent()) conditions.add("result = ?");
+        if(responseTime.isPresent()) conditions.add("responseTime = ?");
+        
+        query.append(String.join(" AND ", conditions) + ";");
+        
+        try(Connection conn = DatabaseManager.getConnection();
+                PreparedStatement cmd = conn.prepareStatement(query.toString())) {
+            int i = 1;
+            /*
+            if(token.isPresent()) cmd.setString(i++, token.get());
+            if(frequenza.isPresent()) cmd.setInt(i++, frequenza.get());
+            if(source.isPresent()) cmd.setInt(i++, source.get());    
+            */
+            if(player.isPresent()) cmd.setString(i++, player.get());
+            if(challenge.isPresent()) cmd.setInt(i++, challenge.get());
+            if(result.isPresent()) cmd.setString(i++, result.get().toString());
+            if(responseTime.isPresent()) cmd.setInt(i++, responseTime.get());
+            
+            try (ResultSet rs = cmd.executeQuery()) {
+                while(rs.next()) {
+                    resultList.add(mapGame(rs));
+                }
+            } // Eccezione gestita dal try-with-resources esterno
+        } catch (SQLException ex) {
+            // Debug: da cambiare
+            ex.printStackTrace();            
+        }
+        
+        return resultList;
+    }
+
+    
+    
+    /**
      * @brief Inserisce una nuova partita all'interno del database.
      * @copydoc DAO#insert(Object)
      * @post

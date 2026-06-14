@@ -1,6 +1,7 @@
 package gruppo05.gtwserver.utility;
 
 import java.util.function.BiPredicate;
+import java.util.stream.IntStream;
 
 /**
  * @brief Predicato di similarità tra due parole basato sul confronto delle distribuzioni
@@ -94,12 +95,13 @@ public class LetterFrequencySimilarity implements BiPredicate<String, String> {
      */
     private int[] buildLetterFrequencyVector(String word) {
         int[] vector = new int[ALPHABET_SIZE];
-        for (char c : word.toCharArray()) {
-            int index = (int) c - ASCII_LOWERCASE_OFFSET;
-            if (index >= 0 && index <= 25) {
-                vector[index]++;
-            }
-        }
+        
+        word.chars()                                                // Converte la stringa in flusso di interi (IntStream)
+                                                                    // Dalla documentazione: "Returns a stream of int zero-extending the char values from this sequence."
+            .map(c -> c - ASCII_LOWERCASE_OFFSET)                   // Calcola indice, cioé posizione del contatore da incrementare all'interno dell'array
+            .filter(index -> index >= 0 && index < ALPHABET_SIZE)   // Ignora caratteri non validi (fuori dal range considerato per gli indici dell'array) come lettere accentate
+            .forEach(index -> vector[index]++);                     // Aggiorna lo specifico contatore delle occorrenze per la lettera riscontrata
+            
         return vector;
     }
 
@@ -123,20 +125,22 @@ public class LetterFrequencySimilarity implements BiPredicate<String, String> {
      *       viene restituito 0.0.
      */
     private double computeCosineSimilarity(int[] freq1, int[] freq2) {
-        double dotProduct = 0.0;
-        double sumOfSquares1 = 0.0;
-        double sumOfSquares2 = 0.0;
-
-        for (int i = 0; i < ALPHABET_SIZE; i++) {
-            dotProduct    += (double) freq1[i] * freq2[i];
-            sumOfSquares1 += (double) freq1[i] * freq1[i];
-            sumOfSquares2 += (double) freq2[i] * freq2[i];
-        }
+        double dotProduct = IntStream.range(0, ALPHABET_SIZE)
+                .mapToDouble(i -> (double) freq1[i] * freq2[i]) // Prodotto scalare
+                .sum(); // Riduzione, come operazione terminale
+                
+        double sumOfSquares1 = IntStream.range(0, ALPHABET_SIZE)
+                .mapToDouble(i -> (double) freq1[i] * freq1[i]) // Quadrati vettore 1
+                .sum(); // Riduzione, come operazione terminale
+                
+        double sumOfSquares2 = IntStream.range(0, ALPHABET_SIZE)
+                .mapToDouble(i -> (double) freq2[i] * freq2[i]) // Quadrati vettore 2
+                .sum(); // Riduzione, come operazione terminale
 
         double norm1 = Math.sqrt(sumOfSquares1);
         double norm2 = Math.sqrt(sumOfSquares2);
 
-        // Guardia: se almeno un vettore è null la similarità non è definita
+        // Guardia: se almeno un vettore ha norma zero (es. parola vuota) la similarità non è definita
         if (norm1 == 0.0 || norm2 == 0.0) {
             return 0.0;
         }
